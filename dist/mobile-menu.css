@@ -1,0 +1,93 @@
+/* A customer-shaped menu with owner controls; the desktop studio is unchanged. */
+.mobile-menu-app{display:none}
+@media(max-width:1100px){
+ body{background:#fffdf9}
+ body>.sidebar,body>.app{display:none}
+ .mobile-menu-app{display:block;color:#443a32;background:#fffdf9;min-height:100dvh}
+ .mobile-owner-bar{min-height:65px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff;border-bottom:1px solid #ede8e1;padding:10px 22px}
+ .mobile-wordmark{font-family:Manrope,sans-serif;font-size:25px;font-weight:800;letter-spacing:-1.1px;color:#202433;text-decoration:none;white-space:nowrap}
+ .mobile-wordmark>span{font-family:'DM Sans',sans-serif;font-size:16px;letter-spacing:-.5px;font-weight:500;margin-left:4px;color:#898377}
+ .owner-mode-label{font-size:12px;color:#a18e7d;margin-right:auto;margin-left:12px}
+ #mobile-view-toggle{display:flex;align-items:center;gap:7px;min-height:44px;border:1px solid #e7e0d7;border-radius:8px;background:#fff;padding:8px 12px;color:#766251;font-size:14px;white-space:nowrap}
+ #mobile-view-toggle svg{width:17px;height:17px}
+ .mobile-menu-main{padding:0;max-width:880px;margin:0 auto}
+ .mobile-restaurant-cover{background:#f9f3ec;text-align:center;padding:32px 24px 29px;border-bottom:1px solid #ece0d3}
+ .mobile-restaurant-logo{margin:0 auto 19px;width:74px;height:74px;border-radius:50%;display:grid;place-items:center;font:44px/1 Georgia,serif;background:#684230;color:#fff4e1}
+ .mobile-restaurant-kicker{font-size:10px;letter-spacing:2px;color:#a18a73;font-weight:500;margin:0 0 9px}
+ .mobile-restaurant-cover h1{font:40px/1.2 Georgia,serif;letter-spacing:-1.4px;color:#49382e;margin:0 0 10px}
+ .mobile-restaurant-description{color:#9b826c;font-size:14px;margin:0 0 16px}
+ .mobile-service-details{display:inline-flex;gap:12px;align-items:center;color:#8c7562;font-size:12px}
+ .mobile-service-details>span{color:#bba28e}
+ .mobile-menu-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:29px 24px 18px}
+ .mobile-menu-kicker{font-size:10px;letter-spacing:1.6px;font-weight:600;color:#b6906c}
+ .mobile-menu-heading h2{font:29px/1.3 Georgia,serif;letter-spacing:-.6px;margin:5px 0 0;overflow-wrap:anywhere}
+ .mobile-icon-control{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:44px;height:44px;border:1px solid #e8e0d7;background:#fffdf9;color:#ad8b6f;border-radius:50%}
+ .mobile-icon-control svg{width:17px;height:17px}
+ .mobile-category-nav{display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:1;background:#fffdf9;padding:10px 24px 15px;border-bottom:1px solid #f0e9df}
+ #mobile-category-tabs{display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none;min-width:0;flex:1}
+ #mobile-category-tabs::-webkit-scrollbar{display:none}
+ #mobile-category-tabs button{font-size:14px;min-height:44px;white-space:nowrap;border:1px solid #e9e0d7;border-radius:24px;background:#fffdf9;color:#927b66;padding:9px 19px}
+ #mobile-category-tabs button[aria-pressed=true]{background:#614635;color:#fff9ee;border-color:#614635}
+ .mobile-add-category{width:44px;height:44px;border-radius:50%;border:1px dashed #c8b6a4;background:#fffdf9;color:#947357;display:grid;place-items:center;flex-shrink:0}
+ #mobile-menu-sections{padding:0 24px}
+ .mobile-menu-section{padding-top:29px}
+ .mobile-section-heading{display:flex;align-items:baseline;justify-content:space-between;gap:15px;margin-bottom:8px}
+ .mobile-section-heading h3{font:24px/1.3 Georgia,serif;color:#4a3d31;margin:0;overflow-wrap:anywhere}
+ .mobile-section-heading>span{font-size:12px;color:#ae9d8c;white-space:nowrap}
+ .mobile-dish{padding:21px 0;border-bottom:1px solid #eee6dc;min-width:0}
+ .mobile-dish-content{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+ .mobile-dish-content>div{min-width:0}
+ .mobile-dish h4{font-size:17px;line-height:1.5;font-weight:550;margin:0 0 6px;overflow-wrap:anywhere;color:#463b31}
+ .mobile-dish p{font-size:14px;line-height:1.7;color:#a08d7c;margin:0;overflow-wrap:anywhere;max-width:440px}
+ .mobile-dish .mobile-icon-control{margin-top:1px}
+ .mobile-dish-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px}
+ .mobile-dish-footer>strong{font-size:16px;font-weight:600;color:#674933}
+ .mobile-stock-button{display:flex;align-items:center;gap:7px;min-height:44px;padding:8px 0 8px 12px;font-size:12px;border:0;background:transparent;color:#819079}
+ .mobile-stock-dot{width:6px;height:6px;border-radius:50%;background:#86a083}
+ .mobile-stock-button[aria-checked=false]{color:#b58f72}.mobile-stock-button[aria-checked=false] .mobile-stock-dot{background:#c5a589}
+ .mobile-dish.is-sold-out h4,.mobile-dish.is-sold-out p,.mobile-dish.is-sold-out .mobile-dish-footer>strong{color:#baaa9b}
+ .mobile-sold-label{font-size:12px;color:#b58f72;padding:8px 0}
+ .mobile-add-in-category{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;width:100%;font-size:14px;background:#fffdf9;border:1px dashed #ddcebe;border-radius:8px;color:#a08264;padding:12px;margin:18px 0 0;overflow-wrap:anywhere}
+ .mobile-add-in-category svg{width:17px;height:17px}
+ .mobile-menu-footer{text-align:center;padding:38px 24px 120px;color:#b4a696;font-size:12px}
+ .mobile-menu-footer strong{font-weight:600;color:#968471;margin-left:4px}
+ .mobile-menu-footer p{font-size:12px;margin:11px 0 0;color:#bbac9b}
+ .mobile-add-dock{position:fixed;bottom:0;left:0;right:0;padding:22px 24px max(22px,env(safe-area-inset-bottom));background:linear-gradient(transparent,#fffdf9 40%);display:flex;justify-content:flex-end;pointer-events:none;z-index:2}
+ #mobile-add-item{pointer-events:auto;display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:14px 23px;border:0;border-radius:30px;background:var(--orange);color:white;box-shadow:0 6px 20px #b5623533;font-size:16px;font-weight:550}
+ #mobile-add-item svg{width:22px;height:22px}
+ .mobile-menu-app[data-mode=customer] .mobile-owner-only{display:none}
+ .mobile-menu-app[data-mode=customer] .mobile-menu-footer{padding-bottom:45px}
+ .mobile-menu-app[data-mode=customer] .mobile-section-heading>span{display:none}
+ .mobile-menu-app[data-mode=customer] .mobile-dish{padding-block:22px}
+ .mobile-menu-app[data-mode=customer] .mobile-dish-footer{min-height:34px}
+ #item-dialog,#name-dialog{border-color:#e7e0d7}
+ #item-dialog .dialog-heading h2{font-family:Manrope,sans-serif}
+ #toast{bottom:100px}
+}
+@media(min-width:640px) and (max-width:1100px){
+ .mobile-menu-main{max-width:880px;border-inline:1px solid #f0e8de}
+ .mobile-owner-bar{padding-inline:32px}
+ .mobile-restaurant-cover{padding:38px 32px 34px}
+ .mobile-restaurant-cover h1{font-size:46px}
+ .mobile-menu-heading{padding:32px 36px 20px}
+ .mobile-category-nav{padding-inline:36px}
+ #mobile-menu-sections{padding-inline:36px}
+ .mobile-dishes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:30px;align-items:stretch}
+ .mobile-dish{display:flex;flex-direction:column}
+ .mobile-dish-content{flex:1;gap:12px}
+ .mobile-dish-footer{padding-top:8px}
+ .mobile-add-in-category{align-self:center;min-height:88px}
+ .mobile-menu-section{padding-top:32px}
+ .mobile-add-dock{max-width:880px;margin:auto;padding-right:36px}
+}
+@media(max-width:480px){
+ .mobile-owner-bar{padding:9px 18px;gap:8px}.owner-mode-label{display:none}
+ #mobile-view-toggle{font-size:12px;padding:8px 10px}
+ .mobile-restaurant-cover{padding:30px 20px 28px}
+ .mobile-restaurant-cover h1{font-size:38px}
+ .mobile-menu-heading{padding-inline:22px}
+ .mobile-category-nav{padding-inline:22px}
+ #mobile-menu-sections{padding-inline:22px}
+ .mobile-dish-content{gap:14px}.mobile-dish h4{font-size:16px}
+ .mobile-add-dock{padding-right:22px}
+}
