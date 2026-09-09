@@ -19,7 +19,7 @@ The customer ordering and staff operations workstreams are complete as an integr
 | 0.26 Customer-only development route | Complete; published | `/menu/` demonstrates a separate lightweight customer payload and the dashboard links to it | Public development review build | Sites version 7 succeeded; route has no owner bundle or Development badge; remote phone/tablet/desktop and category navigation checks pass |
 | 0.27 Customer ordering UI | Complete; approved UI-only scope | Browse/search, configured items, persistent cart, table/pickup checkout, confirmation and status tracking | Customer-only route | Same-browser customer flow handles valid/invalid, sold-out, empty, closed and cancelled states |
 | 0.28 Staff order operations UI | Complete; approved UI-only scope | Active/history queues, responsive order detail, progression, token handoff, cancellation and event history | Customer ordering contract | Same-browser staff can operate customer-created orders without backend claims |
-| 0.29 Integrated same-browser demo | Complete locally; deployment milestone | Customer and staff tabs share device-local orders and store status with refresh persistence | Customer and staff UI workstreams | End-to-end table completion, pickup cancellation, store status, refresh, 390/768/1280 and console checks pass |
+| 0.29 Integrated same-browser demo | Complete; published | Customer and staff tabs share device-local orders and store status with refresh persistence | Customer and staff UI workstreams | Final same-browser lifecycle passed; Sites version 8 published; `/` and `/menu/` remotely verified |
 | 1. Workstream 3 backend foundation | Proposed; not authorized | Server-side order/menu foundation, tenant authorization, validation, durable storage and cross-device delivery | Explicit product, provider, security and access decisions | Two physical devices synchronize only through verified server behavior; unauthorized cross-tenant access is denied |
 | 2. Public menu and QR | Proposed | Durable public route, draft/publish flow and stable QR destination | Backend foundation and publication rules | Same QR shows a republished price on a second device |
 | 3. Assisted import | Proposed | Reviewed AI-assisted extraction from printed menus | Durable draft model; provider/cost/privacy decisions | Real menu photos become a corrected draft without invented data |
@@ -28,7 +28,7 @@ The customer ordering and staff operations workstreams are complete as an integr
 
 ## Immediate path
 
-1. Publish and remotely verify the integrated same-browser UI-only bundle at `/` and `/menu/`.
+1. Review the published integrated UI-only demonstration at `/` and `/menu/`.
 2. Keep physical iOS/Android, full screen-reader, OS text-scaling and large-dataset checks listed as remaining verification.
 3. Do not start workstream 3 until separately authorized.
 4. When authorized, plan only the smallest backend foundation needed for tenant-safe durable data, server validation and cross-device order delivery; do not add payments or unrelated roadmap features.

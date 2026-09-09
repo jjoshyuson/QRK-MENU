@@ -253,6 +253,7 @@ Review the public dashboard and customer menu at `/menu/`. After approval, the n
 ### Local validation evidence
 
 - `npm run check` and `node tests/photo-races.mjs` passed; direct `/` and `/menu/` requests returned HTTP 200.
+- Final closeout rerun: submitted pickup order `KM-IHS6D` with a configured Calamansi iced tea, confirmed immediate staff intake, progressed Received → Preparing → Ready, rejected a wrong token, completed with `CMUWEC`, and verified Completed remained visible in both customer and staff views after refresh.
 - In two real same-origin browser tabs, configured Chicken adobo as Large plus Extra rice, changed its quantity, added and removed a second cart item, validated the missing table-number error, and submitted table order `KM-3I641` for ₱275.
 - Staff received the order without refresh, progressed it received → preparing → ready, rejected an incorrect token, accepted `7HCQVX` case-insensitively, completed the handoff, and the customer confirmation tracked each state. Refresh retained the completed order and empty cart.
 - Submitted pickup order `KM-3K6JT`, confirmed cancellation through the focused modal, verified Escape returned focus to the Cancel order trigger, and confirmed the customer tab updated to Cancelled. The order remained in History after refresh.
@@ -266,6 +267,12 @@ Review the public dashboard and customer menu at `/menu/`. After approval, the n
 - There is still no backend, database, authentication, tenant authorization, server price/availability validation, idempotency, payment, push notification, kitchen integration or production security.
 - Menu Studio edits still do not publish into `/menu/`. Physical iOS/Android behavior, full screen-reader testing, OS text scaling and large production datasets remain unverified.
 
+### Deployment closeout
+
+- Published the integrated static bundle as Sites version 8 at the existing public development URL.
+- Remotely verified `/` and `/menu/` at representative phone, tablet and desktop widths. The owner route retains its Development label; the customer route remains unbadged and customer-only.
+- Remote route, responsive-layout, owner-control boundary and console checks passed. No backend or production-ordering capability was introduced.
+
 ### Exact next action
 
-Deploy and remotely verify this integrated UI-only bundle on the existing development Sites URL. After that, the exact next proposed milestone is workstream 3 backend foundation only; it remains unapproved until separately authorized.
+Review the integrated development build. The exact next proposed milestone is workstream 3 backend foundation only; it remains unapproved until separately authorized.

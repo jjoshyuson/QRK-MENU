@@ -52,8 +52,8 @@ This is a UI-only same-browser ordering demonstration, not a production ordering
 ## Snapshot
 
 - Public development site: https://qrk-menu-studio.jjoshyuson.chatgpt.site
-- Saved and deployed Sites version: 5
-- Hosted source commit: `0a077037427c008136b1255ef3b7f55283483bb9`
+- Saved and deployed Sites version: 8
+- Hosted source provenance: recorded with Sites version 8
 - Last deployed and remotely checked: September 9, 2026.
 
 The hosted release contains the public `dist/` files and active `.openai/hosting.json`; handoff documents and local tooling are excluded from the deployment bundle. Access tokens, account sessions, and temporary working files are not included. `deployment/original-hosting.json` remains historical reference metadata.
