@@ -14,5 +14,7 @@
 - Phone/tablet opens to the responsive Dashboard; the navigation drawer switches to the separate Menu Studio and back to Dashboard.
 - Business profile/QR, staff permissions, live/history orders, sales and settings are clearly UI-only demo states.
 - Menu Studio adds category reordering, plain-text option notes and Available/Sold out/Hidden states. Hidden items remain owner-visible and are omitted from customer previews.
+- The public development `/menu/` route preserves the simple two-column photo menu without owner controls or a Development badge. It now includes customer ordering, cart, checkout, confirmation and tracking UI; its menu data is not connected to Menu Studio edits.
+- Root staff order operations use active/history queues, a right-side desktop detail drawer/full-screen phone panel, token-gated completion and an accessible cancellation confirmation.
 
 See `docs/UI_AND_FLOWS.md` for detailed behavior and test cases.

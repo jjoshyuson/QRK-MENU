@@ -6,6 +6,20 @@ The dark sidebar now routes between Dashboard, Business profile, Menu Studio, St
 
 The non-menu sections are explicitly UI-only: profile and appearance controls, a sample QR/link, demo staff accounts and permissions, sample live/history orders and status progression, a basic sample sales summary/log, and account/order-numbering/open-status/session controls. They must not imply a connected backend or live service.
 
+Business profile now links to the public development `/menu/` route. The route shows only the sample customer menu and photo credits, with no Development badge or owner controls. It is a static review route, not a durable publish workflow; Menu Studio edits do not synchronize to it.
+
+## Customer ordering demonstration
+
+The standalone `/menu/` route now supports menu browsing and search, item details, required options and optional add-ons, quantities and item notes, and cart add/edit/remove. Checkout supports either a required table number or pickup with an optional customer label. Submitting creates a device-local demo order with an order number and verification token; the active-order panel and confirmation dialog track received, preparing, ready, completed and cancelled states.
+
+The customer route includes sold-out, empty-search, closed-store, invalid-checkout, cancelled-order and browser-storage error states. Cart and active-order state survive refresh in the same browser profile. No request reaches a kitchen, takes payment or synchronizes to another device.
+
+## Staff order operations demonstration
+
+The root dashboard reads the same device-local order store and presents received, preparing and ready orders under Active, with completed and cancelled orders under History. The responsive order-detail panel shows fulfillment, items, selected options, notes, totals, age and event history. Staff can progress received to preparing to ready, then must match the customer token before completion. Cancellation uses a focused confirmation dialog and moves the order to History.
+
+The dashboard and Settings store controls update an already-open same-origin customer tab and persist across refresh. These controls are not authenticated and do not provide a production authorization boundary.
+
 ## Mobile and tablet
 
 At widths of 1100 CSS pixels or less, the static prototype opens the responsive Business Dashboard. A top-right hamburger opens a right-side navigation drawer with Dashboard, Business profile, Menu Studio, Staff access, Orders and Settings. Menu Studio is a separate in-page view on the same route. This is a viewport-based layout switch, not user-agent detection, authentication or a redirect.

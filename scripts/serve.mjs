@@ -22,7 +22,8 @@ const server = http.createServer(async (req, res) => {
   }
   try {
     const pathname = decodeURIComponent(new URL(req.url, 'http://local.invalid').pathname);
-    const file = path.resolve(root, '.' + (pathname === '/' ? '/index.html' : pathname));
+    const requestPath = pathname === '/' ? '/index.html' : pathname.endsWith('/') ? pathname + 'index.html' : pathname;
+    const file = path.resolve(root, '.' + requestPath);
     const relative = path.relative(root, file);
     if (relative.startsWith('..') || path.isAbsolute(relative)) {
       res.writeHead(403); res.end('Forbidden'); return;

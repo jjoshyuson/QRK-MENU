@@ -21,6 +21,7 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 | `dist/` | Editable source of the working static site, despite the folder name |
 | `dist/photos/` | Six bundled sample food photographs |
 | `dist/dashboard.css` | Business Dashboard layout and responsive workspace styles |
+| `dist/menu/` | Standalone customer-only development menu route and its small CSS/JavaScript payload |
 | `scripts/serve.mjs` | Dependency-free local preview server |
 | `CODEX_START_HERE.md` | Ready-to-paste continuation prompt |
 | `AGENTS.md` | Instructions to preserve the product and design decisions |
@@ -40,20 +41,22 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 - Mobile/tablet at viewport widths up to 1100 CSS pixels: Dashboard opens first; a top-right hamburger opens navigation, and Menu Studio is a separate view with photo-grid and quick availability-table modes.
 - Owners can add/edit/delete items, set PHP prices and option notes, create/reorder categories, rename the menu, set available/sold-out/hidden states, and replace photos.
 - Business profile, staff accounts, orders, sales, QR/link, account, and session controls are realistic UI-only demo states.
-- Customer view restores the restaurant identity header and hides item editing controls. It is a visual preview, not a separate authenticated public application.
-- Data lives in browser memory. Refreshing restores the six sample dishes. Uploaded photos are temporary, too.
-- Login, tenant isolation, persistent data, real QR generation, publishing to customers, real ordering, payments, and offline support are not implemented.
+- Customer view restores the restaurant identity header and hides item editing controls. `/menu/` is a separate lightweight customer route with browse/search, configured items, a persistent cart, table or pickup checkout, demo order confirmation, and status tracking.
+- The root dashboard provides the matching staff-side active/history queue, order details, status progression, handoff-token verification, cancellation, and store-open controls.
+- Customer and staff order state survives refresh only through same-origin `localStorage` in one browser profile. Different physical devices do not synchronize.
+- Menu Studio edits still reset on refresh and do not publish into `/menu/`; uploaded photos remain temporary.
+- Login, tenant isolation, backend persistence, real QR generation, durable menu publishing, server-validated ordering, payments, notifications, and offline support are not implemented.
 
-This is a UI prototype, not a production ordering service. The sample business and food prices are illustrative. The prototype still loads its fonts from Google Fonts; all food photos are bundled locally.
+This is a UI-only same-browser ordering demonstration, not a production ordering service. The sample business and food prices are illustrative. The prototype still loads its fonts from Google Fonts; all food photos are bundled locally.
 
 ## Snapshot
 
-- Current live reference: https://qrk-menu-studio.jjoshyuson.chatgpt.site
-- Saved and deployed Sites version: 4
-- Source commit: `35ceaa69d888eb7004b966a6799b589a86442d72`
-- Exported from work dated September 8, 2026.
+- Public development site: https://qrk-menu-studio.jjoshyuson.chatgpt.site
+- Saved and deployed Sites version: 5
+- Hosted source commit: `0a077037427c008136b1255ef3b7f55283483bb9`
+- Last deployed and remotely checked: September 9, 2026.
 
-The `dist/` files match that source snapshot. Handoff documents, the local server, and package metadata were added for this export. Git history, access tokens, account sessions, and temporary working files are intentionally excluded. The hosting identity is archived rather than active so local Codex work does not accidentally deploy over the existing site.
+The hosted release contains the public `dist/` files and active `.openai/hosting.json`; handoff documents and local tooling are excluded from the deployment bundle. Access tokens, account sessions, and temporary working files are not included. `deployment/original-hosting.json` remains historical reference metadata.
 
 ## Photo use
 

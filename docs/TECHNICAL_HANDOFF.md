@@ -12,6 +12,9 @@ The app is static HTML, CSS and vanilla JavaScript with no third-party JavaScrip
 | `dist/devices.css` | Earlier device-preview controls and responsive rules |
 | `dist/mobile-menu.css` | Latest mobile photo grid and customer-preview overrides |
 | `dist/dashboard.css` | Business Dashboard panels, cards, order/staff/profile/settings UI and responsive dashboard access |
+| `dist/menu/index.html` | Standalone customer-only development menu route with static published sample content |
+| `dist/menu/menu.css` | Lightweight customer menu layout and responsive two-column photo grid |
+| `dist/menu/menu.js` | Category jump and scroll-following state for the customer menu |
 | `dist/photo-credits.html` | Sample image credits |
 
 The layered CSS reflects iterative design work. Consolidation is reasonable after verifying behavior, but do not discard later overrides or treat `dist/` as generated output.
@@ -22,9 +25,15 @@ Current item fields: `id`, `name`, `description`, `price`, `category`, `options`
 
 Categories are name strings. Item IDs for additions use `Date.now()`. Photos are local sample paths or temporary data URLs. Rendering is rebuilt from state with HTML escaping applied to text/attributes. This state is not a production data model: use stable database IDs, integer minor units for money, server validation and tenant-scoped queries in the durable implementation.
 
-The page renders the menu workspaces and Business Dashboard from browser-memory sample state. At phone/tablet widths, CSS opens the responsive Dashboard first; a right-side navigation drawer switches to the separate Menu Studio view. Menu Studio has photo-editor, customer-preview and quick availability-table display states. A production public route should load only the customer view and public fields, rather than shipping the owner's dashboard/editor bundle.
+The root page renders the menu workspaces and Business Dashboard from browser-memory sample state. At phone/tablet widths, CSS opens the responsive Dashboard first; a right-side navigation drawer switches to the separate Menu Studio view. Menu Studio has photo-editor, customer-preview and quick availability-table display states.
 
-Dashboard profile, staff, QR/link, orders, sales, account, password, numbering and session controls are presentation-only. Their local interaction states do not authenticate, persist, publish, notify, charge or communicate with a kitchen.
+The development `/menu/` route is a separate static customer payload and does not ship the owner dashboard/editor bundle. It demonstrates the intended public boundary, but its sample data is authored separately and does not update when the browser-memory owner editor changes. Durable shared menu data and draft/publish synchronization remain unimplemented.
+
+Customer and staff order operations share `localStorage` key `qrk_demo_orders_v1`. Orders use integer minor-unit values and preserve unknown forward-compatible fields when staff changes a status. Supported states are `received`, `preparing`, `ready`, `completed` and `cancelled`; each mutation updates timestamps and appends an event. The customer cart and active-order pointer use `qrk_demo_cart_v1` and `qrk_demo_active_order_v1`. Store availability uses `qrk_demo_store_open_v1`. Same-origin tabs synchronize with browser storage events and local custom events.
+
+This persistence is deliberately browser-local. It survives refresh in the same browser profile but cannot synchronize across physical devices, browsers or origins. Workstream 3 must replace it with server-side storage, validation, tenant authorization and a real-time or polling delivery mechanism before operational use.
+
+Dashboard profile, staff, QR/link, sales, account, password, numbering and session controls remain presentation-only. Order and store-status controls persist only in local browser storage; they do not authenticate, publish, notify, charge, synchronize across devices or communicate with a kitchen.
 
 ## Proposed production architecture (not yet selected)
 

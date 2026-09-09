@@ -9,6 +9,7 @@ Use this folder as the fast entry point for a new chat. Read this file first, th
 | Product purpose, audience and constraints | `memory/product.md` | `docs/PRODUCT_PLAN.md` |
 | UI direction and editing flows | `memory/ui.md` | `docs/UI_AND_FLOWS.md` |
 | Code structure, state and technical limits | `memory/architecture.md` | `docs/TECHNICAL_HANDOFF.md` |
+| Device-local customer/staff order demo | `memory/orders.md` | `dist/app.js`, `docs/TECHNICAL_HANDOFF.md` |
 | Current progress and next milestone | `memory/progress.md` | `docs/PROGRESS_MAP.md`, `docs/BUILD_STATUS.md` |
 | Confirmed decisions and unresolved choices | `memory/decisions.md` | `docs/PRODUCT_PLAN.md` |
 | Local commands and verification | `memory/workflow.md` | `README.md`, `docs/BUILD_STATUS.md` |
@@ -23,4 +24,4 @@ For a routine UI change, read `ui.md`, `architecture.md`, `progress.md` and `wor
 - Do not paste long logs or duplicate detailed evidence.
 - Update the matching topic file after a material decision or milestone change.
 - Date facts that can become stale and distinguish confirmed decisions from proposals.
-- Last refreshed: September 8, 2026.
+- Last refreshed: September 9, 2026.

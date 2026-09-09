@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="description" content="Browse and place a demo order from Kusina Manila.">
+  <meta name="theme-color" content="#fffaf6">
+  <title>Kusina Manila — Order</title>
+  <link rel="stylesheet" href="/menu/menu.css">
+  <script defer src="/menu/menu.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#menu-content">Skip to menu</a>
+  <header class="site-header">
+    <a class="restaurant-wordmark" href="/menu/" aria-label="Kusina Manila menu">Kusina Manila</a>
+    <button class="header-order" id="header-order" type="button" aria-label="Open cart, 0 items"><span>Order</span><b id="header-count">0</b></button>
+  </header>
+
+  <main id="menu-content">
+    <section class="restaurant" aria-labelledby="restaurant-name">
+      <div><p class="eyebrow">DINE IN OR PICKUP</p><h1 id="restaurant-name">Kusina Manila</h1><p>Filipino favorites, made with love.</p><span>PHP ₱ <i>•</i> Ermita, Manila</span></div>
+      <div class="restaurant-mark" aria-hidden="true">K.</div>
+    </section>
+    <section class="notice hidden" id="store-notice" aria-live="polite"></section>
+    <section class="active-order hidden" id="active-order" aria-live="polite"></section>
+    <section class="menu" aria-labelledby="menu-title">
+      <div class="menu-heading"><div><p class="eyebrow">TODAY'S MENU</p><h2 id="menu-title">What would you like?</h2></div><span id="item-count">6 items</span></div>
+      <div class="search-wrap"><label class="sr-only" for="menu-search">Search the menu</label><input id="menu-search" type="search" placeholder="Search dishes and drinks" autocomplete="off"><span aria-hidden="true">⌕</span></div>
+      <nav class="categories" id="categories" aria-label="Menu categories"></nav>
+      <div id="menu-sections"></div>
+      <section class="empty-state hidden" id="menu-empty" aria-live="polite"><div aria-hidden="true">⌕</div><h3>No menu items found</h3><p>Try another search or clear the search to browse everything.</p><button class="text-button" id="clear-search" type="button">Clear search</button></section>
+    </section>
+  </main>
+
+  <div class="cart-bar hidden" id="cart-bar"><button type="button" id="open-cart"><span><b id="cart-count">0</b> <span id="cart-label">items</span></span><strong>View order · <span id="cart-subtotal">₱0</span></strong></button></div>
+  <footer><span>Ordering demo for this device only</span><span>Powered by <strong>qrk menu</strong></span><a href="/photo-credits.html">Sample photo credits</a></footer>
+
+  <dialog id="item-dialog" class="sheet item-sheet" aria-labelledby="item-name">
+    <form method="dialog" class="sheet-card" id="item-form">
+      <button class="icon-button close-button" value="cancel" aria-label="Close item details">×</button>
+      <img id="item-photo" alt="" width="640" height="480">
+      <div class="sheet-content">
+        <div class="item-title-row"><div><h2 id="item-name"></h2><p id="item-description"></p></div><strong id="item-price"></strong></div>
+        <div id="item-options"></div>
+        <label class="field-label" for="item-notes">Special request <span>Optional</span></label><textarea id="item-notes" rows="2" maxlength="140" placeholder="Example: sauce on the side"></textarea>
+        <div class="quantity-row"><span>Quantity</span><div class="stepper"><button type="button" id="item-minus" aria-label="Decrease quantity">−</button><output id="item-quantity" aria-live="polite">1</output><button type="button" id="item-plus" aria-label="Increase quantity">+</button></div></div>
+      </div>
+      <div class="sheet-action"><button class="primary-button" id="add-item" value="default"><span>Add to order</span><strong id="item-total"></strong></button></div>
+    </form>
+  </dialog>
+
+  <dialog id="cart-dialog" class="sheet" aria-labelledby="cart-title">
+    <form method="dialog" class="sheet-card" id="cart-form">
+      <header class="sheet-header"><div><p class="eyebrow">YOUR ORDER</p><h2 id="cart-title">Review order</h2></div><button class="icon-button" value="cancel" aria-label="Close cart">×</button></header>
+      <div class="sheet-content cart-content">
+        <div id="cart-items"></div>
+        <section class="cart-empty hidden" id="cart-empty"><div aria-hidden="true">○</div><h3>Your order is empty</h3><p>Add a favorite from the menu to get started.</p><button class="secondary-button" value="cancel">Browse menu</button></section>
+        <section id="checkout-fields">
+          <fieldset class="fulfillment"><legend>How will you get your order?</legend><label><input type="radio" name="fulfillment" value="table" checked><span><b>Dine in</b><small>We'll bring it to your table</small></span></label><label><input type="radio" name="fulfillment" value="pickup"><span><b>Pickup</b><small>Collect at the counter</small></span></label></fieldset>
+          <label class="field-label" id="table-label" for="table-number">Table number</label><input id="table-number" type="text" inputmode="numeric" maxlength="3" placeholder="Example: 12">
+          <label class="field-label" for="customer-label">Name for the order <span>Optional</span></label><input id="customer-label" type="text" maxlength="40" placeholder="Example: Mia">
+          <label class="field-label" for="order-notes">Order notes <span>Optional</span></label><textarea id="order-notes" rows="2" maxlength="180" placeholder="Anything the staff should know?"></textarea>
+          <p class="form-error hidden" id="checkout-error" role="alert"></p>
+          <p class="demo-note">This demo saves only in this browser. It does not send an order to a real kitchen or take payment.</p>
+        </section>
+      </div>
+      <div class="sheet-action cart-total" id="cart-action"><div><span>Subtotal</span><strong id="checkout-subtotal">₱0</strong></div><button class="primary-button" id="submit-order" value="default">Submit demo order</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="confirmation-dialog" class="sheet confirmation-sheet" aria-labelledby="confirmation-title">
+    <div class="sheet-card">
+      <div class="sheet-content confirmation-content">
+        <div class="success-mark" aria-hidden="true">✓</div><p class="eyebrow">DEMO ORDER RECEIVED</p><h2 id="confirmation-title">Show this to staff</h2>
+        <div class="order-number"><span>Order number</span><strong id="confirmation-number"></strong></div>
+        <div class="verification-card"><div id="verification-mark" class="verification-mark" aria-hidden="true"></div><div><span>Verification code</span><strong id="confirmation-token"></strong><small>Staff can match this code on this device.</small></div></div>
+        <div id="order-progress" class="order-progress"></div>
+        <p class="demo-note">Status updates work only in this browser on this device. This is not a production order.</p><p class="form-error hidden" id="order-error" role="alert"></p>
+      </div>
+      <div class="sheet-action confirmation-actions"><button class="secondary-button" id="close-confirmation" type="button">Back to menu</button><button class="primary-button" id="refresh-status" type="button">Refresh status</button></div>
+    </div>
+  </dialog>
+  <template id="dish-template"><article class="dish"><button type="button"><div class="photo"><img alt="" width="640" height="480"><span class="sold-label hidden">Sold out</span></div><div class="dish-copy"><h4></h4><p></p><strong></strong></div></button></article></template>
+</body>
+</html>

@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node scripts/serve.mjs",
     "start:lan": "node scripts/serve.mjs --host 0.0.0.0",
-    "check": "node --check dist/app.js && node --check scripts/serve.mjs"
+    "check": "node --check dist/app.js && node --check dist/menu/menu.js && node --check scripts/serve.mjs"
   },
   "engines": {
     "node": ">=18"

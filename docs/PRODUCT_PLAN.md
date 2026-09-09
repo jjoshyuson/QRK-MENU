@@ -10,7 +10,7 @@ The central priorities are fast customer loading, easy menu maintenance, and pra
 
 Initial onboarding will include face-to-face help. A proposed quick-import flow photographs an existing printed menu and uses AI to extract items. Staff and the owner then double-check and correct everything. AI output must remain a reviewable draft; it must not silently become the live menu.
 
-The menu polish milestone and the UI-only Business Dashboard milestone are implemented locally. Backend and production milestones remain separate future work.
+The menu polish, UI-only Business Dashboard, customer ordering UI and staff order-operations UI milestones are implemented. Customer and staff flows integrate only through same-origin browser storage; this is a refresh-persistent demonstration, not cross-device or production ordering. Workstream 3 backend foundation remains proposed and requires separate authorization.
 
 ## Confirmed UI decisions
 

@@ -187,3 +187,85 @@ Review the mobile Dashboard-to-Menu Studio flow and quick availability table loc
 - Removed prices and option notes from Table view to reduce clutter and mistaken taps. Photo editor, Customer view and desktop menu pricing remain unchanged.
 - Browser verification at 360px and 390px confirmed 88px-high rows, 56px circular thumbnails, 48px-high availability buttons aligned 12px from the right edge, no Table view price text and no horizontal overflow. At 768px, rows expand to 92px with 60px thumbnails while controls remain right-aligned.
 - Toggled Chicken adobo to Out of stock and confirmed the status/count update and retained focus. Switched back to Photo editor and confirmed its PHP prices remain present. Browser console error log was empty and the viewport override was reset.
+
+## Public development deployment — September 9, 2026
+
+### Implemented
+
+- Added a compact Development badge to the desktop and responsive owner headers without changing customer-preview content or adding dependencies.
+- Activated the existing Sites development project configuration and published version 5 to `https://qrk-menu-studio.jjoshyuson.chatgpt.site` after explicit approval.
+- Kept the public release bundle limited to the static site assets and hosting manifest. Internal handoff documentation was not included in the hosted archive.
+- Preserved the existing photos; no new generated or searched imagery was added because the current food assets already support the menu and additional media would increase payload without improving this milestone.
+
+### Verification evidence
+
+- `npm run check`, `node tests/photo-races.mjs`, local asset-reference checks and duplicate-ID checks passed.
+- Local browser checks at 390, 768 and 1280 CSS pixels confirmed no page-level horizontal overflow, responsive Dashboard navigation, separate Menu Studio, customer-preview owner-control hiding, device preview switching and availability updates.
+- The Sites deployment reported `succeeded`, and access was set to public so anyone with the URL can review it without signing in.
+- Remote browser checks at 390, 768 and 1280 CSS pixels confirmed the Development badge, Dashboard-first phone/tablet layout, hamburger navigation, two-column Menu Studio, six-row availability table without prices, desktop customer preview and zero console errors.
+
+### Remaining verification and limitations
+
+- Physical iOS/Android keyboard behavior, full keyboard/screen-reader navigation, OS text scaling and very large datasets remain unverified.
+- The public URL is a development UI prototype. Browser-memory changes reset on refresh; no authentication, durable data, real publishing flow, ordering, payments or backend services were added.
+
+### Exact next action
+
+Review version 5 at the public development URL and either close the UI review gate or request only scoped polish/accessibility changes. Persistent multi-business work remains proposed and requires separate authorization.
+
+## Customer-only development route — September 9, 2026
+
+### Implemented
+
+- Added `/menu/` as a standalone customer-only route with its own small HTML, CSS and JavaScript payload. It reuses the six bundled photos and does not load the owner dashboard/editor bundle.
+- Preserved the customer-shaped two-column photo menu across phone, tablet and desktop widths, including category navigation and the sold-out state.
+- Updated the Business profile menu link, Open menu action and Copy link behavior to target `/menu/`. The root owner workspace keeps its Development label; the customer route has none.
+- Updated the local server so directory routes such as `/menu/` resolve their `index.html` files.
+
+### Verification evidence
+
+- `npm run check` covers the owner app, customer menu script and local server. The photo race regression test, local route requests and customer asset-reference checks pass.
+- Local browser checks at 390, 768 and 1280 CSS pixels found two menu columns, six items, one sold-out item, no page-level horizontal overflow, no owner controls, no Development label and no console errors.
+- Category links jump to their sections and the active state follows the final Drinks section at the bottom of the page.
+- The Business profile Open menu action lands on `/menu/`, whose document contains no owner sidebar or dashboard controls.
+- Sites version 7 deployed successfully at the existing public URL. Remote 390, 768 and 1280 CSS-pixel checks matched the local results, category navigation reached `#drinks`, and the browser console remained clear.
+- The published dashboard keeps its Development label and its Business profile Open menu action reaches the customer-only route. Versioned dashboard asset URLs prevent a previously cached owner bundle from retaining the old placeholder link.
+
+### Remaining limitations
+
+- `/menu/` uses separately authored static sample data. Owner edits do not synchronize to it, and there is still no durable draft/publish workflow or real QR image.
+- Ordering, authentication, tenant isolation, database storage and production image licensing remain unimplemented.
+
+### Exact next action
+
+Review the public dashboard and customer menu at `/menu/`. After approval, the next proposed product milestone remains tenant-safe durable menu data and draft/publish synchronization.
+
+## Integrated customer ordering and staff operations — September 9, 2026
+
+### Implemented
+
+- Integrated the completed customer ordering and staff operations workstreams without adding a framework, dependency, backend or paid service.
+- `/menu/` now supports browse/search, configured items and add-ons, quantities and notes, cart add/edit/remove, table or pickup checkout, validation, demo submission, order number/token confirmation, refresh-persistent cart/latest order and tracked received/preparing/ready/completed/cancelled states.
+- The root dashboard now reads and updates the shared device-local queue, separates active/history orders, shows responsive order details and event history, progresses statuses, requires token matching before completion, confirms cancellation, indicates received orders and persists store-open state.
+- Replaced the native cancellation prompt with the existing modal-dialog pattern so focus, Escape close and the destructive action are explicit and testable.
+- Customer and staff share `qrk_demo_orders_v1`; store status uses `qrk_demo_store_open_v1`; money stays in integer minor units and staff mutations preserve forward-compatible fields.
+
+### Local validation evidence
+
+- `npm run check` and `node tests/photo-races.mjs` passed; direct `/` and `/menu/` requests returned HTTP 200.
+- In two real same-origin browser tabs, configured Chicken adobo as Large plus Extra rice, changed its quantity, added and removed a second cart item, validated the missing table-number error, and submitted table order `KM-3I641` for ₱275.
+- Staff received the order without refresh, progressed it received → preparing → ready, rejected an incorrect token, accepted `7HCQVX` case-insensitively, completed the handoff, and the customer confirmation tracked each state. Refresh retained the completed order and empty cart.
+- Submitted pickup order `KM-3K6JT`, confirmed cancellation through the focused modal, verified Escape returned focus to the Cancel order trigger, and confirmed the customer tab updated to Cancelled. The order remained in History after refresh.
+- Closing the store updated an already-open customer tab, displayed the paused-order notice, blocked item configuration/submission, and persisted across customer refresh. Reopening removed the notice.
+- At 390, 768 and 1280 CSS pixels, both direct routes had no page-level horizontal overflow. `/menu/` retained two columns; `/` used responsive hamburger navigation at 390/768 and the desktop sidebar at 1280. Visual checks at phone and desktop sizes were clean.
+- Browser console warning/error logs were empty in the checked customer and staff tabs. Sold-out and empty-search states were also exercised.
+
+### Remaining limitations
+
+- All order, cart and store-status synchronization is limited to the same browser profile and origin. Different physical devices do not synchronize without workstream 3.
+- There is still no backend, database, authentication, tenant authorization, server price/availability validation, idempotency, payment, push notification, kitchen integration or production security.
+- Menu Studio edits still do not publish into `/menu/`. Physical iOS/Android behavior, full screen-reader testing, OS text scaling and large production datasets remain unverified.
+
+### Exact next action
+
+Deploy and remotely verify this integrated UI-only bundle on the existing development Sites URL. After that, the exact next proposed milestone is workstream 3 backend foundation only; it remains unapproved until separately authorized.
