@@ -1,0 +1,43 @@
+[
+  {
+    "name": "adobo",
+    "file": "dist/photos/adobo.jpg",
+    "source": "https://www.worthypause.com/blog/2017/2/filipino-chicken-adobo-recipe",
+    "credit": "Worthy Pause",
+    "reuse": "No open reuse license verified; private UI prototype sample photo."
+  },
+  {
+    "name": "sinigang",
+    "file": "dist/photos/sinigang.jpg",
+    "source": "https://www.artofit.org/image-gallery/763993524309099078/sinigang-na-baboy-a-k-a-filipino-sour-tamarind-soup-with-pork/",
+    "credit": "Artofit / Pinterest image",
+    "reuse": "No open reuse license verified; private UI prototype sample photo."
+  },
+  {
+    "name": "sisig",
+    "file": "dist/photos/sisig.jpg",
+    "source": "https://www.foodpanda.ph/chain/cx9hy/hot-kitchen",
+    "credit": "Hot Kitchen / Foodpanda",
+    "reuse": "No open reuse license verified; private UI prototype sample photo."
+  },
+  {
+    "name": "rice",
+    "file": "dist/photos/rice.jpg",
+    "source": "https://foodandjourneys.net/filipino-garlic-fried-rice-sinangag/",
+    "credit": "Food and Journeys",
+    "reuse": "No open reuse license verified; private UI prototype sample photo."
+  },
+  {
+    "name": "tea",
+    "file": "dist/photos/tea.jpg",
+    "source": "https://www.angsarap.net/2018/11/14/earl-grey-calamansi-iced-tea/",
+    "credit": "Ang Sarap",
+    "reuse": "No open reuse license verified; private UI prototype sample photo."
+  },
+  {
+    "name": "lumpia",
+    "file": "dist/photos/lumpia.jpg",
+    "credit": "AI-generated sample using the built-in image tool",
+    "reuse": "Generated for this prototype; not an actual restaurant product photograph."
+  }
+]

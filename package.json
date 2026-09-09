@@ -1,0 +1,15 @@
+{
+  "name": "qrk-menu-handoff",
+  "version": "0.4.0",
+  "private": true,
+  "description": "QRK MENU static UI prototype and Codex handoff",
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "start:lan": "node scripts/serve.mjs --host 0.0.0.0",
+    "check": "node --check dist/app.js && node --check scripts/serve.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
