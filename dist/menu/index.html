@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="View the Kusina Manila menu.">
+  <title>Kusina Manila — Main menu</title>
+  <link rel="stylesheet" href="/menu/menu.css">
+  <script defer src="/menu/menu.js"></script>
+</head>
+<body>
+  <header class="site-header"><a class="wordmark" href="/menu/" aria-label="Kusina Manila menu">qrk<span>menu</span></a></header>
+  <main>
+    <section class="restaurant" aria-labelledby="restaurant-name">
+      <div><p class="eyebrow">DINE-IN MENU</p><h1 id="restaurant-name">Kusina Manila</h1><p>Filipino favorites, made with love.</p><span>PHP ₱ <i>•</i> Ermita, Manila</span></div>
+      <div class="restaurant-mark" aria-hidden="true">K.</div>
+    </section>
+    <section class="menu" aria-labelledby="menu-title">
+      <div class="menu-heading"><div><p class="eyebrow">TODAY'S MENU</p><h2 id="menu-title">Main menu</h2></div><span>6 items</span></div>
+      <nav class="categories" aria-label="Menu categories"><a class="active" href="#mains" aria-current="true">Mains</a><a href="#sides">Sides</a><a href="#drinks">Drinks</a></nav>
+      <section class="menu-section" id="mains" aria-labelledby="mains-title">
+        <div class="section-heading"><h3 id="mains-title">Mains</h3><span>3 items</span></div>
+        <div class="dish-grid">
+          <article class="dish"><img src="/photos/adobo.jpg" alt="Chicken adobo" width="640" height="480"><div><h4>Chicken adobo</h4><strong>₱180</strong></div></article>
+          <article class="dish"><img src="/photos/sinigang.jpg" alt="Sinigang na baboy" width="640" height="480"><div><h4>Sinigang na baboy</h4><strong>₱220</strong></div></article>
+          <article class="dish"><img src="/photos/sisig.jpg" alt="Crispy pork sisig" width="640" height="480"><div><h4>Crispy pork sisig</h4><strong>₱195</strong></div></article>
+        </div>
+      </section>
+      <section class="menu-section" id="sides" aria-labelledby="sides-title">
+        <div class="section-heading"><h3 id="sides-title">Sides</h3><span>2 items</span></div>
+        <div class="dish-grid">
+          <article class="dish"><img src="/photos/rice.jpg" alt="Garlic fried rice" width="640" height="480"><div><h4>Garlic fried rice</h4><strong>₱55</strong></div></article>
+          <article class="dish sold-out"><div class="photo"><img src="/photos/lumpia.jpg" alt="Lumpiang shanghai" width="640" height="480"><span>Sold out</span></div><div><h4>Lumpiang shanghai</h4><strong>₱120</strong></div></article>
+        </div>
+      </section>
+      <section class="menu-section" id="drinks" aria-labelledby="drinks-title">
+        <div class="section-heading"><h3 id="drinks-title">Drinks</h3><span>1 item</span></div>
+        <div class="dish-grid"><article class="dish"><img src="/photos/tea.jpg" alt="Calamansi iced tea" width="640" height="480"><div><h4>Calamansi iced tea</h4><strong>₱65</strong></div></article></div>
+      </section>
+    </section>
+  </main>
+  <footer>Made with <strong>qrk menu</strong><a href="/photo-credits.html">Sample photo credits</a></footer>
+</body>
+</html>
