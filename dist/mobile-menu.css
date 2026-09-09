@@ -107,3 +107,84 @@ button:disabled{cursor:wait;opacity:.6}
 @media(max-width:350px){.mobile-dishes{gap:18px 10px}#mobile-menu-sections{padding-inline:14px}.mobile-dish h4{font-size:14px}.mobile-dish-photo .mobile-icon-control{top:4px;right:4px}.mobile-stock-button{font-size:12px}.mobile-restaurant-cover h1{font-size:24px}}
 
 .mobile-menu-footer a{display:inline-block;color:inherit;margin-top:5px;text-underline-offset:3px}
+/* Readable secondary labels and resilient form sizing. */
+.food-photo-empty{color:#646c7a}
+.phone-tab{color:#626a79}
+.phone-tab.active{color:#b7431c}
+.phone-title h3{min-width:0;overflow-wrap:anywhere}
+.field-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+.dialog-footer>div{flex-wrap:wrap}
+@media(max-width:1100px){
+ .owner-mode-label,.mobile-restaurant-description,.mobile-section-heading>span,.mobile-menu-footer,.mobile-menu-footer strong{color:#667080}
+ #mobile-category-tabs button{color:#626c7c}
+ #mobile-category-tabs button[aria-pressed=true]{color:#b7431c}
+ .mobile-stock-button{color:#516e61}
+ .mobile-stock-button[aria-checked=false],.mobile-dish.is-sold-out h4,.mobile-dish.is-sold-out .mobile-dish-content>strong{color:#667080}
+ .mobile-add-in-category{color:#667080}
+ .mobile-menu-heading>div,.mobile-section-heading h3{min-width:0}
+ .mobile-owner-bar{flex-wrap:wrap}
+ form input:not([type=checkbox]),form textarea,form select{font-size:16px}
+}
+/* Category navigation follows the visible section; end tabs can also center. */
+#mobile-category-tabs,.phone-tabs{box-sizing:border-box;scrollbar-width:none}
+#mobile-category-tabs button,.phone-tabs button{flex-shrink:0}
+.phone-tabs{position:sticky;top:0;z-index:2;background:white;margin-top:0;padding-block:10px;min-height:54px}
+#phone-items,#expanded-preview .phone-content>div:nth-last-child(2){display:block!important}
+.phone-section{margin-bottom:24px}
+.phone-section h4{font:700 16px/1.4 Manrope,sans-serif;margin:0 0 12px;overflow-wrap:anywhere}
+.phone-dishes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px}
+#expanded-preview .phone[data-device=desktop] .phone-dishes{grid-template-columns:repeat(4,minmax(0,1fr))}
+.phone-tab[aria-pressed=true]{background:#fff0e9;color:#b7431c;border-color:#ffe2d4}
+
+/* Mobile Business Dashboard navigation and Menu Studio modes. */
+@media(max-width:1100px){
+ .mobile-owner-bar{flex-wrap:nowrap}
+ #mobile-menu-nav-toggle{display:grid;place-items:center;width:44px;height:44px;margin-left:auto;border:1px solid #e4e7ec;border-radius:9px;background:#fff;color:#424a58;flex-shrink:0}
+ #mobile-menu-nav-toggle svg{width:21px;height:21px}
+ .mobile-studio-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 18px;border-bottom:1px solid #eef0f3;background:#fafbfc}
+ .mobile-studio-toolbar>div:first-child{min-width:0}
+ .mobile-studio-toolbar p{margin:0 0 2px;color:var(--orange);font-size:9px;font-weight:700;letter-spacing:1.3px}
+ .mobile-studio-toolbar strong{display:block;font:650 14px/1.4 Manrope,sans-serif;color:#303746}
+ .mobile-mode-actions{display:flex;gap:8px;justify-content:flex-end}
+ #mobile-view-toggle,#mobile-table-toggle{display:flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:8px 11px;border:1px solid #dfe3e9;border-radius:8px;background:#fff;color:#5e6776;font-size:12px;white-space:nowrap}
+ #mobile-view-toggle svg,#mobile-table-toggle svg{width:16px;height:16px}
+ #mobile-view-toggle[aria-pressed=true],#mobile-table-toggle[aria-pressed=true]{border-color:#ffd9c8;background:#fff0e9;color:#ba461e}
+ .mobile-menu-app[data-mode=owner] .mobile-restaurant-cover{display:none}
+ .mobile-menu-app[data-mode=customer] .mobile-restaurant-cover{display:block}
+ .mobile-menu-app[data-mode=owner] .mobile-menu-heading{padding-top:22px}
+ .mobile-menu-app[data-layout=table] .mobile-menu-heading,.mobile-menu-app[data-layout=table] .mobile-category-nav,.mobile-menu-app[data-layout=table] #mobile-menu-sections,.mobile-menu-app[data-layout=table] .mobile-add-dock{display:none}
+ #mobile-table-view{padding:22px 18px 110px}
+ .mobile-table-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:18px}
+ .mobile-table-heading p{margin:0 0 3px;color:var(--orange);font-size:9px;font-weight:700;letter-spacing:1.2px}
+ .mobile-table-heading h2{font:700 21px/1.35 Manrope,sans-serif;margin:0;color:#252b39}
+ .mobile-table-heading>span{font-size:11px;color:#747d8b;white-space:nowrap}
+ .mobile-table-group{margin-top:20px;border:1px solid #e7e9ee;border-radius:10px;overflow:hidden;background:#fff}
+ .mobile-table-group-title{display:flex;justify-content:space-between;align-items:center;padding:11px 13px;background:#f8f9fb;border-bottom:1px solid #e9ebef}
+ .mobile-table-group-title h3{font:650 13px/1.4 Manrope,sans-serif;margin:0}
+ .mobile-table-group-title span{display:grid;place-items:center;min-width:22px;height:22px;border-radius:11px;background:#eceff3;color:#687180;font-size:10px}
+ .mobile-table-row{display:grid;grid-template-columns:60px minmax(0,1fr) auto;align-items:center;gap:14px;min-height:92px;padding:14px;border-bottom:1px solid #edf0f3}
+ .mobile-table-row:last-child{border-bottom:0}
+ .mobile-table-row>.mobile-table-photo,.mobile-table-row>.food-photo-empty{width:60px;height:60px;border-radius:50%;object-fit:cover;overflow:hidden}
+ .mobile-table-row>.food-photo-empty{font-size:0;gap:0}.mobile-table-row>.food-photo-empty svg{width:18px;height:18px}
+ .mobile-table-row>div{min-width:0}
+ .mobile-table-row strong{display:block;overflow-wrap:anywhere;font-size:14px;line-height:1.4;color:#303746}
+ .mobile-table-row>button{display:flex;align-items:center;justify-content:center;gap:7px;min-width:96px;min-height:48px;padding:10px 12px;border:1px solid #dfe4e9;border-radius:9px;background:#fff;color:#3f745c;font-size:12px;font-weight:600;white-space:nowrap}
+ .mobile-table-row>button>span{width:7px;height:7px;border-radius:50%;background:#58a17f}
+ .mobile-table-row>button[aria-checked=false]{color:#8a5b52;background:#fff8f5;border-color:#f0ddd6}
+ .mobile-table-row>button[aria-checked=false]>span{background:#c6765f}
+ .mobile-table-row>button:disabled{color:#818895;background:#f2f3f5;border-color:#e6e8ec}
+ .mobile-table-row>button:disabled>span{background:#aeb4bd}
+ .mobile-table-row.is-hidden{opacity:.7}
+}
+@media(min-width:640px) and (max-width:1100px){
+ .mobile-studio-toolbar{padding-inline:30px}
+ #mobile-table-view{padding-inline:30px}
+}
+@media(max-width:520px){
+ .mobile-studio-toolbar{display:block}
+ .mobile-mode-actions{display:grid;grid-template-columns:1fr 1fr;margin-top:12px}
+ #mobile-view-toggle,#mobile-table-toggle{width:100%}
+ .mobile-table-row{grid-template-columns:56px minmax(0,1fr) auto;gap:12px;min-height:88px;padding:14px 12px}
+ .mobile-table-row>.mobile-table-photo,.mobile-table-row>.food-photo-empty{width:56px;height:56px}
+ .mobile-table-row>button{justify-self:end;min-width:94px;min-height:48px}
+}
