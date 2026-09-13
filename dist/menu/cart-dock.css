@@ -1,0 +1,22 @@
+.cart-bar {
+  left: 50%;
+  right: auto;
+  bottom: calc(var(--footer-overlap, 0px) + 12px + env(safe-area-inset-bottom));
+  width: 85vw;
+  padding: 0;
+  transform: translateX(-50%);
+  background: transparent;
+  transition: none;
+}
+
+.cart-bar button {
+  width: 100%;
+}
+
+.menu {
+  padding-bottom: calc(36px + var(--cart-clearance, 0px));
+}
+
+footer {
+  padding-bottom: 34px;
+}

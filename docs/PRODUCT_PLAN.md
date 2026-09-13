@@ -10,7 +10,7 @@ The central priorities are fast customer loading, easy menu maintenance, and pra
 
 Initial onboarding will include face-to-face help. A proposed quick-import flow photographs an existing printed menu and uses AI to extract items. Staff and the owner then double-check and correct everything. AI output must remain a reviewable draft; it must not silently become the live menu.
 
-The menu polish, UI-only Business Dashboard, customer ordering UI and staff order-operations UI milestones are implemented. Customer and staff flows integrate only through same-origin browser storage; this is a refresh-persistent demonstration, not cross-device or production ordering. Workstream 3 backend foundation remains proposed and requires separate authorization.
+The menu polish, UI-only Business Dashboard, customer ordering UI and staff order-operations UI milestones are implemented. Workstream 3 is now implemented as a provider-ready Supabase/PostgreSQL foundation with a shared demo/backend adapter. No hosted project is connected, so the running customer and staff flows still use same-origin browser storage and remain a refresh-persistent demonstration rather than cross-device or production ordering.
 
 ## Confirmed UI decisions
 
@@ -65,6 +65,12 @@ Requirements include server-side price/availability validation, duplicate-order 
 
 Exit: a small restaurant can operate a real pilot and recover from duplicate taps, lost connectivity, unavailable dishes and rejected orders.
 
+#### Proposed trusted-customer access model
+
+Product discovery on September 9, 2026 added a possible approach, not an approved requirement: scanning a QR should continue to open the menu without sign-up, while an optional account could unlock online ordering and payment. A participating business might approve known regulars as trusted or VIP customers before granting those capabilities.
+
+This model could give a small restaurant an operational trust signal, but account approval alone does not secure ordering or payments. Any implementation would still need server-side price and availability checks, tenant isolation, rate limits, idempotency, account-recovery safeguards, payment-provider controls, audit history, and a process for suspension or revocation. It must also define whether guests may place pay-at-counter orders, whether approval gates ordering or only payment, who verifies identity, and whether approval belongs to one business or the wider platform.
+
 ### Phase 5 — Reliability, low connectivity and commercial rollout
 
 Agree on performance budgets, test slow connections and low-end phones, test realistic peak traffic, and measure rather than promise speed. Add monitoring, backups, operational recovery and support procedures. Add subscriptions only after plan/pricing decisions are validated.
@@ -77,11 +83,12 @@ Proposed service fallback: printed menus and staff-assisted orders for people wi
 
 1. Exact first customer segment and pilot restaurant.
 2. Owner roles/staff permissions and whether multi-branch support is needed at launch.
-3. Framework, database, authentication, storage and hosting providers.
+3. Authentication/onboarding, production hosting and operational provider details. Supabase/PostgreSQL is confirmed as the initial backend foundation, with a required VPS migration seam.
 4. Required item variations and add-ons for the first pilot.
 5. Order intake device, staff responsibilities, payment flow and fake-order controls.
 6. Publication rule for price edits versus sold-out changes.
 7. AI import provider, cost ceiling and source-image retention.
 8. Actual subscription offering and evidence supporting the PHP 1,500–3,000 target range.
+9. Whether to offer business-approved trusted-customer accounts for ordering/payment, what privileges approval grants, and how to avoid unnecessary customer friction or exclusion.
 
 None of these decisions should be invented as an already approved requirement.

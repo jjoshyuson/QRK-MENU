@@ -19,18 +19,27 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 | Path | Purpose |
 | --- | --- |
 | `dist/` | Editable source of the working static site, despite the folder name |
+| `dist/assets/brand/` | Canonical transparent PNG QRK mark, wordmark and combined logo assets |
+| `dist/theme.css` | Shared neutral and QRK accent variables used by owner and customer routes |
 | `dist/photos/` | Six bundled sample food photographs |
 | `dist/dashboard.css` | Business Dashboard layout and responsive workspace styles |
-| `dist/menu/` | Standalone customer-only development menu route and its small CSS/JavaScript payload |
+| `dist/menu/` | Standalone customer-only development menu route, including its small route-specific theme layer and CSS/JavaScript payload |
+| `dist/data/` | Shared demo/Supabase data-service adapter and safe public configuration scaffold |
+| `dist/data/qrk-auth-service.js` | Lightweight local Supabase Auth session and tenant-context client |
+| `dist/data/qrk-brand-service.js` | Browser-local per-business logo/color preview with contrast-safe theme derivation |
+| `dist/data/qrk-businesses.js` | Lightweight Quick/Table demo-business experience definitions |
 | `scripts/serve.mjs` | Dependency-free local preview server |
+| `scripts/validate-backend.mjs` | Static schema/security/test coverage and secret-pattern validation |
+| `supabase/` | Canonical migrations, development seed, pgTAP tests, local config, and recovery/connection runbook |
 | `CODEX_START_HERE.md` | Ready-to-paste continuation prompt |
 | `AGENTS.md` | Instructions to preserve the product and design decisions |
-| `memory/` | Concise topic-based context and routing for new chats |
+| `memory/` | Concise topic-based context, including `inbox.md` for rough ideas awaiting review and routing |
 | `docs/PRODUCT_PLAN.md` | Product intent, decisions, proposed scope, phased roadmap |
 | `docs/UI_AND_FLOWS.md` | Desktop/mobile requirements and interaction descriptions |
-| `docs/TECHNICAL_HANDOFF.md` | Current structure, limitations, proposed architecture/data model |
+| `docs/TECHNICAL_HANDOFF.md` | Current structure, limitations, adapter and provider-ready backend architecture |
 | `docs/BUILD_STATUS.md` | Completed work, next milestone, and verification checklist |
 | `docs/PROGRESS_MAP.md` | Milestone sequence, dependencies, status and exit criteria |
+| `docs/QUICK_TABLE_MASTER_PLAN.md` | Shared QRK Quick/Table architecture, team ownership, branch gates and deployment plan |
 | `docs/PHOTO_SOURCES.json` | Asset provenance |
 | `deployment/original-hosting.json` | Archived identity of the original Sites project |
 | `MANIFEST.sha256` | Checksums of the included files |
@@ -38,16 +47,18 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 ## Current state
 
 - Desktop: Business Dashboard with overview, profile, Menu Studio, staff access, orders, and settings sections.
+- Brand: black, white and gray dominate the interface, with cyan/teal reserved for actions and selection. Separate transparent PNG icon, wordmark and combined assets preserve the approved generated artwork; the favicon uses the icon-only mark.
 - Mobile/tablet at viewport widths up to 1100 CSS pixels: Dashboard opens first; a top-right hamburger opens navigation, and Menu Studio is a separate view with photo-grid and quick availability-table modes.
 - Owners can add/edit/delete items, set PHP prices and option notes, create/reorder categories, rename the menu, set available/sold-out/hidden states, and replace photos.
-- Business profile, staff accounts, orders, sales, QR/link, account, and session controls are realistic UI-only demo states.
-- Customer view restores the restaurant identity header and hides item editing controls. `/menu/` is a separate lightweight customer route with browse/search, configured items, a persistent cart, table or pickup checkout, demo order confirmation, and status tracking.
+- Local Supabase Auth includes Kusina Manila admin/staff accounts for QRK Quick and Salamat admin/staff accounts for QRK Table, with tenant routing and granular permission gates. Staff provisioning controls remain preview-only until invitation/activation is implemented.
+- Customer view restores the restaurant identity header and hides item editing controls. `/menu/?business=kusina-manila` demonstrates Quick; `/menu/?business=salamat&table=12` demonstrates a table-linked Salamat visit with pickup removed and the table fixed from the demo link.
 - The root dashboard provides the matching staff-side active/history queue, order details, status progression, handoff-token verification, cancellation, and store-open controls.
 - Customer and staff order state survives refresh only through same-origin `localStorage` in one browser profile. Different physical devices do not synchronize.
+- A provider-ready Supabase/PostgreSQL foundation now exists under `supabase/`, and both public routes use a shared adapter that automatically stays in demo mode while backend configuration is absent.
 - Menu Studio edits still reset on refresh and do not publish into `/menu/`; uploaded photos remain temporary.
-- Login, tenant isolation, backend persistence, real QR generation, durable menu publishing, server-validated ordering, payments, notifications, and offline support are not implemented.
+- The repository includes tenant RLS, server-validated order RPCs, local Auth/permission migrations, development logins, private Broadcast and photo-storage policies. The hosted project is not linked, migrated or verified; hosted login, staff activation, operational persistence, real QR generation, durable UI publishing, payments, notifications and offline support remain incomplete.
 
-This is a UI-only same-browser ordering demonstration, not a production ordering service. The sample business and food prices are illustrative. The prototype still loads its fonts from Google Fonts; all food photos are bundled locally.
+The running app is still a UI-only same-browser ordering demonstration, not a production ordering service. Provider-ready SQL is not evidence of an operational backend. The sample business and food prices are illustrative. The prototype still loads its fonts from Google Fonts; all food photos are bundled locally.
 
 ## Snapshot
 
@@ -55,6 +66,8 @@ This is a UI-only same-browser ordering demonstration, not a production ordering
 - Saved and deployed Sites version: 8
 - Hosted source provenance: recorded with Sites version 8
 - Last deployed and remotely checked: September 9, 2026.
+
+The neutral-first brand update described above is currently local and has not been deployed. The public URL remains Sites version 8 until a later deployment is explicitly approved.
 
 The hosted release contains the public `dist/` files and active `.openai/hosting.json`; handoff documents and local tooling are excluded from the deployment bundle. Access tokens, account sessions, and temporary working files are not included. `deployment/original-hosting.json` remains historical reference metadata.
 

@@ -1,10 +1,16 @@
 # UI and user flows
 
+## Per-business branding preview
+
+The Client Admin can upload a PNG, JPEG or WebP logo from Business Profile. QRK Admin owns the global platform appearance: it provides four complete light presets with dark navigation, four complete dark presets, a global Light/Dark mode switch, and Advanced settings with independent 13-token light and dark editors. The theme layer derives readable action/sidebar foregrounds and applies the selected mode across QRK Admin, Client Admin, Client Staff and customer routes. Existing legacy flat palettes migrate into the custom Light palette. Settings remain browser-local until hosted global configuration is implemented.
+
 ## Desktop
 
 The dark sidebar now routes between Dashboard, Business profile, Menu Studio, Staff access, Orders and Settings. Dashboard balances live-order sample activity with menu health and quick actions. Menu Studio retains the compact management list and customer photo-grid preview. The expanded customer preview can represent mobile, tablet and desktop widths.
 
 The non-menu sections are explicitly UI-only: profile and appearance controls, a sample QR/link, demo staff accounts and permissions, sample live/history orders and status progression, a basic sample sales summary/log, and account/order-numbering/open-status/session controls. They must not imply a connected backend or live service.
+
+Platform administration is separate from the business login. The business sign-in card contains no admin link. During local development only, `/admin/` presents a temporary Continue-to-preview gate and a persistent warning that OAuth is bypassed. The QRK Admin workspace has functional Overview, Clients and Client Admins views. Adding a client creates a browser-local portal record and the initial Client Admin preview login with a one-time password and mandatory first-login replacement. QRK Admin can pause or activate a client record but has no Client Staff controls; client staff remains a Client Admin responsibility.
 
 Business profile now links to the public development `/menu/` route. The route shows only the sample customer menu and photo credits, with no Development badge or owner controls. It is a static review route, not a durable publish workflow; Menu Studio edits do not synchronize to it.
 
@@ -16,9 +22,13 @@ The customer route includes sold-out, empty-search, closed-store, invalid-checko
 
 ## Staff order operations demonstration
 
-The root dashboard reads the same device-local order store and presents received, preparing and ready orders under Active, with completed and cancelled orders under History. The responsive order-detail panel shows fulfillment, items, selected options, notes, totals, age and event history. Staff can progress received to preparing to ready, then must match the customer token before completion. Cancellation uses a focused confirmation dialog and moves the order to History.
+The shared Quick/Table staff surface is a service-first workspace with two separately selectable queue pages: Received and Preparing. Only the selected queue fills the live-order area, keeping staff focused on one service stage at a time. Every card carries its immediate action: Start preparing acknowledges a received order, while Mark served completes the internal ready/completed transition and moves the order out of the live workspace. History is a separate top-right view containing served and cancelled orders. The responsive detail panel keeps fulfillment, items, selected options, notes, totals and cancellation without exposing development verification steps in the primary workflow.
 
-The dashboard and Settings store controls update an already-open same-origin customer tab and persist across refresh. These controls are not authenticated and do not provide a production authorization boundary.
+The dashboard and Settings store controls update an already-open same-origin customer tab and persist across refresh. Both routes now call a shared data-service interface. With blank configuration that interface deliberately uses the same demo storage; connected behavior remains unverified until Auth and a hosted development project exist.
+
+The owner header identifies `Development · Demo data` while the fallback is active. If safe Supabase public configuration is later supplied it identifies the provider mode, but that label alone does not claim the backend has passed the required connection/security checks.
+
+For QRK Table businesses, the third live-workspace tab is `Tables`. It always shows six compact cards in the current practice setup. Available tables are ready for guests, pending tables show the requesting guest and an `Accept table request` action, and occupied tables use a quieter theme-derived surface with a visible `Occupied` label and `Table cleaned` action. Cleaning ends the local preview session and returns that card to Available.
 
 ## Mobile and tablet
 
@@ -27,14 +37,14 @@ At widths of 1100 CSS pixels or less, the static prototype opens the responsive 
 The intended hierarchy is:
 
 1. Compact QRK owner header with a top-right hamburger.
-2. Menu Studio toolbar with Customer view and Table view controls.
+2. Menu Studio toolbar with Customer view and Availability view controls.
 3. In Photo editor mode, menu title and category tabs followed by two photo tiles per row, grouped by category.
 4. Owner add-item button and inline add tiles.
 5. In Customer view, restaurant name and brief details appear above the customer-shaped photo menu.
 
 Photo editor mode deliberately omits the restaurant identity header so the editing workspace starts with menu controls. Each dish tile shows its photo, name and PHP price. Owners see an edit button over the photo and an availability control. Customer preview restores the restaurant identity header and hides item-edit, availability and add-item controls. Sold-out status remains visible. Sample descriptions stay in the editor data/form but are not displayed on the latest compact tiles.
 
-Table view is an owner-only availability workspace grouped by category. It uses tall, Messenger-inspired touch rows with a large round thumbnail and item name on the left and a direct Available/Out of stock control on the far right. Prices and option notes are omitted in this mode so service staff can change stock quickly without crowded or easy-to-mistap controls. It is not the customer menu and must not replace the two-column photo grid.
+Availability view is an owner-only stock workspace grouped by category. It uses tall, Messenger-inspired touch rows with a large round thumbnail and item name on the left and a direct Available/Out of stock control on the far right. Prices and option notes are omitted in this mode so service staff can change stock quickly without crowded or easy-to-mistap controls. It is not the customer menu and must not replace the two-column photo grid.
 
 This is deliberately a simple food-menu grid. Do not reintroduce the previous large serif restaurant header, decorative slogans, or the compressed desktop table.
 

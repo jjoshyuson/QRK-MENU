@@ -6,6 +6,7 @@
 2. Read `AGENTS.md` and `memory/README.md`.
 3. Read only the relevant memory topics and linked authoritative docs.
 4. Run `npm start` and `npm run check`. The local URL is `http://127.0.0.1:4173`.
+5. For backend work, read `supabase/README.md`, keep Docker Desktop running, and use the project-local CLI as `npx.cmd supabase ...` on Windows. Before any hosted operation, pass the explicit target flag and verify the linked project ref.
 
 ## During work
 

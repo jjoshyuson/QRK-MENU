@@ -2,7 +2,7 @@
 
 ## Current implementation
 
-The app is static HTML, CSS and vanilla JavaScript with no third-party JavaScript dependencies. Node is only used by the added local preview server. No framework, API or database is present.
+The app remains static HTML, CSS and vanilla JavaScript with no third-party JavaScript dependencies. Node is used by the local preview and validation scripts. A canonical Supabase/PostgreSQL foundation is now versioned under `supabase/`, but no hosted API or database is connected.
 
 | File | Role |
 | --- | --- |
@@ -15,7 +15,11 @@ The app is static HTML, CSS and vanilla JavaScript with no third-party JavaScrip
 | `dist/menu/index.html` | Standalone customer-only development menu route with static published sample content |
 | `dist/menu/menu.css` | Lightweight customer menu layout and responsive two-column photo grid |
 | `dist/menu/menu.js` | Category jump and scroll-following state for the customer menu |
+| `dist/data/qrk-data-service.js` | Shared demo/Supabase adapter, fetch/reconcile contract and optional private Broadcast subscription |
+| `dist/data/qrk-brand-service.js` | Tenant-brand preview store, logo color suggestion and accessible CSS-variable derivation keyed by business slug |
+| `dist/data/qrk-config.js` | Safe blank public configuration; absent values select demo mode |
 | `dist/photo-credits.html` | Sample image credits |
+| `supabase/` | Canonical migrations, development seed, SQL security tests and operations runbook |
 
 The layered CSS reflects iterative design work. Consolidation is reasonable after verifying behavior, but do not discard later overrides or treat `dist/` as generated output.
 
@@ -35,7 +39,15 @@ This persistence is deliberately browser-local. It survives refresh in the same 
 
 Dashboard profile, staff, QR/link, sales, account, password, numbering and session controls remain presentation-only. Order and store-status controls persist only in local browser storage; they do not authenticate, publish, notify, charge, synchronize across devices or communicate with a kitchen.
 
-## Proposed production architecture (not yet selected)
+## Provider-ready backend foundation (not operational)
+
+Workstream 3 selected Supabase/PostgreSQL as the first provider target while preserving a PostgreSQL/VPS migration seam. `supabase/migrations/202609090001_initial_schema.sql` owns portable tables, tenant keys, constraints, immutable order snapshots and lifecycle guards. `202609090002_supabase_security.sql` isolates Supabase Auth helpers, RLS policies, public/staff RPCs, private Realtime Broadcast and Storage rules.
+
+Both `/` and `/menu/` import the shared data service. Blank configuration selects the existing `localStorage` contract, including `qrk_demo_orders_v1` and `qrk_demo_store_open_v1`. A valid Supabase URL and publishable key select the Supabase adapter; signed-in staff access must be injected at runtime by a future Auth flow. The adapter performs authoritative fetches and reconciles after Broadcast hints, reconnect/online events, focus, manual refresh and a bounded interval.
+
+This is source-level readiness only. The environment that created it had no Supabase CLI, PostgreSQL client or Docker, so migrations, pgTAP and RLS behavior were not executed against a real database. See `supabase/README.md` for the exact connection, reset, backup and verification sequence.
+
+## Production architecture direction
 
 - One domain, owner routes such as `/app/menu`, public route such as `/m/{businessSlug}`.
 - Authenticated backend for owner changes; published public reads separated from drafts.
@@ -44,7 +56,7 @@ Dashboard profile, staff, QR/link, sales, account, password, numbering and sessi
 - Server-side image processing and generated responsive image sizes.
 - Stable QR target with publication versioning behind it.
 
-Choose a framework and vendors based on the actual deployment environment and cost constraints. No backend provider is mandated by the existing prototype. If migrating to a framework, port the existing UI and interactions incrementally instead of replacing them with a starter design.
+Supabase is now the confirmed initial backend target, not a connected service. Keep provider-specific integration isolated so self-hosted Supabase or plain PostgreSQL plus an Auth/WebSocket/object-storage replacement remains practical. No framework migration is needed for the current integration.
 
 ## Suggested durable entities
 

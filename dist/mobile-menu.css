@@ -188,3 +188,15 @@ button:disabled{cursor:wait;opacity:.6}
  .mobile-table-row>.mobile-table-photo,.mobile-table-row>.food-photo-empty{width:56px;height:56px}
  .mobile-table-row>button{justify-self:end;min-width:94px;min-height:48px}
 }
+
+/* Neutral owner studio with a focused brand accent. */
+.mobile-studio-toolbar{background:var(--gray-50);border-color:var(--gray-200)}
+.mobile-studio-toolbar p,.mobile-table-heading p{color:var(--gray-600)}
+#mobile-view-toggle[aria-pressed=true],#mobile-table-toggle[aria-pressed=true],#mobile-category-tabs button[aria-pressed=true]{border-color:var(--brand-400);background:var(--brand-soft);color:var(--brand-600)}
+.mobile-restaurant-logo{background:var(--surface-muted);border-color:var(--gray-200);color:var(--gray-800)}
+.mobile-category-nav{border-color:var(--gray-200)}
+.mobile-stock-button{color:#2f7163}
+.mobile-table-group{border-color:var(--gray-200);box-shadow:0 8px 24px #11131808}
+.mobile-table-group-title{background:var(--gray-50);border-color:var(--gray-200)}
+#mobile-add-item{background:var(--brand-teal);color:var(--color-black);box-shadow:0 7px 20px var(--brand-ring)}
+.phone-tab[aria-pressed=true]{background:var(--brand-soft);border-color:var(--brand-400);color:var(--brand-600)}

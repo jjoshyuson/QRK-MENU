@@ -1,0 +1,39 @@
+/* QRK design tokens. Change these values to retheme every route. */
+:root{
+  color-scheme:light;
+  --color-white:#ffffff;
+  --color-black:#111827;
+  --gray-50:#f7f9fc;
+  --gray-100:#eef2f7;
+  --gray-200:#dde4ed;
+  --gray-300:#c8d1dd;
+  --gray-400:#8e9aaa;
+  --gray-500:#687586;
+  --gray-600:#4d5a6b;
+  --gray-700:#354153;
+  --gray-800:#202b3c;
+  --gray-900:#111827;
+  --brand-400:#3b91ff;
+  --brand-500:#1683ff;
+  --brand-600:#0868d7;
+  --brand-soft:#eaf4ff;
+  --brand-ring:#1683ff35;
+  --brand-foreground:#ffffff;
+  --success:#247454;
+  --success-soft:#eaf6f0;
+  --warning:#8a6518;
+  --warning-soft:#fff7df;
+  --danger:#aa4034;
+  --danger-soft:#fff0ee;
+  --surface:var(--color-white);
+  --surface-subtle:var(--gray-50);
+  --surface-muted:var(--gray-100);
+  --ink:var(--gray-900);
+  --muted:var(--gray-500);
+  --line:var(--gray-200);
+  --paper:var(--gray-50);
+  --nav:var(--color-white);
+  --orange:var(--brand-600);
+  --brand-teal:var(--brand-500);
+  --brand-teal-soft:var(--brand-soft);
+}

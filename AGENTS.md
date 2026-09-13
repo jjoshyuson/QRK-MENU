@@ -5,6 +5,7 @@
 - For every new build or change request, reply first with one concise discovery question and wait for the user's answer before editing files or implementing anything.
 - If a prompt is vague, ambiguous, or could reasonably lead to different outcomes, do not spend time or tokens guessing. Ask the smallest number of focused questions needed to reduce uncertainty.
 - After the answer, read `memory/README.md` and only the topic files relevant to the request. Consult the longer handoff documents when the memory index points to them or when detailed evidence is required.
+- For backend, data, order, Auth, Realtime, Storage, migration, or recovery work, also read `supabase/README.md` before changing schema or adapter code.
 - Keep `memory/` concise and current after material decisions or milestone changes so a new chat can orient itself without scanning the whole project.
 
 ## Preserve the direction
@@ -21,7 +22,7 @@
 ## Scope and implementation
 
 - Read the handoff docs before changes. Treat confirmed requirements and proposed future work differently.
-- The next milestone is user review and focused verification of the complete UI-only Business Dashboard unless the user explicitly selects a later milestone.
+- Workstream 3 is a provider-ready Supabase/PostgreSQL foundation, not an operational backend. Until a hosted development project, Auth flow, migrations, SQL tests and two-device checks are connected and verified, preserve the automatic local/demo fallback and do not claim cross-device behavior.
 - Do not implement all roadmap features at once. Keep stages reviewable and usable.
 - Do not claim persistence, authentication, offline operation, QR publishing, or ordering exists until actually implemented and verified.
 - Use practical, plain language in the UI. Keep developer notes outside customer-facing production flows.

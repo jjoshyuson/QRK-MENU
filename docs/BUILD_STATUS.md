@@ -1,5 +1,30 @@
 # Build status
 
+## Provider checkout UUID repair — September 13, 2026
+
+- Fixed Salamat Table checkout failures where browsers without `crypto.randomUUID()` saved a `demo-*` idempotency key that PostgreSQL rejected as an invalid UUID.
+- The customer route now generates an RFC 4122 version 4 UUID with `crypto.getRandomValues()` when the native helper is unavailable. Checkout also replaces previously saved invalid pending keys before retrying, without clearing the customer cart.
+- Table numbers remain plain one-to-three-digit text as required by the existing RPC; the screenshot's Table 12 value was not the failing field.
+- No schema, order pricing, fulfillment or staff workflow changed.
+- Validation: `npm run check` and `git diff --check` passed. Browser verification on `/menu/?business=salamat&table=12` submitted Chicken adobo successfully as provider-backed order `SL-0204`; the confirmation opened with status Received and no UUID error.
+
+## Separate Received and Preparing order views — September 13, 2026
+
+- Restyled the Client Admin/Client Staff Orders screen around the supplied compact service-workspace reference while preserving QRK branding and existing order operations.
+- Replaced the simultaneous two-column stage board with distinct Received and Preparing queue views selected through large count tabs. Received opens by default; keyboard users can switch with the Left and Right arrow keys.
+- Expanded each selected queue into the full available content area and added reference-aligned empty-state guidance. History remains a separate view, while sound and manual refresh remain available on larger screens and stay out of the compact phone command bar.
+- No order status, permission, adapter, database or customer-flow contract changed.
+- Validation: `npm run check` and `git diff --check` passed. Browser verification at 390 CSS pixels confirmed the Received empty view, compact header and one-tap switch to the separate Preparing empty view. A 1280 CSS-pixel check confirmed the selected queue expands cleanly across the desktop workspace. No page-level horizontal overflow was visible at either size.
+
+## QRK Quick/Table master-planning milestone — September 12, 2026
+
+- Confirmed one shared QRK platform with QRK Quick and QRK Table operating modes.
+- Added `docs/QUICK_TABLE_MASTER_PLAN.md` as the implementation, team-ownership, worktree, review-gate and deployment contract.
+- Defined parallel UI, UX and backend responsibilities plus a controlled integration branch and explicit publish approval gate.
+- Recorded that the current Menu Studio `Table view` must become `Availability view` to avoid conflicting with the QRK Table product name.
+- No product code, hosted database or deployment was changed in this documentation milestone.
+- Validation: `npm run check` passed before authoring; final documentation/link and application checks remain part of this milestone's closeout.
+
 ## Handoff baseline
 
 Deployed version 4, source commit `35ceaa69d888eb7004b966a6799b589a86442d72`.
@@ -276,3 +301,284 @@ Review the public dashboard and customer menu at `/menu/`. After approval, the n
 ### Exact next action
 
 Review the integrated development build. The exact next proposed milestone is workstream 3 backend foundation only; it remains unapproved until separately authorized.
+
+## Workstream 3 provider-ready backend foundation — September 9, 2026
+
+### Implemented
+
+- Added `supabase/` as the canonical database source with PostgreSQL 17 local config, a portable application-schema migration, isolated Supabase Auth/RLS/Realtime/Storage migration, development-only Kusina Manila seed, pgTAP security/order tests, and an operations/recovery runbook.
+- Modeled businesses, memberships/roles/permissions, profiles/settings, menus and revisions, categories, items/options, public destinations, photo metadata, orders, immutable line/option snapshots, and append-only status events with UUID tenant keys, integer PHP minor units, constraints and indexes.
+- Added anonymous RPC boundaries for published-menu reads, server-validated/idempotent order creation, and token-scoped customer tracking. Direct anonymous table access is revoked. Staff order changes use a tenant-authorized transition RPC with received → preparing → ready → completed ordering, active-state cancellation and handoff-token validation.
+- Added private, business-scoped Broadcast change hints with RLS authorization. Authoritative initial/refetch behavior remains primary; reconnect, online, focus, interval and manual refresh reconcile missed/out-of-order events.
+- Added a private `menu-photos` bucket policy model with tenant upload control and public reads limited to published assets referenced by a published revision. Provider/path/variant metadata preserves an object-storage migration seam.
+- Added `dist/data/qrk-data-service.js` and safe configuration examples. Both `/` and `/menu/` use it. Blank configuration automatically retains the existing `qrk_demo_orders_v1` and `qrk_demo_store_open_v1` behavior; the owner UI visibly reports `Development · Demo data`.
+- Added static backend/security/secret validation to `npm run check`. No packages, hosted accounts, credentials, deployment, framework or product-code rewrite were added.
+
+### Verification evidence
+
+- Before changes, `npm run check` and `node tests/photo-races.mjs` passed. `npm start` reported `EADDRINUSE` because the existing healthy preview already occupied `127.0.0.1:4173`.
+- After changes, `npm run check` passed JavaScript/module syntax plus backend coverage and secret-pattern checks: 15 required tables, five public RPCs, two ordered migrations, expected RLS/Broadcast/Storage markers and required pgTAP cases. `node tests/photo-races.mjs` passed.
+- Local browser checks at 390, 768 and 1280 CSS pixels confirmed `/` loads Dashboard in demo mode, `/menu/` retains six items/two columns with no owner controls, neither route has page-level horizontal overflow, and console warning/error logs are empty.
+- Completed a fresh local demo pickup order through the shared adapter: `KM-LHB5M`, received by staff, progressed to preparing and ready, matched token `WZEH93`, completed, and recorded ordered history without console errors.
+- Supabase CLI, `psql` and Docker were unavailable. Migrations, pgTAP, database lint, RLS execution, Broadcast delivery and Storage policies therefore received static validation only and must not be described as operational.
+
+### Remaining connection and exit evidence
+
+- Install current Supabase CLI/Docker; execute a clean local reset, pgTAP suite and database lint.
+- Create separate development and production projects; link/apply development first and configure real Auth memberships.
+- Supply only development URL/publishable key/business ID/slug to browser configuration and inject short-lived Auth access at runtime.
+- Verify two-tenant denial, public-field boundary, price/availability validation, idempotent retry, every permitted/forbidden transition, private Broadcast reconnect/focus reconciliation, and photo upload/read rules against development.
+- Prove customer/staff synchronization on two physical devices, test backup/restore into a disposable target, then review production migration separately.
+
+### Exact next action
+
+Follow `supabase/README.md` to install local tooling and run the clean reset/test/lint gate. Then create and link only a hosted development project. The backend remains provider-ready, not connected or operational.
+
+## Notes inbox and trusted-customer ordering proposal — September 9, 2026
+
+### Documentation update
+
+- Added `memory/inbox.md` as the lightweight capture point for random ideas, observations and unresolved questions.
+- Captured the account-free QR browsing concept and an optional business-approved trusted-customer/VIP model for ordering and payment.
+- Routed the proposal into product and decision memory plus the authoritative product plan without marking it as approved scope.
+- Recorded that approval alone is not a security boundary and retained abuse prevention, payment, identity, guest access, revocation and tenant scope as open design questions.
+- No product code, runtime behavior, dependency, backend configuration or milestone ordering changed.
+
+### Validation evidence
+
+- Before writing, `npm start` found the existing preview already occupying `127.0.0.1:4173`; `npm run check` passed, including backend static validation for 15 tables, five RPCs and two migrations.
+- Documentation paths and cross-references were checked after the update.
+
+### Exact next action
+
+The implementation path remains the workstream 3 local reset/test/lint gate and hosted development verification. Revisit the trusted-customer proposal during ordering-policy discovery before authorizing ordering or payment implementation.
+
+## Workstream 3 local database gate — September 11, 2026
+
+### Completed
+
+- Installed Docker Desktop and the Supabase CLI as a project development dependency; no browser/runtime dependency was added.
+- Started the QRK MENU local Supabase stack and rebuilt the disposable database from the two canonical migrations plus development seed.
+- Removed two redundant PL/pgSQL declarations reported by lint and updated the deprecated local email configuration section to `local_smtp`; application behavior and schema contracts did not change.
+
+### Verification evidence
+
+- `npx.cmd supabase db reset --local` completed successfully from a clean local rebuild.
+- `npx.cmd supabase test db` passed all 19 pgTAP tests in `supabase/tests/001_security_and_orders.sql`.
+- `npx.cmd supabase db lint --local --level warning` returned `No schema errors found` with an empty result set.
+- `npm run check` passed static application/backend validation for 15 tables, five RPCs and two migrations.
+- `node tests/photo-races.mjs` passed photo supersession, dialog cancellation and removal-race coverage.
+
+### Remaining limitations and exact next action
+
+The hosted Supabase project is still unlinked and unchanged. Confirm that it is the disposable development environment, verify its project ref, then link and dry-run the two locally verified migrations. Do not include seed data or configure browser credentials until the remote target and migration preview are reviewed.
+
+## QRK brand theme and UI/UX audit — September 11, 2026
+
+### Implemented
+
+- Interpreted the supplied logo into three transparent, lightweight SVG files: icon/favicon mark, text-only wordmark and combined horizontal logo. The QR geometry was cleaned into consistent modules while retaining the receipt/menu cue.
+- Replaced owner wordmarks with the combined logo, added the icon-only favicon to owner, customer and photo-credit routes, and added the text-only wordmark to the customer footer.
+- Applied vivid teal, deep teal and deep navy to navigation, primary actions, active tabs, QR preview, staff order accents and the customer route while retaining amber, green and red where they communicate preparation, ready/success, warning or destructive states.
+- Kept the existing vanilla HTML/CSS/JavaScript stack and added no package, framework or runtime dependency.
+
+### Validation evidence
+
+- `npm run check` passed, including JavaScript syntax and static backend validation. `node tests/photo-races.mjs` passed.
+- Local owner/admin review at 1280 CSS pixels confirmed the combined logo, navy workspace navigation, teal active and primary states, no page-level horizontal overflow and successful asset decoding.
+- Responsive checks at 390 and 768 CSS pixels covered Dashboard, the right-side navigation drawer, Staff Orders, the order-detail panel and Menu Studio. No page-level horizontal overflow was measured.
+- Customer checks at 390 and 768 CSS pixels confirmed the two-column menu, teal/navy header and controls, item sheet, cart, checkout, confirmation and wordmark asset loading.
+- Completed one same-browser lifecycle: created table order `KM-64GK6`, verified immediate staff intake, progressed Received → Preparing → Ready, matched token `ASKNEM`, and completed the handoff.
+- The three brand files and customer brand stylesheet returned HTTP 200 from the local server. Browser console review and remaining static checks are recorded in the final validation pass.
+
+### Remaining verification and limitations
+
+- The new brand/theme has not been deployed. The public development site remains Sites version 8.
+- Physical iOS/Android behavior, full keyboard/screen-reader navigation, OS text scaling and large production datasets remain unverified.
+- The user mentioned a possible additional feature but did not finish defining it; no feature scope was inferred or implemented.
+- Hosted Supabase linking, Auth configuration and two-device Realtime evidence remain paused until the user accepts the UI/UX direction.
+
+### Exact next action
+
+Review the local brand direction and specify any scoped UI refinements. Once accepted, resume hosted development connection from `supabase/README.md`; treat the unfinished feature idea as a separate discovery request.
+
+## Neutral-first theme refinement — September 11, 2026
+
+### Implemented
+
+- Rebalanced the UI from teal-heavy surfaces to a minimalist black, white and gray foundation. Teal/cyan now appears primarily on calls to action, active navigation, selected categories, focus rings and compact live-state indicators.
+- Added `dist/theme.css` as the shared palette source for the owner workspace, responsive Menu Studio and standalone customer route. It exposes the neutral scale, three brand-accent levels, semantic colors, surfaces and compatibility aliases in one place.
+- Changed the desktop and responsive navigation to near-black, converted cards, icon tiles and supporting controls to neutral grays, and retained semantic amber/green/red for preparation, success and destructive states.
+- Updated the menu appearance swatches to QRK cyan, deep teal, electric blue and graphite for future UI experimentation. The controls remain preview-only.
+
+### Validation evidence
+
+- `npm run check`, `node tests/photo-races.mjs` and `git diff --check` passed. Owner, customer and shared theme assets returned HTTP 200 locally.
+- Visual browser checks at 390, 768 and 1280 CSS pixels confirmed the neutral hierarchy, restrained accent use and no page-level horizontal overflow.
+- The 390px customer route retained two columns, a black header, white content surface and teal action/selection details. The 390px owner route retained Dashboard-first navigation and a near-black drawer.
+- The 768px customer grid retained two columns and both routes loaded `--brand-500: #0fb9c0` from the shared theme file. Browser console warning/error logs were empty during the checked routes.
+
+### Remaining verification and exact next action
+
+This refinement is local and not deployed. Review the open local dashboard and customer route. If this hierarchy is accepted, continue the scoped UI/UX review; hosted Supabase connection remains paused.
+
+## Logo asset correction — September 11, 2026
+
+### Implemented
+
+- Replaced the three hand-drawn SVG approximations with transparent PNG mark, wordmark and combined-logo assets extracted from the approved generated artwork.
+- Updated the owner header, mobile header, customer footer and all favicon references to use the corrected files.
+- Kept the generated symbol proportions and `QRK menu` lettering intact, with only background removal, transparent cropping and responsive sizing applied.
+
+### Validation and status
+
+- The three corrected assets were visually inspected at their native resolutions before integration and each returned HTTP 200 with the correct `image/png` content type.
+- The responsive navigation drawer rendered the combined logo at 177 × 45 CSS pixels without distortion; the customer footer rendered the wordmark successfully. Both routes had zero page-level horizontal overflow and no browser warning/error logs.
+- `npm run check`, `node tests/photo-races.mjs` and `git diff --check` passed. This remains a local, undeployed change.
+
+## Local business Auth and granular permissions — September 12, 2026
+
+Implemented local-only Supabase Auth for the shared business portal. Email or globally unique username credentials restore a short-lived session, resolve the active tenant and route owners/admins to the full workspace while staff open on their permitted operational surface. The database stores and enforces individual order, availability, menu, history, sales and staff-management permissions. `/admin/` stages the future Google Workspace platform portal without enabling a password fallback.
+
+The local database rebuild succeeds with repeatable admin and staff development users. Both HTTP password grants resolve the correct Kusina Manila membership and role. The pgTAP suite, database lint, JavaScript/static checks and browser login review pass. No hosted project, DNS or public deployment changed.
+
+The September 12 follow-up aligned the seeded admin Auth address with the username-to-internal-email mapping. Direct checks now confirm both `kusina-admin` and `kusina-staff` authenticate by username and resolve their expected roles.
+
+The signed-in identity block now opens a keyboard-accessible account menu containing Settings and Log out. Admin Settings opens the existing business settings page; staff Settings opens an account summary without exposing business-only controls. Log out clears the local Supabase session and returns to the shared login screen.
+
+The account trigger uses balanced padding and a 64px flex row, vertically centering the avatar, left-aligned name/subtitle, and ellipsis. Follow-up browser inspection confirmed the hovered drawer row is centered (avatar and text share the row's vertical midpoint); `npm.cmd run check` passes.
+
+The local staff preview now generates a one-time temporary password after account creation, provides a copyable credential handoff, and requires the new user to choose a password before entering the workspace. The forced-change gate is shared by staff and client-admin access contexts. Browser QA completed the create → logout → temporary-password login → password replacement flow; hosted account provisioning remains intentionally unconnected.
+
+Staff usernames now use a locked business namespace plus a client-entered suffix. Kusina Manila displays `kusina.` beside the editable field, previews the complete login as it is typed, and creates credentials such as `kusina.rhain`. Browser QA confirmed the prefix and suffix remain one continuous field on the narrow mobile layout and the generated credential uses the exact previewed username. The hosted provisioning milestone must reserve business prefixes uniquely before this becomes production identity policy.
+
+Still incomplete: production-safe staff invitation/activation, username-only password recovery, hosted Auth configuration, Google Workspace OAuth, multi-business selection for a user with multiple memberships, and physical two-device Realtime evidence.
+
+The platform-admin surface is now reviewable locally without OAuth: `/admin/` uses an explicitly labeled temporary Continue action to open a responsive client overview, and Exit returns to its gate. The normal business login no longer includes a clickable platform-admin link, keeping client and platform entry points separate. Browser checks confirmed the bypass by keyboard, the development warning, Kusina client row and narrow-layout contrast. This bypass is development UI only and is not production authentication.
+
+## QRK Admin client provisioning preview — September 12, 2026
+
+The `/admin/` preview now uses the confirmed names QRK Admin, Client Admin and Client Staff. Its Overview, Clients and Client Admins navigation is functional. QRK Admin can create a browser-local client portal together with its initial Client Admin, receive a generated one-time credential handoff, and pause or activate the client record. Client Staff is explicitly outside QRK Admin scope and remains managed from the client portal.
+
+The initial Client Admin uses the existing preview-auth store and mandatory first-login password replacement. No service-role secret, hosted user, real tenant, invitation, email or deployment was created. `npm run check` and `git diff --check` passed. Browser validation created a sample client, confirmed the credential handoff and client count update, and measured zero horizontal page overflow at 390 CSS pixels. Hosted provisioning and production QRK Admin authentication remain incomplete.
+
+## Per-business portal branding preview — September 12, 2026
+
+Business Profile now accepts a PNG, JPEG or WebP logo, extracts a suggested accent from the image, and lets the Client Admin approve or override the primary and navigation colors. A small theme safety layer chooses readable foreground colors and darkens navigation colors when necessary. The approved identity is saved per business slug in browser-local storage and appears on the Client Admin/Client Staff workspace and the matching `/menu/?business=<slug>` customer route. The QRK Admin route remains QRK-branded, and the customer footer retains a restrained “Powered by QRK MENU” attribution.
+
+This is a UI preview, not hosted persistence: logo data and theme settings do not yet use Supabase Storage or `business_profiles`. `npm run check` passes. Automated desktop browser control was unavailable in this session because the local UI-control runtime could not initialize, so the new branding interaction still needs the planned representative 390/768/1280 visual pass before approval or deployment.
+
+## Quick and Table demo tenants — September 12, 2026
+
+Kusina Manila is now the QRK Quick demo tenant, while Salamat is the QRK Table demo tenant. The local seed adds `salamat-admin` and `salamat-staff` alongside the existing Kusina identities, and tenant access context now returns the `serviceMode` stored in `business_profiles.settings`. The workspace identifies the signed-in mode, and the former Menu Studio “Table view” label is now “Availability view” to avoid colliding with the QRK Table product name.
+
+The customer route is mode-aware without adding a second bundle. Kusina retains the Quick order/pickup experience. `/menu/?business=salamat&table=12` identifies the Table experience, fixes the visit to Table 12, removes pickup, and keeps the existing lightweight browse/cart/order flow. Browser-local carts, active orders, queues and store state are keyed by business slug so the two tenant demonstrations do not leak into each other.
+
+Validation: `npm run check` passed with four migrations. After approval, a fresh local database reset applied the two-tenant seed. All 28 pgTAP tests passed, and direct Auth checks confirmed `kusina-admin`/`kusina-staff` resolve to Kusina Quick while `salamat-admin`/`salamat-staff` resolve to Salamat Table with their expected owner/order-staff roles. The Salamat customer route and fixed-table checkout were exercised in the browser; 390, 768 and 1280 CSS-pixel checks measured no page-level horizontal overflow. A final browser pass also corrected the shared dashboard breadcrumb, greeting and customer preview identity for Salamat. Nothing was deployed.
+
+## Salamat customer-to-admin order connection — September 13, 2026
+
+The Salamat customer route now loads the same local publishable Supabase configuration as the authenticated business workspace. Customer carts and pending idempotency keys are also separated by tenant and active data mode, preventing an older browser-demo cart from being submitted against provider-backed menu identifiers.
+
+Validation: `npm run check` passed. Browser verification submitted one Chicken adobo order from `/menu/?business=salamat&table=12`; Salamat Admin immediately displayed received order `SL-0201`, Table 12, one item, ₱180. Provider-mode copy now identifies local Supabase instead of incorrectly claiming that orders use only localStorage. No hosted project or deployment was changed.
+
+## Quick/Table service order board — September 13, 2026
+
+The shared staff Orders page now prioritizes two live stages only: Received and Preparing. Each order card includes its next action, Start preparing or Mark served, and served orders leave the live board for a separate History view opened from the top-right command bar. Development banners, sample sales and activity panels, the Ready column, and visible handoff-token verification were removed from the staff workflow. Order details remain available for item review, notes and confirmed cancellation.
+
+The database contract remains unchanged. Mark served performs the existing preparing → ready → completed transitions through the shared data service, using the staff-visible order credential internally. This keeps the same implementation compatible with both QRK Quick and QRK Table while preserving ordered provider transitions.
+
+Validation: `npm run check` passed. Browser testing at a narrow 354px phone-sized viewport and a 1280px desktop viewport showed a clean reflow with large card actions and no console warnings/errors. Salamat order `SL-0203` was submitted from Table 12, appeared under Received, moved to Preparing with one tap, moved to History as Served with one tap, and remained visible in History. The installed `ui-ux-pro-max` skill was updated to resolve its own Codex skill directory instead of Claude plugin paths and now documents Codex filesystem, patch, shell and browser mappings; its search script produced verified mobile-touch and responsive-layout guidance. The bundled validator could not run because PyYAML is absent from the available Python runtime, so frontmatter/path integrity was checked directly and both modified search commands executed successfully. Nothing was deployed.
+# September 13, 2026 — Table preset and session-entry slice
+
+- Added a shared location-ready preset/capability module with Quick, traditional Table, prepaid Table, three bundled-buffet payment variants, café/bar tab and custom Table defaults.
+- Extended QRK Admin client onboarding with first location, preset selection, table identification, joining, guest-order permission, proximity policy, radius and staff-acceptance controls plus a plain-language journey preview.
+- Saved new client service profiles into the existing browser-local client record and routed the customer preview through the same profile.
+- Removed the customer route's global header/navbar while preserving menu category navigation and the bottom cart action.
+- Added browser-local Table session entry, named host, guest count, package choice, one-session-per-device protection, occupied-table join requests, waiting states and explicit preview acceptance.
+- `npm run check` passes, including syntax validation for the new modules; `git diff --check` reports only existing line-ending warnings.
+- Visually verified the Admin preset dialog and Salamat Table entry/waiting flow in the local browser. The documented server initially could not bind inside the sandbox; it ran successfully on approved localhost port 4175.
+- Still incomplete: Client Admin configuration, staff session/join operations, host notifications/approval UI, package editor, production database entities/RPC/RLS, real geofence evaluation, hosted cross-device behavior and payment integration.
+
+## September 13, 2026 — Global appearance editor
+
+- Shifted the platform visual baseline to the supplied clean dashboard reference: white navigation and surfaces, cool page gray, blue actions/active states, fine borders and restrained shadows.
+- Added a QRK Admin Appearance view with live color inputs for accent, page, surface, text and sidebar colors, plus save and reset controls.
+- Added a shared browser-local theme runtime so saved global colors apply to QRK Admin, business workspaces and customer menu routes on the same origin. Accent and sidebar foreground colors are derived automatically for readability.
+- `npm run check` passes and now syntax-checks the shared theme runtime. `git diff --check` reports only the repository's existing line-ending warnings.
+- This remains a local development preference; hosted global settings, account synchronization and deployment are not implemented.
+- Follow-up correction: removed the logo filter that rendered the supplied lockup as a black block and replaced the light-sidebar lockup with a readable text treatment. Global QRK colors are now authoritative across client workspaces and customer menus; historical tenant color values no longer override them unless a future explicit custom-color mode is introduced. Open same-origin tabs receive saved color updates through the browser storage event.
+- Removed the Client Admin Portal appearance card. Business name/logo editing remains in Business details; color editing now exists only in QRK Admin → Appearance.
+- Fixed local cross-port theme propagation. The QRK Admin theme now writes a host-scoped cookie in addition to same-origin storage, allowing `127.0.0.1:4173` and `127.0.0.1:4175` previews to share the palette. Client tabs re-apply it when focused or made visible.
+- Opening the QRK Admin Appearance editor also migrates any previously saved same-port palette into the shared host cookie, so existing selections do not require manual re-entry.
+- Expanded the editor from five base colors to twelve mapped design tokens. Dedicated controls now cover navigation/count badges, muted text, borders, icon backgrounds, success, warning and danger states in addition to accent, page, surface, text and sidebar colors.
+- Corrected the Orders alert badge to use the navigation-badge token instead of danger, and added a thirteenth dedicated control for badge number text rather than forcing automatic contrast.
+- Replaced the temporary CSS-generated `QRK MENU` sidebar text with the canonical transparent `dist/assets/brand/qrk-logo.png` lockup and removed the added CSS backing so the PNG renders as supplied. The login view also no longer crops the lockup to its mark. `npm run check` passed; local browser checks covered the QRK Admin login/sidebar and the 370px business navigation drawer.
+- Reworked QRK Admin Appearance into a simple Theme section and optional Advanced settings. Theme provides four light presets—each with a dark sidebar—and four complete dark presets, plus a global Light/Dark mode switch. Advanced settings keeps independent 13-token editors for both modes. The shared runtime migrates legacy flat palettes into custom Light settings and applies the selected mode across Admin, business and customer routes. Local browser checks covered preset selection, dark Admin/login contrast, the expanded advanced editor and the customer Table-entry surface; `npm run check` and `git diff --check` passed. Persistence remains browser-local and nothing was deployed.
+
+## September 13, 2026 — Compact Menu Studio navigation state
+
+- Fixed the phone/tablet Menu Studio route so its navigation button receives the same active highlight and `aria-current` state as every other dashboard destination.
+- The compact Menu Studio branch previously returned before the shared navigation-state update, even though the correct editor view opened.
+- `npm run check` passed. Browser verification at the compact 1068px viewport navigated from Orders to Menu Studio by keyboard, reopened the drawer, and confirmed Menu Studio was highlighted while Orders was not.
+
+## September 13, 2026 — Global preset contrast audit
+
+- Corrected sidebar business, help and account panels to derive their text, borders and fills from the selected sidebar tokens. Active navigation icons now use the same readable foreground as their labels.
+- Removed remaining light-only dashboard surfaces from dark mode, including quick actions, order controls, queue cards, dialogs, verification panels and the demo banner.
+- Replaced the accent foreground brightness guess with WCAG relative-luminance comparison, and applied that foreground to navigation, primary, cart and customer table-entry actions.
+- Audited all four light and all four dark presets on QRK Admin, the business dashboard and the customer Table entry. Measured accent-action contrast ranges from 4.84:1 to 8.66:1; representative dark content ranges from 12.82:1 to 19.39:1. Midnight Blue light was restored after testing.
+- `npm run check` and `git diff --check` passed; the latter reports only existing LF-to-CRLF warnings. Nothing was deployed.
+
+## September 13, 2026 — Modern compact visual branch
+
+- Created `codex/modern-compact-ui` from the current local working tree so the visual direction can be reviewed without replacing the established design on `main`.
+- Added one final lightweight CSS layer that preserves QRK assets and theme colors while switching to a system UI type stack, six-pixel surface radii, flatter borders/shadows, a narrower navigation rail and tighter page/card spacing.
+- Applied the same direction to business login, the Kusina dashboard, QRK Admin and the Kusina customer menu. Customer menu controls retain 44px minimum targets despite the tighter appearance.
+- Saved before/after screenshots and a comparison index in `docs/screenshots/modern-compact/`.
+- Local browser checks covered 1264px desktop and 716px tablet-width views, the compact Admin navigation, the Kusina dashboard and menu, login, dark Admin tokens, and horizontal overflow. `npm run check` and `git diff --check` passed. Nothing was deployed.
+
+## September 13, 2026 — Seamless material refinement
+
+- Made the experimental branch's visual language borderless by default across Dashboard, Business Profile, Menu Studio, Staff, Orders/Tables, Settings, QRK Admin and customer menu surfaces.
+- Removed nested card fills, borders and elevation from content. Hierarchy now comes from alignment, type and intentional section spacing; quiet tinted fills remain only for status/help regions and selected controls.
+- Following Apple material guidance, translucent blur is limited to navigation, sticky category controls and floating cart actions rather than applied to content cards. Reduced-transparency fallbacks retain opaque, readable surfaces.
+- Browser review covered the Salamat Tables workspace, Business Profile, Staff Access, mobile Menu Studio, Kusina desktop dashboard, Salamat customer menu and QRK Admin. Representative surface audits confirmed zero borders/shadows on primary content containers.
+
+## September 13, 2026 — Five-client ordering workflow lab
+
+- Centralized five development-client profiles and their no-photo menus: Kusina Quick, Salamat Direct Table, Salo Table Approval, Tambay Open Tab and Ihaw Buffet Approval.
+- Added one-click Client Admin login shortcuts on the business sign-in page and direct Admin workspace/customer-view actions in QRK Admin.
+- Added a separate Table requests page beside Received and Preparing. Staff can accept a pending table from this page.
+- Normal staff-approved Table guests can browse and build a cart while waiting, but checkout blocks until acceptance. Buffet-package guests choose their package and remain gated before menu ordering opens.
+- Removed seeded order fallbacks and started fresh browser-demo order/session namespaces. Cleared 5 local Supabase orders with cascading order details; verification showed `orders=0` and all 8 seeded menu items remained.
+- Browser verification proved Salo Table request → staff Table requests count/card → Accept table → automatic customer unlock. A category-ID defect discovered during testing was corrected for category names containing spaces. The login page visibly exposes all five shortcuts and the final Orders counts are empty.
+- `npm run check` passed for this first slice. At that point Table sessions were browser-local; the later LAN repair below supersedes that limitation for local testing. Hosted persistence and payment remain incomplete. Nothing was deployed.
+
+## September 13, 2026 — LAN ordering and table-join repair
+
+- Corrected local backend addressing so a phone loading the LAN preview calls Supabase on the preview computer instead of its own loopback interface.
+- Corrected the one-click Kusina and Salamat shortcuts to authenticate their seeded Supabase Client Admins. Preview-only clients retain browser development accounts.
+- Replaced browser-only Table sessions with state shared by the single LAN preview server. Every Table client now starts with a large 2×3 Table 1–6 selector unless a valid table-specific QR parameter selects the table automatically.
+- Occupied tables appear muted but remain actionable. A second device requests to join, waits for the first guest, and unlocks automatically after that host approves it.
+- Formalized the configurable service sequence as eight capability layers: table selection, bundle selection, bundle payment, staff acceptance, open order tab, join control, tab payment and staff reopen. Presets derive which layers apply rather than defining separate page implementations.
+- Browser evidence: Kusina `KM-1050` and Salamat `SL-0207` both appeared in the correct authenticated staff queues. Separate browser sessions proved Table 1 occupancy, join request, host approval and joiner unlock. `?table=3` bypassed the grid and opened Table 3 details.
+- The LAN preview ports 4173 and 54321 both accepted connections. Payment execution, tab settlement, staff reopen controls and durable hosted Table sessions remain incomplete. Nothing was deployed.
+
+## September 13, 2026 — Customer cart footer docking
+
+- Removed the viewport-wide gradient/backing layer from the floating customer cart action and sized the card itself to 85vw.
+- Added footer-aware docking: the card calculates the visible footer overlap during scroll/resize and stays 12px above the footer instead of covering it.
+- Reduced the footer's obsolete cart-reservation padding and removed the docking transition entirely so footer tracking is immediate and stable.
+- The menu now reserves the rendered cart card height plus breathing room only while the cart is visible, allowing the final item to scroll fully above the floating action without leaving a permanent empty gap.
+- The Tables tab now shows occupied tables as its persistent count and a separate red pending-request badge only when table or join requests exist. Unchanged two-second table polls no longer rebuild the controls, preventing interrupted `Table cleaned` clicks and visible table-session flicker.
+- The shared table-session browser module is explicitly versioned so open LAN browsers cannot retain an older cleanup action. The local preview endpoint normalizes cleanup action aliases while preserving the canonical `clean` request.
+- Root cause verification found separate localhost and LAN listeners serving different preview-server revisions on port 4173: localhost accepted cleanup while the LAN listener returned `Unknown table action`. Both were stopped and replaced with one current LAN server; cleanup then returned `cleaned` through both addresses.
+- Browser measurement at the footer confirmed a 621px card in a 731px viewport (85vw), with the card bottom at 800px and footer top at 812px. `npm run check` passes. Nothing was deployed.
+
+## September 13, 2026 — Tables operations board
+
+- Renamed the staff `Table requests` order tab to `Tables` and replaced its request-only list with six compact operational cards.
+- Available cards remain light; pending cards expose `Accept table request`; occupied cards use a theme-derived muted surface and expose `Table cleaned` to reopen the table.
+- Added the local preview lifecycle `Available → Request pending → Occupied → Table cleaned → Available` without adding dependencies or changing the hosted data contract.
+- `npm run check` passed. The local endpoint returned `pending`, `active`, then `cleaned`; browser review confirmed the full control cycle, all six cards in the current dark theme, and clean 390px phone, 768px tablet and desktop layouts with no console warnings or errors. Nothing was deployed.

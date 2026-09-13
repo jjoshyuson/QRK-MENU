@@ -2,5 +2,8 @@ node_modules/
 .env
 .env.*
 !.env.example
+dist/data/qrk-config.local.js
+supabase/.temp/
+supabase/.branches/
 .DS_Store
 *.log

@@ -6,21 +6,24 @@ Use this folder as the fast entry point for a new chat. Read this file first, th
 
 | Topic | Read | Authoritative detail |
 | --- | --- | --- |
+| Rough notes, random ideas and questions awaiting review | `memory/inbox.md` | Route stable conclusions to the relevant topic and authoritative document |
 | Product purpose, audience and constraints | `memory/product.md` | `docs/PRODUCT_PLAN.md` |
 | UI direction and editing flows | `memory/ui.md` | `docs/UI_AND_FLOWS.md` |
 | Code structure, state and technical limits | `memory/architecture.md` | `docs/TECHNICAL_HANDOFF.md` |
 | Device-local customer/staff order demo | `memory/orders.md` | `dist/app.js`, `docs/TECHNICAL_HANDOFF.md` |
+| Provider-ready database, RLS, RPC, Realtime, Storage and recovery | `memory/architecture.md`, `memory/orders.md` | `supabase/README.md`, `supabase/migrations/` |
 | Current progress and next milestone | `memory/progress.md` | `docs/PROGRESS_MAP.md`, `docs/BUILD_STATUS.md` |
 | Confirmed decisions and unresolved choices | `memory/decisions.md` | `docs/PRODUCT_PLAN.md` |
 | Local commands and verification | `memory/workflow.md` | `README.md`, `docs/BUILD_STATUS.md` |
 
 ## Reading rule
 
-For a routine UI change, read `ui.md`, `architecture.md`, `progress.md` and `workflow.md`. For product or roadmap work, read `product.md`, `progress.md` and `decisions.md`. Read the full authoritative document when implementation depends on nuance or verification evidence.
+For a routine UI change, read `ui.md`, `architecture.md`, `progress.md` and `workflow.md`. For product or roadmap work, read `product.md`, `progress.md` and `decisions.md`; consult `inbox.md` only when reviewing newly captured ideas. For backend/data work, read `architecture.md`, `orders.md`, `progress.md`, `workflow.md`, then the full `supabase/README.md`. Read the full authoritative document when implementation depends on nuance or verification evidence.
 
 ## Maintenance rule
 
 - Record only stable facts, current state, decisions and useful file routes.
+- Put unprocessed thoughts in `inbox.md`; clearly label them as notes or proposals rather than requirements.
 - Do not paste long logs or duplicate detailed evidence.
 - Update the matching topic file after a material decision or milestone change.
 - Date facts that can become stale and distinguish confirmed decisions from proposals.

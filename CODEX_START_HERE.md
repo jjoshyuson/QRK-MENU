@@ -18,6 +18,11 @@ the existing DM Sans / Manrope typography and QRK orange. Avoid fancy
 restaurant landing pages or a squeezed desktop customer menu.
 
 The menu polish and UI-only Business Dashboard milestones are implemented.
+Workstream 3 also has a provider-ready Supabase/PostgreSQL foundation under
+supabase/, plus a shared demo/Supabase adapter under dist/data/. No hosted
+project is connected. Read supabase/README.md before backend changes, preserve
+the automatic localStorage fallback, and do not claim operational persistence
+or cross-device synchronization until the documented SQL and two-device gates pass.
 Review the dashboard overview, Business profile, Menu Studio, Staff access,
 Orders and Settings on desktop, tablet and phone. Fix only concrete layout,
 usability and accessibility defects while keeping the product recognizable.
