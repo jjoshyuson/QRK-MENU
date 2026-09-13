@@ -9,10 +9,15 @@ const [html, menu, staff, presets, businesses] = await Promise.all([
   readFile(new URL('../dist/data/qrk-businesses.js', import.meta.url), 'utf8')
 ]);
 
-assert.match(html, /name="payment" value="cashless" disabled/);
-assert.match(html, /name="payment" value="counter"/);
+assert.match(html, /id="payment-dialog".*aria-labelledby="payment-title"/);
+assert.match(html, /class="payment-card" id="pay-at-counter"/);
+assert.match(html, /class="payment-card disabled-choice" type="button" disabled/);
+assert.match(html, /<b>Cashless<\/b><small>Coming after the pilot<\/small>/);
 assert.match(menu, /paymentTiming==='upfront'&&serviceProfile\.settings\.packageMode==='none'/);
 assert.match(menu, /paymentStatus:paymentMethod==='counter'\?'due_at_counter'/);
+assert.match(menu, /if\(paymentFirst\)\$\('#submit-order'\)\.textContent='Pay order'/);
+assert.match(menu, /paymentFirst\?openPaymentStep\(\):createOrder\(\)/);
+assert.match(menu, /\$\('#pay-at-counter'\)\.addEventListener\('click',\(\)=>createOrder\('counter'\)\)/);
 assert.match(menu, /received:'Waiting for staff'/);
 assert.match(staff, /orderCompletionLabel=\(\)=>businessExperience\.serviceMode==='quick'\?'Mark paid':'Mark served'/);
 assert.match(staff, /orderCard\(order,orderCompletionLabel\(\)\)/);

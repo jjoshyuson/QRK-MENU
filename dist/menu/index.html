@@ -87,13 +87,26 @@
           <label class="field-label" id="table-label" for="table-number">Table number</label><input id="table-number" type="text" inputmode="numeric" maxlength="3" placeholder="Example: 12">
           <label class="field-label" for="customer-label">Name for the order <span>Optional</span></label><input id="customer-label" type="text" maxlength="40" placeholder="Example: Mia">
           <label class="field-label" for="order-notes">Order notes <span>Optional</span></label><textarea id="order-notes" rows="2" maxlength="180" placeholder="Anything the staff should know?"></textarea>
-          <fieldset class="fulfillment payment-choice hidden" id="payment-choice"><legend>Choose how to pay</legend><label class="disabled-choice"><input type="radio" name="payment" value="cashless" disabled><span><b>Pay cashless</b><small>Coming after the pilot</small></span></label><label><input type="radio" name="payment" value="counter"><span><b>Pay at the counter</b><small>Staff accepts the order before preparing it</small></span></label></fieldset>
           <p class="form-error hidden" id="checkout-error" role="alert"></p>
           <p class="demo-note" id="checkout-data-note">This demo saves only in this browser. It does not send an order to a real kitchen or take payment.</p>
         </section>
       </div>
       <div class="sheet-action cart-total" id="cart-action"><div><span>Subtotal</span><strong id="checkout-subtotal">₱0</strong></div><button class="primary-button" id="submit-order" value="default">Submit demo order</button></div>
     </form>
+  </dialog>
+
+  <dialog id="payment-dialog" class="sheet payment-sheet" aria-labelledby="payment-title">
+    <div class="sheet-card">
+      <header class="sheet-header"><div><p class="eyebrow">PAYMENT</p><h2 id="payment-title">How would you like to pay?</h2></div><button class="icon-button" id="close-payment" type="button" aria-label="Back to order review">×</button></header>
+      <div class="sheet-content payment-content">
+        <p class="payment-intro">Choose a payment method to continue your order.</p>
+        <div class="payment-cards">
+          <button class="payment-card" id="pay-at-counter" type="button"><span><b>Pay at the counter</b><small>Staff will confirm your order before preparing it.</small></span><strong id="payment-total">₱0</strong></button>
+          <button class="payment-card disabled-choice" type="button" disabled><span><b>Cashless</b><small>Coming after the pilot</small></span><strong>Unavailable</strong></button>
+        </div>
+        <p class="demo-note">No payment is taken in this pilot.</p>
+      </div>
+    </div>
   </dialog>
 
   <dialog id="confirmation-dialog" class="sheet confirmation-sheet" aria-labelledby="confirmation-title">

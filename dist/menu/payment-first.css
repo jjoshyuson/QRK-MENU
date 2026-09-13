@@ -1,18 +1,67 @@
-.payment-choice {
-  margin-top: 20px;
+.payment-content {
+  display: grid;
+  gap: 18px;
 }
 
-.fulfillment .disabled-choice {
-  background: #f5f6f8;
-  color: #7c8490;
-  cursor: not-allowed;
+.payment-intro {
+  margin: 0;
+  color: var(--muted);
 }
 
-.fulfillment .disabled-choice small {
-  color: #7c8490;
+.payment-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
 }
 
-.fulfillment label:has(input:focus-visible) {
-  outline: 3px solid #ed8c69;
+.payment-card {
+  min-height: 132px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  color: var(--ink);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  cursor: pointer;
+}
+
+.payment-card span {
+  display: grid;
+  gap: 6px;
+}
+
+.payment-card b,
+.payment-card strong {
+  font-size: 1rem;
+}
+
+.payment-card small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.payment-card:not(:disabled):hover {
+  border-color: var(--orange);
+  background: var(--orange-soft);
+}
+
+.payment-card:focus-visible {
+  outline: 3px solid var(--orange);
   outline-offset: 2px;
+}
+
+.payment-card.disabled-choice {
+  background: var(--surface-muted, #f1f3f5);
+  color: var(--muted);
+  cursor: not-allowed;
+  opacity: .62;
+}
+
+@media (max-width: 560px) {
+  .payment-cards { grid-template-columns: 1fr; }
+  .payment-card { min-height: 112px; }
 }
