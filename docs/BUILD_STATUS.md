@@ -742,3 +742,11 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Connected the sample accent variables to the shared `--brand-400` and `--brand-500` tokens, replaced embedded logo data with the official lightweight QRK assets, and aligned typography to Manrope headings with DM Sans body copy.
 - Strengthened the primary hooks to “One QRK. Built for how you serve.”, “Turn every scan into an order.” and “Your guests shouldn’t have to wave for service.” Supporting hero and closing copy was tightened without reducing the supplied page depth.
 - The existing preview server was reused because port 4173 was already active. `npm run check` passed before editing. Browser checks confirmed both new type stacks, the active global accent, zero broken images and no horizontal overflow at 390px, 768px or 1280px. Corrected deployment and final user review remain open.
+
+## September 13, 2026 — Configurable ordering option sets
+
+- Replaced Menu Studio's plain-text option note with persisted option sets that apply to the whole business, one category, or one item.
+- Added required/optional, single/multiple selection, named choices and nonnegative price adjustments. Kusina's starter state demonstrates business extras, Mains add-ons, Drinks size/sweetness and Sisig-specific spice level.
+- Connected demo Customer Menu item sheets to inherited option sets and enforced required selections before adding an item. Supabase-backed customer menus continue to use the provider RPC; provider-backed Menu Studio writes remain incomplete.
+- Added a dependency-free inheritance test. `npm run check` passed, and browser review confirmed the desktop editor, item-level Configure entry, stacked option dialog, 375px mobile entry point and 44px mobile settings control. The active local Supabase adapter prevented an end-to-end demo-store browser check, so the shared inheritance contract is covered automatically and the provider route remains correctly isolated.
+- Nothing was deployed.

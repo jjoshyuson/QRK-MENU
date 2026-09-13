@@ -16,7 +16,7 @@ Business profile now links to the public development `/menu/` route. The route s
 
 ## Customer ordering demonstration
 
-The standalone `/menu/` route now supports menu browsing and search, item details, required options and optional add-ons, quantities and item notes, and cart add/edit/remove. Checkout supports either a required table number or pickup with an optional customer label. Submitting creates a device-local demo order with an order number and verification token; the active-order panel and confirmation dialog track received, preparing, ready, completed and cancelled states.
+The standalone `/menu/` route now supports menu browsing and search, item details, configured required options and optional add-ons, quantities and item notes, and cart add/edit/remove. Menu Studio option sets can apply to the whole business, one category, or one item; the customer item sheet inherits all three scopes, adds price adjustments, and blocks submission when a required set has no selection. Checkout supports either a required table number or pickup with an optional customer label. Submitting creates a device-local demo order with an order number and verification token; the active-order panel and confirmation dialog track received, preparing, ready, completed and cancelled states.
 
 For Kusina's QRK Quick payment-first flow, `View order` opens the normal review and fulfillment fields, then `Pay order` advances to a focused payment dialog. The dialog contains only a clear Back control and two large choices: `💵 Pay at the counter` is enabled, while `💳 Cashless` is disabled with a `Soon` badge. Counter selection is retained on the device-local order and advances to the existing `Waiting for staff` confirmation. This simulates workflow only and does not execute or authorize a payment.
 
@@ -62,7 +62,8 @@ This is deliberately a simple food-menu grid. Do not reintroduce the previous la
 - Enter name, optional description, nonnegative price and category.
 - Optionally select a JPG, PNG, WebP or AVIF file of up to 5 MB.
 - Set availability; submit to update browser-memory state and both previews.
-- Add an optional plain-text options note and choose whether an item is available, sold out or hidden. Hidden items remain visible to owners and are omitted from customer previews.
+- Configure reusable ordering option sets from Menu Studio or an item's Configure action. Each set has a business, category, or item scope; required/optional and single/multiple selection rules; named choices; and nonnegative price adjustments.
+- Choose whether an item is available, sold out or hidden. Hidden items remain visible to owners and are omitted from customer previews.
 - Edit an existing item with its pencil control; change/remove its photo if desired.
 - Delete only after the confirmation dialog.
 - Photo removal or an item created without a photo uses an explicit no-photo state.

@@ -12,7 +12,7 @@ As of September 13, 2026:
 
 - Confirmation-gated Table requests now support customer cancellation and automatic expiry. The default acceptance wait is 90 seconds, client setup can configure 30–600 seconds, and terminal requests no longer resolve as the device's current session.
 
-- The browser-preview Menu Studio is now the single source for the matching Customer Menu. Kusina defaults to the full six-item studio menu, edits persist per business, open customer tabs refresh on changes, and unavailable/hidden items are omitted. Durable cross-device publication still depends on the hosted backend milestone.
+- The browser-preview Menu Studio is now the single source for the matching Customer Menu. Kusina defaults to the full six-item studio menu, edits persist per business, open customer tabs refresh on changes, and unavailable/hidden items are omitted. Ordering option sets are configurable at business, category and item scope and inherit into customer item choices with prices and selection rules. Durable provider-backed authoring and cross-device publication still depend on the hosted backend milestone.
 
 - Payment First is implemented as an approved local pilot simulation for the `Restaurant · pay first` preset: cashless is visible but disabled, pay-at-counter is required, and received orders need explicit staff acceptance before Preparing. Payment execution and hosted payment metadata remain future work.
 
