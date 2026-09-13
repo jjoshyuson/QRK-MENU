@@ -608,4 +608,4 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 ## September 13, 2026 — Pending Table request badge contrast
 
 - Changed the Tables pending-request count from customizable navigation-badge colors to a dedicated deep-red badge with white text.
-- A real Salo Table preview request was verified in the browser in both Charcoal Teal light mode and Carbon dark mode. The white-on-red pair measures 6.57:1 contrast, and the prior light-mode preference was restored after testing.
+- A real Salo Table preview request was verified in the browser in both Charcoal Teal light mode and Carbon dark mode. The white-on-red pair measures 6.57:1 contrast, and the prior light-mode preference was restored after testing. GitHub Pages deployment run `34774730702` succeeded, and a fresh request visibly confirmed the red badge on the public development site.
