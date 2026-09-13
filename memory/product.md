@@ -4,7 +4,7 @@
 - Menus, business accounts, authentication, staff permissions, orders, branding, analytics foundations and future integrations remain shared across modes. Capabilities should determine behavior without duplicating the platform.
 - Core value: customers scan a QR code to get what they need quickly, while owners and staff receive clear actionable work.
 - The implementation and delegation contract is `docs/QUICK_TABLE_MASTER_PLAN.md`.
-- Demo tenant mapping: Kusina Manila represents QRK Quick; Salamat represents QRK Table. Each has seeded local admin and staff identities.
+- Demo tenant mapping: Kusina Manila represents QRK Quick with the payment-first pilot enabled; Salamat represents QRK Table. Each has seeded local admin and staff identities.
 - The intended selling range is about PHP 1,500–3,000, but it is not validated pricing.
 - The confirmed long-term shape is one lightweight multi-business website with one shared login URL and tenant-scoped workspaces. Login and tenant isolation are not implemented.
 - Operational ordering, payments, subscriptions, AI import, offline behavior and QR publishing are future work, not current features. A provider-ready ordering/data foundation exists in source but is not connected.

@@ -1,5 +1,11 @@
 # Build status
 
+## Kusina QRK Quick payment-first configuration — September 13, 2026
+
+- Kept Kusina Manila on QRK Quick while overriding its payment timing to upfront, so its customer checkout now displays the existing payment-first choice.
+- Cashless remains visible and disabled for the pilot; pay-at-counter remains the only enabled payment method. No table-session behavior or real payment processing was added.
+- Validation: `npm run check`, the payment-first contract test, and `git diff --check` pass.
+
 ## Menu Studio category-tab alignment — September 13, 2026
 
 - Removed the artificial horizontal padding that centered the first and last Menu Studio category tabs.

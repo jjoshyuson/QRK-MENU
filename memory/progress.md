@@ -2,6 +2,8 @@
 
 As of September 13, 2026:
 
+- Kusina Manila remains QRK Quick and now enables the payment-first pilot at checkout: cashless stays visible but disabled, while pay-at-counter is available.
+
 - A lightweight public landing-page set is published at `/landing/`: one Quick/Table choice page plus focused Quick and Table pages. It uses shared global theme tokens, concise capability-safe copy, and responsive one/two-column layouts. Local 390px, 768px, and 1280px review passed, and Pages run `34777124517` succeeded; light-theme visual review and user acceptance remain open.
 
 - Business Settings is now one compact rounded list of four full-row entry points backed by focused dialogs. Orders removes Preparing: Quick shows Received with Mark paid, while Table adds Tables and uses Mark served for received orders. Responsive History shares the hamburger's top-bar container. Validation evidence is recorded in `docs/BUILD_STATUS.md`.
