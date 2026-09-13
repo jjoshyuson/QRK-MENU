@@ -20,18 +20,25 @@
   <link rel="stylesheet" href="/menu/table-session.css?v=1">
   <link rel="stylesheet" href="/reference-theme.css?v=2">
   <link rel="stylesheet" href="/modern-compact.css?v=1">
-  <link rel="stylesheet" href="/menu/cart-dock.css?v=7">
+  <link rel="stylesheet" href="/menu/cart-dock.css?v=8">
   <link rel="stylesheet" href="/menu/payment-first.css?v=1">
   <link rel="stylesheet" href="/menu/order-confirmation.css?v=1">
+  <link rel="stylesheet" href="/menu/quick-service.css?v=1">
   <link rel="stylesheet" href="/ui-components.css?v=1">
   <script src="/global-theme.js"></script>
   <script src="/pwa.js" defer></script>
   <script src="/ui-components.js?v=1" defer></script>
   <script src="/data/qrk-config.local.js"></script>
-  <script type="module" src="/menu/menu.js?v=8"></script>
+  <script type="module" src="/menu/menu.js?v=9"></script>
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
+  <dialog id="quick-service-dialog" class="quick-service-dialog" aria-label="Choose dine in or takeout">
+    <section class="quick-service-card" id="quick-service-choices">
+      <button type="button" data-fulfillment-choice="table"><span aria-hidden="true">🍽️</span><b>Dine in</b></button>
+      <button type="button" data-fulfillment-choice="pickup"><span aria-hidden="true">🛍️</span><b>Takeout</b></button>
+    </section>
+  </dialog>
   <dialog id="table-session-dialog" class="table-entry" aria-labelledby="table-entry-title">
     <section class="table-entry-card" id="table-entry-form-view">
       <div id="table-choice-view"><p class="eyebrow">QRK TABLE</p><h1 id="table-entry-title">Choose your table</h1><p id="table-entry-intro">Select the table where you are seated.</p><div class="table-choice-grid" id="table-choice-grid" role="list"></div><p class="table-choice-help"><span></span> Available <span></span> Open — request to join</p></div>
@@ -106,7 +113,7 @@
         <div id="cart-items"></div>
         <section class="cart-empty hidden" id="cart-empty"><div aria-hidden="true">○</div><h3>Your order is empty</h3><p>Add a favorite from the menu to get started.</p><button class="secondary-button" value="cancel">Browse menu</button></section>
         <section id="checkout-fields">
-          <fieldset class="fulfillment"><legend>How will you get your order?</legend><label><input type="radio" name="fulfillment" value="table" checked><span><b>Dine in</b><small>We'll bring it to your table</small></span></label><label><input type="radio" name="fulfillment" value="pickup"><span><b>Pickup</b><small>Collect at the counter</small></span></label></fieldset>
+          <fieldset class="fulfillment"><legend>Pickup or serve at table?</legend><label><input type="radio" name="fulfillment" value="table" checked><span><b>Serve at table</b><small>Enter your table below</small></span></label><label><input type="radio" name="fulfillment" value="pickup"><span><b>Pickup</b><small>Collect at the counter</small></span></label></fieldset>
           <label class="field-label" id="table-label" for="table-number">Table number</label><input id="table-number" type="text" inputmode="numeric" maxlength="3" placeholder="Example: 12">
           <label class="field-label" for="customer-label">Name for the order <span>Optional</span></label><input id="customer-label" type="text" maxlength="40" placeholder="Example: Mia">
           <label class="field-label" for="order-notes">Order notes <span>Optional</span></label><textarea id="order-notes" rows="2" maxlength="180" placeholder="Anything the staff should know?"></textarea>
