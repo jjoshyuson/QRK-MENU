@@ -9,9 +9,9 @@
 
 ## Customer order-number emphasis — September 13, 2026
 
-- Restyled the confirmation's order number as a centered, unboxed `ORDER NUMBER` label with the generated identifier directly below in large bold type, matching the supplied visual reference.
-- Preserved the confirmation status, verification code, progress tracker, and actions.
-- Validation: `npm run check` passed. Live browser checks confirmed the revised hierarchy with order `KM-1049` at 390×844, 768×700, and the default desktop viewport without horizontal overflow or clipped confirmation controls.
+- Reduced the post-submit confirmation to one centered popup containing only `ORDER SENT`, `ORDER NUMBER`, and the generated identifier in large bold type.
+- Removed waiting/preparing/ready/completed status content, verification details, development notes, confirmation buttons, and the post-close customer tracking panel. The popup dismisses through its backdrop or Escape.
+- Validation: `npm run check` passed. Live browser checks at 390×844 and the default desktop viewport confirmed the centered three-line popup, no customer status panel after dismissal, working Escape and backdrop dismissal, and no horizontal overflow.
 
 ## Guided Kusina payment step — September 13, 2026
 

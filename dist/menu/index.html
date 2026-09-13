@@ -46,7 +46,6 @@
       <div class="restaurant-mark" aria-hidden="true">K.</div>
     </section>
     <section class="notice hidden" id="store-notice" aria-live="polite"></section>
-    <section class="active-order hidden" id="active-order" aria-live="polite"></section>
     <section class="menu" aria-labelledby="menu-title">
       <div class="menu-heading"><div><p class="eyebrow">TODAY'S MENU</p><h2 id="menu-title">What would you like?</h2></div><span id="item-count">6 items</span></div>
       <div class="search-wrap"><label class="sr-only" for="menu-search">Search the menu</label><input id="menu-search" type="search" placeholder="Search dishes and drinks" autocomplete="off"><span aria-hidden="true">⌕</span></div>
@@ -119,16 +118,12 @@
     </div>
   </dialog>
 
-  <dialog id="confirmation-dialog" class="sheet confirmation-sheet" aria-labelledby="confirmation-title">
+  <dialog id="confirmation-dialog" class="sheet confirmation-sheet" aria-labelledby="confirmation-title" tabindex="-1">
     <div class="sheet-card">
       <div class="sheet-content confirmation-content">
-        <div class="success-mark" aria-hidden="true">✓</div><p class="eyebrow">ORDER SENT</p><h2 id="confirmation-title">Waiting for staff acceptance</h2>
-        <div class="order-number"><span>ORDER NUMBER</span><strong id="confirmation-number"></strong></div>
-        <div class="verification-card"><div id="verification-mark" class="verification-mark" aria-hidden="true"></div><div><span>Verification code</span><strong id="confirmation-token"></strong><small>Staff can match this code on this device.</small></div></div>
-        <div id="order-progress" class="order-progress"></div>
-        <p class="demo-note" id="confirmation-data-note">This is a local development order, not a production order.</p><p class="form-error hidden" id="order-error" role="alert"></p>
+        <p class="eyebrow">ORDER SENT</p>
+        <div class="order-number"><h2 id="confirmation-title">ORDER NUMBER</h2><strong id="confirmation-number"></strong></div>
       </div>
-      <div class="sheet-action confirmation-actions"><button class="secondary-button" id="close-confirmation" type="button">Back to menu</button><button class="primary-button" id="refresh-status" type="button">Refresh status</button></div>
     </div>
   </dialog>
   <template id="dish-template"><article class="dish"><button type="button"><div class="photo"><img alt="" width="640" height="480"><span class="sold-label hidden">Sold out</span></div><div class="dish-copy"><h4></h4><p></p><strong></strong></div></button></article></template>
