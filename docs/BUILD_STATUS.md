@@ -604,3 +604,8 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Added a dedicated acceptance timeout, defaulting to 90 seconds and configurable from 30–600 seconds during QRK Admin client setup. It remains separate from active table-session expiry.
 - Cancellation and automatic expiry release pending sessions, remove requests from staff-facing pending state, and return the customer to table selection. Terminal sessions are excluded from current-session lookup.
 - `npm run check` passed, including browser-local cancellation and expiry assertions. Browser verification confirmed the 1:30 countdown, accessible Cancel request control, and immediate table release after cancellation.
+
+## September 13, 2026 — Pending Table request badge contrast
+
+- Changed the Tables pending-request count from customizable navigation-badge colors to a dedicated deep-red badge with white text.
+- A real Salo Table preview request was verified in the browser in both Charcoal Teal light mode and Carbon dark mode. The white-on-red pair measures 6.57:1 contrast, and the prior light-mode preference was restored after testing.

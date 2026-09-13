@@ -25,6 +25,8 @@
   --warning-soft:#fff7df;
   --danger:#aa4034;
   --danger-soft:#fff0ee;
+  --danger-badge:#b42318;
+  --danger-badge-text:#ffffff;
   --surface:var(--color-white);
   --surface-subtle:var(--gray-50);
   --surface-muted:var(--gray-100);

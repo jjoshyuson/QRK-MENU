@@ -34,6 +34,6 @@
 - While the customer cart action is visible, the menu reserves the card's measured height plus breathing room so the final item can scroll completely above it; the extra space disappears with an empty cart.
 
 - QRK Table staff use a `Tables` tab with six narrow operational cards. Pending requests can be accepted; occupied cards are muted through shared theme tokens and expose `Table cleaned`, which returns the table to Available in the local preview.
-- The Tables tab's normal badge counts occupied tables. A separate red badge temporarily counts pending table and join requests and is hidden at zero. Table controls rerender only when shared session state changes, keeping cleanup actions and customer session notices stable between polls.
+- The Tables tab's normal badge counts occupied tables. A separate high-contrast red badge with white text counts pending table and join requests and is hidden at zero; it does not inherit the customizable navigation-badge colors. Table controls rerender only when shared session state changes, keeping cleanup actions and customer session notices stable between polls.
 
 See `docs/UI_AND_FLOWS.md` for detailed behavior and test cases.
