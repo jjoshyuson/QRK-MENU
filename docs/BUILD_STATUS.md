@@ -630,4 +630,4 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Reduced the supplied reference pages to a shorter public narrative: the core problem, a three-step flow, three concrete benefits and one primary demo action. Removed or softened claims that depend on unverified hosted publishing, payments, POS connections, AI import or real-time cross-device operation.
 - Reused the official QRK logo, `theme.css` and `global-theme.js`, so all three pages inherit the global light/dark mode and advanced color selections without a route-specific theme implementation.
 - Browser review passed at 390×844, 768×1024 and 1280×800. All routes loaded in the active dark theme, the choice grid reflowed from two columns to one, and measured horizontal overflow remained zero. Light-theme visual review and user acceptance remain open.
-- `npm run check`, GitHub Pages artifact generation and route/link validation passed. Nothing was deployed.
+- `npm run check`, GitHub Pages artifact generation and route/link validation passed. Commit `ab78378` deployed successfully through GitHub Pages run `34777124517`.
