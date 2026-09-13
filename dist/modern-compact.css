@@ -70,4 +70,4 @@ body,.platform-admin-body,.app,.platform-workspace,.dashboard-page,.platform-con
 [data-theme="dark"] .cart-bar button{background:var(--glass-strong);color:var(--ink)}
 
 /* Compact settings cards remain actionable without restoring padded content panels. */
-.settings-card-grid{gap:8px}.settings-card{border:0;border-radius:var(--compact-radius);background:var(--quiet-fill);box-shadow:none}
+.settings-card-grid{gap:0;border-radius:var(--compact-radius);background:var(--surface);box-shadow:none}.settings-card{border-radius:0;background:transparent;box-shadow:none}

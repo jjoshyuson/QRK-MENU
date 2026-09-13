@@ -1,5 +1,26 @@
 # Build status
 
+## Connected Settings list correction — September 13, 2026
+
+- Replaced the four separate oversized Settings cards with one compact rounded list matching the supplied reference: four stacked full-row actions, subtle dividers, left-aligned outline icons, labels, and right chevrons.
+- Preserved the Account, Orders, Availability, and Security & sessions dialogs and their existing behavior.
+- Added the connected-list pattern to `AGENT/STYLE.md` so future Settings work does not return to separate bordered cards.
+- Validation: `npm run check` and `git diff --check` passed. Browser checks at 390px portrait, 844px landscape, and 1440px desktop confirmed 54–56px rows, a 640px maximum panel width, working dialogs for all four rows, and no horizontal overflow.
+
+## Menu Studio header alignment — September 13, 2026
+
+- Replaced the responsive Menu Studio logo bar with the same light business/page breadcrumb and outlined hamburger treatment used by Dashboard.
+- Verified the 44px navigation target and zero horizontal overflow at 390px, plus the matching tablet header at 768px.
+- `npm run check` and `git diff --check` pass.
+
+## Single-action order completion — September 13, 2026
+
+- Removed the staff-facing Preparing tab and grouped all live provider-compatible order states under Received, so existing in-flight demo/provider orders are not stranded.
+- QRK Quick order cards now use one `Mark paid` action. QRK Table order cards use one `Mark served` action. Each action performs the existing ordered provider transitions internally and moves the order directly to History.
+- Table businesses retain the separate Tables view for table acceptance, occupancy, and cleanup. Quick businesses show only Received.
+- No database transition contract, payment integration, or POS capability was added; `Mark paid` is an operational staff acknowledgement in the current prototype.
+- Validation: `npm run check` and `git diff --check` passed. Browser review of a Table-mode workspace confirmed that Orders exposes only Received and Tables, with no Preparing tab or Preparing empty state.
+
 ## Compact Settings and Orders structure — September 13, 2026
 
 - Added `AGENT/STYLE.md` as the repository's visual source of truth and routed future UI work to it from `AGENTS.md`, the README map, and memory index.

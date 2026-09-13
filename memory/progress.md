@@ -4,7 +4,7 @@ As of September 13, 2026:
 
 - A lightweight public landing-page set is published at `/landing/`: one Quick/Table choice page plus focused Quick and Table pages. It uses shared global theme tokens, concise capability-safe copy, and responsive one/two-column layouts. Local 390px, 768px, and 1280px review passed, and Pages run `34777124517` succeeded; light-theme visual review and user acceptance remain open.
 
-- Business Settings is now a heading-free set of four whole-card entry points backed by focused dialogs. Orders keeps Received, Preparing, and Tables in one equal-width row, and responsive History now shares the hamburger's top-bar container. Validation evidence is recorded in `docs/BUILD_STATUS.md`.
+- Business Settings is now one compact rounded list of four full-row entry points backed by focused dialogs. Orders removes Preparing: Quick shows Received with Mark paid, while Table adds Tables and uses Mark served for received orders. Responsive History shares the hamburger's top-bar container. Validation evidence is recorded in `docs/BUILD_STATUS.md`.
 
 - Confirmation-gated Table requests now support customer cancellation and automatic expiry. The default acceptance wait is 90 seconds, client setup can configure 30–600 seconds, and terminal requests no longer resolve as the device's current session.
 
@@ -12,7 +12,7 @@ As of September 13, 2026:
 
 - GitHub Pages preview-session parity is implemented and locally verified: the profile identity opens Settings/Log out, and logout returns to the sign-in screen with five Client Admin preview workspaces. All five customer presets now follow the LAN field and gate rules on the static deployment; Salo Table customer → staff acceptance → customer unlock passed in separate tabs on one origin. This remains browser-local and does not synchronize the LAN origin or different physical devices.
 
-- The Client Admin/Client Staff Orders workspace now follows the approved reference direction: Received and Preparing are separate, count-labeled queue pages instead of simultaneous columns, with full-area empty states and a separate History view. The order lifecycle and backend contract are unchanged.
+- The Client Admin/Client Staff Orders workspace now follows the simplified operational direction: all live orders stay under Received until one mode-aware completion action moves them to History. Preparing/Ready remain internal compatibility states only; the backend contract is unchanged.
 
 - The static UI prototype and local responsive polish pass are complete.
 - The UI-only Business Dashboard milestone is complete: balanced overview, business profile/appearance/QR/link, expanded menu management, staff access, live/history orders with sample sales, and business settings.

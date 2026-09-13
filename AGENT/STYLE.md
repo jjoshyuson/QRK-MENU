@@ -16,6 +16,7 @@ This is the project’s visual source of truth. Read it before every UI, UX, lay
 - When a card represents one destination or task, make the entire card a semantic button or link. Do not place a small action inside an otherwise inert card.
 - On overview pages, show only the setting or destination name when context is sufficient. Move fields, secondary descriptions, and editing controls into a focused dialog, sheet, or detail view.
 - Avoid nested cards. Use dividers, alignment, type weight, and spacing to organize detail views.
+- Settings overview pages use one compact rounded list container. Each setting is a full-width row with a clean outline icon, a short left-aligned label, and a right-aligned chevron; separate outlined cards are not the QRK Settings pattern.
 
 ## Navigation and control grouping
 

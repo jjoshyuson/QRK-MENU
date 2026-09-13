@@ -211,3 +211,11 @@ body[data-current-page="orders"] .topbar-history{margin-left:auto}
 .order-stage-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
 @media(max-width:1180px){.settings-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.settings-page{padding-top:18px}.settings-card-grid{grid-template-columns:1fr;gap:8px}.settings-card{min-height:58px}}
+
+/* Settings follow one compact, connected list rather than separate cards. */
+.settings-page{padding-top:18px}.settings-card-grid{display:block;width:min(100%,640px);overflow:hidden;border:1px solid var(--line);border-radius:12px;background:var(--surface);box-shadow:0 1px 2px #11182708}.settings-card{display:grid;grid-template-columns:22px minmax(0,1fr) 18px;align-items:center;gap:12px;width:100%;min-height:56px;padding:0 14px;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;color:var(--ink);text-align:left;cursor:pointer}.settings-card:last-child{border-bottom:0}.settings-card:hover{background:var(--quiet-fill)}.settings-card:active{background:color-mix(in srgb,var(--quiet-fill) 72%,var(--line))}.settings-card:focus-visible{position:relative;z-index:1;outline:3px solid var(--brand-ring);outline-offset:-3px}.settings-card>strong{font:650 14px/1.25 Manrope,sans-serif}.settings-card>svg{width:16px;height:16px;color:var(--muted)}.settings-card-icon{display:grid;place-items:center;width:22px;height:22px;border:0;border-radius:0;background:transparent;color:var(--ink)}.settings-card-icon svg{width:19px;height:19px;stroke-width:1.75}
+@media(max-width:560px){.settings-page{padding-top:16px}.settings-card{min-height:54px;padding-inline:12px}}
+
+/* Orders use one Received queue, plus Tables only for Table-mode businesses. */
+.order-stage-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+.order-stage-tabs:has(#table-requests-tab[hidden]){grid-template-columns:1fr}
