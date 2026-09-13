@@ -9,10 +9,13 @@ const [html, menu, staff, presets, businesses] = await Promise.all([
   readFile(new URL('../dist/data/qrk-businesses.js', import.meta.url), 'utf8')
 ]);
 
-assert.match(html, /id="payment-dialog".*aria-labelledby="payment-title"/);
+assert.match(html, /id="payment-dialog".*aria-label="Choose payment method"/);
+assert.doesNotMatch(html, /How would you like to pay\?|payment-title/);
 assert.match(html, /class="payment-card" id="pay-at-counter"/);
 assert.match(html, /class="payment-card disabled-choice" type="button" disabled/);
-assert.match(html, /<b>Cashless<\/b><small>Coming after the pilot<\/small>/);
+assert.match(html, /<span class="payment-emoji" aria-hidden="true">💵<\/span><b>Pay at the counter<\/b>/);
+assert.match(html, /<span class="payment-badge">Soon<\/span><span class="payment-emoji" aria-hidden="true">💳<\/span><b>Cashless<\/b>/);
+assert.doesNotMatch(html, /Choose a payment method to continue your order|No payment is taken in this pilot|payment-total/);
 assert.match(menu, /paymentTiming==='upfront'&&serviceProfile\.settings\.packageMode==='none'/);
 assert.match(menu, /paymentStatus:paymentMethod==='counter'\?'due_at_counter'/);
 assert.match(menu, /if\(paymentFirst\)\$\('#submit-order'\)\.textContent='Pay order'/);

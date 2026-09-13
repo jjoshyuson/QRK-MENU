@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/menu/table-session.css?v=1">
   <link rel="stylesheet" href="/reference-theme.css?v=2">
   <link rel="stylesheet" href="/modern-compact.css?v=1">
-  <link rel="stylesheet" href="/menu/cart-dock.css?v=4">
+  <link rel="stylesheet" href="/menu/cart-dock.css?v=5">
   <link rel="stylesheet" href="/menu/payment-first.css?v=1">
   <link rel="stylesheet" href="/menu/order-confirmation.css?v=1">
   <script src="/global-theme.js"></script>
@@ -104,16 +104,14 @@
     </form>
   </dialog>
 
-  <dialog id="payment-dialog" class="sheet payment-sheet" aria-labelledby="payment-title">
+  <dialog id="payment-dialog" class="sheet payment-sheet" aria-label="Choose payment method">
     <div class="sheet-card">
-      <header class="sheet-header"><div><p class="eyebrow">PAYMENT</p><h2 id="payment-title">How would you like to pay?</h2></div><button class="icon-button" id="close-payment" type="button" aria-label="Back to order review">×</button></header>
+      <header class="payment-header"><button class="payment-back" id="close-payment" type="button"><span aria-hidden="true">←</span> Back to order</button></header>
       <div class="sheet-content payment-content">
-        <p class="payment-intro">Choose a payment method to continue your order.</p>
         <div class="payment-cards">
-          <button class="payment-card" id="pay-at-counter" type="button"><span><b>Pay at the counter</b><small>Staff will confirm your order before preparing it.</small></span><strong id="payment-total">₱0</strong></button>
-          <button class="payment-card disabled-choice" type="button" disabled><span><b>Cashless</b><small>Coming after the pilot</small></span><strong>Unavailable</strong></button>
+          <button class="payment-card" id="pay-at-counter" type="button"><span class="payment-emoji" aria-hidden="true">💵</span><b>Pay at the counter</b></button>
+          <button class="payment-card disabled-choice" type="button" disabled><span class="payment-badge">Soon</span><span class="payment-emoji" aria-hidden="true">💳</span><b>Cashless</b></button>
         </div>
-        <p class="demo-note">No payment is taken in this pilot.</p>
       </div>
     </div>
   </dialog>

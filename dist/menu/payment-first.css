@@ -1,11 +1,23 @@
 .payment-content {
-  display: grid;
-  gap: 18px;
+  padding-top: 8px;
 }
 
-.payment-intro {
-  margin: 0;
-  color: var(--muted);
+.payment-header {
+  padding: 22px 24px 10px;
+}
+
+.payment-back {
+  min-height: 44px;
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+  color: var(--orange-dark);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.payment-back span {
+  margin-right: 6px;
 }
 
 .payment-cards {
@@ -15,33 +27,39 @@
 }
 
 .payment-card {
-  min-height: 132px;
+  position: relative;
+  min-height: 148px;
   padding: 20px;
   border: 1px solid var(--line);
   border-radius: 16px;
   background: var(--surface);
   color: var(--ink);
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 20px;
+  text-align: center;
+  display: grid;
+  place-content: center;
+  gap: 12px;
   cursor: pointer;
 }
 
-.payment-card span {
-  display: grid;
-  gap: 6px;
+.payment-card b {
+  font-size: 1.05rem;
 }
 
-.payment-card b,
-.payment-card strong {
-  font-size: 1rem;
+.payment-emoji {
+  font-size: 34px;
+  line-height: 1;
 }
 
-.payment-card small {
+.payment-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--surface);
   color: var(--muted);
-  line-height: 1.45;
+  font-size: 11px;
+  font-weight: 800;
 }
 
 .payment-card:not(:disabled):hover {
@@ -63,5 +81,5 @@
 
 @media (max-width: 560px) {
   .payment-cards { grid-template-columns: 1fr; }
-  .payment-card { min-height: 112px; }
+  .payment-card { min-height: 124px; }
 }

@@ -127,7 +127,7 @@ async function validateCheckout(){
   if(tableSessionService){await tableSessionService.refresh();const session=tableSessionService.current();if(!session||!['active','bill_requested'].includes(session.status)){error.textContent=`This device is still waiting for Table ${table||session?.table||''} access. Your cart is saved.`;error.classList.remove('hidden');return null}}
   return{fulfillment,table,error};
 }
-async function openPaymentStep(){const checkout=await validateCheckout();if(!checkout)return;$('#payment-total').textContent=format(cartTotals().subtotal);$('#cart-dialog').close();$('#payment-dialog').showModal();requestAnimationFrame(()=>$('#pay-at-counter').focus())}
+async function openPaymentStep(){const checkout=await validateCheckout();if(!checkout)return;$('#cart-dialog').close();$('#payment-dialog').showModal();requestAnimationFrame(()=>$('#pay-at-counter').focus())}
 function closePaymentStep(){if($('#payment-dialog').open)$('#payment-dialog').close();if(!$('#cart-dialog').open)$('#cart-dialog').showModal()}
 async function createOrder(paymentMethod=null){
   const checkout=await validateCheckout();if(!checkout)return;const{fulfillment,table,error}=checkout;

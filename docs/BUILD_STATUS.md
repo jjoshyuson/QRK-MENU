@@ -1,5 +1,11 @@
 # Build status
 
+## September 13, 2026 — Public menu desktop page-shell finish
+
+- Removed the desktop customer menu's inherited full-viewport-height content column, which created an abrupt empty seam above the footer on shorter menus.
+- Added a consistent 64px bottom gutter to the centered menu/order workspace and changed the footer into a full-viewport-width closing band with centered content and theme-derived contrast.
+- Kept phone and tablet behavior unchanged. Browser checks at 1440×900, 768×1024, and 390×844 measured zero horizontal overflow. Desktop showed a 64px content-to-footer gap, a full-width footer, and a centered 1240px workspace; tablet retained three menu columns and phone retained two columns with its 54px order action. `npm run check` and `git diff --check` passed.
+
 ## September 13, 2026 — Public menu responsive layout and order review
 
 - Replaced the narrow desktop customer-menu canvas with a dedicated wide layout: a three-column food grid sits beside a sticky live order summary showing line quantities, selections, subtotal, and a focused Review order action.
@@ -16,9 +22,10 @@
 ## Guided Kusina payment step — September 13, 2026
 
 - Changed Kusina's QRK Quick checkout from an inline payment fieldset to a guided second step. Review order now ends with `Pay order`, which opens a focused payment dialog containing two large semantic button cards.
-- Pay at the counter is enabled and continues to create the same simulated counter-payment order. Cashless stays visible, disabled, and labeled `Coming after the pilot`; no payment provider or charge was added.
+- Simplified the dialog to a text Back control and two label-only cards: `💵 Pay at the counter` and disabled `💳 Cashless` with a compact `Soon` badge. Repeated helper copy, price, unavailable label, pilot note, eyebrow, and close icon were removed.
 - The payment dialog restores the order-review dialog through its Back control or Escape, retains the cart and checkout fields, and moves keyboard focus to the enabled payment choice on entry.
-- Validation: `npm run check` and `git diff --check` pass. Live browser inspection confirmed the complete View order → Pay order → payment dialog path, the carried ₱180 subtotal, focused counter card, disabled Cashless semantics, accessible dialog/control names, and successful counter submission to the existing Waiting for staff confirmation.
+- Removed the visible `How would you like to pay?` heading; the dialog keeps a concise accessible name without adding visual copy.
+- Validation: `npm run check` and `git diff --check` pass. Live browser inspection confirmed the minimal dialog exposes only Back and two card choices; focus lands on Pay at the counter, Cashless is disabled and announces `Soon Cashless`, and Back restores the populated review with Pickup still selected.
 
 ## Business workspace preview-label removal — September 13, 2026
 
