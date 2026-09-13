@@ -1,5 +1,13 @@
 # Build status
 
+## September 13, 2026 — profile-specific test QR codes
+
+- Business Profile now renders a scannable test QR for the signed-in client instead of the decorative placeholder.
+- The five development clients resolve to five distinct customer destinations using `/menu/?business=<slug>`.
+- `Download QR`, `Open customer view`, and `Copy link` use the same profile-specific destination. The test image is generated over HTTPS by the goQR API; production QR generation and the permanent public domain remain part of the future public-menu/QR milestone.
+- Local phone scanning requires opening the dashboard through `npm run start:lan` and the computer's LAN address. A QR created from `127.0.0.1` is only reachable on the same computer.
+- Validation: `npm run check` passed, including the new five-profile URL contract; `node scripts/build-pages.mjs` passed; Kusina Manila's QR rendered in the Business Profile card and exposed the expected encoded customer URL in browser review.
+
 ## September 13, 2026 — Public menu desktop page-shell finish
 
 - Removed the desktop customer menu's inherited full-viewport-height content column, which created an abrupt empty seam above the footer on shorter menus.
