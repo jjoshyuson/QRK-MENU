@@ -19,6 +19,7 @@
 - Business profile/QR, staff permissions, live/history orders, sales and settings are clearly UI-only demo states.
 - Menu Studio adds category reordering, plain-text option notes and Available/Sold out/Hidden states. Hidden items remain owner-visible and are omitted from customer previews.
 - The public development `/menu/` route preserves the simple two-column photo menu without owner controls or a Development badge. It now includes customer ordering, cart, checkout, confirmation and tracking UI; its menu data is not connected to Menu Studio edits.
+- Customer order confirmation presents `ORDER NUMBER` as a centered label above the large bold identifier; verification and status details remain secondary below it.
 - The customer route no longer has a global header/navbar. Table mode now opens with a focused session-entry dialog for name, table, guest count and package as required by the saved preset, followed by a staff/host waiting state. Category navigation remains because it navigates the menu itself rather than the wider product.
 - Kusina customer links show QRK Quick. Salamat customer links show QRK Table, derive a fixed demo table from `?table=`, and remove pickup from that visit. This is a mode-aware UI demonstration, not a persistent table session.
 - Staff order operations have no Preparing stage. All live orders remain under Received and use one action: Mark paid for Quick or Mark served for Table. Table-mode businesses also retain Tables; Quick businesses show only Received. History remains separate, and the secondary detail panel retains accessible cancellation confirmation.
@@ -37,6 +38,7 @@
 
 - The customer cart action is an 85vw floating card without a viewport-wide backing strip. As the footer enters the viewport, the card moves upward and stays 12px above it; footer tracking is immediate with no transition.
 - While the customer cart action is visible, the menu reserves the card's measured height plus breathing room so the final item can scroll completely above it; the extra space disappears with an empty cart.
+- The public customer route now has explicit device layouts: phone retains the two-column menu and floating order action, tablet uses a wider three-column menu, and desktop uses a broad three-column menu beside a sticky live order summary. Desktop order review expands into a two-column dialog; checkout behavior remains shared across sizes.
 
 - QRK Table staff use a `Tables` tab with six narrow operational cards. Pending requests can be accepted; occupied cards are muted through shared theme tokens and expose `Table cleaned`, which returns the table to Available in the local preview.
 - The Tables tab's normal badge counts occupied tables. A separate high-contrast red badge with white text counts pending table and join requests and is hidden at zero; it does not inherit the customizable navigation-badge colors. Table controls rerender only when shared session state changes, keeping cleanup actions and customer session notices stable between polls.

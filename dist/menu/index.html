@@ -8,16 +8,17 @@
   <title>Kusina Manila — Order</title>
   <link rel="icon" type="image/png" href="/assets/brand/qrk-mark.png">
   <link rel="stylesheet" href="/theme.css?v=1">
-  <link rel="stylesheet" href="/menu/menu.css?v=3">
+  <link rel="stylesheet" href="/menu/menu.css?v=4">
   <link rel="stylesheet" href="/menu/brand.css?v=2">
   <link rel="stylesheet" href="/menu/table-session.css?v=1">
   <link rel="stylesheet" href="/reference-theme.css?v=2">
   <link rel="stylesheet" href="/modern-compact.css?v=1">
-  <link rel="stylesheet" href="/menu/cart-dock.css?v=3">
+  <link rel="stylesheet" href="/menu/cart-dock.css?v=4">
   <link rel="stylesheet" href="/menu/payment-first.css?v=1">
+  <link rel="stylesheet" href="/menu/order-confirmation.css?v=1">
   <script src="/global-theme.js"></script>
   <script src="/data/qrk-config.local.js"></script>
-  <script type="module" src="/menu/menu.js?v=5"></script>
+  <script type="module" src="/menu/menu.js?v=6"></script>
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
@@ -38,6 +39,7 @@
       <span class="waiting-mark" aria-hidden="true"></span><p class="eyebrow">REQUEST SENT</p><h1 id="waiting-title">Waiting for staff</h1><p id="waiting-summary"></p><p class="waiting-countdown" id="waiting-countdown" role="timer"></p><div class="waiting-details" id="waiting-details"></div><p class="demo-note">Devices using this LAN preview share table availability and join requests. Hosted service is not connected.</p><button class="primary-button hidden" id="browse-pending-table" type="button">Browse and build order</button><button class="secondary-button" id="cancel-table-request" type="button">Cancel request</button><button class="secondary-button" id="preview-accept-table" type="button">Preview staff acceptance</button>
     </section>
   </dialog>
+  <div class="customer-layout">
   <main id="menu-content">
     <section class="restaurant" aria-labelledby="restaurant-name">
       <div><p class="eyebrow">DINE IN OR PICKUP</p><h1 id="restaurant-name">Kusina Manila</h1><p>Filipino favorites, made with love.</p><span>PHP ₱ <i>•</i> Ermita, Manila</span></div>
@@ -53,6 +55,14 @@
       <section class="empty-state hidden" id="menu-empty" aria-live="polite"><div aria-hidden="true">⌕</div><h3>No menu items found</h3><p>Try another search or clear the search to browse everything.</p><button class="text-button" id="clear-search" type="button">Clear search</button></section>
     </section>
   </main>
+  <aside class="desktop-order" aria-labelledby="desktop-order-title">
+    <div class="desktop-order-card">
+      <div class="desktop-order-heading"><div><p class="eyebrow">YOUR ORDER</p><h2 id="desktop-order-title">Order summary</h2></div><span id="desktop-order-count">0 items</span></div>
+      <div class="desktop-order-items" id="desktop-order-items"><p class="desktop-order-empty">Choose a dish to start your order.</p></div>
+      <div class="desktop-order-action"><div><span>Subtotal</span><strong id="desktop-order-subtotal">₱0</strong></div><button class="primary-button" id="desktop-open-cart" type="button" disabled>Review order</button></div>
+    </div>
+  </aside>
+  </div>
 
   <button class="open-tab-control hidden" id="open-tab-control" type="button" aria-controls="cart-dialog" aria-haspopup="dialog">
     <span class="open-tab-count" id="open-tab-count">0</span><span><b>Open Tab</b><small id="open-tab-total">₱0 · 0 items</small></span>
@@ -113,7 +123,7 @@
     <div class="sheet-card">
       <div class="sheet-content confirmation-content">
         <div class="success-mark" aria-hidden="true">✓</div><p class="eyebrow">ORDER SENT</p><h2 id="confirmation-title">Waiting for staff acceptance</h2>
-        <div class="order-number"><span>Order number</span><strong id="confirmation-number"></strong></div>
+        <div class="order-number"><span>ORDER NUMBER</span><strong id="confirmation-number"></strong></div>
         <div class="verification-card"><div id="verification-mark" class="verification-mark" aria-hidden="true"></div><div><span>Verification code</span><strong id="confirmation-token"></strong><small>Staff can match this code on this device.</small></div></div>
         <div id="order-progress" class="order-progress"></div>
         <p class="demo-note" id="confirmation-data-note">This is a local development order, not a production order.</p><p class="form-error hidden" id="order-error" role="alert"></p>

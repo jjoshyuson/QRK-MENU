@@ -1,0 +1,19 @@
+.order-number {
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 2px 14px 8px;
+  border: 0;
+  text-align: center;
+}
+
+.order-number span {
+  color: var(--ink);
+  font-size: 11px;
+  letter-spacing: 0.4px;
+}
+
+.order-number strong {
+  font: 800 34px/1.05 Manrope, Arial, sans-serif;
+  letter-spacing: 0.4px;
+}

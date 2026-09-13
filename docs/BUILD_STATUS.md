@@ -1,5 +1,18 @@
 # Build status
 
+## September 13, 2026 — Public menu responsive layout and order review
+
+- Replaced the narrow desktop customer-menu canvas with a dedicated wide layout: a three-column food grid sits beside a sticky live order summary showing line quantities, selections, subtotal, and a focused Review order action.
+- Expanded desktop order review into a two-column dialog that separates cart lines from fulfillment details. Tablet now uses a three-column menu; phone retains the established two-column menu and 54px floating order action.
+- Preserved the existing vanilla HTML/CSS/JavaScript stack, customer ordering behavior, theme tokens, accessibility semantics, and same-browser preview limitations. No backend or deployment scope changed.
+- Browser verification covered 390×844, 768×1024, and 1280×720 desktop. The phone measured zero horizontal overflow, the tablet resolved to three columns, the desktop sidebar updated after adding an item, and the 900px two-column review dialog remained keyboard-addressable with zero page overflow. `npm run check` and `git diff --check` passed.
+
+## Customer order-number emphasis — September 13, 2026
+
+- Restyled the confirmation's order number as a centered, unboxed `ORDER NUMBER` label with the generated identifier directly below in large bold type, matching the supplied visual reference.
+- Preserved the confirmation status, verification code, progress tracker, and actions.
+- Validation: `npm run check` passed. Live browser checks confirmed the revised hierarchy with order `KM-1049` at 390×844, 768×700, and the default desktop viewport without horizontal overflow or clipped confirmation controls.
+
 ## Guided Kusina payment step — September 13, 2026
 
 - Changed Kusina's QRK Quick checkout from an inline payment fieldset to a guided second step. Review order now ends with `Pay order`, which opens a focused payment dialog containing two large semantic button cards.

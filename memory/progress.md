@@ -2,6 +2,8 @@
 
 As of September 13, 2026:
 
+- Public customer-menu responsive redesign is implemented locally: desktop adds a sticky order summary and wider order review, tablet uses a three-column menu, and phone preserves its compact two-column menu and floating order action. Final light/dark and representative-width verification is recorded in `docs/BUILD_STATUS.md`; publication remains pending.
+
 - Kusina Manila remains QRK Quick and uses a guided payment-first checkout: `Pay order` opens a separate two-card payment dialog, with pay-at-counter enabled and Cashless disabled for the pilot.
 
 - The public landing-page set at `/landing/` has been corrected locally to preserve the three supplied HTML designs. The revised pages retain their original structure, visuals, motion and content depth; use Manrope/DM Sans, official QRK assets, global-theme accent colors, and stronger Quick/Table hooks. Local 390px, 768px, and 1280px overflow checks passed; corrected deployment and user review remain open.
