@@ -47,3 +47,8 @@
 - The Tables tab's normal badge counts occupied tables. A separate high-contrast red badge with white text counts pending table and join requests and is hidden at zero; it does not inherit the customizable navigation-badge colors. Table controls rerender only when shared session state changes, keeping cleanup actions and customer session notices stable between polls.
 
 See `docs/UI_AND_FLOWS.md` for detailed behavior and test cases.
+## QRK Quick entry and checkout — September 13, 2026
+
+- QRK Quick businesses that enable both fulfillment modes show a blocking 80vw × 80vh popup before menu browsing. It contains only two large stacked cards: `Dine in 🍽️` and `Takeout 🛍️`; no heading, helper copy, arrows, or subtitles.
+- The initial choice seeds the checkout selection. Order review labels the choices Pickup and Serve at table, shows a table-number field only for table service, leads with subtotal, and continues through Confirm payment to payment method.
+- Table and buffet presets retain their dedicated table-entry flow and do not receive the Quick service-choice dialog.
