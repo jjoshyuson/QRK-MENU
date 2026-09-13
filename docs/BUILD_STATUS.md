@@ -742,3 +742,9 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Connected the sample accent variables to the shared `--brand-400` and `--brand-500` tokens, replaced embedded logo data with the official lightweight QRK assets, and aligned typography to Manrope headings with DM Sans body copy.
 - Strengthened the primary hooks to “One QRK. Built for how you serve.”, “Turn every scan into an order.” and “Your guests shouldn’t have to wave for service.” Supporting hero and closing copy was tightened without reducing the supplied page depth.
 - The existing preview server was reused because port 4173 was already active. `npm run check` passed before editing. Browser checks confirmed both new type stacks, the active global accent, zero broken images and no horizontal overflow at 390px, 768px or 1280px. Corrected deployment and final user review remain open.
+## September 13, 2026 — QRK Quick service choice
+
+- Added a blocking QRK Quick entry dialog that occupies at least 80% of the viewport and presents Dine in and Takeout as two stacked action cards.
+- Made the available choices business-configurable through `serviceProfile.settings.fulfillmentModes`; Quick defaults to both choices, while Table and buffet presets keep their existing dine-in/table entry.
+- The selected entry choice now carries into order review. Checkout shows Pickup or Serve at table, requests a table number only for dine-in, leads with the subtotal, and uses Confirm payment before the payment-method step.
+- `npm run check` and `git diff --check` passed. Browser checks covered both Quick paths, buffet isolation, keyboard focus, and 390×844, 768×1024 and 1280×800 viewports with no horizontal overflow. Hosted payment and a business-facing fulfillment-setting editor remain incomplete.

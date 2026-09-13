@@ -48,3 +48,8 @@ As of September 13, 2026:
 - The LAN order regression is fixed: Kusina `KM-1050` and Salamat `SL-0207` were submitted through the customer route and appeared in their authenticated Supabase staff queues. The six-table selection and host-controlled join flow also passed across separate browser device sessions. Table sessions use the local preview server only and reset when it restarts.
 
 Read `docs/PROGRESS_MAP.md` for milestone sequencing and `docs/BUILD_STATUS.md` for detailed evidence.
+## September 13, 2026 — QRK Quick service choice
+
+- Completed on `P/MENU/2`: configurable Dine in/Takeout entry dialog and fulfillment-aware Quick checkout.
+- Validation passed for automated checks, both customer paths, buffet isolation and representative responsive widths.
+- Business-facing controls for editing allowed fulfillment modes and real payment processing remain incomplete.

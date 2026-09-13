@@ -72,3 +72,12 @@ A business-approved trusted-customer/VIP account model has been captured for pro
 ## Maintenance
 
 Update this map only when stage status, order, dependencies or exit criteria change. Put detailed test evidence and dated implementation notes in `docs/BUILD_STATUS.md`; put stable project knowledge and routing summaries in `memory/`.
+## Current branch milestone — QRK Quick service choice
+
+**Approved and completed:** QRK Quick asks Dine in or Takeout before menu browsing when both are enabled. The choice carries into checkout, where customers can confirm Pickup or Serve at table, enter a table number only when needed, review the subtotal, and continue to payment selection.
+
+**Dependency:** Business availability is represented by `serviceProfile.settings.fulfillmentModes`. A management UI for changing that setting is proposed, not yet approved or built.
+
+**Exit evidence:** Automated checks pass; local browser verification covers both paths, Table/buffet isolation, focus behavior, and phone/tablet/desktop reflow.
+
+**Immediate path forward:** User review of the Quick dialog and checkout sequence, followed by a separately approved business-settings control if required.
