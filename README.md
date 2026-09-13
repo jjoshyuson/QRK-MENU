@@ -21,6 +21,7 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 | `dist/` | Editable source of the working static site, despite the folder name |
 | `dist/assets/brand/` | Canonical transparent PNG QRK mark, wordmark and combined logo assets |
 | `dist/theme.css` | Shared neutral and QRK accent variables used by owner and customer routes |
+| `dist/ui-components.css`, `dist/ui-components.js` | Shared component variables/visual rules plus stable Inspect Element labels used by every operational route and the catalog |
 | `dist/manifest.webmanifest`, `dist/pwa.*`, `dist/sw.js` | Shared installable app metadata, app-like touch behavior and lightweight service-worker shell |
 | `dist/photos/` | Six bundled sample food photographs |
 | `dist/dashboard.css` | Business Dashboard layout and responsive workspace styles |
@@ -55,7 +56,7 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 
 - Desktop: Business Dashboard with overview, profile, Menu Studio, staff access, orders, and settings sections.
 - PWA shell: owner tools, client/admin tools and the customer menu share standalone install metadata, safe-area handling and app-like touch behavior. Double-tap zoom is suppressed without disabling deliberate pinch zoom.
-- Component inventory: `/components/` is an unlinked development-only visual catalog with production class/source labels; landing-page UI is intentionally excluded.
+- Component system: `dist/ui-components.css` is the shared visual source of truth, and `/components/` renders that layer as an unlinked development catalog. Inspect an element to read its stable `data-component`, `data-variant` and `data-component-source` labels. Landing-page UI is intentionally excluded.
 - Brand: black, white and gray dominate the interface, with cyan/teal reserved for actions and selection. Separate transparent PNG icon, wordmark and combined assets preserve the approved generated artwork; the favicon uses the icon-only mark.
 - Mobile/tablet at viewport widths up to 1100 CSS pixels: Dashboard opens first; a top-right hamburger opens navigation, and Menu Studio is a separate view with photo-grid and quick availability-table modes.
 - Owners can add/edit/delete items, set PHP prices and option notes, create/reorder categories, rename the menu, set available/sold-out/hidden states, and replace photos.

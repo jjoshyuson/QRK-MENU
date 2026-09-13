@@ -2,6 +2,11 @@
 
 ## September 13, 2026 — Static component inventory
 
+- Promoted the inventory into a shared component source: `dist/ui-components.css` now owns reusable component variables and cross-route visual rules, while route stylesheets retain page composition and responsive placement.
+- Added a dependency-free component registry that labels initial and dynamically rendered UI with stable `data-component`, `data-variant` and `data-component-source` attributes for Inspect Element.
+- Loaded the same component layer and registry on owner/Client Admin/Client Staff, QRK Admin, customer-menu and catalog routes; added both shared files to the PWA shell cache.
+- Source-of-truth validation: the shared source/catalog contracts, full `npm run check`, `git diff --check` and the GitHub Pages `/QRK-MENU/` base-path build passed. Live Brave inspection confirmed named Button, Metric card and Customer dish card instances point to `/ui-components.css`; the catalog, owner, customer and admin routes each had zero horizontal overflow at 390×844, 768×1024 and 1440×900.
+
 - Added an unlinked `/components/` development route containing 15 organized families of reusable UI from owner tools, Client Admin, Client Staff, QRK Admin and the customer menu; public landing pages are intentionally outside its scope.
 - Cataloged foundations, controls, navigation, feedback, dashboard, menu management, staff, orders/history, tables, settings/appearance, customer menu, cart/checkout, platform administration, forms/dialogs and exceptional states.
 - Each specimen includes its production class or source label so the page works as a visual lookup and copy reference without duplicating application behavior.

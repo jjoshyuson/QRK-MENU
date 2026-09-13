@@ -1,0 +1,106 @@
+/*
+ * QRK shared component source of truth.
+ *
+ * Change component variables and visual rules here to update owner, Client Admin,
+ * Client Staff, QRK Admin, customer menu, and /components/ together. Route CSS
+ * remains responsible only for page composition and responsive placement.
+ */
+:root{
+  --component-control-height:44px;
+  --component-customer-control-height:50px;
+  --component-radius-xs:6px;
+  --component-radius-sm:8px;
+  --component-radius-md:10px;
+  --component-radius-lg:12px;
+  --component-radius-xl:16px;
+  --component-radius-pill:999px;
+  --component-border:1px solid var(--line);
+  --component-border-strong:1px solid var(--gray-300);
+  --component-shadow-card:0 5px 20px #11182708;
+  --component-shadow-dialog:0 20px 70px #11182724;
+  --component-focus:3px solid var(--brand-ring);
+  --component-focus-offset:2px;
+  --component-disabled-opacity:.48;
+  --component-card-bg:var(--surface);
+  --component-card-muted-bg:var(--surface-muted);
+  --component-primary-bg:var(--brand-500);
+  --component-primary-fg:var(--brand-foreground);
+  --component-danger-bg:var(--danger-soft);
+  --component-danger-fg:var(--danger);
+  --component-card-padding:16px;
+  --component-dialog-padding:20px;
+  --component-row-gap:12px;
+}
+
+/* Controls */
+.button,.primary-button,.secondary-button,.text-button,.icon-button,.mobile-icon-control,
+.settings-row,.theme-preset,.payment-card,.table-choice,.table-card-action{
+  min-height:var(--component-control-height);
+  border-radius:var(--component-radius-sm);
+}
+.button.primary,.primary-button,.table-card.pending .table-card-action{
+  border-color:transparent;
+  background:var(--component-primary-bg);
+  color:var(--component-primary-fg);
+}
+.button.outline,.secondary-button,.icon-button,.mobile-icon-control,.table-card-action{
+  border:var(--component-border-strong);
+  background:var(--surface);
+}
+.button.danger,.danger-button{background:var(--component-danger-bg);color:var(--component-danger-fg)}
+.button:disabled,.primary-button:disabled,.secondary-button:disabled,.icon-button:disabled,
+.mobile-icon-control:disabled,.payment-card:disabled,.table-choice:disabled{
+  opacity:var(--component-disabled-opacity);
+}
+
+/* Form fields */
+input:not([type="checkbox"]):not([type="radio"]):not([type="color"]),select,textarea{
+  border:var(--component-border-strong);
+  border-radius:var(--component-radius-sm);
+  background:var(--surface);
+  color:var(--ink);
+}
+input[type="checkbox"],input[type="radio"]{accent-color:var(--brand-500)}
+
+/* Shared surfaces */
+.metric-card,.dashboard-card,.status-strip,.service-note,.demo-banner,.credential-card,
+.item-row,.staff-row,.order-queue-card,.history-order,.history-order-card,.table-card,
+.settings-group,.dish,.desktop-order-card,.active-order,.notice,.option-group,.cart-item,
+.payment-card,.tab-round,.platform-client-row,.platform-account-row,.preset-card,
+.verification-card,.empty-state,.dialog-sample,dialog>.dialog-card{
+  border-color:var(--line);
+  background:var(--component-card-bg);
+}
+.metric-card,.dashboard-card,.status-strip,.service-note,.demo-banner,.credential-card,
+.item-row,.staff-row,.order-queue-card,.history-order,.history-order-card,.table-card,
+.settings-group,.dish,.desktop-order-card,.active-order,.notice,.option-group,.cart-item,
+.payment-card,.tab-round,.platform-client-row,.platform-account-row,.preset-card,
+.verification-card,.empty-state{
+  border-radius:var(--component-radius-lg);
+}
+.badge,.section-chip,.order-state,.table-card-status,.demo-pill{
+  border-radius:var(--component-radius-pill);
+}
+.form-error,.error-message{color:var(--danger)}
+.success-mark{color:var(--success)}
+
+/* Source-of-truth documentation helpers used only by /components/. */
+.inspector-guide{display:grid;gap:5px;max-width:900px;margin:0 0 22px;padding:14px 16px;border:var(--component-border);border-left:4px solid var(--brand-500);border-radius:var(--component-radius-md);background:var(--surface)}
+.inspector-guide span{color:var(--muted);font-size:12px}
+.token-list{display:flex;gap:8px;flex-wrap:wrap}
+.token-list code{padding:7px 9px;border-radius:var(--component-radius-xs);background:var(--surface-muted);color:var(--gray-700);font-size:10px}
+
+/* Focus is deliberately centralized so every route exposes the same keyboard cue. */
+.button:focus-visible,.primary-button:focus-visible,.secondary-button:focus-visible,.text-button:focus-visible,
+.icon-button:focus-visible,.mobile-icon-control:focus-visible,.settings-row:focus-visible,
+.theme-preset:focus-visible,.payment-card:focus-visible,.table-choice:focus-visible,
+.table-card-action:focus-visible,.categories a:focus-visible,.category-tab:focus-visible,
+input:focus-visible,select:focus-visible,textarea:focus-visible,[role="tab"]:focus-visible{
+  outline:var(--component-focus);
+  outline-offset:var(--component-focus-offset);
+}
+
+@media(prefers-reduced-motion:reduce){
+  .button,.primary-button,.secondary-button,.text-button,.icon-button,.mobile-icon-control,
+  .settings-row,.theme-preset,.payment-card,.table-choice,.table-card-action{transition:none!important}
+}

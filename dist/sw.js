@@ -1,4 +1,4 @@
-const CACHE_NAME = 'qrk-app-shell-v1';
+const CACHE_NAME = 'qrk-app-shell-v2';
 const APP_SHELL = [
   './',
   './admin/',
@@ -8,6 +8,8 @@ const APP_SHELL = [
   './pwa.js',
   './theme.css',
   './global-theme.js',
+  './ui-components.css',
+  './ui-components.js',
   './assets/brand/qrk-mark.png',
   './assets/brand/qrk-logo.png',
   './assets/brand/qrk-wordmark.png',

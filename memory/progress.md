@@ -2,7 +2,7 @@
 
 As of September 13, 2026:
 
-- An unlinked static component inventory is implemented locally at `/components/`. It covers 15 reusable UI families across owner, client/admin/staff, QRK Admin and customer surfaces, labels production sources, excludes landing pages and is now governed by an `AGENTS.md` upkeep rule.
+- The component inventory is now backed by a shared production source of truth: `dist/ui-components.css` supplies reusable variables/visual rules to every operational route and `/components/`, while `dist/ui-components.js` gives initial and dynamically rendered elements stable Inspect Element names and variants. The catalog covers 15 UI families and excludes landing pages.
 
 - A shared PWA shell is implemented locally across owner, client/admin and customer routes. Manifest, standalone metadata, touch behavior and the lightweight service-worker cache pass static/base-path validation; publication and physical-device installed-mode verification remain pending.
 
