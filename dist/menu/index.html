@@ -13,12 +13,12 @@
   <link rel="stylesheet" href="/menu/table-session.css?v=1">
   <link rel="stylesheet" href="/reference-theme.css?v=2">
   <link rel="stylesheet" href="/modern-compact.css?v=1">
-  <link rel="stylesheet" href="/menu/cart-dock.css?v=6">
+  <link rel="stylesheet" href="/menu/cart-dock.css?v=7">
   <link rel="stylesheet" href="/menu/payment-first.css?v=1">
   <link rel="stylesheet" href="/menu/order-confirmation.css?v=1">
   <script src="/global-theme.js"></script>
   <script src="/data/qrk-config.local.js"></script>
-  <script type="module" src="/menu/menu.js?v=7"></script>
+  <script type="module" src="/menu/menu.js?v=8"></script>
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
@@ -42,14 +42,18 @@
   <div class="customer-layout">
   <main id="menu-content">
     <section class="restaurant" aria-labelledby="restaurant-name">
-      <div><p class="eyebrow">DINE IN OR PICKUP</p><h1 id="restaurant-name">Kusina Manila</h1><p>Filipino favorites, made with love.</p><span>PHP ₱ <i>•</i> Ermita, Manila</span></div>
-      <div class="restaurant-mark" aria-hidden="true">K.</div>
+      <img class="restaurant-banner" id="restaurant-banner" src="/assets/businesses/kusina-manila-banner.webp" alt="" width="1440" height="480">
+      <div class="restaurant-profile">
+        <div class="restaurant-mark" aria-hidden="true">K.</div>
+        <div class="restaurant-copy"><h1 id="restaurant-name">Kusina Manila</h1><p>Filipino favorites, made with love.</p><span>PHP ₱ <i>•</i> Ermita, Manila</span></div>
+      </div>
     </section>
     <section class="notice hidden" id="store-notice" aria-live="polite"></section>
-    <section class="menu" aria-labelledby="menu-title">
-      <div class="menu-heading"><div><p class="eyebrow">TODAY'S MENU</p><h2 id="menu-title">What would you like?</h2></div><span id="item-count">6 items</span></div>
-      <div class="search-wrap"><label class="sr-only" for="menu-search">Search the menu</label><input id="menu-search" type="search" placeholder="Search dishes and drinks" autocomplete="off"><span aria-hidden="true">⌕</span></div>
-      <nav class="categories" id="categories" aria-label="Menu categories"></nav>
+    <section class="menu" aria-label="Menu">
+      <div class="menu-tools">
+        <div class="search-wrap"><label class="sr-only" for="menu-search">Search the menu</label><input id="menu-search" type="search" placeholder="Search dishes and drinks" autocomplete="off"><span aria-hidden="true">⌕</span></div>
+        <nav class="categories" id="categories" aria-label="Menu categories"></nav>
+      </div>
       <div id="menu-sections"></div>
       <section class="empty-state hidden" id="menu-empty" aria-live="polite"><div aria-hidden="true">⌕</div><h3>No menu items found</h3><p>Try another search or clear the search to browse everything.</p><button class="text-button" id="clear-search" type="button">Clear search</button></section>
     </section>

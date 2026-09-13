@@ -1,5 +1,13 @@
 # Build status
 
+## September 13, 2026 — Public menu branded identity and unified sticky tools
+
+- Replaced the redundant public-menu eyebrow, “Today’s menu,” “What would you like?” and total-item copy with a compact business-first header.
+- Added optimized illustrated Kusina Manila banner and profile-mark assets. The circular mark overlaps the banner edge in a familiar social-profile pattern while retaining the business name, description, currency and location.
+- Grouped search and category navigation into one bounded sticky toolbar. Category jumps and active tracking account for the full toolbar height, and the combined control returns to its natural position when scrolling back above the menu.
+- Preserved the existing responsive menu grids, ordering flows, tenant logo override, semantic search/navigation and 44px category targets.
+- Browser checks confirmed the banner/avatar composition and zero horizontal overflow at 390×844, a flush sticky toolbar with Drinks tracking correctly, three menu columns at 768×1024, and the three-column menu plus desktop order summary at 1280×720. `npm run check` passed.
+
 ## September 13, 2026 — profile-specific test QR codes
 
 - Business Profile now renders a scannable test QR for the signed-in client instead of the decorative placeholder.
