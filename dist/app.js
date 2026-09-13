@@ -253,12 +253,13 @@ updateStoreStatus(storeOpen);
 $('#store-status-toggle').onclick=()=>{updateStoreStatus(!storeOpen,{persist:true});announce(storeOpen?'Store shown as open in this demo':'Store shown as closed in this demo')};
 $('#accept-orders-toggle').onchange=e=>{updateStoreStatus(e.target.checked,{persist:true});announce(storeOpen?'Store shown as open in this demo':'Store shown as closed in this demo')};
 
-document.querySelectorAll('.demo-action').forEach(button=>button.addEventListener('click',()=>announce(button.dataset.demoMessage||'Updated for this UI preview')));
+document.querySelector('.demo-pill')?.remove();
+document.querySelectorAll('.demo-action').forEach(button=>button.addEventListener('click',()=>announce((button.dataset.demoMessage||'This action is not connected yet').replace(' in this UI preview',''))));
 document.querySelectorAll('[data-settings-dialog]').forEach(button=>button.addEventListener('click',()=>{const parent=button.closest('dialog');if(parent?.open)parent.close();const dialog=$(`#${button.dataset.settingsDialog}`);dialog.showModal();requestAnimationFrame(()=>dialog.querySelector('input,select,button')?.focus())}));
 document.querySelectorAll('.close-settings-dialog').forEach(button=>button.addEventListener('click',()=>button.closest('dialog').close()));
 document.querySelectorAll('.settings-dialog').forEach(dialog=>dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close()}));
 $('#account-details-form').addEventListener('submit',event=>{event.preventDefault();const form=event.currentTarget,username=form.elements.username.value.trim();$('#settings-username').textContent=`@${username||'account'}`;form.closest('dialog').close();announce('Account details updated for this preview')});
-$('#password-settings-form').addEventListener('submit',event=>{event.preventDefault();event.currentTarget.reset();event.currentTarget.closest('dialog').close();announce('Password changes are not connected in this UI preview')});
+$('#password-settings-form').addEventListener('submit',event=>{event.preventDefault();event.currentTarget.reset();event.currentTarget.closest('dialog').close();announce('Password changes are not connected yet')});
 $('#numbering-settings-form').addEventListener('submit',event=>{event.preventDefault();const form=event.currentTarget,prefix=form.elements.prefix.value.trim().toUpperCase()||'ORDER',next=Math.max(1,Number(form.elements.nextNumber.value)||1),reset=form.elements.dailyReset.checked?'Daily reset':'Continuous';form.elements.prefix.value=prefix;form.elements.nextNumber.value=next;$('#numbering-summary').textContent=`${prefix} · Next #${next} · ${reset}`;form.closest('dialog').close();announce('Order numbering preview updated for this session')});
 $('#prep-time-settings-form').addEventListener('submit',event=>{event.preventDefault();const form=event.currentTarget;$('#prep-time-summary').textContent=form.elements.prepTime.value;form.closest('dialog').close();announce('Default prep time updated for this preview')});
 const brandingForm=$('#business-profile-form'),brandingPrimary=$('#brand-primary-color'),brandingNav=$('#brand-nav-color'),brandingLogo=$('#business-logo-input');
@@ -365,10 +366,6 @@ $('#confirm-cancel-order').onclick=()=>{const order=orders.find(item=>String(ite
 $('#refresh-orders').onclick=async()=>{await syncOrders();announce(`${dataService.mode==='demo'?'Device-local':'Backend'} orders refreshed`)};
 $('#order-sound-toggle').checked=localStorage.getItem('qrk_demo_order_sound_v1')==='on';$('#order-sound-toggle').onchange=e=>{localStorage.setItem('qrk_demo_order_sound_v1',e.target.checked?'on':'off');announce(`New-order sound ${e.target.checked?'on':'off'} for this browser`)};
 dataService.subscribe({onOrdersChanged:()=>syncOrders({announceNew:true}),onStoreChanged:async()=>updateStoreStatus(await readStoreOpen())});
-$('.prototype').textContent=dataService.mode==='demo'?'UI demo · local device data':'Provider configured · verification required';
-if(dataService.mode==='supabase'){
- $('#workspace-data-note').textContent='This local workspace uses Supabase for menu, order and store data. Hosted deployment and production operations are not connected.';
-}
 setInterval(()=>renderOrders(),30000);
 
 const logoutButton=[...document.querySelectorAll('.session-card button')].find(button=>button.textContent.includes('Log out'));

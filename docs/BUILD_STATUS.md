@@ -7,6 +7,12 @@
 - The payment dialog restores the order-review dialog through its Back control or Escape, retains the cart and checkout fields, and moves keyboard focus to the enabled payment choice on entry.
 - Validation: `npm run check` and `git diff --check` pass. Live browser inspection confirmed the complete View order → Pay order → payment dialog path, the carried ₱180 subtotal, focused counter card, disabled Cashless semantics, accessible dialog/control names, and successful counter submission to the existing Waiting for staff confirmation.
 
+## Business workspace preview-label removal — September 13, 2026
+
+- Removed the drawer's UI-preview notice, the top-bar environment label, Dashboard preview badge, footer label, and remaining UI-preview wording from business-workspace dialogs and feedback.
+- Kept specific browser-local and unconnected-feature wording where it prevents unsupported persistence or backend claims.
+- Validation: `npm run check` and targeted diff checks passed. Browser checks at 390×700, 390×844, 768×700, and 1280×800 confirmed no user-facing “UI preview” or “UI demo” labels, the profile stayed visible inside the drawer, and horizontal overflow remained zero.
+
 ## Kusina QRK Quick payment-first configuration — September 13, 2026
 
 - Kept Kusina Manila on QRK Quick while overriding its payment timing to upfront, so its customer checkout now displays the existing payment-first choice.

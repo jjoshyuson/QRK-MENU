@@ -217,7 +217,7 @@ body[data-current-page="orders"] .topbar-history{margin-left:auto}
 @media(max-width:560px){.settings-page{padding-top:16px}.settings-card{min-height:54px;padding-inline:12px}}
 
 /* Keep account access visible while drawer navigation and help scroll independently. */
-.sidebar-scroll{display:flex;min-height:0;flex:1;flex-direction:column}.sidebar-scroll>.tip{margin-top:auto}.sidebar-bottom{flex:none;margin-top:0}
+.sidebar-scroll{display:flex;min-height:0;flex:1;flex-direction:column}.sidebar-bottom{flex:none;margin-top:0}.dashboard-heading .demo-pill{display:none}
 @media(max-width:1100px){body.mobile-nav-open>.sidebar{overflow:hidden;padding-bottom:max(20px,env(safe-area-inset-bottom))}body.mobile-nav-open>.sidebar .sidebar-scroll{display:flex;min-height:0;flex:1;flex-direction:column;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}body.mobile-nav-open>.sidebar .sidebar-bottom{display:block;flex:none;margin-top:0;padding-top:8px;background:var(--global-sidebar,var(--gray-900))}}
 
 /* Orders use one Received queue, plus Tables only for Table-mode businesses. */
