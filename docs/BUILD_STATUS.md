@@ -1,5 +1,12 @@
 # Build status
 
+## September 13, 2026 — Customer category navbar sticky boundary
+
+- Removed the late compact-theme margins, rounded container, and top offset that made the public-menu category navigation appear suspended over menu items.
+- The category navigation now sits flush at the top of the viewport while its parent menu is active, remains bounded by that menu section, and naturally returns below the search/header when scrolling upward.
+- Added bounded end-of-menu scroll room on phone layouts so even a short menu can move the navbar fully to `top: 0` before the document reaches its scroll limit.
+- Preserved horizontal category scrolling, active-section tracking, 44px targets, semantic navigation, and existing phone/tablet/desktop menu grids. Browser checks confirmed the short 390×844 menu reaches `top: 0` with zero side margin or radius, then returns to its 365px natural position at page top. The 768×1024 and 1280×720 layouts retained three columns and zero horizontal overflow. `npm run check` and `git diff --check` passed.
+
 ## September 13, 2026 — Public menu desktop page-shell finish
 
 - Removed the desktop customer menu's inherited full-viewport-height content column, which created an abrupt empty seam above the footer on shorter menus.
