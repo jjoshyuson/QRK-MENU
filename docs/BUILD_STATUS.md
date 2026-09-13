@@ -16,9 +16,9 @@
 ## Guided Kusina payment step — September 13, 2026
 
 - Changed Kusina's QRK Quick checkout from an inline payment fieldset to a guided second step. Review order now ends with `Pay order`, which opens a focused payment dialog containing two large semantic button cards.
-- Pay at the counter is enabled and continues to create the same simulated counter-payment order. Cashless stays visible, disabled, and labeled `Coming after the pilot`; no payment provider or charge was added.
+- Simplified the dialog to a text Back control and two label-only cards: `💵 Pay at the counter` and disabled `💳 Cashless` with a compact `Soon` badge. Repeated helper copy, price, unavailable label, pilot note, eyebrow, and close icon were removed.
 - The payment dialog restores the order-review dialog through its Back control or Escape, retains the cart and checkout fields, and moves keyboard focus to the enabled payment choice on entry.
-- Validation: `npm run check` and `git diff --check` pass. Live browser inspection confirmed the complete View order → Pay order → payment dialog path, the carried ₱180 subtotal, focused counter card, disabled Cashless semantics, accessible dialog/control names, and successful counter submission to the existing Waiting for staff confirmation.
+- Validation: `npm run check` and `git diff --check` pass. Live browser inspection confirmed the minimal dialog exposes only Back, the heading, and two card choices; focus lands on Pay at the counter, Cashless is disabled and announces `Soon Cashless`, and Back restores the populated review with Pickup still selected.
 
 ## Business workspace preview-label removal — September 13, 2026
 
