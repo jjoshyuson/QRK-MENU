@@ -59,13 +59,11 @@ function bindCategoryScroll(root){
  function select(name){
   buttons.forEach(b=>{const selected=(b.dataset.mobileCategory||b.dataset.phoneCategory)===name;b.setAttribute('aria-pressed',String(selected));b.classList.toggle('active',selected)});
   const button=buttons.find(b=>(b.dataset.mobileCategory||b.dataset.phoneCategory)===name);
-  if(button){const r=button.getBoundingClientRect(),n=nav.getBoundingClientRect();const scale=n.width/nav.offsetWidth||1;nav.scrollLeft+=(r.left+r.width/2-n.left-n.width/2)/scale;}
+  if(button){const r=button.getBoundingClientRect(),n=nav.getBoundingClientRect();if(r.left<n.left||r.right>n.right){const scale=n.width/nav.offsetWidth||1;nav.scrollLeft+=(r.left+r.width/2-n.left-n.width/2)/scale;}}
   if(mobile)mobileCategory=name;else phoneActive=name;
  }
  function update(){
   if(!nav.getClientRects().length||!sections.length)return;
-  nav.style.paddingLeft=Math.max(0,(nav.clientWidth-buttons[0].offsetWidth)/2)+'px';
-  nav.style.paddingRight=Math.max(0,(nav.clientWidth-buttons.at(-1).offsetWidth)/2)+'px';
   const line=(mobile?nav.closest('.mobile-category-nav'):nav).getBoundingClientRect().bottom+16;
   let current=sections[0];
   for(const section of sections)if(section.getBoundingClientRect().top<=line)current=section;

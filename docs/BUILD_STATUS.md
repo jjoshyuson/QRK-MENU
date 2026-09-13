@@ -1,5 +1,12 @@
 # Build status
 
+## Menu Studio category-tab alignment — September 13, 2026
+
+- Removed the artificial horizontal padding that centered the first and last Menu Studio category tabs.
+- Active categories now stay in their natural left-to-right position while fully visible; the strip scrolls the active category toward the center only after it becomes clipped or moves outside the visible tab area.
+- The same behavior applies to the responsive owner Menu Studio and its customer-shaped preview.
+- Validation: `npm run check` passed. Browser checks at 390px confirmed that selecting visible `Sides` does not shift the strip while clipped `Breakfast` recenters; 768px and 1280px layouts remained intact, and no console warnings or errors were reported.
+
 ## Connected Settings list correction — September 13, 2026
 
 - Replaced the four separate oversized Settings cards with one compact rounded list matching the supplied reference: four stacked full-row actions, subtle dividers, left-aligned outline icons, labels, and right chevrons.
