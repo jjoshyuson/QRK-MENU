@@ -32,6 +32,8 @@ For QRK Table businesses, the third live-workspace tab is `Tables`. It always sh
 
 The five development clients share one capability-driven entry flow. Kusina Manila is Quick and opens without a Table dialog. Salamat asks for table, name and guest count, then opens directly. Salo Table asks for the same fields and waits for staff while allowing the guest to build an order. Tambay Café asks only for table and name, then opens directly. Ihaw Buffet asks for table, name, guest count and a required package, then waits for staff before revealing the menu.
 
+Every customer or join request that waits for confirmation shows a Cancel request action and a visible countdown. Unanswered requests expire automatically after 90 seconds by default, release the pending table claim, disappear from the staff queue, and return the customer to table selection. QRK Admin can set the acceptance timeout from 30 to 600 seconds per client; this is separate from the duration of an active table visit.
+
 On the LAN preview, Table state is shared by the local preview server and can be exercised across devices. On GitHub Pages, the static preview uses business-scoped browser storage so customer and staff tabs on the same browser origin can demonstrate the same rules. That fallback does not synchronize different browsers or physical devices and is not durable hosted service state.
 
 ## Mobile and tablet

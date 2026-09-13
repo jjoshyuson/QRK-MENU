@@ -597,3 +597,10 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Added a dependency-free automated browser-storage lifecycle check covering request, staff acceptance, occupied-table join request, host approval and cleaning.
 - Browser verification on a Pages-shaped local build confirmed the correct entry fields for every preset. A Salo Table customer request appeared in the staff `Tables` queue, changed to occupied after acceptance and unlocked the customer menu automatically.
 - Hosted preview coordination is intentionally limited to tabs in the same browser profile and origin. Cross-device/durable Table sessions still require the hosted backend milestone.
+
+## September 13, 2026 — Cancellable Table confirmation waits
+
+- Added a customer-visible Cancel request action and second-by-second countdown to every Table or join flow waiting for confirmation.
+- Added a dedicated acceptance timeout, defaulting to 90 seconds and configurable from 30–600 seconds during QRK Admin client setup. It remains separate from active table-session expiry.
+- Cancellation and automatic expiry release pending sessions, remove requests from staff-facing pending state, and return the customer to table selection. Terminal sessions are excluded from current-session lookup.
+- `npm run check` passed, including browser-local cancellation and expiry assertions. Browser verification confirmed the 1:30 countdown, accessible Cancel request control, and immediate table release after cancellation.

@@ -13,7 +13,7 @@ globalThis.sessionStorage=storage();
 globalThis.QRK_CONFIG={environment:'preview'};
 
 const {QrkTableSessionService}=await import('../dist/data/qrk-table-session-service.js');
-const profile={settings:{staffAcceptance:true,joinPolicy:'host',guestOrderPolicy:'direct'}};
+const profile={settings:{staffAcceptance:true,acceptanceTimeoutSeconds:90,joinPolicy:'host',guestOrderPolicy:'direct'}};
 const host=new QrkTableSessionService({businessSlug:'salo-table',profile});
 
 assert.deepEqual(await host.refresh(),[]);
@@ -37,5 +37,19 @@ assert.equal(guest.current().participants.some(person=>person.name==='Josh'),tru
 
 await host.clean(pending.id);
 assert.equal(host.find('1'),null);
+
+globalThis.sessionStorage=storage();
+const cancelling=new QrkTableSessionService({businessSlug:'salo-table',profile});
+const cancelled=await cancelling.open({table:'2',name:'Lia',guestCount:'2'});
+await cancelling.cancel(cancelled.id);
+assert.equal(cancelling.current(),null);
+assert.equal(cancelling.sessions.find(session=>session.id===cancelled.id).status,'cancelled');
+
+const expiringProfile={settings:{...profile.settings,acceptanceTimeoutSeconds:-1}};
+globalThis.sessionStorage=storage();
+const expiring=new QrkTableSessionService({businessSlug:'salo-table',profile:expiringProfile});
+await expiring.open({table:'3',name:'Noel',guestCount:'1'});
+await expiring.refresh();
+assert.equal(expiring.current(),null);
 
 console.log('Browser-local Table session lifecycle passed.');
