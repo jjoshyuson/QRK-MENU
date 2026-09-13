@@ -18,4 +18,10 @@ const css = await readFile(new URL('../dist/pwa.css', import.meta.url), 'utf8');
 assert.match(css, /touch-action:\s*manipulation/);
 assert.doesNotMatch(css, /user-scalable\s*=\s*no|maximum-scale\s*=\s*1/i);
 
+const dashboardCss = await readFile(new URL('../dist/dashboard.css', import.meta.url), 'utf8');
+assert.match(dashboardCss, /sidebar-bottom\{display:block;flex:0 0 auto/);
+assert.match(dashboardCss, /sidebar-bottom \.profile>\.profile-copy/);
+assert.match(dashboardCss, /sidebar-bottom \.profile \.profile-copy strong.*text-overflow:ellipsis/);
+assert.match(dashboardCss, /safe-area-inset-bottom/);
+
 console.log('PWA shell contract passed.');

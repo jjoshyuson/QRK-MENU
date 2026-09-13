@@ -1,5 +1,12 @@
 # Build status
 
+## September 13, 2026 — Mobile drawer profile reflow
+
+- Fixed the signed-in profile footer collapsing and clipping at the bottom of the mobile owner drawer, as observed on an iOS device after zooming.
+- The navigation region now scrolls independently, the account footer cannot shrink, long profile text truncates cleanly, and the drawer reserves the device's bottom/right safe-area insets.
+- Preserved the PWA gesture contract: pinch zoom remains available and double-tap zoom remains suppressed through `touch-action: manipulation`.
+- Validation: the 390×844 live drawer measured one 33px avatar, a rectangular 229px profile-copy region, full containment inside the 320px drawer, and zero horizontal overflow. `npm run check` and `git diff --check` passed.
+
 ## September 13, 2026 — Shared PWA app shell
 
 - Added one installable `QRK MENU` web-app manifest for owner tools, client/admin tools and the customer menu, with standalone display, QRK branding and direct shortcuts to each operational surface.
