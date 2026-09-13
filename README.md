@@ -27,6 +27,7 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 | `dist/data/` | Shared demo/Supabase data-service adapter and safe public configuration scaffold |
 | `dist/data/qrk-auth-service.js` | Lightweight local Supabase Auth session and tenant-context client |
 | `dist/data/qrk-brand-service.js` | Browser-local per-business logo/color preview with contrast-safe theme derivation |
+| `dist/data/qrk-menu-store.js` | Business-scoped Menu Studio state shared with the Customer Menu in the browser preview |
 | `dist/data/qrk-businesses.js` | Lightweight Quick/Table demo-business experience definitions |
 | `scripts/serve.mjs` | Dependency-free local preview server |
 | `scripts/validate-backend.mjs` | Static schema/security/test coverage and secret-pattern validation |
@@ -55,7 +56,7 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 - The root dashboard provides the matching staff-side active/history queue, order details, status progression, handoff-token verification, cancellation, and store-open controls.
 - Customer and staff order state survives refresh only through same-origin `localStorage` in one browser profile. Different physical devices do not synchronize.
 - A provider-ready Supabase/PostgreSQL foundation now exists under `supabase/`, and both public routes use a shared adapter that automatically stays in demo mode while backend configuration is absent.
-- Menu Studio edits still reset on refresh and do not publish into `/menu/`; uploaded photos remain temporary.
+- Menu Studio changes persist in this browser and immediately drive the matching `/menu/` Customer Menu; unavailable and hidden items are omitted there. This is browser-preview synchronization, not durable cross-device publishing.
 - The repository includes tenant RLS, server-validated order RPCs, local Auth/permission migrations, development logins, private Broadcast and photo-storage policies. The hosted project is not linked, migrated or verified; hosted login, staff activation, operational persistence, real QR generation, durable UI publishing, payments, notifications and offline support remain incomplete.
 
 The running app is still a UI-only same-browser ordering demonstration, not a production ordering service. Provider-ready SQL is not evidence of an operational backend. The sample business and food prices are illustrative. The prototype still loads its fonts from Google Fonts; all food photos are bundled locally.

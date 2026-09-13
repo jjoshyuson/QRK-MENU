@@ -4,6 +4,7 @@ import { QrkAuthService } from './data/qrk-auth-service.js';
 import { applyBusinessBrand, getBusinessBrand, prepareBusinessLogo, saveBusinessBrand } from './data/qrk-brand-service.js';
 import { getBusinessExperience } from './data/qrk-businesses.js';
 import { DEVELOPMENT_CLIENTS, SERVICE_PRESETS } from './data/qrk-service-presets.js';
+import { readMenuState, saveMenuState } from './data/qrk-menu-store.js';
 import { QrkTableSessionService } from './data/qrk-table-session-service.js?v=3';
 
 const runtimeConfig=resolveQrkConfig();
@@ -23,15 +24,14 @@ const usernameSegment=value=>String(value||'').normalize('NFKD').replace(/[\u030
 const businessUsernamePrefix=()=>usernameSegment(accessContext?.businessName?.split(/\s+/)[0]||accessContext?.businessSlug?.split('-')[0]||'business');
 if('scrollRestoration' in history)history.scrollRestoration='manual';
 function icons(root=document){root.querySelectorAll('[data-icon]').forEach(e=>{e.innerHTML=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${paths[e.dataset.icon]||paths.menu}"/></svg>`})}
-let categories=['Mains','Sides','Drinks','Breakfast','Desserts','Snacks','Specials','Platters'],active='All items',phoneActive='Mains',menuName='Main menu',editingId=null,nameMode='category',previewDevice='mobile',mobileCategory='Mains',mobileCustomer=false,mobileTable=false,pendingPhoto=null,photoVersion=0,toastTimer;
-let items=[{id:1,name:'Chicken adobo',description:'Slow-braised chicken in soy, vinegar & garlic.',price:180,category:'Mains',available:true},{id:2,name:'Sinigang na baboy',description:'Pork & fresh vegetables in a tangy tamarind broth.',price:220,category:'Mains',available:true},{id:3,name:'Crispy pork sisig',description:'Sizzling chopped pork, calamansi & chili.',price:195,category:'Mains',available:true},{id:4,name:'Garlic fried rice',description:'Golden toasted garlic, perfectly fluffy rice.',price:55,category:'Sides',available:true},{id:5,name:'Lumpiang shanghai',description:'Crispy pork spring rolls with sweet chili sauce.',price:120,category:'Sides',available:false},{id:6,name:'Calamansi iced tea',description:'Freshly brewed tea with a bright citrus finish.',price:65,category:'Drinks',available:true}];
-const samplePhotos=['adobo','sinigang','sisig','rice','lumpia','tea'];
-items.forEach((i,index)=>{i.photo='/photos/'+samplePhotos[index]+'.jpg';i.options='';i.hidden=false});
+const savedMenu=readMenuState(businessContext.businessSlug);
+let categories=savedMenu.categories,active='All items',phoneActive=categories[0]||'',menuName=savedMenu.menuName,editingId=null,nameMode='category',previewDevice='mobile',mobileCategory=categories[0]||'',mobileCustomer=false,mobileTable=false,pendingPhoto=null,photoVersion=0,toastTimer;
+let items=savedMenu.items;
 function foodPhoto(i,cls=''){return i.photo?`<img class="${cls}" src="${esc(i.photo)}" alt="${esc(i.name)}" loading="lazy" decoding="async" width="600" height="450">`:`<span class="food-photo-empty ${cls}"><span data-icon="utensils"></span>No photo</span>`}
 const price=n=>'₱'+Number(n).toLocaleString('en-PH',{minimumFractionDigits:Number(n)%1?2:0,maximumFractionDigits:2});
 function stamp(i){return `<span class="item-stamp ${i.category==='Drinks'?'drinks':i.category==='Sides'?'sides':''}" aria-hidden="true">${esc(i.name.split(' ').slice(0,2).map(x=>x[0].toUpperCase()).join(''))}</span>`}
 function announce(text){$('#toast').textContent=text;$('#toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('show'),2800)}
-function changed(message){$('#change-status').textContent='Preview updated';render();announce(message)}
+function changed(message){try{saveMenuState(businessContext.businessSlug,{menuName,categories,items});$('#change-status').textContent='Customer menu updated'}catch{$('#change-status').textContent='Preview updated only';message+='; browser storage is full'}render();announce(message)}
 function render(){
  $('#menu-name-display').textContent=menuName;$('#phone-menu-name').textContent=menuName;$('#total-count').textContent=items.length;$('#item-count').textContent=items.length;
  document.querySelector('[data-dashboard-nav="menu"] .nav-count').textContent=items.length;
@@ -276,7 +276,7 @@ function renderCategoryOrder(){
  $('#category-order-list').innerHTML=categories.map((category,index)=>`<div class="category-order-row"><span aria-hidden="true">⋮⋮</span><span><strong>${esc(category)}</strong><small>${items.filter(item=>item.category===category).length} item${items.filter(item=>item.category===category).length===1?'':'s'}</small></span><span class="category-order-actions"><button type="button" data-category-move="up" data-category-index="${index}" aria-label="Move ${esc(category)} up" ${index===0?'disabled':''}>↑</button><button type="button" data-category-move="down" data-category-index="${index}" aria-label="Move ${esc(category)} down" ${index===categories.length-1?'disabled':''}>↓</button></span></div>`).join('');
 }
 $('#arrange-categories').onclick=()=>{renderCategoryOrder();$('#category-dialog').showModal()};
-$('#category-order-list').onclick=e=>{const button=e.target.closest('[data-category-move]');if(!button)return;const index=Number(button.dataset.categoryIndex),next=button.dataset.categoryMove==='up'?index-1:index+1;if(next<0||next>=categories.length)return;[categories[index],categories[next]]=[categories[next],categories[index]];renderCategoryOrder();render();announce('Category order updated in this preview')};
+$('#category-order-list').onclick=e=>{const button=e.target.closest('[data-category-move]');if(!button)return;const index=Number(button.dataset.categoryIndex),next=button.dataset.categoryMove==='up'?index-1:index+1;if(next<0||next>=categories.length)return;[categories[index],categories[next]]=[categories[next],categories[index]];renderCategoryOrder();changed('Category order updated on the customer menu')};
 
 const staffUsernameInput=$('#staff-form').elements.username,staffUsernameField=staffUsernameInput.parentElement,staffUsernameRow=document.createElement('span');
 staffUsernameInput.minLength=2;staffUsernameInput.maxLength=24;staffUsernameInput.pattern='[A-Za-z0-9_-]+';staffUsernameInput.placeholder='rhain';staffUsernameRow.className='username-input-row';staffUsernameInput.before(staffUsernameRow);staffUsernameRow.insertAdjacentHTML('beforeend','<span class="username-prefix" id="staff-username-prefix">business.</span>');staffUsernameRow.append(staffUsernameInput);staffUsernameField.insertAdjacentHTML('beforeend','<small class="username-preview" id="staff-username-preview">Login username: business.rhain</small>');staffUsernameField.classList.add('username-field');

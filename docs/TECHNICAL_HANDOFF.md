@@ -12,7 +12,7 @@ The app remains static HTML, CSS and vanilla JavaScript with no third-party Java
 | `dist/devices.css` | Earlier device-preview controls and responsive rules |
 | `dist/mobile-menu.css` | Latest mobile photo grid and customer-preview overrides |
 | `dist/dashboard.css` | Business Dashboard panels, cards, order/staff/profile/settings UI and responsive dashboard access |
-| `dist/menu/index.html` | Standalone customer-only development menu route with static published sample content |
+| `dist/menu/index.html` | Standalone customer-only development menu route; demo mode reads the shared browser menu snapshot |
 | `dist/menu/menu.css` | Lightweight customer menu layout and responsive two-column photo grid |
 | `dist/menu/menu.js` | Category jump and scroll-following state for the customer menu |
 | `dist/data/qrk-data-service.js` | Shared demo/Supabase adapter, fetch/reconcile contract and optional private Broadcast subscription |
@@ -29,9 +29,9 @@ Current item fields: `id`, `name`, `description`, `price`, `category`, `options`
 
 Categories are name strings. Item IDs for additions use `Date.now()`. Photos are local sample paths or temporary data URLs. Rendering is rebuilt from state with HTML escaping applied to text/attributes. This state is not a production data model: use stable database IDs, integer minor units for money, server validation and tenant-scoped queries in the durable implementation.
 
-The root page renders the menu workspaces and Business Dashboard from browser-memory sample state. At phone/tablet widths, CSS opens the responsive Dashboard first; a right-side navigation drawer switches to the separate Menu Studio view. Menu Studio has photo-editor, customer-preview and quick availability-table display states.
+The root page renders the menu workspaces and Business Dashboard from business-scoped browser-preview state. At phone/tablet widths, CSS opens the responsive Dashboard first; a right-side navigation drawer switches to the separate Menu Studio view. Menu Studio has photo-editor, customer-preview and quick availability-table display states. In demo mode, its menu snapshot survives refresh and drives the matching standalone Customer Menu; this is not cross-device publication.
 
-The development `/menu/` route is a separate static customer payload and does not ship the owner dashboard/editor bundle. It demonstrates the intended public boundary, but its sample data is authored separately and does not update when the browser-memory owner editor changes. Durable shared menu data and draft/publish synchronization remain unimplemented.
+The development `/menu/` route is a separate static customer payload and does not ship the owner dashboard/editor bundle. In demo mode it reads and subscribes to the same business-scoped browser menu snapshot as Menu Studio, omitting unavailable and hidden items. In Supabase mode it continues to use the public-menu RPC. Durable cross-device publishing and draft/revision synchronization remain unimplemented.
 
 Customer and staff order operations share `localStorage` key `qrk_demo_orders_v1`. Orders use integer minor-unit values and preserve unknown forward-compatible fields when staff changes a status. Supported states are `received`, `preparing`, `ready`, `completed` and `cancelled`; each mutation updates timestamps and appends an event. The customer cart and active-order pointer use `qrk_demo_cart_v1` and `qrk_demo_active_order_v1`. Store availability uses `qrk_demo_store_open_v1`. Same-origin tabs synchronize with browser storage events and local custom events.
 

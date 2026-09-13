@@ -2,6 +2,7 @@ import { createQrkDataService } from '../data/qrk-data-service.js';
 import { applyBusinessBrand, getBusinessBrand } from '../data/qrk-brand-service.js';
 import { getBusinessExperience } from '../data/qrk-businesses.js';
 import { QrkTableSessionService } from '../data/qrk-table-session-service.js?v=3';
+import { readMenuState, subscribeMenuState } from '../data/qrk-menu-store.js';
 
 const businessSlug=new URLSearchParams(location.search).get('business')||'kusina-manila';
 const businessExperience=getBusinessExperience(businessSlug);
@@ -23,12 +24,12 @@ let menu=[
   {id:'lumpia',category:'Sides',name:'Lumpiang shanghai',description:'Crisp pork spring rolls with sweet chili dip.',price:12000,photo:'/photos/lumpia.jpg',available:false,options:[]},
   {id:'tea',category:'Drinks',name:'Calamansi iced tea',description:'House-brewed tea with fresh calamansi.',price:6500,photo:'/photos/tea.jpg',available:true,options:[{name:'Size',required:true,choices:[['Regular',0],['Large',2000]]},{name:'Sweetness',required:true,choices:[['Regular sugar',0],['Less sugar',0],['No sugar',0]]}]}
 ];
-if(businessExperience.menu)menu=businessExperience.menu.map(([category,name,price],index)=>({id:`${businessSlug}-${index+1}`,category,name,description:'Development menu item for this service workflow.',price,photo:null,available:true,options:[]}));
+if(dataService.mode==='demo')menu=readMenuState(businessSlug).items.map(item=>({...item,price:Number(item.price)*100,options:[]}));
 let dataLoadError='';
 if(dataService.mode==='supabase'){
   try{const remote=await dataService.getPublicMenu();const remoteItems=remote?.menu?.categories?.flatMap(category=>(category.items||[]).map(item=>({id:item.id,category:category.name,name:item.name,description:item.description,price:item.priceMinor,photo:item.photo?.url||'/photos/adobo.jpg',available:item.available,options:(item.optionGroups||[]).map(group=>({name:group.name,required:group.required,multiple:group.maxSelections>1,choices:(group.options||[]).map(option=>[option.name,option.priceDeltaMinor,option.id])}))})))||[];if(remoteItems.length)menu=remoteItems}catch(error){dataLoadError=error.message||'The published menu could not be loaded.'}
 }
-const categories=[...new Set(menu.map(item=>item.category))];
+let categories=[...new Set(menu.map(item=>item.category))];
 const $=selector=>document.querySelector(selector);
 if(tableSessionService?.previewMode){$('#table-waiting-view .demo-note').textContent='Tabs on this browser share preview table availability and join requests. Other devices are not connected.'}
 let pendingTableSession=null;
@@ -63,7 +64,7 @@ function persistCart(){try{localStorage.setItem(CART_KEY,JSON.stringify(cart));r
 function cartTotals(){return{count:cart.reduce((sum,line)=>sum+line.quantity,0),subtotal:cart.reduce((sum,line)=>sum+line.lineTotalMinor,0)}}
 function renderMenu(filter=''){
   const query=filter.trim().toLowerCase();
-  const visible=menu.filter(item=>`${item.name} ${item.description} ${item.category}`.toLowerCase().includes(query));
+  const visible=menu.filter(item=>item.available&&!item.hidden&&`${item.name} ${item.description} ${item.category}`.toLowerCase().includes(query));
   $('#item-count').textContent=`${visible.length} ${visible.length===1?'item':'items'}`;
   $('#categories').innerHTML=query?'':categories.filter(category=>visible.some(item=>item.category===category)).map((category,index)=>`<a class="${index?'':'active'}" href="#${categoryId(category)}" ${index?'':'aria-current="true"'}>${escapeText(category)}</a>`).join('');
   $('#menu-sections').innerHTML='';
@@ -133,6 +134,7 @@ $('#table-choice-grid').addEventListener('click',event=>{const button=event.targ
 $('#table-entry-form').addEventListener('submit',async event=>{event.preventDefault();const form=event.currentTarget,error=$('#table-entry-error'),table=form.elements.table.value.trim(),name=form.elements.name.value.trim();error.classList.add('hidden');const occupied=Boolean(tableSessionService.find(table));try{const session=await tableSessionService.open({table,name,guestCount:form.elements.guestCount.value,packageId:serviceProfile.settings.packageMode==='required'?form.elements.package.value:null});if(session.status==='active'&&!occupied)openTableMenu(session);else showTableWaiting(session,occupied)}catch(cause){error.textContent=cause.message;error.classList.remove('hidden')}});
 $('#preview-accept-table').addEventListener('click',async()=>{if(!pendingTableSession)return;const isHost=pendingTableSession.participants.some(person=>person.deviceId===tableSessionService.deviceId&&person.role==='host');if(!isHost)return;const session=await tableSessionService.accept(pendingTableSession.id);if(session)openTableMenu(session)});
 $('#store-notice').addEventListener('click',async event=>{const button=event.target.closest('[data-approve-join]');if(!button)return;button.disabled=true;await tableSessionService.approveJoin(button.dataset.sessionId,button.dataset.approveJoin);const session=tableSessionService.current();if(session)openTableMenu(session)});
+if(dataService.mode==='demo')subscribeMenuState(businessSlug,state=>{menu=state.items.map(item=>({...item,price:Number(item.price)*100,options:[]}));categories=state.categories.filter(category=>menu.some(item=>item.category===category&&item.available&&!item.hidden));renderMenu($('#menu-search').value)});
 $('#browse-pending-table').addEventListener('click',()=>{if(!pendingTableSession)return;$('#table-session-dialog').close();$('#table-number').value=pendingTableSession.table;const notice=$('#store-notice');notice.innerHTML=`<h2>Table ${escapeText(pendingTableSession.table)} is waiting for staff</h2><p>Build your order while you wait. The submit button will unlock after staff accepts the table.</p>`;notice.classList.remove('hidden')});
 dataService.subscribe({onOrdersChanged:()=>refreshActive(true),onStoreChanged:async()=>{orderingOpen=await dataService.getStoreOpen().catch(()=>false);if(!storeOpen())showStoreNotice();else $('#store-notice').classList.add('hidden')}});
 tableSessionService?.subscribe(()=>{const session=tableSessionService.current();if(session&&['active','bill_requested'].includes(session.status))openTableMenu(session)});
