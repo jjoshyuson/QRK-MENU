@@ -2,6 +2,12 @@
 
 As of September 13, 2026:
 
+- Business Settings has been consolidated into responsive Account, Orders, Availability, and Security & sessions cards. Existing controls are preserved through compact rows and focused dialogs; desktop, tablet, phone, dark-theme, and overflow checks passed locally. Light-theme and physical-device review remain open.
+
+- Confirmation-gated Table requests now support customer cancellation and automatic expiry. The default acceptance wait is 90 seconds, client setup can configure 30–600 seconds, and terminal requests no longer resolve as the device's current session.
+
+- The browser-preview Menu Studio is now the single source for the matching Customer Menu. Kusina defaults to the full six-item studio menu, edits persist per business, open customer tabs refresh on changes, and unavailable/hidden items are omitted. Durable cross-device publication still depends on the hosted backend milestone.
+
 - GitHub Pages preview-session parity is implemented and locally verified: the profile identity opens Settings/Log out, and logout returns to the sign-in screen with five Client Admin preview workspaces. All five customer presets now follow the LAN field and gate rules on the static deployment; Salo Table customer → staff acceptance → customer unlock passed in separate tabs on one origin. This remains browser-local and does not synchronize the LAN origin or different physical devices.
 
 - The Client Admin/Client Staff Orders workspace now follows the approved reference direction: Received and Preparing are separate, count-labeled queue pages instead of simultaneous columns, with full-area empty states and a separate History view. The order lifecycle and backend contract are unchanged.

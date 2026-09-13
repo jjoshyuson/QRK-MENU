@@ -8,11 +8,11 @@ The Client Admin can upload a PNG, JPEG or WebP logo from Business Profile. QRK 
 
 The dark sidebar now routes between Dashboard, Business profile, Menu Studio, Staff access, Orders and Settings. Dashboard balances live-order sample activity with menu health and quick actions. Menu Studio retains the compact management list and customer photo-grid preview. The expanded customer preview can represent mobile, tablet and desktop widths.
 
-The non-menu sections are explicitly UI-only: profile and appearance controls, a sample QR/link, demo staff accounts and permissions, sample live/history orders and status progression, a basic sample sales summary/log, and account/order-numbering/open-status/session controls. They must not imply a connected backend or live service.
+The non-menu sections are explicitly UI-only: profile and appearance controls, a sample QR/link, demo staff accounts and permissions, sample live/history orders and status progression, a basic sample sales summary/log, and account/order-numbering/open-status/session controls. Business Settings groups those controls into compact Account, Orders, Availability, and Security & sessions cards. Each row shows the current summary and opens only the relevant editor instead of presenting one long form. They must not imply a connected backend or live service.
 
 Platform administration is separate from the business login. The business sign-in card contains no admin link. During local development only, `/admin/` presents a temporary Continue-to-preview gate and a persistent warning that OAuth is bypassed. The QRK Admin workspace has functional Overview, Clients and Client Admins views. Adding a client creates a browser-local portal record and the initial Client Admin preview login with a one-time password and mandatory first-login replacement. QRK Admin can pause or activate a client record but has no Client Staff controls; client staff remains a Client Admin responsibility.
 
-Business profile now links to the public development `/menu/` route. The route shows only the sample customer menu and photo credits, with no Development badge or owner controls. It is a static review route, not a durable publish workflow; Menu Studio edits do not synchronize to it.
+Business profile now links to the public development `/menu/` route. The route shows only the matching customer menu and photo credits, with no Development badge or owner controls. In browser-preview mode Menu Studio changes synchronize to it and unavailable/hidden items are omitted; this remains a same-browser review flow, not durable cross-device publishing.
 
 ## Customer ordering demonstration
 

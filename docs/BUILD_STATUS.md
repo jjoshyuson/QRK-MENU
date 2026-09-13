@@ -598,6 +598,13 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Browser verification on a Pages-shaped local build confirmed the correct entry fields for every preset. A Salo Table customer request appeared in the staff `Tables` queue, changed to occupied after acceptance and unlocked the customer menu automatically.
 - Hosted preview coordination is intentionally limited to tabs in the same browser profile and origin. Cross-device/durable Table sessions still require the hosted backend milestone.
 
+## September 13, 2026 — Menu Studio and Customer Menu parity
+
+- Removed the separate three-item Kusina customer preset that caused the public Customer Menu to disagree with the six-item Menu Studio.
+- Added a dependency-free, business-scoped browser menu store shared by Menu Studio and the standalone Customer Menu. Item/category changes, prices, descriptions, photos, ordering, menu name and visibility now survive refresh and update an already-open matching customer tab.
+- The Customer Menu omits both unavailable and hidden items as confirmed. Kusina's initial customer menu now matches the five currently available Menu Studio items; Lumpiang shanghai remains owner-visible but is not public while unavailable.
+- This is same-browser preview persistence only. Supabase-backed customer menus continue to read the public-menu RPC, and durable cross-device publishing remains part of the hosted backend milestone. Nothing was deployed.
+
 ## September 13, 2026 — Cancellable Table confirmation waits
 
 - Added a customer-visible Cancel request action and second-by-second countdown to every Table or join flow waiting for confirmation.
@@ -609,3 +616,10 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 
 - Changed the Tables pending-request count from customizable navigation-badge colors to a dedicated deep-red badge with white text.
 - A real Salo Table preview request was verified in the browser in both Charcoal Teal light mode and Carbon dark mode. The white-on-red pair measures 6.57:1 contrast, and the prior light-mode preference was restored after testing. GitHub Pages deployment run `34774730702` succeeded, and a fresh request visibly confirmed the red badge on the public development site.
+
+## September 13, 2026 — Settings card consolidation
+
+- Replaced the redundant long Settings forms with four compact groups: Account, Orders, Availability, and Security & sessions.
+- Consolidated username/email and password under Account while keeping password editing as a focused action. Order numbering and prep time now open task-specific dialogs; availability stays directly switchable; both session actions remain available.
+- Preserved the existing browser-preview limitations and store-status synchronization. No backend, authentication policy, or persistence claim changed.
+- `npm run check` and `git diff --check` passed. Browser review covered desktop, 768px tablet, and 390px phone layouts in the current dark theme, confirmed the numbering and password dialogs, keyboard-addressable controls, and no phone-width horizontal overflow. Light-theme and physical-device review remain part of the broader UI acceptance pass. Nothing was deployed.
