@@ -1,5 +1,12 @@
 # Build status
 
+## September 13, 2026 — Public menu header parallax and unified toolbar motion
+
+- Added a restrained scroll-linked parallax treatment to the Kusina Manila banner while keeping the business profile content and menu layout stable.
+- The search field and category tabs remain one intact sticky toolbar: they travel upward together with normal page scrolling, then settle at the viewport edge with a subtle elevation cue.
+- The effect uses one animation-frame update, compositor transforms, passive listeners and no dependency. Reduced-motion preferences disable the banner transform and toolbar transition.
+- Browser checks confirmed progressive banner movement and whole-toolbar travel at 390×844, a pinned `top: 0` state with correct category tracking, reduced-motion output with no transform or transition, and zero horizontal overflow at phone, 768×1024 tablet and 1280×720 desktop sizes. `npm run check` passed.
+
 ## September 13, 2026 — Public menu branded identity and unified sticky tools
 
 - Replaced the redundant public-menu eyebrow, “Today’s menu,” “What would you like?” and total-item copy with a compact business-first header.
