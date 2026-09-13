@@ -1,5 +1,13 @@
 # Build status
 
+## Compact Settings and Orders structure — September 13, 2026
+
+- Added `AGENT/STYLE.md` as the repository's visual source of truth and routed future UI work to it from `AGENTS.md`, the README map, and memory index.
+- Replaced the long Settings surface with four compact, fully clickable cards: Account, Orders, Availability, and Security & sessions. Removed the redundant Settings heading and subtitle; detailed controls now open progressively in dialogs.
+- Kept Received, Preparing, and Tables in one uninterrupted three-column Orders bar, and grouped History directly beside the hamburger button in one top-bar action container.
+- Preserved the existing HTML, CSS, and vanilla JavaScript stack with no new dependency or product capability.
+- Validation: `npm run check` and responsive browser checks passed at 1440, 800, and 390 CSS pixels. Settings rendered four, two, and one columns respectively without page overflow; every Settings card opened its dialog. Orders retained three equal columns on one row, and the phone header rendered History and navigation as adjacent 44-pixel controls in the same parent container.
+
 ## Shared workspace header cleanup — September 13, 2026
 
 - Removed the centered Quick/Table demo badge from the shared Dashboard, Orders, and Menu Studio mobile/tablet headers.

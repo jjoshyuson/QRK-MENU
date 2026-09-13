@@ -8,7 +8,7 @@ Use this folder as the fast entry point for a new chat. Read this file first, th
 | --- | --- | --- |
 | Rough notes, random ideas and questions awaiting review | `memory/inbox.md` | Route stable conclusions to the relevant topic and authoritative document |
 | Product purpose, audience and constraints | `memory/product.md` | `docs/PRODUCT_PLAN.md` |
-| UI direction and editing flows | `memory/ui.md` | `docs/UI_AND_FLOWS.md` |
+| UI direction and editing flows | `memory/ui.md` | `AGENT/STYLE.md`, `docs/UI_AND_FLOWS.md` |
 | Code structure, state and technical limits | `memory/architecture.md` | `docs/TECHNICAL_HANDOFF.md` |
 | Device-local customer/staff order demo | `memory/orders.md` | `dist/app.js`, `docs/TECHNICAL_HANDOFF.md` |
 | Provider-ready database, RLS, RPC, Realtime, Storage and recovery | `memory/architecture.md`, `memory/orders.md` | `supabase/README.md`, `supabase/migrations/` |
@@ -18,7 +18,7 @@ Use this folder as the fast entry point for a new chat. Read this file first, th
 
 ## Reading rule
 
-For a routine UI change, read `ui.md`, `architecture.md`, `progress.md` and `workflow.md`. For product or roadmap work, read `product.md`, `progress.md` and `decisions.md`; consult `inbox.md` only when reviewing newly captured ideas. For backend/data work, read `architecture.md`, `orders.md`, `progress.md`, `workflow.md`, then the full `supabase/README.md`. Read the full authoritative document when implementation depends on nuance or verification evidence.
+For a routine UI change, read `AGENT/STYLE.md`, `ui.md`, `architecture.md`, `progress.md` and `workflow.md`. For product or roadmap work, read `product.md`, `progress.md` and `decisions.md`; consult `inbox.md` only when reviewing newly captured ideas. For backend/data work, read `architecture.md`, `orders.md`, `progress.md`, `workflow.md`, then the full `supabase/README.md`. Read the full authoritative document when implementation depends on nuance or verification evidence.
 
 ## Maintenance rule
 

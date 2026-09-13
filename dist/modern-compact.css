@@ -69,3 +69,6 @@ body,.platform-admin-body,.app,.platform-workspace,.dashboard-page,.platform-con
 [data-theme="dark"] .platform-notice,[data-theme="dark"] .theme-preset,[data-theme="dark"] .service-note,[data-theme="dark"] .demo-banner,[data-theme="dark"] .order-note,[data-theme="dark"] .active-order{border:0;background:var(--quiet-fill)}
 [data-theme="dark"] .notice{border:0;background:transparent}
 [data-theme="dark"] .cart-bar button{background:var(--glass-strong);color:var(--ink)}
+
+/* Compact settings cards remain actionable without restoring padded content panels. */
+.settings-card-grid{gap:8px}.settings-card{border:0;border-radius:var(--compact-radius);background:var(--quiet-fill);box-shadow:none}

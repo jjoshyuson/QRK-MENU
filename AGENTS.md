@@ -5,6 +5,7 @@
 - For every new build or change request, reply first with one concise discovery question and wait for the user's answer before editing files or implementing anything.
 - If a prompt is vague, ambiguous, or could reasonably lead to different outcomes, do not spend time or tokens guessing. Ask the smallest number of focused questions needed to reduce uncertainty.
 - After the answer, read `memory/README.md` and only the topic files relevant to the request. Consult the longer handoff documents when the memory index points to them or when detailed evidence is required.
+- Before every UI, UX, layout, styling, branding, or responsive change, read and follow `AGENT/STYLE.md` as the project’s visual source of truth.
 - For backend, data, order, Auth, Realtime, Storage, migration, or recovery work, also read `supabase/README.md` before changing schema or adapter code.
 - Keep `memory/` concise and current after material decisions or milestone changes so a new chat can orient itself without scanning the whole project.
 
@@ -18,6 +19,7 @@
 - Preserve DM Sans / Manrope and the existing QRK orange unless the user requests a new visual direction.
 - Customer preview must hide owner controls. It is not an authorization boundary.
 - Do not remove existing item, category, availability, or photo editing flows while polishing.
+- Keep interface structure compact and operational. Avoid redundant page headings, padded decorative cards, nested wrappers, and repeated explanatory copy; use progressive disclosure and whole-card actions as defined in `AGENT/STYLE.md`.
 
 ## Scope and implementation
 

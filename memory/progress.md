@@ -4,7 +4,7 @@ As of September 13, 2026:
 
 - A lightweight public landing-page set is published at `/landing/`: one Quick/Table choice page plus focused Quick and Table pages. It uses shared global theme tokens, concise capability-safe copy, and responsive one/two-column layouts. Local 390px, 768px, and 1280px review passed, and Pages run `34777124517` succeeded; light-theme visual review and user acceptance remain open.
 
-- Business Settings has been consolidated into responsive Account, Orders, Availability, and Security & sessions cards. Existing controls are preserved through compact rows and focused dialogs; desktop, tablet, phone, dark-theme, and overflow checks passed locally. Light-theme and physical-device review remain open.
+- Business Settings is now a heading-free set of four whole-card entry points backed by focused dialogs. Orders keeps Received, Preparing, and Tables in one equal-width row, and responsive History now shares the hamburger's top-bar container. Validation evidence is recorded in `docs/BUILD_STATUS.md`.
 
 - Confirmation-gated Table requests now support customer cancellation and automatic expiry. The default acceptance wait is 90 seconds, client setup can configure 30–600 seconds, and terminal requests no longer resolve as the device's current session.
 

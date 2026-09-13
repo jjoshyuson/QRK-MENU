@@ -35,6 +35,7 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 | `supabase/` | Canonical migrations, development seed, pgTAP tests, local config, and recovery/connection runbook |
 | `CODEX_START_HERE.md` | Ready-to-paste continuation prompt |
 | `AGENTS.md` | Instructions to preserve the product and design decisions |
+| `AGENT/STYLE.md` | Authoritative QRK interface density, card, navigation, responsive and accessibility rules |
 | `memory/` | Concise topic-based context, including `inbox.md` for rough ideas awaiting review and routing |
 | `docs/PRODUCT_PLAN.md` | Product intent, decisions, proposed scope, phased roadmap |
 | `docs/UI_AND_FLOWS.md` | Desktop/mobile requirements and interaction descriptions |
