@@ -189,7 +189,6 @@ function setSignedInState(){
  const profile=$('.sidebar-bottom .profile');profile.querySelector('strong').textContent=accessContext.displayName;profile.querySelector('small').textContent=admin?'Business admin':'Staff account';
  document.querySelector('.business small').textContent=`${businessExperience.serviceLabel} workspace`;
  const settingsUsername=$('#settings-username'),accountForm=$('#account-details-form');if(settingsUsername)settingsUsername.textContent=`@${accessContext.username}`;if(accountForm){accountForm.elements.username.value=accessContext.username;accountForm.elements.email.value=accessContext.email||''}
- const modeBadge=$('.environment-badge');modeBadge.textContent=businessExperience.serviceLabel;modeBadge.setAttribute('aria-label',`${businessExperience.serviceLabel} service mode`);
  setupAccountMenu(profile,admin);
  const allowed={dashboard:admin,profile:admin,menu:admin||permissions.editMenu||permissions.changeAvailability,staff:admin||permissions.manageStaff,orders:admin||permissions.viewOrders,settings:admin};
  Object.entries(allowed).forEach(([page,visible])=>{document.querySelector(`[data-dashboard-nav="${page}"]`)?.toggleAttribute('hidden',!visible);document.querySelector(`[data-dashboard-page="${page}"]`)?.toggleAttribute('data-access-denied',!visible)});
@@ -364,7 +363,6 @@ $('#confirm-cancel-order').onclick=()=>{const order=orders.find(item=>String(ite
 $('#refresh-orders').onclick=async()=>{await syncOrders();announce(`${dataService.mode==='demo'?'Device-local':'Backend'} orders refreshed`)};
 $('#order-sound-toggle').checked=localStorage.getItem('qrk_demo_order_sound_v1')==='on';$('#order-sound-toggle').onchange=e=>{localStorage.setItem('qrk_demo_order_sound_v1',e.target.checked?'on':'off');announce(`New-order sound ${e.target.checked?'on':'off'} for this browser`)};
 dataService.subscribe({onOrdersChanged:()=>syncOrders({announceNew:true}),onStoreChanged:async()=>updateStoreStatus(await readStoreOpen())});
-document.querySelectorAll('.environment-badge').forEach(badge=>{badge.textContent=`${businessExperience.serviceLabel} · ${dataService.mode==='demo'?'Demo':'Supabase'}`;badge.setAttribute('aria-label',`${businessExperience.serviceLabel} in the ${dataService.environment} environment using ${dataService.mode} data`)});
 $('.prototype').textContent=dataService.mode==='demo'?'UI demo · local device data':'Provider configured · verification required';
 if(dataService.mode==='supabase'){
  $('#workspace-data-note').textContent='This local workspace uses Supabase for menu, order and store data. Hosted deployment and production operations are not connected.';

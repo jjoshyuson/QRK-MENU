@@ -14,6 +14,7 @@
 - Preserve item/category creation, item editing/deletion, availability, menu rename and photo selection/removal flows.
 - Desktop now opens to a balanced Business Dashboard overview with routes for Business profile, Menu Studio, Staff access, Orders and Settings.
 - Phone/tablet opens to the responsive Dashboard; the navigation drawer switches to the separate Menu Studio and back to Dashboard.
+- Shared workspace headers do not show the centered Quick/Table demo badge. Orders uses the same light responsive top bar as Dashboard; customer-route service labels remain available where they explain the ordering mode.
 - Business profile/QR, staff permissions, live/history orders, sales and settings are clearly UI-only demo states.
 - Menu Studio adds category reordering, plain-text option notes and Available/Sold out/Hidden states. Hidden items remain owner-visible and are omitted from customer previews.
 - The public development `/menu/` route preserves the simple two-column photo menu without owner controls or a Development badge. It now includes customer ordering, cart, checkout, confirmation and tracking UI; its menu data is not connected to Menu Studio edits.

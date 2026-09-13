@@ -1,5 +1,11 @@
 # Build status
 
+## Shared workspace header cleanup — September 13, 2026
+
+- Removed the centered Quick/Table demo badge from the shared Dashboard, Orders, and Menu Studio mobile/tablet headers.
+- Orders retains the same light shared top bar and outlined navigation button as the Dashboard; functional customer-route service labels remain unchanged.
+- Local syntax/static validation and responsive browser checks passed at representative phone, tablet, and desktop widths.
+
 ## Provider checkout UUID repair — September 13, 2026
 
 - Fixed Salamat Table checkout failures where browsers without `crypto.randomUUID()` saved a `demo-*` idempotency key that PostgreSQL rejected as an invalid UUID.
