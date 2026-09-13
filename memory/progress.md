@@ -2,6 +2,8 @@
 
 As of September 13, 2026:
 
+- An unlinked static component inventory is implemented locally at `/components/`. It covers 15 reusable UI families across owner, client/admin/staff, QRK Admin and customer surfaces, labels production sources, excludes landing pages and is now governed by an `AGENTS.md` upkeep rule.
+
 - A shared PWA shell is implemented locally across owner, client/admin and customer routes. Manifest, standalone metadata, touch behavior and the lightweight service-worker cache pass static/base-path validation; publication and physical-device installed-mode verification remain pending.
 
 - Public customer-menu responsive redesign is implemented locally: desktop adds a sticky order summary and wider order review, tablet uses a three-column menu, and phone preserves its compact two-column menu and floating order action. Final light/dark and representative-width verification is recorded in `docs/BUILD_STATUS.md`; publication remains pending.

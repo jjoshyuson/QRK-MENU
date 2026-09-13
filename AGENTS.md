@@ -46,3 +46,11 @@
 - Update `docs/BUILD_STATUS.md` after each milestone and state what remains incomplete.
 - Update `docs/PROGRESS_MAP.md` when milestone status, ordering, dependencies or exit criteria change.
 - Ask only for decisions that materially change scope, privacy, external costs or access; proceed with routine reversible work.
+
+## Component inventory maintenance
+
+- Treat the unlinked development route at `dist/components/index.html` (`/components/`) as the visual inventory for reusable UI across owner tools, Client Admin, Client Staff, QRK Admin and the customer menu. Landing-page components are intentionally excluded.
+- Before creating a reusable component, check the inventory and the production source named on its specimen so an existing pattern is reused when practical.
+- Whenever a reusable component or a meaningful variant/state is added or materially changed, update its matching specimen and production class/source label in the same milestone.
+- Keep the inventory static and dependency-free. It is a visibility, copy and reference surface—not a second implementation, automated test harness or product-navigation destination.
+- Organize specimens by role and component family, and show representative default, selected, disabled, empty, loading, warning, success and destructive states where those states exist.

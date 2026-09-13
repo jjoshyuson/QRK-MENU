@@ -26,6 +26,7 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 | `dist/dashboard.css` | Business Dashboard layout and responsive workspace styles |
 | `dist/menu/` | Standalone customer-only development menu route, including its small route-specific theme layer and CSS/JavaScript payload |
 | `dist/landing/` | Lightweight public choice, QRK Quick and QRK Table landing pages sharing the global QRK theme |
+| `dist/components/` | Unlinked, static development inventory of reusable owner, admin, staff and customer UI components and states |
 | `dist/menu/payment-first.css` | Small checkout override for the simulated Payment First choices and keyboard focus treatment |
 | `dist/data/` | Shared demo/Supabase data-service adapter and safe public configuration scaffold |
 | `dist/data/qrk-auth-service.js` | Lightweight local Supabase Auth session and tenant-context client |
@@ -54,6 +55,7 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 
 - Desktop: Business Dashboard with overview, profile, Menu Studio, staff access, orders, and settings sections.
 - PWA shell: owner tools, client/admin tools and the customer menu share standalone install metadata, safe-area handling and app-like touch behavior. Double-tap zoom is suppressed without disabling deliberate pinch zoom.
+- Component inventory: `/components/` is an unlinked development-only visual catalog with production class/source labels; landing-page UI is intentionally excluded.
 - Brand: black, white and gray dominate the interface, with cyan/teal reserved for actions and selection. Separate transparent PNG icon, wordmark and combined assets preserve the approved generated artwork; the favicon uses the icon-only mark.
 - Mobile/tablet at viewport widths up to 1100 CSS pixels: Dashboard opens first; a top-right hamburger opens navigation, and Menu Studio is a separate view with photo-grid and quick availability-table modes.
 - Owners can add/edit/delete items, set PHP prices and option notes, create/reorder categories, rename the menu, set available/sold-out/hidden states, and replace photos.

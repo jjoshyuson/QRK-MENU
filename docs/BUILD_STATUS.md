@@ -1,5 +1,13 @@
 # Build status
 
+## September 13, 2026 — Static component inventory
+
+- Added an unlinked `/components/` development route containing 15 organized families of reusable UI from owner tools, Client Admin, Client Staff, QRK Admin and the customer menu; public landing pages are intentionally outside its scope.
+- Cataloged foundations, controls, navigation, feedback, dashboard, menu management, staff, orders/history, tables, settings/appearance, customer menu, cart/checkout, platform administration, forms/dialogs and exceptional states.
+- Each specimen includes its production class or source label so the page works as a visual lookup and copy reference without duplicating application behavior.
+- Added an `AGENTS.md` maintenance rule and a static contract check requiring future reusable components and meaningful states to remain represented.
+- Validation: `npm run check`, `git diff --check` and the GitHub Pages `/QRK-MENU/` base-path build passed. Live Brave checks at 390×844, 768×1024 and 1440×900 found all 15 families and navigation links with zero horizontal overflow; static CSS validation confirms visible `:focus-visible` treatment.
+
 ## September 13, 2026 — Mobile drawer profile reflow
 
 - Fixed the signed-in profile footer collapsing and clipping at the bottom of the mobile owner drawer, as observed on an iOS device after zooming.
