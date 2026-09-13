@@ -25,6 +25,7 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 | `dist/dashboard.css` | Business Dashboard layout and responsive workspace styles |
 | `dist/menu/` | Standalone customer-only development menu route, including its small route-specific theme layer and CSS/JavaScript payload |
 | `dist/landing/` | Lightweight public choice, QRK Quick and QRK Table landing pages sharing the global QRK theme |
+| `dist/menu/payment-first.css` | Small checkout override for the simulated Payment First choices and keyboard focus treatment |
 | `dist/data/` | Shared demo/Supabase data-service adapter and safe public configuration scaffold |
 | `dist/data/qrk-auth-service.js` | Lightweight local Supabase Auth session and tenant-context client |
 | `dist/data/qrk-brand-service.js` | Browser-local per-business logo/color preview with contrast-safe theme derivation |
@@ -32,6 +33,7 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 | `dist/data/qrk-businesses.js` | Lightweight Quick/Table demo-business experience definitions |
 | `scripts/serve.mjs` | Dependency-free local preview server |
 | `scripts/validate-backend.mjs` | Static schema/security/test coverage and secret-pattern validation |
+| `tests/payment-first-preview.mjs` | Lightweight contract check for the pilot payment choice and explicit staff-acceptance boundary |
 | `supabase/` | Canonical migrations, development seed, pgTAP tests, local config, and recovery/connection runbook |
 | `CODEX_START_HERE.md` | Ready-to-paste continuation prompt |
 | `AGENTS.md` | Instructions to preserve the product and design decisions |
@@ -56,6 +58,7 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 - Local Supabase Auth includes Kusina Manila admin/staff accounts for QRK Quick and Salamat admin/staff accounts for QRK Table, with tenant routing and granular permission gates. Staff provisioning controls remain preview-only until invitation/activation is implemented.
 - Customer view restores the restaurant identity header and hides item editing controls. `/menu/?business=kusina-manila` demonstrates Quick; `/menu/?business=salamat&table=12` demonstrates a table-linked Salamat visit with pickup removed and the table fixed from the demo link.
 - The root dashboard provides the matching staff-side active/history queue, order details, status progression, handoff-token verification, cancellation, and store-open controls.
+- The `Restaurant · pay first` preset simulates a pilot checkout with disabled cashless and enabled pay-at-counter choices. Submitted orders remain Received until staff explicitly accepts them into Preparing; no payment is taken.
 - Customer and staff order state survives refresh only through same-origin `localStorage` in one browser profile. Different physical devices do not synchronize.
 - A provider-ready Supabase/PostgreSQL foundation now exists under `supabase/`, and both public routes use a shared adapter that automatically stays in demo mode while backend configuration is absent.
 - Menu Studio changes persist in this browser and immediately drive the matching `/menu/` Customer Menu; unavailable and hidden items are omitted there. This is browser-preview synchronization, not durable cross-device publishing.

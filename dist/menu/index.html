@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="/reference-theme.css?v=2">
   <link rel="stylesheet" href="/modern-compact.css?v=1">
   <link rel="stylesheet" href="/menu/cart-dock.css?v=3">
+  <link rel="stylesheet" href="/menu/payment-first.css?v=1">
   <script src="/global-theme.js"></script>
   <script src="/data/qrk-config.local.js"></script>
   <script type="module" src="/menu/menu.js?v=5"></script>
@@ -86,6 +87,7 @@
           <label class="field-label" id="table-label" for="table-number">Table number</label><input id="table-number" type="text" inputmode="numeric" maxlength="3" placeholder="Example: 12">
           <label class="field-label" for="customer-label">Name for the order <span>Optional</span></label><input id="customer-label" type="text" maxlength="40" placeholder="Example: Mia">
           <label class="field-label" for="order-notes">Order notes <span>Optional</span></label><textarea id="order-notes" rows="2" maxlength="180" placeholder="Anything the staff should know?"></textarea>
+          <fieldset class="fulfillment payment-choice hidden" id="payment-choice"><legend>Choose how to pay</legend><label class="disabled-choice"><input type="radio" name="payment" value="cashless" disabled><span><b>Pay cashless</b><small>Coming after the pilot</small></span></label><label><input type="radio" name="payment" value="counter"><span><b>Pay at the counter</b><small>Staff accepts the order before preparing it</small></span></label></fieldset>
           <p class="form-error hidden" id="checkout-error" role="alert"></p>
           <p class="demo-note" id="checkout-data-note">This demo saves only in this browser. It does not send an order to a real kitchen or take payment.</p>
         </section>
@@ -97,7 +99,7 @@
   <dialog id="confirmation-dialog" class="sheet confirmation-sheet" aria-labelledby="confirmation-title">
     <div class="sheet-card">
       <div class="sheet-content confirmation-content">
-        <div class="success-mark" aria-hidden="true">✓</div><p class="eyebrow">DEMO ORDER RECEIVED</p><h2 id="confirmation-title">Show this to staff</h2>
+        <div class="success-mark" aria-hidden="true">✓</div><p class="eyebrow">ORDER SENT</p><h2 id="confirmation-title">Waiting for staff acceptance</h2>
         <div class="order-number"><span>Order number</span><strong id="confirmation-number"></strong></div>
         <div class="verification-card"><div id="verification-mark" class="verification-mark" aria-hidden="true"></div><div><span>Verification code</span><strong id="confirmation-token"></strong><small>Staff can match this code on this device.</small></div></div>
         <div id="order-progress" class="order-progress"></div>

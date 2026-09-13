@@ -16,6 +16,7 @@ const CART_KEY=`qrk_demo_cart_v1${storageSuffix}`;
 const PENDING_KEY=`qrk_pending_order_request_v1${storageSuffix}`;
 const TAB_ORDER_KEY=`qrk_open_tab_orders_v1${storageSuffix}`;
 const openTabEnabled=serviceProfile.preset==='open_tab';
+const paymentFirst=serviceProfile.settings.paymentTiming==='upfront'&&serviceProfile.settings.packageMode==='none';
 if(dataService.mode==='supabase'){document.querySelector('#checkout-data-note').textContent=`This local test sends the order to the ${businessExperience.businessName} staff workspace. It does not take payment.`;document.querySelector('#confirmation-data-note').textContent='Staff on this local network can see status updates. This is not a production order.'}
 const money=new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',maximumFractionDigits:0});
 let menu=[
@@ -57,6 +58,7 @@ if(businessExperience.serviceMode==='table'){
 const safeParse=(value,fallback)=>{try{return value?JSON.parse(value):fallback}catch{return fallback}};
 const readCart=()=>{const value=safeParse(localStorage.getItem(CART_KEY),[]);return Array.isArray(value)?value:[]};
 let cart=readCart(),tabOrders=[],selectedItem=null,itemQuantity=1,editingIndex=-1,cartBarFrame=0;
+if(paymentFirst){$('#payment-choice').classList.remove('hidden');$('#submit-order').textContent='Send order request'}
 function positionCartBar(){cancelAnimationFrame(cartBarFrame);cartBarFrame=requestAnimationFrame(()=>{const bar=$('#cart-bar'),visible=!bar.classList.contains('hidden'),clearance=visible?Math.ceil(bar.getBoundingClientRect().height)+24:0;document.documentElement.style.setProperty('--cart-clearance',`${clearance}px`);const footer=document.querySelector('footer'),top=footer?.getBoundingClientRect().top??innerHeight,overlap=Math.max(0,innerHeight-top);bar.style.setProperty('--footer-overlap',`${overlap}px`)})}
 addEventListener('scroll',positionCartBar,{passive:true});addEventListener('resize',positionCartBar,{passive:true});
 let orderingOpen=await dataService.getStoreOpen().catch(()=>false);
@@ -121,13 +123,14 @@ function makeToken(){const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',bytes=new Ui
 async function createOrder(){
   const fulfillment=$('input[name="fulfillment"]:checked').value,table=$('#table-number').value.trim(),error=$('#checkout-error');
   if(!cart.length)return;if(!storeOpen()){error.textContent='Ordering is paused. Your cart is saved so you can try again later.';error.classList.remove('hidden');return}if(fulfillment==='table'&&!/^\d{1,3}$/.test(table)){error.textContent='Enter the table number shown at your seat.';error.classList.remove('hidden');$('#table-number').focus();return}
+  const paymentMethod=paymentFirst?$('input[name="payment"]:checked')?.value:null;if(paymentFirst&&!paymentMethod){error.textContent='Choose how you will pay before sending the order.';error.classList.remove('hidden');$('#payment-choice input:not(:disabled)')?.focus();return}
   if(tableSessionService){await tableSessionService.refresh();const session=tableSessionService.current();if(!session||!['active','bill_requested'].includes(session.status)){error.textContent=`This device is still waiting for Table ${table||session?.table||''} access. Your cart is saved.`;error.classList.remove('hidden');return}}
   const now=new Date().toISOString();let idempotencyKey=localStorage.getItem(PENDING_KEY);if(!isUuid(idempotencyKey)){idempotencyKey=makeId();localStorage.setItem(PENDING_KEY,idempotencyKey)}
-  const input={idempotencyKey,createdAt:now,updatedAt:now,fulfillmentType:fulfillment,tableNumber:fulfillment==='table'?table:null,customerLabel:$('#customer-label').value.trim()||undefined,items:cart.map(line=>({...line})),subtotalMinor:cartTotals().subtotal,notes:$('#order-notes').value.trim()};
+  const input={idempotencyKey,createdAt:now,updatedAt:now,fulfillmentType:fulfillment,tableNumber:fulfillment==='table'?table:null,customerLabel:$('#customer-label').value.trim()||undefined,paymentMethod:paymentMethod||undefined,paymentStatus:paymentMethod==='counter'?'due_at_counter':undefined,items:cart.map(line=>({...line})),subtotalMinor:cartTotals().subtotal,notes:$('#order-notes').value.trim()};
   try{const result=await dataService.createOrder(input),order={...input,...result,createdAt:result.createdAt||now,updatedAt:result.updatedAt||now,status:result.status||'received',events:result.events||[{status:'received',at:now,label:'Order received'}]};dataService.rememberActiveOrder?.(order);if(openTabEnabled){const ids=safeParse(localStorage.getItem(TAB_ORDER_KEY),[]);localStorage.setItem(TAB_ORDER_KEY,JSON.stringify([...new Set([...ids,String(order.id)])]))}localStorage.removeItem(PENDING_KEY);localStorage.removeItem(CART_KEY);cart=[];await refreshTabOrders();renderCart();$('#cart-dialog').close();showConfirmation(order)}catch(cause){error.textContent=cause.message||'We could not submit this order. Your cart is safe—try again.';error.classList.remove('hidden')}
 }
 function verificationMark(token){let seed=[...token].reduce((sum,char)=>sum+char.charCodeAt(0),0);return Array.from({length:49},(_,index)=>{seed=(seed*9301+49297)%233280;const finder=index<15&&(index%7<3||Math.floor(index/7)<3);return`<i class="${finder||seed/233280>.49?'on':''}"></i>`}).join('')}
-const statusLabels={received:'Received',preparing:'Preparing',ready:'Ready',completed:'Completed'};
+const statusLabels={received:'Waiting for staff',preparing:'Preparing',ready:'Ready',completed:'Completed'};
 function showConfirmation(order){$('#confirmation-number').textContent=order.orderNumber;$('#confirmation-token').textContent=order.verificationToken;$('#verification-mark').innerHTML=verificationMark(order.verificationToken);renderProgress(order);if(!$('#confirmation-dialog').open)$('#confirmation-dialog').showModal()}
 function renderProgress(order){const statuses=Object.keys(statusLabels),at=statuses.indexOf(order.status);$('#order-error').classList.toggle('hidden',order.status!=='cancelled');if(order.status==='cancelled')$('#order-error').textContent='This demo order was cancelled. Please speak with staff if you need help.';$('#order-progress').innerHTML=statuses.map((status,index)=>`<div class="progress-step ${index<=at?'done':''} ${index===at?'current':''}">${statusLabels[status]}</div>`).join('')}
 async function readActiveOrder(){try{return await dataService.getActiveOrder()}catch{return null}}

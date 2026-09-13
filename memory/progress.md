@@ -10,6 +10,8 @@ As of September 13, 2026:
 
 - The browser-preview Menu Studio is now the single source for the matching Customer Menu. Kusina defaults to the full six-item studio menu, edits persist per business, open customer tabs refresh on changes, and unavailable/hidden items are omitted. Durable cross-device publication still depends on the hosted backend milestone.
 
+- Payment First is implemented as an approved local pilot simulation for the `Restaurant · pay first` preset: cashless is visible but disabled, pay-at-counter is required, and received orders need explicit staff acceptance before Preparing. Payment execution and hosted payment metadata remain future work.
+
 - GitHub Pages preview-session parity is implemented and locally verified: the profile identity opens Settings/Log out, and logout returns to the sign-in screen with five Client Admin preview workspaces. All five customer presets now follow the LAN field and gate rules on the static deployment; Salo Table customer → staff acceptance → customer unlock passed in separate tabs on one origin. This remains browser-local and does not synchronize the LAN origin or different physical devices.
 
 - The Client Admin/Client Staff Orders workspace now follows the simplified operational direction: all live orders stay under Received until one mode-aware completion action moves them to History. Preparing/Ready remain internal compatibility states only; the backend contract is unchanged.

@@ -1,0 +1,18 @@
+.payment-choice {
+  margin-top: 20px;
+}
+
+.fulfillment .disabled-choice {
+  background: #f5f6f8;
+  color: #7c8490;
+  cursor: not-allowed;
+}
+
+.fulfillment .disabled-choice small {
+  color: #7c8490;
+}
+
+.fulfillment label:has(input:focus-visible) {
+  outline: 3px solid #ed8c69;
+  outline-offset: 2px;
+}

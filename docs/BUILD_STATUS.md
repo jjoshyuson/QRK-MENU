@@ -43,6 +43,14 @@
 - Tab membership is browser-local and stores only order IDs for the current business/data mode; current order records remain authoritative. This demonstrates one-browser behavior only and does not add settlement, payment, or durable cross-device sessions.
 - `npm run check`, `node --check dist/menu/menu.js`, and `git diff --check` pass. The documented `npm start` command could not bind to port 4173 in the task sandbox, so fresh-build responsive browser verification remains an integration check.
 
+## Payment First customer-order workflow — September 13, 2026
+
+- Implemented the provider-neutral pilot path for the existing `Restaurant · pay first` preset. Checkout now requires a payment choice before submission; `Pay cashless` remains visible and disabled with a pilot-status explanation, while `Pay at the counter` is usable.
+- Device-local orders retain `paymentMethod: counter` and `paymentStatus: due_at_counter`. The staff Received queue labels those orders `Pay at counter`.
+- Preserved the simplified staff workflow: received cards keep the existing mode-aware `Mark paid` or `Mark served` action, which performs provider-compatible transitions internally. Payment-first customers see `Waiting for staff` until that action occurs.
+- No provider, credential, charge, refund, or production payment claim was added. The Supabase RPC contract remains unchanged, so hosted persistence of payment metadata is still future work.
+- Validation: `npm run check` passed, including the new `tests/payment-first-preview.mjs` contract check. Live browser setup confirmed that QRK Admin can create the payment-first preset and the customer route applies its payment-choice gate. End-to-end checkout could not be completed in that temporary browser because the generated test workspace opened with ordering paused and its mandatory first-login password gate cannot be automated safely.
+
 ## Provider checkout UUID repair — September 13, 2026
 
 - Fixed Salamat Table checkout failures where browsers without `crypto.randomUUID()` saved a `demo-*` idempotency key that PostgreSQL rejected as an invalid UUID.
