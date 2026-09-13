@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node scripts/serve.mjs",
     "start:lan": "node scripts/serve.mjs --host 0.0.0.0",
-    "check": "node --check dist/global-theme.js && node --check dist/app.js && node --check dist/admin/admin.js && node --check dist/menu/menu.js && node --check dist/data/qrk-config.js && node --check dist/data/qrk-auth-service.js && node --check dist/data/qrk-data-service.js && node --check dist/data/qrk-businesses.js && node --check dist/data/qrk-menu-store.js && node --check dist/data/qrk-service-presets.js && node --check dist/data/qrk-table-session-service.js && node --check scripts/serve.mjs && node tests/table-session-preview.mjs && node tests/payment-first-preview.mjs && node scripts/validate-backend.mjs",
+    "check": "node --check dist/global-theme.js && node --check dist/app.js && node --check dist/admin/admin.js && node --check dist/menu/menu.js && node --check dist/data/qrk-config.js && node --check dist/data/qrk-auth-service.js && node --check dist/data/qrk-data-service.js && node --check dist/data/qrk-businesses.js && node --check dist/data/qrk-menu-store.js && node --check dist/data/qrk-qr-code.js && node --check dist/data/qrk-service-presets.js && node --check dist/data/qrk-table-session-service.js && node --check scripts/serve.mjs && node tests/business-qr-codes.mjs && node tests/table-session-preview.mjs && node tests/payment-first-preview.mjs && node scripts/validate-backend.mjs",
     "check:backend": "node scripts/validate-backend.mjs"
   },
   "engines": {

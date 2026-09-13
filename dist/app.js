@@ -6,6 +6,7 @@ import { getBusinessExperience } from './data/qrk-businesses.js';
 import { DEVELOPMENT_CLIENTS, SERVICE_PRESETS } from './data/qrk-service-presets.js';
 import { readMenuState, saveMenuState } from './data/qrk-menu-store.js';
 import { QrkTableSessionService } from './data/qrk-table-session-service.js?v=3';
+import { customerMenuUrl as buildCustomerMenuUrl, testQrImageUrl } from './data/qrk-qr-code.js';
 
 const runtimeConfig=resolveQrkConfig();
 const authService=new QrkAuthService(runtimeConfig);
@@ -274,10 +275,10 @@ function previewBrandColors(){currentBrand={...currentBrand,primary:brandingPrim
 brandingPrimary.oninput=previewBrandColors;brandingNav.oninput=previewBrandColors;
 brandingForm.onsubmit=e=>{e.preventDefault();currentBrand=saveBusinessBrand(businessContext,{...currentBrand,businessName:brandingForm.elements.businessName.value.trim()||businessContext.businessName,primary:brandingPrimary.value,nav:brandingNav.value});renderBusinessBrand();announce('Branding saved for this client on this browser')};
 document.querySelectorAll('.color-swatch').forEach(button=>button.onclick=()=>{brandingPrimary.value=button.dataset.themeColor;previewBrandColors();announce('Suggested accent previewed')});
-const customerMenuUrl=new URL(`/menu/?business=${encodeURIComponent(currentBrand.businessSlug)}`,location.origin).href;
+const customerMenuUrl=buildCustomerMenuUrl(location.href,currentBrand.businessSlug);
 const customerMenuLink=$('.sample-link');customerMenuLink.textContent='Open customer view';customerMenuLink.outerHTML=`<a class="sample-link" href="${customerMenuUrl}">Open customer view</a>`;
-const qrCard=$('.qr-card');qrCard.querySelector('.card-heading p').textContent='Customer menu development route';qrCard.querySelector('.section-chip').textContent='Development';qrCard.querySelector('.qr-block').setAttribute('aria-label','QR placement preview; use Open menu or Copy link');
-const qrActions=qrCard.querySelector('.inline-actions');qrActions.querySelector('.demo-action').outerHTML=`<a class="button outline" href="${customerMenuUrl}"><span data-icon="eye"></span>Open menu</a>`;icons(qrActions);
+const qrCard=$('.qr-card'),qrImageUrl=testQrImageUrl(customerMenuUrl),qrDownloadUrl=testQrImageUrl(customerMenuUrl,1000);qrCard.querySelector('.card-heading p').textContent='Scan to open this client’s customer menu';qrCard.querySelector('.section-chip').textContent='Test QR';const qrImage=qrCard.querySelector('.qr-block');qrImage.src=qrImageUrl;qrImage.alt=`QR code for ${currentBrand.businessName||businessContext.businessName} customer menu`;qrImage.addEventListener('error',()=>{qrImage.hidden=true;$('#qr-load-error').hidden=false});
+const qrActions=qrCard.querySelector('.inline-actions');qrActions.querySelector('.demo-action').outerHTML=`<a class="button outline" href="${qrDownloadUrl}" target="_blank" rel="noopener" download="${encodeURIComponent(currentBrand.businessSlug)}-menu-qr.png"><span data-icon="download"></span>Download QR</a>`;icons(qrActions);
 $('#copy-menu-link').onclick=async()=>{try{await navigator.clipboard.writeText(customerMenuUrl);announce('Customer menu link copied')}catch{announce(`Customer menu: ${customerMenuUrl}`)}};
 
 function renderCategoryOrder(){

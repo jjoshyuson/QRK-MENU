@@ -9,6 +9,7 @@
 - `/menu/` remains a standalone customer-only route with its own small CSS/JavaScript payload. In demo mode it consumes the business-scoped Menu Studio snapshot and omits unavailable and hidden items; Supabase mode continues to use the public-menu RPC.
 - Customer and staff order operations use business-slug-scoped `localStorage` and survive refresh in one browser profile. Kusina and Salamat demo state stays isolated, but neither synchronizes across physical devices.
 - Dashboard orders, sales, staff, QR/link and password controls remain preview-oriented. Local Supabase sessions and hosted browser-local preview sessions both expose the profile account menu; Log out clears the active origin's session and returns to sign-in.
+- Business Profile builds its customer URL from the current app root plus the active business slug. Test QR images are requested from the HTTPS goQR API; this is a replaceable preview seam, not the production QR service.
 - Keep implementation and customer payloads minimal. Add dependencies or abstractions only for a demonstrated requirement.
 - A future production public route should send only public menu data and customer code, not the owner editor bundle.
 - Any future private backend must enforce tenant authorization on every request; hiding controls is insufficient.
