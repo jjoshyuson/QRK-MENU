@@ -11,6 +11,7 @@
 - Dish tiles prioritize photo, name and PHP price. Descriptions remain editable but are not shown on compact tiles.
 - Photo editor mode omits the restaurant identity header. Customer preview restores that header and hides item edit, availability and add controls, but this is not an authorization boundary.
 - Mobile/customer category tabs jump to menu sections and follow scrolling. Empty categories appear for owners but not customers. Desktop management retains its `All items` filter.
+- On the public customer route, category navigation is a flush, full-width sticky navbar at viewport top while the menu section is active. It has no floating margin, rounded outer container, or top gap, and returns to its normal place beneath menu controls when scrolling upward.
 - Responsive Menu Studio category tabs keep their natural left-to-right alignment while the active tab is fully visible. They recenter the active tab only after it becomes clipped or moves outside the visible horizontal strip.
 - Preserve item/category creation, item editing/deletion, availability, menu rename and photo selection/removal flows.
 - Desktop now opens to a balanced Business Dashboard overview with routes for Business profile, Menu Studio, Staff access, Orders and Settings.
