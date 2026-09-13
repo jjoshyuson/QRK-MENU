@@ -623,3 +623,11 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Consolidated username/email and password under Account while keeping password editing as a focused action. Order numbering and prep time now open task-specific dialogs; availability stays directly switchable; both session actions remain available.
 - Preserved the existing browser-preview limitations and store-status synchronization. No backend, authentication policy, or persistence claim changed.
 - `npm run check` and `git diff --check` passed. Browser review covered desktop, 768px tablet, and 390px phone layouts in the current dark theme, confirmed the numbering and password dialogs, keyboard-addressable controls, and no phone-width horizontal overflow. Light-theme and physical-device review remain part of the broader UI acceptance pass. Nothing was deployed.
+
+# September 13, 2026 — Quick/Table public landing pages
+
+- Added a lightweight public landing set at `/landing/`: a service-mode choice page plus focused QRK Quick and QRK Table pages.
+- Reduced the supplied reference pages to a shorter public narrative: the core problem, a three-step flow, three concrete benefits and one primary demo action. Removed or softened claims that depend on unverified hosted publishing, payments, POS connections, AI import or real-time cross-device operation.
+- Reused the official QRK logo, `theme.css` and `global-theme.js`, so all three pages inherit the global light/dark mode and advanced color selections without a route-specific theme implementation.
+- Browser review passed at 390×844, 768×1024 and 1280×800. All routes loaded in the active dark theme, the choice grid reflowed from two columns to one, and measured horizontal overflow remained zero. Light-theme visual review and user acceptance remain open.
+- `npm run check`, GitHub Pages artifact generation and route/link validation passed. Nothing was deployed.

@@ -2,6 +2,8 @@
 
 As of September 13, 2026:
 
+- A lightweight public landing-page set is implemented locally at `/landing/`: one Quick/Table choice page plus focused Quick and Table pages. It uses shared global theme tokens, concise capability-safe copy, and responsive one/two-column layouts. Local 390px, 768px, and 1280px review passed; light-theme visual review and user acceptance remain open.
+
 - Business Settings has been consolidated into responsive Account, Orders, Availability, and Security & sessions cards. Existing controls are preserved through compact rows and focused dialogs; desktop, tablet, phone, dark-theme, and overflow checks passed locally. Light-theme and physical-device review remain open.
 
 - Confirmation-gated Table requests now support customer cancellation and automatic expiry. The default acceptance wait is 90 seconds, client setup can configure 30–600 seconds, and terminal requests no longer resolve as the device's current session.

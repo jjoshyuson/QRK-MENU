@@ -24,6 +24,7 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 | `dist/photos/` | Six bundled sample food photographs |
 | `dist/dashboard.css` | Business Dashboard layout and responsive workspace styles |
 | `dist/menu/` | Standalone customer-only development menu route, including its small route-specific theme layer and CSS/JavaScript payload |
+| `dist/landing/` | Lightweight public choice, QRK Quick and QRK Table landing pages sharing the global QRK theme |
 | `dist/data/` | Shared demo/Supabase data-service adapter and safe public configuration scaffold |
 | `dist/data/qrk-auth-service.js` | Lightweight local Supabase Auth session and tenant-context client |
 | `dist/data/qrk-brand-service.js` | Browser-local per-business logo/color preview with contrast-safe theme derivation |

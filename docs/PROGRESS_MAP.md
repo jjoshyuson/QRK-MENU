@@ -29,6 +29,7 @@ A business-approved trusted-customer/VIP account model has been captured for pro
 | 0.28 Staff order operations UI | Complete; approved UI-only scope | Active/history queues, responsive order detail, progression, token handoff, cancellation and event history | Customer ordering contract | Same-browser staff can operate customer-created orders without backend claims |
 | 0.29 Integrated same-browser demo | Complete; published | Customer and staff tabs share device-local orders and store status with refresh persistence | Customer and staff UI workstreams | Final same-browser lifecycle passed; Sites version 8 published; `/` and `/menu/` remotely verified |
 | 0.30 QRK brand and UI/UX review | Current; approved local work | Clean three-part logo set, global light/dark presets, separate advanced token sets, and compact card-based Business Settings across owner, staff and customer surfaces | Integrated demo; supplied logo and Settings directions | Assets and shared theme modes load; Settings preserves every control through focused editors; preset and custom palettes persist; representative layouts have no horizontal overflow; user accepts the direction |
+| 0.31 Quick/Table public landing pages | Implemented locally; visual review pending | A concise service-mode choice page plus focused Quick and Table pages explain the problem and fit without overstating future capabilities | QRK brand/theme system; confirmed Quick/Table direction | All three routes inherit global colors, use the official logo, remain keyboard-readable and reflow without horizontal overflow at phone, tablet and desktop widths; user accepts copy and direction |
 | 1. Workstream 3 backend foundation | Complete locally; approved | Reproducible Supabase/PostgreSQL schema, tenant authorization, validation, Storage/Realtime rules and demo-safe adapter | Confirmed Supabase target; repository migrations; Docker and CLI | Fresh local reset succeeds; all 19 pgTAP tests pass; database lint reports no schema errors; static/application checks pass |
 | 1.05 Local business Auth and permissions | Current; implemented locally | Email/username login resolves one tenant; admin and granular staff access are enforced in database and reflected in UI; browser-local account creation demonstrates generated temporary credentials and mandatory first-login password replacement | Local Docker stack; backend foundation | Seeded admin/staff logins resolve correct tenant; denied permissions remain denied; temporary-password preview lifecycle passes; 26 pgTAP tests, lint and app checks pass |
 | 1.06 QRK Admin client provisioning preview | Complete locally; approved scope | QRK Admin creates browser-local client portals and their initial Client Admin handoff without managing Client Staff | Shared preview Auth seam; QRK Admin route | Client creation, one-time credentials, navigation, pause/activation and responsive layout pass; UI retains explicit non-hosted warning |
@@ -43,13 +44,14 @@ A business-approved trusted-customer/VIP account model has been captured for pro
 
 ## Immediate path
 
-1. Review the corrected deployed customer entry points for Kusina Quick, Salamat Direct Table, Salo Table Approval, Tambay Open Tab and Ihaw Buffet Approval; treat same-browser staff/customer coordination as preview evidence only.
-2. Review logo upload, suggested/overridden colors and identity continuity across Client Admin, Client Staff and `/menu/?business=<slug>` at phone, tablet and desktop widths.
-3. Replace the verified browser-local temporary-password preview with trusted server-side staff and client-admin provisioning before hosted rollout; never place privileged keys in browser code.
-4. After UI/Auth acceptance, confirm the existing hosted project is disposable development, verify its project ref, then link that project only, following `supabase/README.md`.
-5. Preview and apply the locally verified migrations to hosted development; do not include development seed unless explicitly intended.
-6. Connect Auth and runtime development configuration using only the URL/publishable key in browser config; never place secret/service-role material in the browser.
-7. Produce hosted Quick/Table exit evidence across two tenants and two physical devices before declaring the backend operational. Keep physical iOS/Android, full screen-reader, OS text-scaling and large-dataset checks listed as remaining UI verification.
+1. Review `/landing/`, `/landing/quick.html`, and `/landing/table.html` in both global theme modes and approve or revise the public copy and visual direction.
+2. Review the corrected customer entry points for Kusina Quick, Salamat Direct Table, Salo Table Approval, Tambay Open Tab and Ihaw Buffet Approval; treat same-browser staff/customer coordination as preview evidence only.
+3. Review logo upload, suggested/overridden colors and identity continuity across Client Admin, Client Staff and `/menu/?business=<slug>` at phone, tablet and desktop widths.
+4. Replace the verified browser-local temporary-password preview with trusted server-side staff and client-admin provisioning before hosted rollout; never place privileged keys in browser code.
+5. After UI/Auth acceptance, confirm the existing hosted project is disposable development, verify its project ref, then link that project only, following `supabase/README.md`.
+6. Preview and apply the locally verified migrations to hosted development; do not include development seed unless explicitly intended.
+7. Connect Auth and runtime development configuration using only the URL/publishable key in browser config; never place secret/service-role material in the browser.
+8. Produce hosted Quick/Table exit evidence across two tenants and two physical devices before declaring the backend operational. Keep physical iOS/Android, full screen-reader, OS text-scaling and large-dataset checks listed as remaining UI verification.
 
 ## Cross-cutting constraints
 
