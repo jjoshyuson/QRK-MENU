@@ -14,6 +14,14 @@
 - Orders retains the same light shared top bar and outlined navigation button as the Dashboard; functional customer-route service labels remain unchanged.
 - Local syntax/static validation and responsive browser checks passed at representative phone, tablet, and desktop widths.
 
+## September 13, 2026 — Open Tab customer order history
+
+- Implemented Tambay Café's Open Tab customer workflow as a preset-specific extension of the existing lightweight customer menu rather than a separate route or order system.
+- The top-right Open Tab control remains hidden until the customer adds the first item. It then shows the combined draft/submitted item count and running total and stays available after individual orders are sent.
+- The Open Tab drawer groups each submitted order round, lists its items and total, and distinguishes customer-facing `Accepted`, `Preparing`, and `Prepared` states while keeping the current draft editable below the tab history.
+- Tab membership is browser-local and stores only order IDs for the current business/data mode; current order records remain authoritative. This demonstrates one-browser behavior only and does not add settlement, payment, or durable cross-device sessions.
+- `npm run check`, `node --check dist/menu/menu.js`, and `git diff --check` pass. The documented `npm start` command could not bind to port 4173 in the task sandbox, so fresh-build responsive browser verification remains an integration check.
+
 ## Provider checkout UUID repair — September 13, 2026
 
 - Fixed Salamat Table checkout failures where browsers without `crypto.randomUUID()` saved a `demo-*` idempotency key that PostgreSQL rejected as an invalid UUID.

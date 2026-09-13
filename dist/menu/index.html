@@ -13,10 +13,10 @@
   <link rel="stylesheet" href="/menu/table-session.css?v=1">
   <link rel="stylesheet" href="/reference-theme.css?v=2">
   <link rel="stylesheet" href="/modern-compact.css?v=1">
-  <link rel="stylesheet" href="/menu/cart-dock.css?v=2">
+  <link rel="stylesheet" href="/menu/cart-dock.css?v=3">
   <script src="/global-theme.js"></script>
   <script src="/data/qrk-config.local.js"></script>
-  <script type="module" src="/menu/menu.js?v=4"></script>
+  <script type="module" src="/menu/menu.js?v=5"></script>
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
@@ -53,6 +53,9 @@
     </section>
   </main>
 
+  <button class="open-tab-control hidden" id="open-tab-control" type="button" aria-controls="cart-dialog" aria-haspopup="dialog">
+    <span class="open-tab-count" id="open-tab-count">0</span><span><b>Open Tab</b><small id="open-tab-total">₱0 · 0 items</small></span>
+  </button>
   <div class="cart-bar hidden" id="cart-bar"><button type="button" id="open-cart"><span><b id="cart-count">0</b> <span id="cart-label">items</span></span><strong>View order · <span id="cart-subtotal">₱0</span></strong></button></div>
   <footer><span>Local development ordering</span><span class="powered-by">Powered by <img src="/assets/brand/qrk-wordmark.png" alt="QRK menu" width="98" height="19"></span><a href="/photo-credits.html">Sample photo credits</a></footer>
 
@@ -74,6 +77,8 @@
     <form method="dialog" class="sheet-card" id="cart-form">
       <header class="sheet-header"><div><p class="eyebrow">YOUR ORDER</p><h2 id="cart-title">Review order</h2></div><button class="icon-button" value="cancel" aria-label="Close cart">×</button></header>
       <div class="sheet-content cart-content">
+        <section class="tab-summary hidden" id="tab-summary" aria-live="polite"></section>
+        <h3 class="draft-order-title hidden" id="draft-order-title">Add another order</h3>
         <div id="cart-items"></div>
         <section class="cart-empty hidden" id="cart-empty"><div aria-hidden="true">○</div><h3>Your order is empty</h3><p>Add a favorite from the menu to get started.</p><button class="secondary-button" value="cancel">Browse menu</button></section>
         <section id="checkout-fields">

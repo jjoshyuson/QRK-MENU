@@ -11,6 +11,7 @@ Use this folder as the fast entry point for a new chat. Read this file first, th
 | UI direction and editing flows | `memory/ui.md` | `AGENT/STYLE.md`, `docs/UI_AND_FLOWS.md` |
 | Code structure, state and technical limits | `memory/architecture.md` | `docs/TECHNICAL_HANDOFF.md` |
 | Device-local customer/staff order demo | `memory/orders.md` | `dist/app.js`, `docs/TECHNICAL_HANDOFF.md` |
+| Tambay Open Tab customer workflow | `memory/open-tab.md`, `memory/orders.md` | `dist/menu/menu.js`, `docs/BUILD_STATUS.md` |
 | Provider-ready database, RLS, RPC, Realtime, Storage and recovery | `memory/architecture.md`, `memory/orders.md` | `supabase/README.md`, `supabase/migrations/` |
 | Current progress and next milestone | `memory/progress.md` | `docs/PROGRESS_MAP.md`, `docs/BUILD_STATUS.md` |
 | Confirmed decisions and unresolved choices | `memory/decisions.md` | `docs/PRODUCT_PLAN.md` |

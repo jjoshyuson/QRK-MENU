@@ -4,6 +4,8 @@ This file is the high-level route from the current prototype to a production QR 
 
 ## Current position
 
+Tambay Café's approved Open Tab customer slice now has a browser-local whole-tab view: after the first item is added, customers can reopen a prominent running-total control and see all submitted order rounds separated by Accepted, Preparing, and Prepared status. This is local preview evidence, not tab settlement or hosted persistence.
+
 The approved product direction is now one shared QRK platform with QRK Quick and QRK Table operating modes. The implementation and delegation contract is `docs/QUICK_TABLE_MASTER_PLAN.md`. Parallel UI, UX, and backend work must converge through its contract, integration, hosted-development, and explicit publish gates.
 
 `UI prototype -> UI polish -> Business Dashboard UI -> customer ordering UI -> staff operations UI -> integrated same-browser demo -> local backend validation -> [current: Quick/Table two-tenant review] -> hosted development connection and verification -> production pilot -> reliability and rollout`
