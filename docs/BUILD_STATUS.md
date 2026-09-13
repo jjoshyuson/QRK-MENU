@@ -1,5 +1,12 @@
 # Build status
 
+## September 13, 2026 — Shared PWA app shell
+
+- Added one installable `QRK MENU` web-app manifest for owner tools, client/admin tools and the customer menu, with standalone display, QRK branding and direct shortcuts to each operational surface.
+- Added a dependency-free service worker with a small cached shell and network-first page navigation. This improves installed-app resilience but is not evidence of reliable offline ordering, background sync or push notifications.
+- Applied the shared app interaction layer across `/`, `/admin/` and `/menu/`: viewport safe-area support, installed-mode inset handling, disabled image dragging, reduced browser overscroll and `touch-action: manipulation` to suppress double-tap zoom. Pinch zoom remains available for accessibility; form fields and editable content retain text selection.
+- Validation: `npm run check`, the new PWA shell contract, `git diff --check` and the GitHub Pages `/QRK-MENU/` base-path build passed. Live Brave checks found zero horizontal overflow and active `touch-action: manipulation` on the 390px owner/customer routes and 768px admin route. Desktop owner review at 1920px also had zero horizontal overflow. The automation context did not expose the service-worker API directly, so production install/offline behavior still needs a physical-device installed-PWA check after publication.
+
 ## September 13, 2026 — Public menu desktop page-shell finish
 
 - Removed the desktop customer menu's inherited full-viewport-height content column, which created an abrupt empty seam above the footer on shorter menus.

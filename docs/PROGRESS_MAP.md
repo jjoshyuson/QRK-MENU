@@ -4,7 +4,7 @@ This file is the high-level route from the current prototype to a production QR 
 
 ## Current position
 
-The public customer menu now has a locally implemented device-specific layout pass: phone remains a compact two-column menu with a floating order action, tablet expands to three menu columns, and desktop uses a broad menu plus sticky order summary and wider review dialog. This is approved local UI work; publication remains pending.
+The owner, client/admin and customer surfaces now share a locally implemented PWA shell. They can use standalone install metadata and app-like touch behavior, including double-tap suppression without disabling pinch zoom. Publication and physical-device install/offline verification remain pending.
 
 Tambay Café's approved Open Tab customer slice now has a browser-local whole-tab view: after the first item is added, customers can reopen a prominent running-total control and see all submitted order rounds separated by Accepted, Preparing, and Prepared status. This is local preview evidence, not tab settlement or hosted persistence.
 
@@ -36,6 +36,7 @@ A business-approved trusted-customer/VIP account model has been captured for pro
 | 0.29 Integrated same-browser demo | Complete; published | Customer and staff tabs share device-local orders and store status with refresh persistence | Customer and staff UI workstreams | Final same-browser lifecycle passed; Sites version 8 published; `/` and `/menu/` remotely verified |
 | 0.30 QRK brand and UI/UX review | Current; approved local work | Clean three-part logo set, global light/dark presets, a documented compact visual system, heading-free Settings actions, and single-action staff order completion | Integrated demo; supplied logo, Settings, and Orders directions | `AGENT/STYLE.md` guides future UI work; Settings preserves every control through focused editors; Quick orders move from Received to Paid, Table orders move from Received to Served, and Table session work remains under Tables; representative layouts have no horizontal overflow; user accepts the direction |
 | 0.31 Quick/Table public landing pages | Corrected locally; publish pending | The user-supplied choice, Quick and Table designs remain intact while typography, hooks, asset paths and theme-aware accents connect them to QRK | Supplied HTML references; QRK brand/theme system; confirmed Quick/Table direction | All three supplied layouts and interactions remain recognizable; accent colors follow the global theme; typography and copy pass user review; routes reflow without horizontal overflow at phone, tablet and desktop widths |
+| 0.32 Shared PWA shell | Implemented locally; publish and device verification pending | Owner, client/admin and customer tools install as one standalone QRK web app with app-like touch behavior and a lightweight cached shell | Stable same-domain routes; QRK brand assets; HTTPS deployment | Production manifest is installable; owner/admin/customer shortcuts open correctly; physical iOS and Android checks confirm standalone launch, pinch zoom, suppressed double-tap zoom, safe areas and update behavior |
 | 1. Workstream 3 backend foundation | Complete locally; approved | Reproducible Supabase/PostgreSQL schema, tenant authorization, validation, Storage/Realtime rules and demo-safe adapter | Confirmed Supabase target; repository migrations; Docker and CLI | Fresh local reset succeeds; all 19 pgTAP tests pass; database lint reports no schema errors; static/application checks pass |
 | 1.05 Local business Auth and permissions | Current; implemented locally | Email/username login resolves one tenant; admin and granular staff access are enforced in database and reflected in UI; browser-local account creation demonstrates generated temporary credentials and mandatory first-login password replacement | Local Docker stack; backend foundation | Seeded admin/staff logins resolve correct tenant; denied permissions remain denied; temporary-password preview lifecycle passes; 26 pgTAP tests, lint and app checks pass |
 | 1.06 QRK Admin client provisioning preview | Complete locally; approved scope | QRK Admin creates browser-local client portals and their initial Client Admin handoff without managing Client Staff | Shared preview Auth seam; QRK Admin route | Client creation, one-time credentials, navigation, pause/activation and responsive layout pass; UI retains explicit non-hosted warning |
@@ -51,14 +52,15 @@ A business-approved trusted-customer/VIP account model has been captured for pro
 
 ## Immediate path
 
-1. Review `/landing/`, `/landing/quick.html`, and `/landing/table.html` in both global theme modes and approve or revise the public copy and visual direction.
-2. Review the corrected customer entry points for Kusina Quick, Salamat Direct Table, Salo Table Approval, Tambay Open Tab and Ihaw Buffet Approval; treat same-browser staff/customer coordination as preview evidence only.
-3. Review logo upload, suggested/overridden colors and identity continuity across Client Admin, Client Staff and `/menu/?business=<slug>` at phone, tablet and desktop widths.
-4. Replace the verified browser-local temporary-password preview with trusted server-side staff and client-admin provisioning before hosted rollout; never place privileged keys in browser code.
-5. After UI/Auth acceptance, confirm the existing hosted project is disposable development, verify its project ref, then link that project only, following `supabase/README.md`.
-6. Preview and apply the locally verified migrations to hosted development; do not include development seed unless explicitly intended.
-7. Connect Auth and runtime development configuration using only the URL/publishable key in browser config; never place secret/service-role material in the browser.
-8. Produce hosted Quick/Table exit evidence across two tenants and two physical devices before declaring the backend operational. Keep physical iOS/Android, full screen-reader, OS text-scaling and large-dataset checks listed as remaining UI verification.
+1. Publish the PWA branch when approved, then install it on representative iOS and Android devices and verify standalone launch, safe areas, pinch zoom, double-tap behavior, shortcuts and service-worker updates.
+2. Review `/landing/`, `/landing/quick.html`, and `/landing/table.html` in both global theme modes and approve or revise the public copy and visual direction.
+3. Review the corrected customer entry points for Kusina Quick, Salamat Direct Table, Salo Table Approval, Tambay Open Tab and Ihaw Buffet Approval; treat same-browser staff/customer coordination as preview evidence only.
+4. Review logo upload, suggested/overridden colors and identity continuity across Client Admin, Client Staff and `/menu/?business=<slug>` at phone, tablet and desktop widths.
+5. Replace the verified browser-local temporary-password preview with trusted server-side staff and client-admin provisioning before hosted rollout; never place privileged keys in browser code.
+6. After UI/Auth acceptance, confirm the existing hosted project is disposable development, verify its project ref, then link that project only, following `supabase/README.md`.
+7. Preview and apply the locally verified migrations to hosted development; do not include development seed unless explicitly intended.
+8. Connect Auth and runtime development configuration using only the URL/publishable key in browser config; never place secret/service-role material in the browser.
+9. Produce hosted Quick/Table exit evidence across two tenants and two physical devices before declaring the backend operational. Keep physical iOS/Android, full screen-reader, OS text-scaling and large-dataset checks listed as remaining UI verification.
 
 ## Cross-cutting constraints
 

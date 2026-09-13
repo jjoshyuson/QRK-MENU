@@ -1,6 +1,7 @@
 # Architecture memory
 
 - The current app is static HTML, layered CSS and vanilla JavaScript with no third-party JavaScript dependencies.
+- The operational `/`, `/admin/` and `/menu/` routes share `manifest.webmanifest`, `pwa.css`, `pwa.js` and `sw.js`. This is one same-domain standalone PWA shell with a small cache; it does not make ordering reliably offline or provide background sync/push.
 - `dist/` contains authored source and must not be treated as disposable build output.
 - `dist/index.html` holds the Business Dashboard, menu workspaces and dialogs; `dist/app.js` owns browser-memory state/rendering/interactions; `dist/style.css`, `dist/devices.css`, `dist/mobile-menu.css` and `dist/dashboard.css` form the CSS layers.
 - Node is used only for the dependency-free local preview server in `scripts/serve.mjs`.
