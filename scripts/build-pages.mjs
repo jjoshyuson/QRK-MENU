@@ -55,6 +55,12 @@ await rm(outputDir, { recursive: true, force: true });
 await mkdir(outputDir, { recursive: true });
 await cp(sourceDir, outputDir, { recursive: true });
 
+await writeFile(
+  path.join(outputDir, 'data', 'qrk-config.local.js'),
+  "globalThis.QRK_CONFIG=Object.freeze({environment:'preview',authEnabled:true});\n",
+  'utf8'
+);
+
 for (const file of await collectFiles(outputDir)) {
   const extension = path.extname(file).toLowerCase();
   if (!['.html', '.css', '.js'].includes(extension)) continue;
@@ -67,4 +73,4 @@ await writeFile(path.join(outputDir, '.nojekyll'), '', 'utf8');
 
 console.log(`Built GitHub Pages artifact at ${outputDir}`);
 console.log(`Base path: ${basePath}`);
-console.log('Published as the local/demo modern UI baseline; no hosted backend credentials are injected.');
+console.log('Published with browser-local preview sessions; no hosted backend credentials are injected.');

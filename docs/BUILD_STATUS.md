@@ -582,3 +582,10 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Available cards remain light; pending cards expose `Accept table request`; occupied cards use a theme-derived muted surface and expose `Table cleaned` to reopen the table.
 - Added the local preview lifecycle `Available → Request pending → Occupied → Table cleaned → Available` without adding dependencies or changing the hosted data contract.
 - `npm run check` passed. The local endpoint returned `pending`, `active`, then `cleaned`; browser review confirmed the full control cycle, all six cards in the current dark theme, and clean 390px phone, 768px tablet and desktop layouts with no console warnings or errors. Nothing was deployed.
+
+## September 13, 2026 — Hosted preview session parity
+
+- Made the signed-in identity a semantic profile button that opens the existing keyboard-accessible account menu.
+- Added a browser-local preview session mode to the GitHub Pages artifact. It exposes the same five Client Admin preview choices as the LAN sign-in screen without publishing Supabase credentials.
+- Profile-menu Log out and the Settings logout control now clear the browser-local preview session and return to the shared business sign-in screen.
+- `npm run check`, the Pages build, and a browser flow of Salo Table preview → profile menu → Log out → sign-in screen passed locally. Hosted backend Auth, durable cross-origin session sharing, and hosted Table-session persistence remain separate work.

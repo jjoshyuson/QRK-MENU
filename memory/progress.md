@@ -2,6 +2,8 @@
 
 As of September 13, 2026:
 
+- GitHub Pages preview-session parity is implemented and locally verified: the profile identity opens Settings/Log out, and logout returns to the sign-in screen with five Client Admin preview workspaces. This remains browser-local and does not synchronize the LAN origin's selected workspace or sessions.
+
 - The Client Admin/Client Staff Orders workspace now follows the approved reference direction: Received and Preparing are separate, count-labeled queue pages instead of simultaneous columns, with full-area empty states and a separate History view. The order lifecycle and backend contract are unchanged.
 
 - The static UI prototype and local responsive polish pass are complete.
