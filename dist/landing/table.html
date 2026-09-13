@@ -1,6 +1,1043 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f7f9fc"><meta name="description" content="QRK Table gives guests a direct line to ordering and service throughout their visit."><title>QRK Table — A direct line from every table</title><link rel="icon" href="/assets/brand/qrk-mark.png"><link rel="stylesheet" href="/theme.css"><link rel="stylesheet" href="/landing/landing.css"><script src="/global-theme.js"></script></head><body>
-<header class="site-header shell"><a class="logo" href="/landing/" aria-label="QRK Menu home"><img src="/assets/brand/qrk-logo.png" alt="QRK Menu"></a><nav class="nav" aria-label="Primary"><a href="/landing/quick.html">QRK Quick</a><a href="/#signin">Business login</a><a class="primary" href="mailto:hello@qrkmenu.com?subject=QRK%20Table%20demo">Book a demo</a></nav></header>
-<main><section class="hero"><div class="hero-inner shell"><p class="eyebrow">QRK Table</p><h1>A direct line from every table.</h1><p class="hero-copy">For dining where service continues after the first order. Guests can browse, order, ask for help, and request the bill without waiting to be noticed.</p><div class="actions"><a class="button primary" href="mailto:hello@qrkmenu.com?subject=QRK%20Table%20demo">Book a Table demo</a><a class="button" href="#how">See the service loop</a></div></div></section>
-<section class="section alt" id="how"><div class="shell"><div class="section-heading center"><p class="eyebrow">Less waiting between moments</p><h2>Keep the table connected through the visit.</h2></div><div class="feature-grid"><article class="feature"><span class="number">01 · JOIN</span><h3>Start at the right table</h3><p>A table-aware QR opens the menu and begins the guest’s visit.</p></article><article class="feature"><span class="number">02 · ORDER</span><h3>Add what you need</h3><p>Guests can browse and place another order without restarting the experience.</p></article><article class="feature"><span class="number">03 · REQUEST</span><h3>Reach staff clearly</h3><p>Refill, assistance, and bill requests arrive with useful table context.</p></article></div></div></section>
-<section class="section"><div class="shell split"><div class="statement"><p>The problem is not the menu. It is the gap between “I need something” and “staff knows.”</p></div><div class="checks"><div class="check"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg><div><h3>Give guests a clear next step</h3><p>Ordering and service requests stay together in one simple table experience.</p></div></div><div class="check"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg><div><h3>Give staff table context</h3><p>Each request identifies where it came from, reducing missed signals and repeated questions.</p></div></div><div class="check"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg><div><h3>Keep hospitality human</h3><p>QRK removes dead time; it does not replace the people delivering the service.</p></div></div></div></div></section>
-<section class="cta"><div class="shell"><div class="cta-card"><div><h2>Make every table easier to serve.</h2><p>See how QRK Table can fit your restaurant, buffet, bar, or service-heavy concept.</p></div><a class="button" href="mailto:hello@qrkmenu.com?subject=QRK%20Table%20demo">Book a demo</a></div></div></section></main><footer class="site-footer shell"><span>QRK Table · Part of QRK Menu</span><nav aria-label="Footer"><a href="/landing/">Choose a mode</a><a href="/landing/quick.html">Explore Quick</a></nav></footer></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QRK Table — Your guests shouldn't have to wave for service.</title>
+  <meta name="description" content="QRK Menu connects customers, tables, staff, kitchen, POS, and restaurant owners through one fast QR experience — menu, ordering, quick requests, and service." />
+  <style>
+    :root {
+      --bg: #06090b;
+      --surface: #0c1114;
+      --surface-2: #10171b;
+      --paper: #f6f8f9;
+      --ink: #0c1114;
+      --text: #f4f7f8;
+      --muted: #9aa8af;
+      --muted-2: #6e7d84;
+      --teal: var(--brand-500);
+      --teal-soft: var(--brand-400);
+      --line: rgba(255,255,255,.10);
+      --shadow: 0 24px 80px rgba(0,0,0,.35);
+      --radius-lg: 34px;
+      --radius-md: 24px;
+      --radius-sm: 16px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+
+    .container { width: min(calc(100% - 40px), var(--max)); margin: 0 auto; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px;
+      background: rgba(255,255,255,.04); color: #cbd6da; font-size: 13px; font-weight: 650;
+      letter-spacing: .01em;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 20px color-mix(in srgb,var(--brand-500) 80%,transparent); }
+
+    .nav-wrap {
+      position: sticky; top: 0; z-index: 50; backdrop-filter: blur(18px);
+      background: rgba(6,9,11,.68); border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    nav {
+      height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    }
+    .brand img { height: 43px; width: auto; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 28px; color: #c5d0d4; font-size: 14px; }
+    .nav-links a:hover { color: white; }
+    .nav-actions { display: flex; gap: 10px; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+      min-height: 46px; padding: 0 18px; border-radius: 999px; border: 1px solid transparent;
+      font-weight: 700; font-size: 14px; transition: .2s ease; cursor: pointer;
+    }
+    .btn-primary { background: var(--teal); color: #031012; box-shadow: 0 10px 35px color-mix(in srgb,var(--brand-500) 18%,transparent); }
+    .btn-primary:hover { transform: translateY(-1px); background: var(--brand-400); }
+    .btn-ghost { color: #e7eff1; border-color: var(--line); background: rgba(255,255,255,.035); }
+    .btn-ghost:hover { background: rgba(255,255,255,.07); }
+
+    .hero { position: relative; overflow: hidden; padding: 92px 0 92px; }
+    .hero::before {
+      content: ""; position: absolute; inset: -140px auto auto 42%; width: 700px; height: 700px;
+      background: radial-gradient(circle, color-mix(in srgb,var(--brand-500) 13%,transparent), color-mix(in srgb,var(--brand-500) 0%,transparent) 68%); pointer-events: none;
+    }
+    .hero-grid { display: grid; grid-template-columns: 1.02fr .98fr; gap: 70px; align-items: center; }
+    h1 { margin: 20px 0 22px; font-size: clamp(54px, 6vw, 82px); line-height: .95; letter-spacing: -.055em; font-weight: 760; }
+    h1 .accent { color: var(--teal); }
+    .hero-copy p { max-width: 610px; color: #aab8be; font-size: 19px; line-height: 1.6; margin: 0 0 30px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .micro { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 18px; color: #829198; font-size: 13px; }
+    .micro span { display: inline-flex; align-items: center; gap: 7px; }
+    .check { color: var(--teal); font-weight: 900; }
+    .hero-scroll-hint { display:none; }
+
+    .product-stage { position: relative; min-height: 600px; display: grid; place-items: center; }
+    .phone {
+      width: 320px; height: 625px; border-radius: 48px; background: #0b0e10;
+      border: 7px solid #222a2e; box-shadow: 0 34px 100px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.08) inset;
+      padding: 12px; position: relative; transform: rotate(2.5deg); z-index: 2;
+    }
+    .phone::before { content:""; position:absolute; top:12px; left:50%; transform:translateX(-50%); width:94px; height:25px; background:#060809; border-radius:999px; z-index:8; }
+    .phone-screen { height: 100%; border-radius: 36px; overflow: hidden; background: #f6f7f7; color: #101416; }
+    .mobile-top { padding: 48px 18px 13px; display:flex; align-items:center; justify-content:space-between; }
+    .rest-name { font-size: 18px; font-weight: 800; letter-spacing: -.02em; }
+    .bag { width: 37px; height: 37px; border-radius: 50%; border: 1px solid #e2e6e8; display:grid; place-items:center; background:#fff; }
+    .search { margin: 0 16px; height: 38px; border-radius: 12px; background:#e9edef; display:flex; align-items:center; padding:0 12px; color:#7b858a; font-size:12px; }
+    .chips { display:flex; gap:8px; padding:13px 16px 11px; overflow:hidden; }
+    .chip { white-space: nowrap; border-radius:999px; padding:8px 12px; background:white; border:1px solid #e3e7e8; font-size:11px; font-weight:700; }
+    .chip.active { background:#101416; color:white; border-color:#101416; }
+    .menu-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; padding: 0 16px 100px; }
+    .food-card { border-radius:16px; background:white; overflow:hidden; box-shadow:0 4px 20px rgba(16,20,22,.05); }
+    .food-img { aspect-ratio: 1.22; position:relative; overflow:hidden; }
+    .food-img::after { content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.18), transparent 45%); }
+    .f1 { background: radial-gradient(circle at 52% 42%, #ffd18c 0 20%, #b85d2a 21% 33%, #f4d38f 34% 44%, #8d3a1b 45% 51%, #f4c75d 52% 61%, #d57a38 62% 100%); }
+    .f2 { background: radial-gradient(circle at 50% 47%, #f5d580 0 13%, #f9ecb4 14% 28%, #d8692b 29% 33%, #f8e1a0 34% 52%, #85a847 53% 58%, #e3bb6c 59% 100%); }
+    .f3 { background: radial-gradient(circle at 50% 45%, #f0d2a6 0 9%, #b94f2b 10% 18%, #f1c578 19% 32%, #774c2f 33% 39%, #e2b971 40% 58%, #a4683a 59% 100%); }
+    .f4 { background: radial-gradient(circle at 52% 40%, #faf1dd 0 26%, #d9b46d 27% 42%, #c98e45 43% 54%, #815f31 55% 100%); }
+    .food-body { padding: 10px 10px 12px; }
+    .food-title { font-size:12px; font-weight:800; }
+    .food-meta { margin-top:5px; display:flex; justify-content:space-between; color:#657178; font-size:10px; }
+    .mobile-cart { position:absolute; bottom: 24px; left: 28px; right:28px; height:50px; border-radius:17px; background:#111719; color:white; display:flex; justify-content:space-between; align-items:center; padding:0 16px; font-size:12px; font-weight:750; box-shadow:0 15px 30px rgba(0,0,0,.2); }
+    .mobile-cart b { color:var(--teal); }
+
+    .float-card {
+      position:absolute; z-index:3; width:285px; border-radius:22px; background:rgba(16,23,27,.92); border:1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(16px); box-shadow:var(--shadow); padding:18px;
+    }
+    .float-card .fc-head { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .float-card .fc-title { font-size:13px; font-weight:800; }
+    .float-card .fc-sub { color:#7f9097; font-size:11px; margin-top:3px; }
+    .float-card .tag { padding:7px 9px; border-radius:999px; color:#63ecec; background:color-mix(in srgb,var(--brand-500) 10%,transparent); border:1px solid color-mix(in srgb,var(--brand-500) 22%,transparent); font-size:10px; font-weight:800; }
+    .owner-card { right:-10px; top:72px; transform: rotate(-2deg); }
+    .order-card { left:-18px; bottom:82px; transform:rotate(-2deg); }
+
+    /* Motion language: quiet, short, and purposeful. Nothing loops forever. */
+    @media (min-width: 701px) {
+      .product-stage.hero-entrance .phone {
+        animation: phone-settle 680ms cubic-bezier(.22,.61,.36,1) both;
+      }
+      .product-stage.hero-entrance .owner-card {
+        animation: owner-glide-out 760ms cubic-bezier(.22,.61,.36,1) 170ms both;
+      }
+      .product-stage.hero-entrance .order-card {
+        animation: order-glide-out 780ms cubic-bezier(.22,.61,.36,1) 270ms both;
+      }
+      @keyframes phone-settle {
+        from { opacity:0; transform:translateY(14px) scale(.985) rotate(2.5deg); }
+        to   { opacity:1; transform:translateY(0) scale(1) rotate(2.5deg); }
+      }
+      @keyframes owner-glide-out {
+        from { opacity:0; transform:translate(-34px, 54px) scale(.92) rotate(0deg); }
+        to   { opacity:1; transform:translate(0, 0) scale(1) rotate(-2deg); }
+      }
+      @keyframes order-glide-out {
+        from { opacity:0; transform:translate(36px, -46px) scale(.92) rotate(0deg); }
+        to   { opacity:1; transform:translate(0, 0) scale(1) rotate(-2deg); }
+      }
+    }
+
+    /* Soft page-load hierarchy for the hero copy. */
+    .motion-ready .hero-copy > * {
+      opacity:0;
+      transform:translateY(10px);
+      transition:opacity 620ms ease, transform 620ms cubic-bezier(.22,.61,.36,1);
+    }
+    .motion-ready.page-loaded .hero-copy > * { opacity:1; transform:none; }
+    .motion-ready.page-loaded .hero-copy > *:nth-child(1) { transition-delay:40ms; }
+    .motion-ready.page-loaded .hero-copy > *:nth-child(2) { transition-delay:90ms; }
+    .motion-ready.page-loaded .hero-copy > *:nth-child(3) { transition-delay:140ms; }
+    .motion-ready.page-loaded .hero-copy > *:nth-child(4) { transition-delay:190ms; }
+    .motion-ready.page-loaded .hero-copy > *:nth-child(5) { transition-delay:230ms; }
+
+    /* Scroll reveals are intentionally tiny: 14px of travel, no zoom, no blur. */
+    .motion-ready .reveal-soft {
+      opacity:0;
+      transform:translateY(14px);
+      transition:
+        opacity 660ms ease var(--reveal-delay, 0ms),
+        transform 660ms cubic-bezier(.22,.61,.36,1) var(--reveal-delay, 0ms);
+    }
+    .motion-ready .reveal-soft.is-visible { opacity:1; transform:none; }
+
+    /* Navigation gains definition only after the page starts moving. */
+    .nav-wrap { transition:background-color .28s ease, border-color .28s ease, box-shadow .28s ease; }
+    .nav-wrap.scrolled {
+      background:rgba(6,9,11,.84);
+      border-bottom-color:rgba(255,255,255,.085);
+      box-shadow:0 10px 34px rgba(0,0,0,.14);
+    }
+
+    /* Small tactile responses; desktop pointer devices only. */
+    @media (hover:hover) and (pointer:fine) {
+      .step, .feature-card, .mini-feature, .price-card {
+        transition:transform .28s cubic-bezier(.22,.61,.36,1), border-color .28s ease, box-shadow .28s ease;
+      }
+      .step:hover { transform:translateY(-3px); border-color:#d5dee1; box-shadow:0 14px 34px rgba(12,17,20,.06); }
+      .feature-card:hover, .mini-feature:hover { transform:translateY(-3px); border-color:rgba(255,255,255,.16); }
+      .price-card:hover { transform:translateY(-3px); border-color:color-mix(in srgb,var(--brand-500) 38%,transparent); box-shadow:0 34px 95px rgba(0,0,0,.30); }
+      .product-stage .phone { transition:transform .45s cubic-bezier(.22,.61,.36,1); }
+      .product-stage:hover .phone { transform:translateY(-3px) rotate(2deg); }
+    }
+
+    .toggle-row { margin-top:14px; display:flex; align-items:center; justify-content:space-between; padding:12px; border-radius:14px; background:rgba(255,255,255,.04); }
+    .tiny-label { font-size:11px; color:#aab7bc; }
+    .switch { width:38px; height:22px; background:var(--teal); border-radius:999px; padding:3px; }
+    .switch::after { content:""; display:block; width:16px; height:16px; border-radius:50%; background:#041012; margin-left:16px; }
+    .order-line { display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center; margin-top:13px; }
+    .order-num { width:32px; height:32px; border-radius:10px; display:grid; place-items:center; background:color-mix(in srgb,var(--brand-500) 12%,transparent); color:var(--teal); font-size:11px; font-weight:900; }
+    .order-info strong { font-size:11px; display:block; } .order-info span { font-size:10px; color:#7f9097; }
+    .status { color:#7aefb5; font-size:10px; font-weight:800; }
+
+    .logo-strip { padding: 10px 0 74px; }
+    .logo-strip-inner { border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:22px 0; display:flex; justify-content:center; gap:34px; flex-wrap:wrap; color:#7e8e95; font-size:13px; }
+    .logo-strip b { color:#c7d2d6; }
+
+    .section { padding: 112px 0; }
+    .section.light { background: var(--paper); color: var(--ink); }
+    .section-head { max-width: 760px; margin-bottom: 50px; }
+    .section h2 { margin: 16px 0 16px; font-size: clamp(38px, 4.6vw, 62px); line-height: 1.02; letter-spacing: -.045em; }
+    .section-head p { font-size:18px; line-height:1.65; color:var(--muted); margin:0; }
+    .light .section-head p { color:#5d696f; }
+    .light .eyebrow { background:white; border-color:#dde3e5; color:#4d5b61; }
+
+    .steps { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .step { min-height:260px; padding:26px; border-radius:26px; background:white; border:1px solid #e4e9eb; display:flex; flex-direction:column; justify-content:space-between; }
+    .step-num { color:#0b8589; font-size:12px; font-weight:850; }
+    .step-icon { width:52px; height:52px; border-radius:16px; display:grid; place-items:center; background:#e8ffff; font-size:22px; }
+    .step h3 { margin:20px 0 8px; font-size:20px; letter-spacing:-.025em; }
+    .step p { margin:0; color:#66757b; line-height:1.55; font-size:14px; }
+
+    .feature-grid { display:grid; grid-template-columns: 1.25fr .75fr; gap:18px; }
+    .feature-card { border:1px solid var(--line); border-radius:30px; background:linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.02)); overflow:hidden; min-height:430px; padding:34px; position:relative; }
+    .feature-card h3 { margin:0 0 10px; font-size:28px; letter-spacing:-.035em; }
+    .feature-card p { color:#8fa0a7; line-height:1.6; max-width:540px; margin:0; }
+    .mock-dashboard { position:absolute; left:34px; right:34px; bottom:-18px; height:250px; border-radius:22px 22px 0 0; background:#f7f8f8; color:#111719; padding:18px; box-shadow:0 -4px 35px rgba(0,0,0,.18); }
+    .dash-top { display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid #e5e9ea; }
+    .dash-title { font-size:13px; font-weight:850; }
+    .dash-btn { font-size:10px; font-weight:800; border-radius:10px; background:#111719; color:white; padding:9px 11px; }
+    .dash-items { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; padding-top:12px; }
+    .dash-item { background:white; border:1px solid #e3e8e9; border-radius:13px; padding:10px; }
+    .dash-thumb { height:55px; border-radius:9px; background:linear-gradient(140deg,#f5c66b,#ad4f2c); margin-bottom:8px; }
+    .dash-item strong { font-size:10px; display:block; } .dash-item span { color:#7b8589; font-size:9px; }
+    .soldout { margin-top:8px; display:flex; justify-content:space-between; align-items:center; font-size:8px; }
+    .soldout b { color:#ce4b4b; }
+    .mini-toggle { width:26px; height:14px; border-radius:999px; background:#d7dddf; position:relative; }
+    .mini-toggle::after { content:""; position:absolute; width:10px; height:10px; border-radius:50%; background:white; top:2px; left:2px; box-shadow:0 1px 3px rgba(0,0,0,.2); }
+
+    .qr-panel { display:grid; place-items:center; padding-top:34px; }
+    .fake-qr { width:184px; height:184px; border-radius:28px; background:#f5f8f8; padding:16px; box-shadow:0 22px 40px rgba(0,0,0,.2); }
+    .qr-grid { width:100%; height:100%; display:grid; grid-template-columns:repeat(9,1fr); grid-template-rows:repeat(9,1fr); gap:3px; }
+    .qr-grid span { background:#111719; border-radius:2px; opacity:.08; }
+    .qr-grid span.on { opacity:1; background:var(--teal); }
+    .qr-label { margin-top:18px; text-align:center; color:#b7c3c8; font-size:13px; }
+
+    .three { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px; }
+    .small-feature { min-height:270px; border:1px solid var(--line); border-radius:26px; background:rgba(255,255,255,.03); padding:28px; }
+    .small-feature .icon { width:46px; height:46px; display:grid; place-items:center; border-radius:15px; background:color-mix(in srgb,var(--brand-500) 10%,transparent); color:var(--teal); font-size:20px; }
+    .small-feature h3 { font-size:21px; margin:60px 0 9px; letter-spacing:-.025em; }
+    .small-feature p { margin:0; color:#84959c; line-height:1.6; font-size:14px; }
+
+    .compare-wrap { overflow:auto; border-radius:26px; border:1px solid #dfe5e7; background:white; }
+    table { width:100%; border-collapse:collapse; min-width:760px; }
+    th, td { padding:18px 20px; text-align:left; border-bottom:1px solid #e7ebec; font-size:14px; }
+    th { color:#647178; font-size:12px; text-transform:uppercase; letter-spacing:.06em; }
+    tr:last-child td { border-bottom:none; }
+    td:first-child { font-weight:800; }
+    .qrk-col { background:#ecffff; color:#075d61; font-weight:800; }
+    .no { color:#a4aeb3; } .yes { color:#087e63; font-weight:800; }
+
+    .price-wrap { display:grid; grid-template-columns:.9fr 1.1fr; gap:48px; align-items:center; }
+    .price-copy p { color:#93a3aa; font-size:17px; line-height:1.6; }
+    .price-card { border-radius:32px; border:1px solid color-mix(in srgb,var(--brand-500) 28%,transparent); background:linear-gradient(150deg, color-mix(in srgb,var(--brand-500) 10%,transparent), rgba(255,255,255,.03)); padding:34px; box-shadow:0 30px 90px rgba(0,0,0,.28); }
+    .price-top { display:flex; justify-content:space-between; gap:20px; align-items:flex-start; }
+    .price-card h3 { font-size:22px; margin:0; }
+    .price { font-size:54px; letter-spacing:-.05em; margin:24px 0 4px; font-weight:780; }
+    .price small { font-size:16px; color:#809199; letter-spacing:0; font-weight:600; }
+    .price-list { display:grid; grid-template-columns:1fr 1fr; gap:13px 22px; margin:28px 0; color:#c4d0d4; font-size:14px; }
+    .price-list span::before { content:"✓"; color:var(--teal); font-weight:900; margin-right:9px; }
+    .full { width:100%; }
+    .price-note { text-align:center; color:#6f8087; font-size:11px; margin-top:12px; }
+
+    .faq { display:grid; grid-template-columns:.7fr 1.3fr; gap:70px; align-items:start; }
+    .faq-list { border-top:1px solid var(--line); }
+    .faq-item { border-bottom:1px solid var(--line); }
+    .faq-q { width:100%; background:none; color:white; border:0; padding:22px 0; display:flex; justify-content:space-between; gap:20px; text-align:left; font-weight:750; cursor:pointer; }
+    .faq-a { max-height:0; overflow:hidden; color:#8fa0a7; line-height:1.65; transition:max-height .25s ease; padding-right:30px; }
+    .faq-item.open .faq-a { max-height:160px; padding-bottom:22px; }
+    .plus { color:var(--teal); font-size:22px; line-height:1; transition:transform .2s ease; }
+    .faq-item.open .plus { transform:rotate(45deg); }
+
+    .cta { padding: 90px 0 110px; }
+    .cta-box { border-radius:38px; background:linear-gradient(135deg, #ecffff, #d4fbfb 50%, #f7fafa); color:#071012; padding:60px; display:flex; justify-content:space-between; gap:40px; align-items:center; position:relative; overflow:hidden; }
+    .cta-box::after { content:"Q"; position:absolute; right:-18px; bottom:-110px; font-size:330px; line-height:1; font-weight:850; color:color-mix(in srgb,var(--brand-500) 16%,transparent); letter-spacing:-.12em; }
+    .cta-copy { max-width:700px; position:relative; z-index:1; }
+    .cta-copy h2 { font-size:50px; line-height:1; letter-spacing:-.045em; margin:0 0 14px; }
+    .cta-copy p { margin:0; color:#456069; font-size:17px; line-height:1.55; }
+    .cta-actions { position:relative; z-index:1; display:flex; flex-direction:column; gap:10px; min-width:190px; }
+    .cta .btn-primary { background:#081012; color:white; }
+    .cta .btn-ghost { border-color:#b6d8da; color:#23383f; background:rgba(255,255,255,.35); }
+
+    footer { border-top:1px solid var(--line); padding:42px 0; color:#6f8087; }
+    .footer-row { display:flex; justify-content:space-between; gap:24px; align-items:center; flex-wrap:wrap; }
+    footer img { height:35px; opacity:.9; }
+    .footer-links { display:flex; gap:22px; font-size:13px; }
+
+    @media (max-width: 1020px) {
+      .nav-links { display:none; }
+      .hero-grid, .feature-grid, .price-wrap, .faq { grid-template-columns:1fr; }
+      .hero-copy { text-align:center; } .hero-copy p { margin-left:auto; margin-right:auto; }
+      .hero-actions, .micro { justify-content:center; }
+      .product-stage { margin-top:20px; }
+      .steps { grid-template-columns:1fr 1fr; }
+      .three { grid-template-columns:1fr; }
+      .feature-card { min-height:390px; }
+      .faq { gap:30px; }
+      .cta-box { align-items:flex-start; flex-direction:column; }
+    }
+
+    @media (max-width: 700px) {
+      .container { width:min(calc(100% - 26px), var(--max)); }
+      nav { height:66px; }
+      .brand img { height:33px; }
+      .nav-actions .btn-ghost { display:none; }
+      .btn { min-height:42px; padding:0 15px; }
+      .hero {
+        padding:56px 0 0;
+        min-height:1240px;
+        overflow:clip;
+      }
+      .hero-grid { display:block; }
+      h1 { font-size:50px; }
+      .hero-copy p { font-size:16px; }
+
+      /* Mobile hero remains scroll-scrubbed, but movement is deliberately restrained.
+         The cards simply glide out as the user scrolls — no bounce or blur. */
+      .product-stage {
+        min-height:555px;
+        width:100%;
+        margin:14px 0 0;
+        position:sticky;
+        top:78px;
+        transform:none;
+        overflow:visible;
+      }
+      .product-stage .phone {
+        width:286px;
+        height:558px;
+        border-radius:43px;
+        transform:rotate(1.5deg) scale(.92);
+      }
+      .product-stage .phone-screen { border-radius:32px; }
+      .product-stage .owner-card,
+      .product-stage .order-card {
+        width:min(255px, calc(100vw - 48px));
+        will-change:transform, opacity;
+        pointer-events:none;
+      }
+      .product-stage .owner-card { right:50%; top:86px; margin-right:-142px; }
+      .product-stage .order-card { left:50%; bottom:58px; margin-left:-142px; }
+      .hero-scroll-hint {
+        display:flex; align-items:center; justify-content:center; gap:8px;
+        margin-top:18px; color:#718087; font-size:12px; letter-spacing:.01em;
+        transition:opacity .2s ease;
+      }
+      .hero-scroll-hint::before {
+        content:"↓"; color:var(--teal); font-size:15px;
+      }
+      .logo-strip { padding-bottom:48px; }
+      .section { padding:76px 0; }
+      .section h2 { font-size:39px; }
+      .section-head p { font-size:16px; }
+      .steps { grid-template-columns:1fr; }
+      .step { min-height:220px; }
+      .feature-card { padding:25px; min-height:360px; }
+      .mock-dashboard { left:22px; right:22px; }
+      .dash-items { grid-template-columns:1fr 1fr; }
+      .dash-item:last-child { display:none; }
+      .price-list { grid-template-columns:1fr; }
+      .price { font-size:46px; }
+      .cta-box { padding:36px 28px; border-radius:28px; }
+      .cta-copy h2 { font-size:38px; }
+      .cta-actions { width:100%; }
+      .footer-row { align-items:flex-start; flex-direction:column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior:auto; }
+      *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+      .motion-ready .hero-copy > *,
+      .motion-ready .reveal-soft { opacity:1 !important; transform:none !important; }
+      .product-stage .owner-card, .product-stage .order-card { filter:none !important; }
+    }
+
+
+    /* ===== QRK communication-layer redesign ===== */
+    .nav-wrap.scrolled { background:rgba(6,9,11,.88); border-bottom-color:rgba(255,255,255,.09); }
+    .hero { padding-top:86px; }
+    .hero-grid { grid-template-columns:1fr 1fr; gap:72px; }
+    .hero-copy p { max-width:640px; }
+    .hero-kicker { color:#cbd6da; font-weight:700; letter-spacing:-.01em; margin-top:22px; }
+    .hero-kicker strong { color:var(--teal); }
+    .hero .phone-screen { background:#f7f9f9; }
+    .table-pill { display:inline-flex; align-items:center; gap:6px; margin-top:3px; font-size:9px; color:#6e797f; font-weight:750; }
+    .table-pill::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--teal); }
+    .need-panel { margin:11px 14px 0; border:1px solid #e3e8e9; background:#fff; border-radius:16px; padding:12px; }
+    .need-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:9px; }
+    .need-top strong { font-size:11px; }
+    .need-top span { font-size:8px; color:#829097; }
+    .quick-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+    .quick-btn { border:1px solid #e5eaeb; background:#f7fafa; border-radius:10px; min-height:40px; padding:6px 3px; display:grid; place-items:center; text-align:center; font-size:8px; font-weight:800; color:#253237; line-height:1.2; }
+    .quick-btn.hot { background:#eaffff; border-color:#bfeeee; color:#086d71; }
+    .mobile-cart { bottom:18px; }
+    .request-row { margin-top:12px; display:flex; align-items:center; gap:9px; padding:10px 11px; border-radius:13px; border:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.03); }
+    .request-icon { width:32px; height:32px; border-radius:10px; display:grid; place-items:center; background:color-mix(in srgb,var(--brand-500) 12%,transparent); color:var(--teal); font-size:16px; flex:0 0 auto; }
+    .request-copy { flex:1; min-width:0; }
+    .request-copy strong { display:block; font-size:11px; }
+    .request-copy span { display:block; color:#7f9097; font-size:9px; margin-top:2px; }
+    .ack { font-size:9px; font-weight:900; color:#77e7ac; }
+    .quick-request-mini { display:grid; grid-template-columns:repeat(2,1fr); gap:7px; margin-top:12px; }
+    .quick-request-mini span { padding:9px 8px; border-radius:11px; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.07); color:#aebbc0; font-size:9px; font-weight:750; }
+
+    .concept-strip { padding:0 0 76px; }
+    .concept-strip .inner { border:1px solid var(--line); border-radius:22px; padding:18px 22px; display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; color:#87979e; font-size:13px; background:rgba(255,255,255,.025); }
+    .concept-strip strong { color:#d9e3e6; font-weight:760; }
+    .arrow-sep { color:var(--teal); opacity:.8; }
+
+    .flow-compare { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:44px; }
+    .flow-card { border-radius:28px; padding:30px; border:1px solid #dfe5e7; background:white; }
+    .flow-card.bad { background:#f3f5f5; color:#536168; }
+    .flow-card.good { background:#081012; color:white; border-color:#081012; }
+    .flow-label { font-size:11px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; margin-bottom:22px; }
+    .flow-card.good .flow-label { color:var(--teal); }
+    .flow-line { display:flex; flex-wrap:wrap; align-items:center; gap:8px; line-height:1.55; font-size:14px; }
+    .flow-node { border:1px solid #d8dfe1; border-radius:999px; padding:8px 11px; background:white; color:#47565c; font-weight:700; }
+    .good .flow-node { background:rgba(255,255,255,.055); color:#dbe5e8; border-color:rgba(255,255,255,.1); }
+    .good .flow-node.accent { color:#071012; background:var(--teal); border-color:var(--teal); }
+    .flow-arrow { color:#9ba7ac; }
+    .good .flow-arrow { color:#4f6c70; }
+
+    .story { padding:112px 0 0; overflow:clip; }
+    .story-head { max-width:770px; margin-bottom:42px; }
+    .story-head p { color:#93a3aa; font-size:18px; line-height:1.65; }
+    .story-track { position:relative; height:2200px; }
+    .story-sticky { position:sticky; top:92px; min-height:660px; display:grid; grid-template-columns:.72fr 1.28fr; gap:42px; align-items:center; }
+    .story-copy-panel { min-width:0; }
+    .story-copy-panel h3 { font-size:35px; line-height:1.04; letter-spacing:-.04em; margin:14px 0 12px; }
+    .story-copy-panel > p { color:#8d9ea5; line-height:1.62; margin:0 0 24px; }
+    .story-stage-index { display:inline-flex; align-items:center; gap:8px; color:var(--teal); font-size:12px; font-weight:850; letter-spacing:.04em; text-transform:uppercase; }
+    .story-stage-index::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--teal); box-shadow:0 0 18px color-mix(in srgb,var(--brand-500) 50%,transparent); }
+    .story-step-list { display:grid; gap:5px; margin-top:24px; }
+    .story-step { padding:10px 12px; border-left:2px solid rgba(255,255,255,.08); color:#66777e; font-size:12px; transition:color .2s ease,border-color .2s ease,background .2s ease; border-radius:0 10px 10px 0; }
+    .story-step.active { color:#dfe8ea; border-color:var(--teal); background:rgba(255,255,255,.025); }
+
+    .story-scene { position:relative; min-height:610px; border:1px solid var(--line); border-radius:34px; background:radial-gradient(circle at 35% 35%, color-mix(in srgb,var(--brand-500) 8%,transparent), transparent 35%), linear-gradient(145deg,#0b1013,#090d0f); overflow:hidden; box-shadow:0 30px 100px rgba(0,0,0,.25); }
+    .scene-label { position:absolute; top:20px; font-size:10px; font-weight:850; letter-spacing:.08em; text-transform:uppercase; color:#687a81; }
+    .scene-label.guest { left:24px; }
+    .scene-label.staff { right:24px; }
+    .guest-device { position:absolute; left:8%; top:72px; width:238px; height:462px; background:#0c0f11; border:6px solid #273036; border-radius:37px; padding:9px; transform:rotate(-2deg); box-shadow:0 24px 60px rgba(0,0,0,.42); }
+    .guest-screen { height:100%; background:#f6f8f8; border-radius:27px; color:#101619; overflow:hidden; padding:34px 12px 13px; }
+    .guest-brand { display:flex; justify-content:space-between; align-items:center; font-size:10px; font-weight:850; margin-bottom:12px; }
+    .guest-hero-item { height:106px; border-radius:17px; background:linear-gradient(145deg,#ecb97a,#994831); position:relative; overflow:hidden; }
+    .guest-hero-item::after { content:"Korean BBQ Set · ₱499"; position:absolute; left:10px; bottom:9px; color:white; font-size:10px; font-weight:850; text-shadow:0 2px 7px rgba(0,0,0,.35); }
+    .guest-order-bar { margin-top:10px; border-radius:12px; background:#101719; color:white; padding:10px 11px; display:flex; justify-content:space-between; font-size:9px; font-weight:800; }
+    .guest-request-title { margin:14px 0 8px; font-size:10px; font-weight:850; }
+    .guest-request-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+    .guest-request-grid button { min-height:42px; border-radius:11px; border:1px solid #e2e8e9; background:white; color:#263339; font-size:8px; font-weight:820; padding:4px; }
+    .guest-request-grid button.selected { border-color:#9be7e8; background:#eaffff; color:#076a6e; }
+    .guest-status { margin-top:9px; min-height:36px; display:flex; align-items:center; gap:7px; padding:8px 9px; border-radius:11px; background:#edfafa; color:#08777b; font-size:8px; font-weight:800; opacity:0; transform:translateY(7px); transition:.25s ease; }
+    .guest-status.show { opacity:1; transform:none; }
+
+    .staff-board { position:absolute; right:6%; top:104px; width:330px; min-height:350px; background:#f7f9f9; color:#111719; border-radius:25px; padding:18px; box-shadow:0 24px 70px rgba(0,0,0,.35); transform:translateY(8px); }
+    .staff-top { display:flex; justify-content:space-between; align-items:center; padding-bottom:13px; border-bottom:1px solid #e2e7e8; }
+    .staff-top strong { font-size:13px; }
+    .live-dot { display:inline-flex; align-items:center; gap:6px; color:#08777b; font-size:8px; font-weight:900; }
+    .live-dot::before { content:""; width:6px; height:6px; border-radius:50%; background:var(--teal); }
+    .queue { display:grid; gap:8px; margin-top:12px; }
+    .queue-row { display:grid; grid-template-columns:42px 1fr auto; gap:9px; align-items:center; padding:10px; background:white; border:1px solid #e5eaeb; border-radius:13px; transition:.25s ease; }
+    .queue-row.focus { border-color:#a6e9ea; box-shadow:0 0 0 3px color-mix(in srgb,var(--brand-500) 7%,transparent); }
+    .queue-table { width:42px; height:42px; border-radius:11px; display:grid; place-items:center; background:#eef6f6; font-size:11px; font-weight:900; }
+    .queue-info strong { display:block; font-size:10px; }
+    .queue-info span { display:block; color:#829096; font-size:8px; margin-top:2px; }
+    .queue-state { font-size:7px; font-weight:900; color:#7e8c92; }
+    .queue-state.live { color:#08777b; }
+    .queue-state.done { color:#188255; }
+    .owner-insight { position:absolute; right:8%; bottom:34px; width:290px; border-radius:20px; border:1px solid rgba(255,255,255,.1); background:rgba(13,19,22,.94); backdrop-filter:blur(12px); padding:15px; opacity:0; transform:translateY(10px); transition:.25s ease; }
+    .owner-insight.show { opacity:1; transform:none; }
+    .owner-insight h4 { margin:0 0 10px; font-size:11px; }
+    .insight-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; }
+    .metric { border:1px solid rgba(255,255,255,.08); border-radius:12px; padding:9px; background:rgba(255,255,255,.03); }
+    .metric b { display:block; font-size:15px; color:#e9f1f3; }
+    .metric span { display:block; color:#71838a; font-size:7px; margin-top:2px; }
+    .request-packet { position:absolute; z-index:9; left:33%; top:48%; transform:translate(-50%,-50%); display:flex; align-items:center; gap:7px; padding:9px 11px; border-radius:999px; background:#eaffff; color:#086a6e; border:1px solid #a6e8e9; box-shadow:0 12px 30px rgba(0,0,0,.22); font-size:9px; font-weight:900; opacity:0; pointer-events:none; white-space:nowrap; }
+    .request-packet::before { content:"↗"; }
+    .scene-connector { position:absolute; left:42%; right:38%; top:51%; height:1px; background:linear-gradient(to right,color-mix(in srgb,var(--brand-500) 5%,transparent),color-mix(in srgb,var(--brand-500) 35%,transparent),color-mix(in srgb,var(--brand-500) 5%,transparent)); }
+
+    .requests-layout { display:grid; grid-template-columns:.8fr 1.2fr; gap:42px; align-items:start; }
+    .request-cloud { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    .request-tile { min-height:130px; border:1px solid #dde4e5; border-radius:20px; padding:18px; background:white; display:flex; flex-direction:column; justify-content:space-between; transition:transform .2s ease,border-color .2s ease; }
+    .request-tile:hover { transform:translateY(-2px); border-color:#b8dfe1; }
+    .request-tile b { font-size:14px; }
+    .request-tile span { font-size:24px; }
+    .request-usecases { margin-top:22px; color:#637178; font-size:14px; line-height:1.7; }
+
+    .pillars { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+    .pillar { min-height:300px; border:1px solid var(--line); border-radius:28px; padding:30px; background:linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.018)); display:flex; flex-direction:column; }
+    .pillar-num { color:var(--teal); font-size:11px; font-weight:900; letter-spacing:.08em; }
+    .pillar h3 { margin:auto 0 10px; font-size:31px; letter-spacing:-.04em; }
+    .pillar p { color:#87989f; line-height:1.6; margin:0; font-size:14px; }
+
+    .system-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+    .system-card { min-height:290px; border-radius:28px; border:1px solid var(--line); background:rgba(255,255,255,.028); padding:30px; position:relative; overflow:hidden; }
+    .system-card h3 { font-size:25px; letter-spacing:-.03em; margin:58px 0 9px; }
+    .system-card p { color:#85969d; line-height:1.6; margin:0; max-width:520px; }
+    .system-icon { position:absolute; top:28px; left:30px; width:42px; height:42px; border-radius:14px; display:grid; place-items:center; background:color-mix(in srgb,var(--brand-500) 10%,transparent); color:var(--teal); }
+    .system-card.wide { grid-column:1 / -1; min-height:250px; display:grid; grid-template-columns:1fr .9fr; gap:28px; align-items:center; }
+    .bridge-row { display:flex; flex-wrap:wrap; gap:8px; justify-content:flex-end; }
+    .bridge-chip { border:1px solid rgba(255,255,255,.1); border-radius:999px; padding:9px 12px; color:#b8c5c9; background:rgba(255,255,255,.03); font-size:12px; font-weight:750; }
+    .bridge-chip.core { color:#061012; background:var(--teal); border-color:var(--teal); }
+
+    .promise-box { border-radius:34px; background:linear-gradient(135deg,#ecffff,#d6fbfb 55%,#f9fbfb); color:#081113; padding:48px; display:grid; grid-template-columns:.9fr 1.1fr; gap:35px; align-items:center; }
+    .promise-box h2 { margin:0; font-size:clamp(39px,4.4vw,62px); letter-spacing:-.05em; line-height:1; }
+    .promise-box h2 span { color:#07888c; }
+    .promise-box p { margin:0; color:#496168; font-size:17px; line-height:1.65; }
+
+    @media (max-width:1020px) {
+      .story-sticky { grid-template-columns:1fr; gap:24px; top:80px; align-content:center; }
+      .story-step-list { grid-template-columns:repeat(3,1fr); }
+      .story-step { border-left:0; border-top:2px solid rgba(255,255,255,.08); border-radius:0 0 10px 10px; }
+      .story-step.active { border-color:var(--teal); }
+      .requests-layout, .promise-box { grid-template-columns:1fr; }
+      .pillars { grid-template-columns:1fr; }
+      .pillar { min-height:220px; }
+      .system-card.wide { grid-template-columns:1fr; }
+      .bridge-row { justify-content:flex-start; }
+    }
+
+    @media (max-width:700px) {
+      .hero { min-height:1210px; }
+      .hero-copy h1 { font-size:47px; }
+      .hero-kicker { font-size:14px; }
+      .concept-strip { padding-bottom:48px; }
+      .concept-strip .inner { justify-content:flex-start; gap:8px; }
+      .flow-compare { grid-template-columns:1fr; }
+      .flow-card { padding:23px; }
+      .story { padding-top:76px; }
+      .story-head { margin-bottom:22px; }
+      .story-track { height:1700px; }
+      .story-sticky { top:72px; min-height:710px; display:block; }
+      .story-copy-panel { padding-bottom:14px; }
+      .story-copy-panel h3 { font-size:28px; margin:8px 0 8px; }
+      .story-copy-panel > p { font-size:13px; margin-bottom:11px; }
+      .story-step-list { display:none; }
+      .story-scene { min-height:500px; border-radius:25px; }
+      .scene-label { display:none; }
+      .guest-device { left:6%; top:42px; width:182px; height:354px; border-width:5px; border-radius:30px; padding:7px; }
+      .guest-screen { border-radius:21px; padding:27px 9px 9px; }
+      .guest-hero-item { height:76px; }
+      .guest-order-bar { margin-top:7px; padding:8px; font-size:7px; }
+      .guest-request-title { margin:9px 0 6px; font-size:8px; }
+      .guest-request-grid { gap:5px; }
+      .guest-request-grid button { min-height:33px; font-size:6px; border-radius:8px; }
+      .guest-status { font-size:6px; min-height:28px; margin-top:6px; }
+      .staff-board { right:4%; top:96px; width:190px; min-height:270px; border-radius:18px; padding:11px; }
+      .staff-top strong { font-size:9px; }
+      .queue { gap:5px; margin-top:8px; }
+      .queue-row { grid-template-columns:30px 1fr auto; gap:6px; padding:6px; border-radius:9px; }
+      .queue-table { width:30px; height:30px; font-size:8px; border-radius:8px; }
+      .queue-info strong { font-size:7px; }
+      .queue-info span { font-size:6px; }
+      .queue-state { font-size:5px; }
+      .request-packet { top:44%; font-size:6px; padding:6px 8px; }
+      .owner-insight { width:220px; right:7%; bottom:18px; padding:10px; border-radius:14px; }
+      .owner-insight h4 { font-size:8px; margin-bottom:7px; }
+      .metric { padding:6px; border-radius:8px; }
+      .metric b { font-size:11px; }
+      .metric span { font-size:5px; }
+      .request-cloud { grid-template-columns:1fr 1fr; }
+      .request-tile { min-height:105px; padding:15px; }
+      .system-grid { grid-template-columns:1fr; }
+      .system-card.wide { grid-column:auto; }
+      .promise-box { padding:34px 26px; border-radius:27px; }
+      .promise-box p { font-size:15px; }
+    }
+
+  </style>
+
+  <style id="qrk-mode-switch-style">
+    .qrk-mode-switch{position:fixed;right:18px;bottom:18px;z-index:80;display:inline-flex;align-items:center;gap:9px;min-height:42px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(10,14,16,.82);backdrop-filter:blur(16px);box-shadow:0 14px 38px rgba(0,0,0,.24);color:#eaf1f3;font:700 12px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.01em;transition:transform .22s ease,background .22s ease,border-color .22s ease}
+    .qrk-mode-switch:hover{transform:translateY(-2px);background:rgba(16,23,27,.95);border-color:color-mix(in srgb,var(--brand-500) 34%,transparent)}
+    .qrk-mode-switch i{width:8px;height:8px;border-radius:50%;background:var(--brand-500);box-shadow:0 0 16px color-mix(in srgb,var(--brand-500) 55%,transparent)}
+    @media(max-width:700px){.qrk-mode-switch{right:12px;bottom:12px;min-height:40px;padding:0 12px}}
+  </style>
+<link rel="icon" href="/assets/brand/qrk-mark.png">
+<link rel="stylesheet" href="/theme.css">
+<script src="/global-theme.js"></script>
+<style>
+  :root{--teal:var(--brand-500);--teal-soft:var(--brand-400)}
+  body{font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+  h1,h2,h3{font-family:"Manrope","DM Sans",system-ui,sans-serif}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--brand-ring);outline-offset:3px}
+</style></head>
+<body>
+  <div class="nav-wrap">
+    <div class="container">
+      <nav>
+        <a class="brand" href="#top"><img src="/assets/brand/qrk-logo.png" alt="QRK Menu" /></a>
+        <div class="nav-links">
+          <a href="#how">How it works</a>
+          <a href="#requests">Quick Requests</a>
+          <a href="#system">Platform</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="nav-actions">
+          <a class="btn btn-ghost" href="#how">See the flow</a>
+          <a class="btn btn-primary" href="#pricing">Get QRK Menu →</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="dot"></span> QRK Table · Ongoing Table Service</div>
+          <h1>Your guests shouldn’t have to <span class="accent">wave for service.</span></h1>
+          <p>One QR gives every table a direct line to the menu and staff. Guests can browse, order, request a refill, ask for help, or call for the bill the moment they are ready.</p>
+          <div class="hero-kicker"><strong>Scan. Order. Request. Done.</strong> No app. No waving down staff.</div>
+          <div class="hero-actions" style="margin-top:28px;">
+            <a class="btn btn-primary" href="#pricing">Explore QRK Table →</a>
+            <a class="btn btn-ghost" href="#how">Watch the table flow</a>
+          </div>
+          <div class="micro">
+            <span><b class="check">✓</b> One QR for the whole table experience</span>
+            <span><b class="check">✓</b> Live staff request queue</span>
+            <span><b class="check">✓</b> Works with the POS you already use</span>
+          </div>
+        </div>
+
+        <div class="product-stage" aria-label="QRK Menu table experience preview">
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="mobile-top">
+                <div>
+                  <div style="font-size:10px;color:#7b858a;margin-bottom:3px;">Welcome to</div>
+                  <div class="rest-name">Seoul Table</div>
+                  <div class="table-pill">Table 08 connected</div>
+                </div>
+                <div class="bag">🛍</div>
+              </div>
+              <div class="search">⌕&nbsp;&nbsp; Search food & drinks</div>
+              <div class="chips"><div class="chip active">Popular</div><div class="chip">Sets</div><div class="chip">Drinks</div><div class="chip">Sides</div></div>
+              <div class="menu-grid">
+                <div class="food-card"><div class="food-img f1"></div><div class="food-body"><div class="food-title">Unlimited Set</div><div class="food-meta"><span>Bestseller</span><b>₱499</b></div></div></div>
+                <div class="food-card"><div class="food-img f2"></div><div class="food-body"><div class="food-title">Beef Upgrade</div><div class="food-meta"><span>Add-on</span><b>₱129</b></div></div></div>
+              </div>
+              <div class="need-panel">
+                <div class="need-top"><strong>Need something?</strong><span>Quick Requests</span></div>
+                <div class="quick-grid"><div class="quick-btn hot">🥩<br>Meat refill</div><div class="quick-btn">💧<br>Water</div><div class="quick-btn">🔥<br>Change grill</div></div>
+              </div>
+              <div class="mobile-cart"><span>Table 08 · <b>2 items</b></span><span>View order →</span></div>
+            </div>
+          </div>
+
+          <div class="float-card owner-card">
+            <div class="fc-head"><div><div class="fc-title">Quick Requests</div><div class="fc-sub">One tap. No waiting.</div></div><div class="tag">TABLE 08</div></div>
+            <div class="quick-request-mini"><span>🥩 Meat refill</span><span>💧 Water</span><span>🔥 Change grill</span><span>🙋 Call staff</span></div>
+          </div>
+
+          <div class="float-card order-card">
+            <div class="fc-head"><div><div class="fc-title">Staff request</div><div class="fc-sub">Just now</div></div><div class="tag">LIVE</div></div>
+            <div class="request-row"><div class="request-icon">🥩</div><div class="request-copy"><strong>Table 08 · Beef refill</strong><span>Sent directly from the table</span></div><div class="ack">NEW</div></div>
+          </div>
+        </div>
+        <div class="hero-scroll-hint" aria-hidden="true">Scroll to bring the table requests to life</div>
+      </div>
+    </section>
+
+    <section class="concept-strip">
+      <div class="container"><div class="inner">
+        <strong>Menu</strong><span class="arrow-sep">→</span><strong>Ordering</strong><span class="arrow-sep">→</span><strong>Quick Requests</strong><span class="arrow-sep">→</span><strong>Staff Queue</strong><span class="arrow-sep">→</span><strong>POS</strong><span class="arrow-sep">→</span><strong>Analytics</strong>
+      </div></div>
+    </section>
+
+    <section class="section light" id="problem">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow"><span class="dot"></span> The real problem is not the menu</div>
+          <h2>Close the gap between “I need something” and “staff knows.”</h2>
+          <p>That gap appears in every refill, missing utensil, grill change, extra order, and bill request. QRK shortens the path without taking the human care out of hospitality.</p>
+        </div>
+        <div class="flow-compare">
+          <div class="flow-card bad">
+            <div class="flow-label">The usual table experience</div>
+            <div class="flow-line"><span class="flow-node">Customer wants something</span><span class="flow-arrow">→</span><span class="flow-node">Looks for staff</span><span class="flow-arrow">→</span><span class="flow-node">Waves / calls</span><span class="flow-arrow">→</span><span class="flow-node">Explains request</span><span class="flow-arrow">→</span><span class="flow-node">Staff remembers / submits</span></div>
+          </div>
+          <div class="flow-card good">
+            <div class="flow-label">With QRK</div>
+            <div class="flow-line"><span class="flow-node">Customer wants something</span><span class="flow-arrow">→</span><span class="flow-node accent">Taps phone</span><span class="flow-arrow">→</span><span class="flow-node">Staff instantly knows</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story" id="how">
+      <div class="container">
+        <div class="story-head">
+          <div class="eyebrow"><span class="dot"></span> One QR. The entire table journey.</div>
+          <h2>Watch a request move from guest to staff.</h2>
+          <p>The interaction below follows the real QRK product loop: scan, browse, order, request, fulfill, and learn. The goal is not to replace service — it is to remove the dead time between each step.</p>
+        </div>
+
+        <div class="story-track" id="storyTrack">
+          <div class="story-sticky">
+            <div class="story-copy-panel">
+              <div class="story-stage-index" id="storyIndex">01 · SCAN</div>
+              <h3 id="storyTitle">The table starts with one scan.</h3>
+              <p id="storyText">No app, no account, no onboarding for the guest. The QR already knows which restaurant and which table opened it.</p>
+              <div class="story-step-list">
+                <div class="story-step active">01 · Scan</div>
+                <div class="story-step">02 · Browse & order</div>
+                <div class="story-step">03 · Quick Request</div>
+                <div class="story-step">04 · Staff receives it</div>
+                <div class="story-step">05 · Fulfill</div>
+                <div class="story-step">06 · Learn</div>
+              </div>
+            </div>
+
+            <div class="story-scene" id="storyScene">
+              <div class="scene-label guest">Guest · Table 08</div>
+              <div class="scene-label staff">Staff live queue</div>
+              <div class="scene-connector"></div>
+
+              <div class="guest-device">
+                <div class="guest-screen">
+                  <div class="guest-brand"><span>QRK · Seoul Table</span><span style="color:#708087;">08</span></div>
+                  <div class="guest-hero-item"></div>
+                  <div class="guest-order-bar"><span>2 items added</span><span>Order →</span></div>
+                  <div class="guest-request-title">Need something?</div>
+                  <div class="guest-request-grid">
+                    <button class="selected" type="button">🥩 Meat refill</button><button type="button">💧 Water</button><button type="button">🔥 Change grill</button><button type="button">🙋 Call staff</button>
+                  </div>
+                  <div class="guest-status" id="guestStatus">✓ Request received · Staff is on it</div>
+                </div>
+              </div>
+
+              <div class="staff-board">
+                <div class="staff-top"><strong>Table Requests</strong><span class="live-dot">LIVE</span></div>
+                <div class="queue">
+                  <div class="queue-row" id="focusRequest"><div class="queue-table">08</div><div class="queue-info"><strong>Beef refill</strong><span id="requestAge">Waiting · just now</span></div><div class="queue-state live" id="requestState">NEW</div></div>
+                  <div class="queue-row"><div class="queue-table">03</div><div class="queue-info"><strong>Water</strong><span>Waiting · 1 min</span></div><div class="queue-state">OPEN</div></div>
+                  <div class="queue-row"><div class="queue-table">11</div><div class="queue-info"><strong>Request bill</strong><span>Waiting · 2 min</span></div><div class="queue-state">OPEN</div></div>
+                </div>
+              </div>
+
+              <div class="request-packet" id="requestPacket">Table 08 · Beef refill</div>
+
+              <div class="owner-insight" id="ownerInsight">
+                <h4>Owner view · Service pulse</h4>
+                <div class="insight-grid"><div class="metric"><b>12</b><span>requests today</span></div><div class="metric"><b>42s</b><span>avg. acknowledge</span></div><div class="metric"><b>3:14</b><span>avg. fulfill</span></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section light" id="requests">
+      <div class="container requests-layout">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> Quick Requests</div>
+          <h2>For restaurants where the second request matters as much as the first order.</h2>
+          <p style="color:#5f6d73;font-size:17px;line-height:1.65;">QRK shines in service-heavy concepts where customers repeatedly need something after the food arrives. Staff stop scanning the room for raised hands and start working from a clear live queue.</p>
+          <div class="request-usecases"><strong>Built for:</strong> samgyupsal · buffets · hotpot · unlimited wings · bars · cafés · food parks · karaoke · casual dining</div>
+        </div>
+        <div class="request-cloud">
+          <div class="request-tile"><span>🥩</span><b>Meat refill</b></div>
+          <div class="request-tile"><span>🔥</span><b>Change grill</b></div>
+          <div class="request-tile"><span>💧</span><b>Water</b></div>
+          <div class="request-tile"><span>🍚</span><b>Rice / sides</b></div>
+          <div class="request-tile"><span>🙋</span><b>Call staff</b></div>
+          <div class="request-tile"><span>🧾</span><b>Request bill</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pillars">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow"><span class="dot"></span> QRK in three words</div>
+          <h2>Quick. Responsive. Connected.</h2>
+          <p>The product is designed around a faster service loop, not just a prettier digital menu.</p>
+        </div>
+        <div class="pillars">
+          <div class="pillar"><div class="pillar-num">01 · QUICK</div><h3>Less waiting.</h3><p>Customers can act the moment they are ready — order, refill, request, bill — without waiting for someone to notice them.</p></div>
+          <div class="pillar"><div class="pillar-num">02 · RESPONSIVE</div><h3>Staff know instantly.</h3><p>Each request arrives with table context, request type, and wait time so the team can prioritize and fulfill instead of monitoring.</p></div>
+          <div class="pillar"><div class="pillar-num">03 · CONNECTED</div><h3>One table layer.</h3><p>Customer → table → staff → kitchen → POS → owner. QRK sits in the middle and gives every side the same live context.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="system" style="padding-top:10px;">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow"><span class="dot"></span> Starts with the menu. Grows into the table OS.</div>
+          <h2>One lightweight layer above the systems you already use.</h2>
+          <p>QRK should not force a restaurant to rip out its POS or relearn its operation. It becomes the digital surface customers touch and the service layer staff respond to.</p>
+        </div>
+        <div class="system-grid">
+          <div class="system-card"><div class="system-icon">↻</div><h3>Always-current menu</h3><p>Change prices, photos, variants, promos, and sold-out items once. The same printed QR immediately reflects the current menu.</p></div>
+          <div class="system-card"><div class="system-icon">＋</div><h3>More chances to sell</h3><p>Drinks, sides, dessert, upgrades, and extra items stay one tap away after the first order — without waiting for another order-taking round.</p></div>
+          <div class="system-card"><div class="system-icon">⚡</div><h3>Lightweight customer side</h3><p>No install, no account, and no unnecessary interface. The guest experience is optimized around opening quickly even on slower connections.</p></div>
+          <div class="system-card"><div class="system-icon">◎</div><h3>Service analytics</h3><p>Build toward request time, acknowledgment, fulfillment, busy periods, frequently requested items, and table behavior — useful operational signals, not vanity charts.</p></div>
+          <div class="system-card wide"><div><div class="system-icon">⇄</div><h3>POS-compatible by direction.</h3><p>QRK sits above the restaurant's existing stack. Orders can bridge into supported POS systems such as Loyverse through provider-specific connectors instead of making the business replace what already works.</p></div><div class="bridge-row"><span class="bridge-chip">Customer</span><span class="bridge-chip core">QRK</span><span class="bridge-chip">Staff</span><span class="bridge-chip">Kitchen</span><span class="bridge-chip">POS</span><span class="bridge-chip">Owner</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section light" id="promise">
+      <div class="container">
+        <div class="promise-box">
+          <h2>QRK is not “a QR menu.” <span>It is the table operating layer.</span></h2>
+          <p>Menu + ordering + service requests + table management + POS bridge + analytics + payments + customer experience. The menu is simply where the relationship starts.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <div class="container price-wrap">
+        <div class="price-copy">
+          <div class="eyebrow"><span class="dot"></span> Predictable software, not another marketplace cut</div>
+          <h2>One flat monthly fee. Keep the upside.</h2>
+          <p>QRK is designed as restaurant infrastructure: a predictable monthly cost while the business keeps the direct relationship with its customers.</p>
+          <p style="font-size:13px;color:#6f8087;">Final plan details can vary by location, number of branches, integrations, and onboarding scope.</p>
+        </div>
+        <div class="price-card">
+          <div class="price-top"><div><h3>QRK Menu</h3><div style="color:#87989f;font-size:13px;margin-top:4px;">Core plan · per location</div></div><div class="tag">FLAT RATE</div></div>
+          <div class="price">₱3,000 <small>/ month</small></div>
+          <div class="price-list">
+            <span>Live QR menu</span><span>Customer ordering</span><span>Quick Requests</span><span>Live staff request queue</span><span>Table-specific QR codes</span><span>Real-time menu updates</span><span>Owner dashboard</span><span>Assisted onboarding</span>
+          </div>
+          <a class="btn btn-primary full" href="mailto:hello@qrkmenu.com?subject=QRK%20Menu%20demo">Book a launch demo →</a>
+          <div class="price-note">No percentage commission from QRK on your direct orders.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq" style="padding-top:10px;">
+      <div class="container faq">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> FAQ</div>
+          <h2 style="font-size:48px;">What QRK actually changes at the table.</h2>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item open"><button class="faq-q">Do customers need an app or account?<span class="plus">+</span></button><div class="faq-a">No. The customer scans the table QR and opens the experience in the mobile browser. QRK is intentionally designed to keep the first interaction extremely light.</div></div>
+          <div class="faq-item"><button class="faq-q">Is QRK trying to replace waiters?<span class="plus">+</span></button><div class="faq-a">No. The point is to make staff more effective. QRK removes the monitoring and communication delay so waiters can spend more time actually serving tables.</div></div>
+          <div class="faq-item"><button class="faq-q">What are Quick Requests?<span class="plus">+</span></button><div class="faq-a">One-tap table requests such as Meat Refill, Water, Rice, Side Dishes, Change Grill, Tissue, Call Staff, or Request Bill. Restaurants can tailor the actions to their service model.</div></div>
+          <div class="faq-item"><button class="faq-q">Can each table have its own QR?<span class="plus">+</span></button><div class="faq-a">Yes. Table-aware codes give each order or service request location context so staff instantly know where it came from.</div></div>
+          <div class="faq-item"><button class="faq-q">Can QRK work with an existing POS?<span class="plus">+</span></button><div class="faq-a">That is the integration direction. QRK should sit above the restaurant's current stack and use a provider-specific bridge when the POS exposes a supported API or integration path.</div></div>
+          <div class="faq-item"><button class="faq-q">What happens when an item sells out?<span class="plus">+</span></button><div class="faq-a">Mark it unavailable from the owner side and the customer-facing menu can reflect the change immediately, with no QR reprint.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <div class="cta-box">
+          <div class="cta-copy"><h2>Less waiting. Clearer service. Happier tables.</h2><p>Give every table a direct line to your menu and your staff—from one scan.</p></div>
+          <div class="cta-actions"><a class="btn btn-primary" href="mailto:hello@qrkmenu.com?subject=QRK%20Menu%20demo">Book a demo</a><a class="btn btn-ghost" href="#how">See the table flow</a></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <img src="/assets/brand/qrk-logo.png" alt="QRK Menu" />
+      <div class="footer-links"><a href="#requests">Quick Requests</a><a href="#system">Platform</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><span>© 2026 QRK Menu</span></div>
+    </div>
+  </footer>
+
+  <script>
+    const stage = document.querySelector('.product-stage');
+    const hero = document.querySelector('.hero');
+    const heroCopy = document.querySelector('.hero-copy');
+    const ownerCard = document.querySelector('.owner-card');
+    const orderCard = document.querySelector('.order-card');
+    const scrollHint = document.querySelector('.hero-scroll-hint');
+    const navWrap = document.querySelector('.nav-wrap');
+    const mobileMQ = window.matchMedia('(max-width: 700px)');
+    const reduceMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let heroRaf = 0;
+    let storyRaf = 0;
+
+    const clamp = (n, min=0, max=1) => Math.min(max, Math.max(min, n));
+    const lerp = (a,b,t) => a + (b-a)*t;
+    const smoothstep = t => t * t * (3 - 2 * t);
+
+    document.body.classList.add('motion-ready');
+    requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('page-loaded')));
+
+    function setDesktopHero() {
+      ownerCard.removeAttribute('style');
+      orderCard.removeAttribute('style');
+      if (scrollHint) scrollHint.style.opacity = '';
+      stage.classList.remove('hero-entrance');
+      void stage.offsetWidth;
+      if (!reduceMotionMQ.matches) stage.classList.add('hero-entrance');
+    }
+
+    function updateMobileHero() {
+      heroRaf = 0;
+      if (!mobileMQ.matches) return;
+      if (reduceMotionMQ.matches) {
+        ownerCard.style.cssText = 'opacity:1; transform:translate3d(-70px,-12px,0) scale(.96) rotate(-2deg);';
+        orderCard.style.cssText = 'opacity:1; transform:translate3d(67px,14px,0) scale(.96) rotate(2deg);';
+        if (scrollHint) scrollHint.style.opacity = '0';
+        return;
+      }
+      const heroTop = hero.getBoundingClientRect().top + window.scrollY;
+      const copyHeight = heroCopy.offsetHeight;
+      const start = heroTop + Math.max(100, copyHeight * .43);
+      const end = start + 560;
+      const p = clamp((window.scrollY - start) / (end - start));
+      const p1 = clamp((p - .05) / .58);
+      const e1 = smoothstep(p1);
+      ownerCard.style.opacity = String(clamp(p1 * 1.35));
+      ownerCard.style.transform = `translate3d(${lerp(0,-70,e1)}px, ${lerp(58,-12,e1)}px, 0) scale(${lerp(.80,.96,e1)}) rotate(${lerp(-1,-2,e1)}deg)`;
+      const p2 = clamp((p - .34) / .56);
+      const e2 = smoothstep(p2);
+      orderCard.style.opacity = String(clamp(p2 * 1.35));
+      orderCard.style.transform = `translate3d(${lerp(0,67,e2)}px, ${lerp(-52,14,e2)}px, 0) scale(${lerp(.80,.96,e2)}) rotate(${lerp(0,2,e2)}deg)`;
+      if (scrollHint) scrollHint.style.opacity = String(clamp(1 - p * 2.4));
+    }
+
+    function configureHeroMotion() {
+      if (mobileMQ.matches) {
+        stage.classList.remove('hero-entrance');
+        updateMobileHero();
+      } else setDesktopHero();
+    }
+
+    const storyTrack = document.getElementById('storyTrack');
+    const storySteps = Array.from(document.querySelectorAll('.story-step'));
+    const storyIndex = document.getElementById('storyIndex');
+    const storyTitle = document.getElementById('storyTitle');
+    const storyText = document.getElementById('storyText');
+    const requestPacket = document.getElementById('requestPacket');
+    const focusRequest = document.getElementById('focusRequest');
+    const requestState = document.getElementById('requestState');
+    const requestAge = document.getElementById('requestAge');
+    const guestStatus = document.getElementById('guestStatus');
+    const ownerInsight = document.getElementById('ownerInsight');
+
+    const storyContent = [
+      ['01 · SCAN','The table starts with one scan.','No app, no account, no onboarding for the guest. The QR already knows which restaurant and which table opened it.'],
+      ['02 · BROWSE & ORDER','The menu is ready when the guest is.','Customers browse, add food, drinks, variants, and upgrades without waiting for the first order-taking round.'],
+      ['03 · QUICK REQUEST','Later, the guest needs something else.','Instead of searching for a waiter, Table 08 taps Beef Refill. The request already carries the table and request type.'],
+      ['04 · STAFF RECEIVES IT','The request appears where staff work.','Table 08 · Beef Refill · Just now. No waving, no verbal relay, and no ambiguity about which table needs what.'],
+      ['05 · FULFILL','Staff acknowledges and serves it.','The guest gets feedback that the request was received, while the queue changes from new to completed.'],
+      ['06 · LEARN','The owner sees the bigger picture.','Over time QRK can turn the same service events into useful signals: request volume, response time, busy periods, and table behavior.']
+    ];
+
+    function setStoryStep(idx) {
+      idx = Math.max(0, Math.min(storyContent.length - 1, idx));
+      const [eyebrow,title,text] = storyContent[idx];
+      if (storyIndex.textContent !== eyebrow) {
+        storyIndex.textContent = eyebrow;
+        storyTitle.textContent = title;
+        storyText.textContent = text;
+      }
+      storySteps.forEach((el,i) => el.classList.toggle('active', i === idx));
+    }
+
+    function updateStory() {
+      storyRaf = 0;
+      if (!storyTrack) return;
+      const rect = storyTrack.getBoundingClientRect();
+      const viewport = window.innerHeight || document.documentElement.clientHeight;
+      const scrollable = Math.max(1, storyTrack.offsetHeight - Math.min(viewport * .72, 660));
+      const p = clamp((-rect.top + Math.min(110, viewport*.12)) / scrollable);
+      const idx = Math.min(5, Math.floor(p * 6));
+      setStoryStep(idx);
+
+      if (reduceMotionMQ.matches) {
+        requestPacket.style.opacity = '1';
+        requestPacket.style.left = '61%';
+        focusRequest.classList.add('focus');
+        requestState.textContent = 'DONE';
+        requestState.className = 'queue-state done';
+        requestAge.textContent = 'Fulfilled · 3 min';
+        guestStatus.classList.add('show');
+        ownerInsight.classList.add('show');
+        return;
+      }
+
+      // Request packet only exists during the handoff portion of the story.
+      const handoff = clamp((p - .34) / .25);
+      const handoffOut = clamp((p - .62) / .09);
+      requestPacket.style.opacity = String(clamp(handoff * 1.7) * (1 - handoffOut));
+      requestPacket.style.left = `${lerp(34,67,smoothstep(handoff))}%`;
+      requestPacket.style.top = `${lerp(54,43,smoothstep(handoff))}%`;
+
+      const received = p > .50;
+      const fulfilled = p > .69;
+      const learned = p > .84;
+      focusRequest.classList.toggle('focus', received && !fulfilled);
+      guestStatus.classList.toggle('show', fulfilled);
+      ownerInsight.classList.toggle('show', learned);
+      if (fulfilled) {
+        requestState.textContent = 'DONE'; requestState.className = 'queue-state done'; requestAge.textContent = 'Fulfilled · 3 min';
+      } else if (received) {
+        requestState.textContent = 'NEW'; requestState.className = 'queue-state live'; requestAge.textContent = 'Waiting · just now';
+      } else {
+        requestState.textContent = '—'; requestState.className = 'queue-state'; requestAge.textContent = 'Waiting for request';
+      }
+    }
+
+    function requestUpdates() {
+      if (!heroRaf) heroRaf = requestAnimationFrame(updateMobileHero);
+      if (!storyRaf) storyRaf = requestAnimationFrame(updateStory);
+      navWrap?.classList.toggle('scrolled', window.scrollY > 12);
+    }
+
+    const revealGroups = [
+      ['.concept-strip .inner',0],['.section-head',0],['.flow-card',70],['.story-head',0],
+      ['.request-tile',45],['.pillar',70],['.system-card',70],['.promise-box',0],
+      ['.price-copy',0],['.price-card',90],['.faq > div:first-child',0],['.faq-list',80],['.cta-box',0]
+    ];
+    const revealEls=[];
+    revealGroups.forEach(([selector,stepDelay])=>document.querySelectorAll(selector).forEach((el,index)=>{
+      el.classList.add('reveal-soft'); el.style.setProperty('--reveal-delay',`${Math.min(index*stepDelay,220)}ms`); revealEls.push(el);
+    }));
+    if (reduceMotionMQ.matches || !('IntersectionObserver' in window)) revealEls.forEach(el=>el.classList.add('is-visible'));
+    else {
+      const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{ if(entry.isIntersecting){ entry.target.classList.add('is-visible'); observer.unobserve(entry.target); }}),{threshold:.11,rootMargin:'0px 0px -5% 0px'});
+      revealEls.forEach(el=>observer.observe(el));
+    }
+
+    window.addEventListener('scroll', requestUpdates, {passive:true});
+    window.addEventListener('resize', ()=>{ configureHeroMotion(); requestUpdates(); }, {passive:true});
+    mobileMQ.addEventListener?.('change', configureHeroMotion);
+    configureHeroMotion(); requestUpdates();
+
+    document.querySelectorAll('.faq-q').forEach(btn=>btn.addEventListener('click',()=>btn.parentElement.classList.toggle('open')));
+  </script>
+
+  <a class="qrk-mode-switch" href="/landing/?choose=1" aria-label="Switch QRK service mode"><i></i> Switch QRK mode</a>
+</body>
+</html>

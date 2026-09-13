@@ -1,6 +1,746 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f7f9fc"><meta name="description" content="QRK Quick gives fast-order businesses a lightweight menu and ordering flow."><title>QRK Quick — One scan, one clear order</title><link rel="icon" href="/assets/brand/qrk-mark.png"><link rel="stylesheet" href="/theme.css"><link rel="stylesheet" href="/landing/landing.css"><script src="/global-theme.js"></script></head><body>
-<header class="site-header shell"><a class="logo" href="/landing/" aria-label="QRK Menu home"><img src="/assets/brand/qrk-logo.png" alt="QRK Menu"></a><nav class="nav" aria-label="Primary"><a href="/landing/table.html">QRK Table</a><a href="/#signin">Business login</a><a class="primary" href="mailto:hello@qrkmenu.com?subject=QRK%20Quick%20demo">Book a demo</a></nav></header>
-<main><section class="hero"><div class="hero-inner shell"><p class="eyebrow">QRK Quick</p><h1>One scan. One clear order.</h1><p class="hero-copy">For businesses where every visit should move quickly. Customers browse and place an order in their browser—without joining a queue or downloading an app.</p><div class="actions"><a class="button primary" href="mailto:hello@qrkmenu.com?subject=QRK%20Quick%20demo">Book a Quick demo</a><a class="button" href="#how">See how it works</a></div></div></section>
-<section class="section alt" id="how"><div class="shell"><div class="section-heading center"><p class="eyebrow">A shorter path to the order</p><h2>From scan to kitchen, without the extra steps.</h2></div><div class="feature-grid"><article class="feature"><span class="number">01 · SCAN</span><h3>Open instantly</h3><p>The QR opens a lightweight, mobile-first menu in the customer’s browser.</p></article><article class="feature"><span class="number">02 · CHOOSE</span><h3>Order with confidence</h3><p>Clear photos, prices, options, and availability help customers decide quickly.</p></article><article class="feature"><span class="number">03 · SEND</span><h3>Keep work moving</h3><p>The order is handed to staff with the details needed to prepare it.</p></article></div></div></section>
-<section class="section"><div class="shell split"><div class="statement"><p>A live menu is more useful than a PDF—and more direct than a marketplace.</p></div><div class="checks"><div class="check"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg><div><h3>Change the menu once</h3><p>Manage items, prices, photos, categories, and sold-out states from one workspace.</p></div></div><div class="check"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg><div><h3>Keep the customer side lean</h3><p>No account wall, app install, or crowded interface before the menu.</p></div></div><div class="check"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg><div><h3>Own the relationship</h3><p>Bring customers to your business experience instead of a marketplace listing.</p></div></div></div></div></section>
-<section class="cta"><div class="shell"><div class="cta-card"><div><h2>Make every order easier to start.</h2><p>See how QRK Quick can fit your counter, café, stall, or takeout flow.</p></div><a class="button" href="mailto:hello@qrkmenu.com?subject=QRK%20Quick%20demo">Book a demo</a></div></div></section></main><footer class="site-footer shell"><span>QRK Quick · Part of QRK Menu</span><nav aria-label="Footer"><a href="/landing/">Choose a mode</a><a href="/landing/table.html">Explore Table</a></nav></footer></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QRK Quick — Scan. Order. Pay. Done.</title>
+  <meta name="description" content="QRK Quick turns your menu into a fast self-service ordering experience for cafés, food stalls, quick-service restaurants, and takeout businesses." />
+  <style>
+    :root {
+      --bg: #06090b;
+      --surface: #0c1114;
+      --surface-2: #10171b;
+      --paper: #f6f8f9;
+      --ink: #0c1114;
+      --text: #f4f7f8;
+      --muted: #9aa8af;
+      --muted-2: #6e7d84;
+      --teal: var(--brand-500);
+      --teal-soft: var(--brand-400);
+      --line: rgba(255,255,255,.10);
+      --shadow: 0 24px 80px rgba(0,0,0,.35);
+      --radius-lg: 34px;
+      --radius-md: 24px;
+      --radius-sm: 16px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+
+    .container { width: min(calc(100% - 40px), var(--max)); margin: 0 auto; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px;
+      background: rgba(255,255,255,.04); color: #cbd6da; font-size: 13px; font-weight: 650;
+      letter-spacing: .01em;
+    }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 20px color-mix(in srgb,var(--brand-500) 80%,transparent); }
+
+    .nav-wrap {
+      position: sticky; top: 0; z-index: 50; backdrop-filter: blur(18px);
+      background: rgba(6,9,11,.68); border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    nav {
+      height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    }
+    .brand img { height: 43px; width: auto; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 28px; color: #c5d0d4; font-size: 14px; }
+    .nav-links a:hover { color: white; }
+    .nav-actions { display: flex; gap: 10px; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+      min-height: 46px; padding: 0 18px; border-radius: 999px; border: 1px solid transparent;
+      font-weight: 700; font-size: 14px; transition: .2s ease; cursor: pointer;
+    }
+    .btn-primary { background: var(--teal); color: #031012; box-shadow: 0 10px 35px color-mix(in srgb,var(--brand-500) 18%,transparent); }
+    .btn-primary:hover { transform: translateY(-1px); background: var(--brand-400); }
+    .btn-ghost { color: #e7eff1; border-color: var(--line); background: rgba(255,255,255,.035); }
+    .btn-ghost:hover { background: rgba(255,255,255,.07); }
+
+    .hero { position: relative; overflow: hidden; padding: 92px 0 92px; }
+    .hero::before {
+      content: ""; position: absolute; inset: -140px auto auto 42%; width: 700px; height: 700px;
+      background: radial-gradient(circle, color-mix(in srgb,var(--brand-500) 13%,transparent), color-mix(in srgb,var(--brand-500) 0%,transparent) 68%); pointer-events: none;
+    }
+    .hero-grid { display: grid; grid-template-columns: 1.02fr .98fr; gap: 70px; align-items: center; }
+    h1 { margin: 20px 0 22px; font-size: clamp(54px, 6vw, 82px); line-height: .95; letter-spacing: -.055em; font-weight: 760; }
+    h1 .accent { color: var(--teal); }
+    .hero-copy p { max-width: 610px; color: #aab8be; font-size: 19px; line-height: 1.6; margin: 0 0 30px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .micro { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 18px; color: #829198; font-size: 13px; }
+    .micro span { display: inline-flex; align-items: center; gap: 7px; }
+    .check { color: var(--teal); font-weight: 900; }
+    .hero-scroll-hint { display:none; }
+
+    .product-stage { position: relative; min-height: 600px; display: grid; place-items: center; }
+    .phone {
+      width: 320px; height: 625px; border-radius: 48px; background: #0b0e10;
+      border: 7px solid #222a2e; box-shadow: 0 34px 100px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.08) inset;
+      padding: 12px; position: relative; transform: rotate(2.5deg); z-index: 2;
+    }
+    .phone::before { content:""; position:absolute; top:12px; left:50%; transform:translateX(-50%); width:94px; height:25px; background:#060809; border-radius:999px; z-index:8; }
+    .phone-screen { height: 100%; border-radius: 36px; overflow: hidden; background: #f6f7f7; color: #101416; }
+    .mobile-top { padding: 48px 18px 13px; display:flex; align-items:center; justify-content:space-between; }
+    .rest-name { font-size: 18px; font-weight: 800; letter-spacing: -.02em; }
+    .bag { width: 37px; height: 37px; border-radius: 50%; border: 1px solid #e2e6e8; display:grid; place-items:center; background:#fff; }
+    .search { margin: 0 16px; height: 38px; border-radius: 12px; background:#e9edef; display:flex; align-items:center; padding:0 12px; color:#7b858a; font-size:12px; }
+    .chips { display:flex; gap:8px; padding:13px 16px 11px; overflow:hidden; }
+    .chip { white-space: nowrap; border-radius:999px; padding:8px 12px; background:white; border:1px solid #e3e7e8; font-size:11px; font-weight:700; }
+    .chip.active { background:#101416; color:white; border-color:#101416; }
+    .menu-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; padding: 0 16px 100px; }
+    .food-card { border-radius:16px; background:white; overflow:hidden; box-shadow:0 4px 20px rgba(16,20,22,.05); }
+    .food-img { aspect-ratio: 1.22; position:relative; overflow:hidden; }
+    .food-img::after { content:""; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.18), transparent 45%); }
+    .f1 { background: radial-gradient(circle at 52% 42%, #ffd18c 0 20%, #b85d2a 21% 33%, #f4d38f 34% 44%, #8d3a1b 45% 51%, #f4c75d 52% 61%, #d57a38 62% 100%); }
+    .f2 { background: radial-gradient(circle at 50% 47%, #f5d580 0 13%, #f9ecb4 14% 28%, #d8692b 29% 33%, #f8e1a0 34% 52%, #85a847 53% 58%, #e3bb6c 59% 100%); }
+    .f3 { background: radial-gradient(circle at 50% 45%, #f0d2a6 0 9%, #b94f2b 10% 18%, #f1c578 19% 32%, #774c2f 33% 39%, #e2b971 40% 58%, #a4683a 59% 100%); }
+    .f4 { background: radial-gradient(circle at 52% 40%, #faf1dd 0 26%, #d9b46d 27% 42%, #c98e45 43% 54%, #815f31 55% 100%); }
+    .food-body { padding: 10px 10px 12px; }
+    .food-title { font-size:12px; font-weight:800; }
+    .food-meta { margin-top:5px; display:flex; justify-content:space-between; color:#657178; font-size:10px; }
+    .mobile-cart { position:absolute; bottom: 24px; left: 28px; right:28px; height:50px; border-radius:17px; background:#111719; color:white; display:flex; justify-content:space-between; align-items:center; padding:0 16px; font-size:12px; font-weight:750; box-shadow:0 15px 30px rgba(0,0,0,.2); }
+    .mobile-cart b { color:var(--teal); }
+
+    .float-card {
+      position:absolute; z-index:3; width:285px; border-radius:22px; background:rgba(16,23,27,.92); border:1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(16px); box-shadow:var(--shadow); padding:18px;
+    }
+    .float-card .fc-head { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+    .float-card .fc-title { font-size:13px; font-weight:800; }
+    .float-card .fc-sub { color:#7f9097; font-size:11px; margin-top:3px; }
+    .float-card .tag { padding:7px 9px; border-radius:999px; color:#63ecec; background:color-mix(in srgb,var(--brand-500) 10%,transparent); border:1px solid color-mix(in srgb,var(--brand-500) 22%,transparent); font-size:10px; font-weight:800; }
+    .owner-card { right:-10px; top:72px; transform: rotate(-2deg); }
+    .order-card { left:-18px; bottom:82px; transform:rotate(-2deg); }
+
+    /* Motion language: quiet, short, and purposeful. Nothing loops forever. */
+    @media (min-width: 701px) {
+      .product-stage.hero-entrance .phone {
+        animation: phone-settle 680ms cubic-bezier(.22,.61,.36,1) both;
+      }
+      .product-stage.hero-entrance .owner-card {
+        animation: owner-glide-out 760ms cubic-bezier(.22,.61,.36,1) 170ms both;
+      }
+      .product-stage.hero-entrance .order-card {
+        animation: order-glide-out 780ms cubic-bezier(.22,.61,.36,1) 270ms both;
+      }
+      @keyframes phone-settle {
+        from { opacity:0; transform:translateY(14px) scale(.985) rotate(2.5deg); }
+        to   { opacity:1; transform:translateY(0) scale(1) rotate(2.5deg); }
+      }
+      @keyframes owner-glide-out {
+        from { opacity:0; transform:translate(-34px, 54px) scale(.92) rotate(0deg); }
+        to   { opacity:1; transform:translate(0, 0) scale(1) rotate(-2deg); }
+      }
+      @keyframes order-glide-out {
+        from { opacity:0; transform:translate(36px, -46px) scale(.92) rotate(0deg); }
+        to   { opacity:1; transform:translate(0, 0) scale(1) rotate(-2deg); }
+      }
+    }
+
+    /* Soft page-load hierarchy for the hero copy. */
+    .motion-ready .hero-copy > * {
+      opacity:0;
+      transform:translateY(10px);
+      transition:opacity 620ms ease, transform 620ms cubic-bezier(.22,.61,.36,1);
+    }
+    .motion-ready.page-loaded .hero-copy > * { opacity:1; transform:none; }
+    .motion-ready.page-loaded .hero-copy > *:nth-child(1) { transition-delay:40ms; }
+    .motion-ready.page-loaded .hero-copy > *:nth-child(2) { transition-delay:90ms; }
+    .motion-ready.page-loaded .hero-copy > *:nth-child(3) { transition-delay:140ms; }
+    .motion-ready.page-loaded .hero-copy > *:nth-child(4) { transition-delay:190ms; }
+    .motion-ready.page-loaded .hero-copy > *:nth-child(5) { transition-delay:230ms; }
+
+    /* Scroll reveals are intentionally tiny: 14px of travel, no zoom, no blur. */
+    .motion-ready .reveal-soft {
+      opacity:0;
+      transform:translateY(14px);
+      transition:
+        opacity 660ms ease var(--reveal-delay, 0ms),
+        transform 660ms cubic-bezier(.22,.61,.36,1) var(--reveal-delay, 0ms);
+    }
+    .motion-ready .reveal-soft.is-visible { opacity:1; transform:none; }
+
+    /* Navigation gains definition only after the page starts moving. */
+    .nav-wrap { transition:background-color .28s ease, border-color .28s ease, box-shadow .28s ease; }
+    .nav-wrap.scrolled {
+      background:rgba(6,9,11,.84);
+      border-bottom-color:rgba(255,255,255,.085);
+      box-shadow:0 10px 34px rgba(0,0,0,.14);
+    }
+
+    /* Small tactile responses; desktop pointer devices only. */
+    @media (hover:hover) and (pointer:fine) {
+      .step, .feature-card, .mini-feature, .price-card {
+        transition:transform .28s cubic-bezier(.22,.61,.36,1), border-color .28s ease, box-shadow .28s ease;
+      }
+      .step:hover { transform:translateY(-3px); border-color:#d5dee1; box-shadow:0 14px 34px rgba(12,17,20,.06); }
+      .feature-card:hover, .mini-feature:hover { transform:translateY(-3px); border-color:rgba(255,255,255,.16); }
+      .price-card:hover { transform:translateY(-3px); border-color:color-mix(in srgb,var(--brand-500) 38%,transparent); box-shadow:0 34px 95px rgba(0,0,0,.30); }
+      .product-stage .phone { transition:transform .45s cubic-bezier(.22,.61,.36,1); }
+      .product-stage:hover .phone { transform:translateY(-3px) rotate(2deg); }
+    }
+
+    .toggle-row { margin-top:14px; display:flex; align-items:center; justify-content:space-between; padding:12px; border-radius:14px; background:rgba(255,255,255,.04); }
+    .tiny-label { font-size:11px; color:#aab7bc; }
+    .switch { width:38px; height:22px; background:var(--teal); border-radius:999px; padding:3px; }
+    .switch::after { content:""; display:block; width:16px; height:16px; border-radius:50%; background:#041012; margin-left:16px; }
+    .order-line { display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center; margin-top:13px; }
+    .order-num { width:32px; height:32px; border-radius:10px; display:grid; place-items:center; background:color-mix(in srgb,var(--brand-500) 12%,transparent); color:var(--teal); font-size:11px; font-weight:900; }
+    .order-info strong { font-size:11px; display:block; } .order-info span { font-size:10px; color:#7f9097; }
+    .status { color:#7aefb5; font-size:10px; font-weight:800; }
+
+    .logo-strip { padding: 10px 0 74px; }
+    .logo-strip-inner { border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:22px 0; display:flex; justify-content:center; gap:34px; flex-wrap:wrap; color:#7e8e95; font-size:13px; }
+    .logo-strip b { color:#c7d2d6; }
+
+    .section { padding: 112px 0; }
+    .section.light { background: var(--paper); color: var(--ink); }
+    .section-head { max-width: 760px; margin-bottom: 50px; }
+    .section h2 { margin: 16px 0 16px; font-size: clamp(38px, 4.6vw, 62px); line-height: 1.02; letter-spacing: -.045em; }
+    .section-head p { font-size:18px; line-height:1.65; color:var(--muted); margin:0; }
+    .light .section-head p { color:#5d696f; }
+    .light .eyebrow { background:white; border-color:#dde3e5; color:#4d5b61; }
+
+    .steps { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .step { min-height:260px; padding:26px; border-radius:26px; background:white; border:1px solid #e4e9eb; display:flex; flex-direction:column; justify-content:space-between; }
+    .step-num { color:#0b8589; font-size:12px; font-weight:850; }
+    .step-icon { width:52px; height:52px; border-radius:16px; display:grid; place-items:center; background:#e8ffff; font-size:22px; }
+    .step h3 { margin:20px 0 8px; font-size:20px; letter-spacing:-.025em; }
+    .step p { margin:0; color:#66757b; line-height:1.55; font-size:14px; }
+
+    .feature-grid { display:grid; grid-template-columns: 1.25fr .75fr; gap:18px; }
+    .feature-card { border:1px solid var(--line); border-radius:30px; background:linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.02)); overflow:hidden; min-height:430px; padding:34px; position:relative; }
+    .feature-card h3 { margin:0 0 10px; font-size:28px; letter-spacing:-.035em; }
+    .feature-card p { color:#8fa0a7; line-height:1.6; max-width:540px; margin:0; }
+    .mock-dashboard { position:absolute; left:34px; right:34px; bottom:-18px; height:250px; border-radius:22px 22px 0 0; background:#f7f8f8; color:#111719; padding:18px; box-shadow:0 -4px 35px rgba(0,0,0,.18); }
+    .dash-top { display:flex; justify-content:space-between; align-items:center; padding-bottom:12px; border-bottom:1px solid #e5e9ea; }
+    .dash-title { font-size:13px; font-weight:850; }
+    .dash-btn { font-size:10px; font-weight:800; border-radius:10px; background:#111719; color:white; padding:9px 11px; }
+    .dash-items { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; padding-top:12px; }
+    .dash-item { background:white; border:1px solid #e3e8e9; border-radius:13px; padding:10px; }
+    .dash-thumb { height:55px; border-radius:9px; background:linear-gradient(140deg,#f5c66b,#ad4f2c); margin-bottom:8px; }
+    .dash-item strong { font-size:10px; display:block; } .dash-item span { color:#7b8589; font-size:9px; }
+    .soldout { margin-top:8px; display:flex; justify-content:space-between; align-items:center; font-size:8px; }
+    .soldout b { color:#ce4b4b; }
+    .mini-toggle { width:26px; height:14px; border-radius:999px; background:#d7dddf; position:relative; }
+    .mini-toggle::after { content:""; position:absolute; width:10px; height:10px; border-radius:50%; background:white; top:2px; left:2px; box-shadow:0 1px 3px rgba(0,0,0,.2); }
+
+    .qr-panel { display:grid; place-items:center; padding-top:34px; }
+    .fake-qr { width:184px; height:184px; border-radius:28px; background:#f5f8f8; padding:16px; box-shadow:0 22px 40px rgba(0,0,0,.2); }
+    .qr-grid { width:100%; height:100%; display:grid; grid-template-columns:repeat(9,1fr); grid-template-rows:repeat(9,1fr); gap:3px; }
+    .qr-grid span { background:#111719; border-radius:2px; opacity:.08; }
+    .qr-grid span.on { opacity:1; background:var(--teal); }
+    .qr-label { margin-top:18px; text-align:center; color:#b7c3c8; font-size:13px; }
+
+    .three { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px; }
+    .small-feature { min-height:270px; border:1px solid var(--line); border-radius:26px; background:rgba(255,255,255,.03); padding:28px; }
+    .small-feature .icon { width:46px; height:46px; display:grid; place-items:center; border-radius:15px; background:color-mix(in srgb,var(--brand-500) 10%,transparent); color:var(--teal); font-size:20px; }
+    .small-feature h3 { font-size:21px; margin:60px 0 9px; letter-spacing:-.025em; }
+    .small-feature p { margin:0; color:#84959c; line-height:1.6; font-size:14px; }
+
+    .compare-wrap { overflow:auto; border-radius:26px; border:1px solid #dfe5e7; background:white; }
+    table { width:100%; border-collapse:collapse; min-width:760px; }
+    th, td { padding:18px 20px; text-align:left; border-bottom:1px solid #e7ebec; font-size:14px; }
+    th { color:#647178; font-size:12px; text-transform:uppercase; letter-spacing:.06em; }
+    tr:last-child td { border-bottom:none; }
+    td:first-child { font-weight:800; }
+    .qrk-col { background:#ecffff; color:#075d61; font-weight:800; }
+    .no { color:#a4aeb3; } .yes { color:#087e63; font-weight:800; }
+
+    .price-wrap { display:grid; grid-template-columns:.9fr 1.1fr; gap:48px; align-items:center; }
+    .price-copy p { color:#93a3aa; font-size:17px; line-height:1.6; }
+    .price-card { border-radius:32px; border:1px solid color-mix(in srgb,var(--brand-500) 28%,transparent); background:linear-gradient(150deg, color-mix(in srgb,var(--brand-500) 10%,transparent), rgba(255,255,255,.03)); padding:34px; box-shadow:0 30px 90px rgba(0,0,0,.28); }
+    .price-top { display:flex; justify-content:space-between; gap:20px; align-items:flex-start; }
+    .price-card h3 { font-size:22px; margin:0; }
+    .price { font-size:54px; letter-spacing:-.05em; margin:24px 0 4px; font-weight:780; }
+    .price small { font-size:16px; color:#809199; letter-spacing:0; font-weight:600; }
+    .price-list { display:grid; grid-template-columns:1fr 1fr; gap:13px 22px; margin:28px 0; color:#c4d0d4; font-size:14px; }
+    .price-list span::before { content:"✓"; color:var(--teal); font-weight:900; margin-right:9px; }
+    .full { width:100%; }
+    .price-note { text-align:center; color:#6f8087; font-size:11px; margin-top:12px; }
+
+    .faq { display:grid; grid-template-columns:.7fr 1.3fr; gap:70px; align-items:start; }
+    .faq-list { border-top:1px solid var(--line); }
+    .faq-item { border-bottom:1px solid var(--line); }
+    .faq-q { width:100%; background:none; color:white; border:0; padding:22px 0; display:flex; justify-content:space-between; gap:20px; text-align:left; font-weight:750; cursor:pointer; }
+    .faq-a { max-height:0; overflow:hidden; color:#8fa0a7; line-height:1.65; transition:max-height .25s ease; padding-right:30px; }
+    .faq-item.open .faq-a { max-height:160px; padding-bottom:22px; }
+    .plus { color:var(--teal); font-size:22px; line-height:1; transition:transform .2s ease; }
+    .faq-item.open .plus { transform:rotate(45deg); }
+
+    .cta { padding: 90px 0 110px; }
+    .cta-box { border-radius:38px; background:linear-gradient(135deg, #ecffff, #d4fbfb 50%, #f7fafa); color:#071012; padding:60px; display:flex; justify-content:space-between; gap:40px; align-items:center; position:relative; overflow:hidden; }
+    .cta-box::after { content:"Q"; position:absolute; right:-18px; bottom:-110px; font-size:330px; line-height:1; font-weight:850; color:color-mix(in srgb,var(--brand-500) 16%,transparent); letter-spacing:-.12em; }
+    .cta-copy { max-width:700px; position:relative; z-index:1; }
+    .cta-copy h2 { font-size:50px; line-height:1; letter-spacing:-.045em; margin:0 0 14px; }
+    .cta-copy p { margin:0; color:#456069; font-size:17px; line-height:1.55; }
+    .cta-actions { position:relative; z-index:1; display:flex; flex-direction:column; gap:10px; min-width:190px; }
+    .cta .btn-primary { background:#081012; color:white; }
+    .cta .btn-ghost { border-color:#b6d8da; color:#23383f; background:rgba(255,255,255,.35); }
+
+    footer { border-top:1px solid var(--line); padding:42px 0; color:#6f8087; }
+    .footer-row { display:flex; justify-content:space-between; gap:24px; align-items:center; flex-wrap:wrap; }
+    footer img { height:35px; opacity:.9; }
+    .footer-links { display:flex; gap:22px; font-size:13px; }
+
+    @media (max-width: 1020px) {
+      .nav-links { display:none; }
+      .hero-grid, .feature-grid, .price-wrap, .faq { grid-template-columns:1fr; }
+      .hero-copy { text-align:center; } .hero-copy p { margin-left:auto; margin-right:auto; }
+      .hero-actions, .micro { justify-content:center; }
+      .product-stage { margin-top:20px; }
+      .steps { grid-template-columns:1fr 1fr; }
+      .three { grid-template-columns:1fr; }
+      .feature-card { min-height:390px; }
+      .faq { gap:30px; }
+      .cta-box { align-items:flex-start; flex-direction:column; }
+    }
+
+    @media (max-width: 700px) {
+      .container { width:min(calc(100% - 26px), var(--max)); }
+      nav { height:66px; }
+      .brand img { height:33px; }
+      .nav-actions .btn-ghost { display:none; }
+      .btn { min-height:42px; padding:0 15px; }
+      .hero {
+        padding:56px 0 0;
+        min-height:1240px;
+        overflow:clip;
+      }
+      .hero-grid { display:block; }
+      h1 { font-size:50px; }
+      .hero-copy p { font-size:16px; }
+
+      /* Mobile hero remains scroll-scrubbed, but movement is deliberately restrained.
+         The cards simply glide out as the user scrolls — no bounce or blur. */
+      .product-stage {
+        min-height:555px;
+        width:100%;
+        margin:14px 0 0;
+        position:sticky;
+        top:78px;
+        transform:none;
+        overflow:visible;
+      }
+      .product-stage .phone {
+        width:286px;
+        height:558px;
+        border-radius:43px;
+        transform:rotate(1.5deg) scale(.92);
+      }
+      .product-stage .phone-screen { border-radius:32px; }
+      .product-stage .owner-card,
+      .product-stage .order-card {
+        width:min(255px, calc(100vw - 48px));
+        will-change:transform, opacity;
+        pointer-events:none;
+      }
+      .product-stage .owner-card { right:50%; top:86px; margin-right:-142px; }
+      .product-stage .order-card { left:50%; bottom:58px; margin-left:-142px; }
+      .hero-scroll-hint {
+        display:flex; align-items:center; justify-content:center; gap:8px;
+        margin-top:18px; color:#718087; font-size:12px; letter-spacing:.01em;
+        transition:opacity .2s ease;
+      }
+      .hero-scroll-hint::before {
+        content:"↓"; color:var(--teal); font-size:15px;
+      }
+      .logo-strip { padding-bottom:48px; }
+      .section { padding:76px 0; }
+      .section h2 { font-size:39px; }
+      .section-head p { font-size:16px; }
+      .steps { grid-template-columns:1fr; }
+      .step { min-height:220px; }
+      .feature-card { padding:25px; min-height:360px; }
+      .mock-dashboard { left:22px; right:22px; }
+      .dash-items { grid-template-columns:1fr 1fr; }
+      .dash-item:last-child { display:none; }
+      .price-list { grid-template-columns:1fr; }
+      .price { font-size:46px; }
+      .cta-box { padding:36px 28px; border-radius:28px; }
+      .cta-copy h2 { font-size:38px; }
+      .cta-actions { width:100%; }
+      .footer-row { align-items:flex-start; flex-direction:column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior:auto; }
+      *, *::before, *::after { animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+      .motion-ready .hero-copy > *,
+      .motion-ready .reveal-soft { opacity:1 !important; transform:none !important; }
+      .product-stage .owner-card, .product-stage .order-card { filter:none !important; }
+    }
+  </style>
+
+  <style id="qrk-mode-switch-style">
+    .qrk-mode-switch{position:fixed;right:18px;bottom:18px;z-index:80;display:inline-flex;align-items:center;gap:9px;min-height:42px;padding:0 14px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(10,14,16,.82);backdrop-filter:blur(16px);box-shadow:0 14px 38px rgba(0,0,0,.24);color:#eaf1f3;font:700 12px/1 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.01em;transition:transform .22s ease,background .22s ease,border-color .22s ease}
+    .qrk-mode-switch:hover{transform:translateY(-2px);background:rgba(16,23,27,.95);border-color:color-mix(in srgb,var(--brand-500) 34%,transparent)}
+    .qrk-mode-switch i{width:8px;height:8px;border-radius:50%;background:var(--brand-500);box-shadow:0 0 16px color-mix(in srgb,var(--brand-500) 55%,transparent)}
+    @media(max-width:700px){.qrk-mode-switch{right:12px;bottom:12px;min-height:40px;padding:0 12px}}
+  </style>
+<link rel="icon" href="/assets/brand/qrk-mark.png">
+<link rel="stylesheet" href="/theme.css">
+<script src="/global-theme.js"></script>
+<style>
+  :root{--teal:var(--brand-500);--teal-soft:var(--brand-400)}
+  body{font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+  h1,h2,h3{font-family:"Manrope","DM Sans",system-ui,sans-serif}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--brand-ring);outline-offset:3px}
+</style></head>
+<body>
+  <div class="nav-wrap">
+    <div class="container">
+      <nav>
+        <a class="brand" href="#top"><img src="/assets/brand/qrk-logo.png" alt="QRK Menu" /></a>
+        <div class="nav-links">
+          <a href="#how">How it works</a>
+          <a href="#features">Features</a>
+          <a href="#compare">Why QRK</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="nav-actions">
+          <a class="btn btn-ghost" href="#features">See the product</a>
+          <a class="btn btn-primary" href="#pricing">Get QRK Menu →</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="dot"></span> QRK Quick · Order & Pay</div>
+          <h1>Turn every scan<br>into an <span class="accent">order.</span></h1>
+          <p>Give customers a faster way to order—straight from your menu, with no queue and no app to download. Scan, choose, send, done.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#pricing">Explore QRK Quick →</a>
+            <a class="btn btn-ghost" href="#how">See how it works</a>
+          </div>
+          <div class="micro">
+            <span><b class="check">✓</b> No customer app</span>
+            <span><b class="check">✓</b> Instant menu updates</span>
+            <span><b class="check">✓</b> Flat monthly pricing</span>
+          </div>
+        </div>
+
+        <div class="product-stage" aria-label="QRK Menu product preview">
+          <div class="phone">
+            <div class="phone-screen">
+              <div class="mobile-top">
+                <div>
+                  <div style="font-size:10px;color:#7b858a;margin-bottom:3px;">Good evening</div>
+                  <div class="rest-name">Kanto Kitchen</div>
+                </div>
+                <div class="bag">🛍</div>
+              </div>
+              <div class="search">⌕&nbsp;&nbsp; Search the menu</div>
+              <div class="chips"><div class="chip active">Popular</div><div class="chip">Meals</div><div class="chip">Drinks</div><div class="chip">Dessert</div></div>
+              <div class="menu-grid">
+                <div class="food-card"><div class="food-img f1"></div><div class="food-body"><div class="food-title">Classic Smash</div><div class="food-meta"><span>Bestseller</span><b>₱189</b></div></div></div>
+                <div class="food-card"><div class="food-img f2"></div><div class="food-body"><div class="food-title">Creamy Pasta</div><div class="food-meta"><span>House pick</span><b>₱229</b></div></div></div>
+                <div class="food-card"><div class="food-img f3"></div><div class="food-body"><div class="food-title">Chicken Rice</div><div class="food-meta"><span>Popular</span><b>₱179</b></div></div></div>
+                <div class="food-card"><div class="food-img f4"></div><div class="food-body"><div class="food-title">Iced Latte</div><div class="food-meta"><span>16 oz</span><b>₱135</b></div></div></div>
+              </div>
+              <div class="mobile-cart"><span>2 items · <b>Table 08</b></span><span>View order →</span></div>
+            </div>
+          </div>
+
+          <div class="float-card owner-card">
+            <div class="fc-head"><div><div class="fc-title">Menu control</div><div class="fc-sub">Changes publish instantly</div></div><div class="tag">LIVE</div></div>
+            <div class="toggle-row"><div><div class="tiny-label">Classic Smash</div><div style="font-size:11px;font-weight:800;margin-top:3px;">Available</div></div><div class="switch"></div></div>
+          </div>
+
+          <div class="float-card order-card">
+            <div class="fc-head"><div><div class="fc-title">New table order</div><div class="fc-sub">Just now</div></div><div class="tag">#A184</div></div>
+            <div class="order-line"><div class="order-num">08</div><div class="order-info"><strong>2 items · ₱368</strong><span>Classic Smash, Iced Latte</span></div><div class="status">NEW</div></div>
+          </div>
+        </div>
+        <div class="hero-scroll-hint" aria-hidden="true">Scroll to pull the controls out of the menu</div>
+      </div>
+    </section>
+
+    <div class="logo-strip">
+      <div class="container logo-strip-inner">
+        <span>Made for <b>restaurants</b></span><span>•</span><span><b>cafés</b></span><span>•</span><span><b>bars</b></span><span>•</span><span><b>food stalls</b></span><span>•</span><span><b>small chains</b></span>
+      </div>
+    </div>
+
+    <section class="section light" id="how">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow"><span class="dot"></span> Setup without the setup headache</div>
+          <h2>Your current menu, ready to work harder.</h2>
+          <p>Start with the menu you already have. QRK gives you one clear place to organize items, prices, photos, categories, and availability as your business changes.</p>
+        </div>
+        <div class="steps">
+          <div class="step"><div><div class="step-num">01 · IMPORT</div><div class="step-icon">▧</div></div><div><h3>Start from what you have</h3><p>Use your existing printed or digital menu as the starting point instead of rebuilding everything from scratch.</p></div></div>
+          <div class="step"><div><div class="step-num">02 · POLISH</div><div class="step-icon">✦</div></div><div><h3>Build it with help</h3><p>QRK can speed up onboarding with assisted menu entry, photos, categories, variants, and pricing checks.</p></div></div>
+          <div class="step"><div><div class="step-num">03 · PUBLISH</div><div class="step-icon">⌗</div></div><div><h3>Place your QR codes</h3><p>Generate table-aware QR codes for counters, tables, posters, receipts, or anywhere your customers order.</p></div></div>
+          <div class="step"><div><div class="step-num">04 · RUN</div><div class="step-icon">↻</div></div><div><h3>Change it in real time</h3><p>Update a price or mark an item sold out once. Customers immediately see the current menu.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow"><span class="dot"></span> Less waiting. Less reprinting. Less chaos.</div>
+          <h2>A menu that behaves like software.</h2>
+          <p>QRK keeps the customer experience simple while giving the business real control behind the scenes.</p>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>Change your menu in seconds.</h3>
+            <p>Update pricing, availability, categories, variants, and photos from one owner dashboard. No new QR printout required.</p>
+            <div class="mock-dashboard">
+              <div class="dash-top"><div class="dash-title">Lunch Menu <span style="color:#8c989d;font-weight:600">· 24 items</span></div><div class="dash-btn">+ Add item</div></div>
+              <div class="dash-items">
+                <div class="dash-item"><div class="dash-thumb"></div><strong>Classic Smash</strong><span>₱189 · Burgers</span><div class="soldout"><b>Sold out</b><div class="mini-toggle"></div></div></div>
+                <div class="dash-item"><div class="dash-thumb" style="background:linear-gradient(140deg,#f5e5a2,#d98245)"></div><strong>Creamy Pasta</strong><span>₱229 · Pasta</span><div class="soldout"><span>Available</span><div class="mini-toggle" style="background:var(--brand-500)"></div></div></div>
+                <div class="dash-item"><div class="dash-thumb" style="background:linear-gradient(140deg,#d3a46e,#845d3c)"></div><strong>Chicken Rice</strong><span>₱179 · Rice meals</span><div class="soldout"><span>Available</span><div class="mini-toggle" style="background:var(--brand-500)"></div></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="feature-card">
+            <h3>One scan. Straight to the menu.</h3>
+            <p>No customer account and no app install. Scan, browse, and order in the browser.</p>
+            <div class="qr-panel">
+              <div class="fake-qr"><div class="qr-grid" id="qrGrid"></div></div>
+              <div class="qr-label">Table 08 · qrk.menu/kanto/08</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="three">
+          <div class="small-feature"><div class="icon">⇄</div><h3>POS bridge ready</h3><p>QRK is built around a connector approach so orders can eventually flow into the POS a business already uses, instead of forcing a full replacement.</p></div>
+          <div class="small-feature"><div class="icon">◎</div><h3>Table-aware ordering</h3><p>Know where an order came from. Use unique table or counter QR codes to reduce verbal mistakes and speed up service.</p></div>
+          <div class="small-feature"><div class="icon">⚡</div><h3>Lightweight by design</h3><p>The customer side is focused on one thing: opening quickly on a phone, showing the menu clearly, and keeping the order flow short.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section light" id="compare">
+      <div class="container">
+        <div class="section-head">
+          <div class="eyebrow"><span class="dot"></span> The middle ground restaurants actually need</div>
+          <h2>More useful than a PDF. Less costly than a marketplace.</h2>
+          <p>QRK is positioned between static menus and commission-driven delivery platforms: a direct digital ordering layer owned by the business.</p>
+        </div>
+        <div class="compare-wrap">
+          <table>
+            <thead><tr><th>What matters</th><th>Paper / PDF</th><th>Delivery marketplace</th><th class="qrk-col">QRK Menu</th></tr></thead>
+            <tbody>
+              <tr><td>Instant menu edits</td><td class="no">No</td><td class="yes">Yes</td><td class="qrk-col">Yes</td></tr>
+              <tr><td>Customer app required</td><td>Not applicable</td><td>Often encouraged</td><td class="qrk-col">No</td></tr>
+              <tr><td>Direct relationship with customer</td><td class="yes">Yes</td><td class="no">Limited</td><td class="qrk-col">Yes</td></tr>
+              <tr><td>Order from the table</td><td class="no">No</td><td>Not the main use case</td><td class="qrk-col">Yes</td></tr>
+              <tr><td>Percentage cut on every order</td><td class="yes">No</td><td>Can apply</td><td class="qrk-col">No</td></tr>
+              <tr><td>Same QR after menu changes</td><td class="no">No / reprint</td><td>Not applicable</td><td class="qrk-col">Yes</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <div class="container price-wrap">
+        <div class="price-copy">
+          <div class="eyebrow"><span class="dot"></span> Simple enough to explain in one sentence</div>
+          <h2>One flat monthly fee. Keep the upside.</h2>
+          <p>No marketplace-style percentage cut on each order. Your monthly software cost stays predictable as your sales grow.</p>
+          <p style="font-size:13px;color:#6f8087;">Final plan details can vary by location, number of branches, integrations, and onboarding scope.</p>
+        </div>
+        <div class="price-card">
+          <div class="price-top"><div><h3>QRK Menu</h3><div style="color:#87989f;font-size:13px;margin-top:4px;">Core plan · per location</div></div><div class="tag">FLAT RATE</div></div>
+          <div class="price">₱3,000 <small>/ month</small></div>
+          <div class="price-list">
+            <span>Digital QR menu</span><span>Customer ordering</span><span>Real-time item updates</span><span>Table-specific QR codes</span><span>Owner menu dashboard</span><span>Assisted onboarding</span>
+          </div>
+          <a class="btn btn-primary full" href="mailto:hello@qrkmenu.com?subject=QRK%20Menu%20demo">Book a launch demo →</a>
+          <div class="price-note">No percentage commission from QRK on your direct orders.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq" style="padding-top:10px;">
+      <div class="container faq">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> FAQ</div>
+          <h2 style="font-size:48px;">Short answers to the obvious questions.</h2>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item open"><button class="faq-q">Do customers need to install an app?<span class="plus">+</span></button><div class="faq-a">No. QRK is designed to open in the customer's mobile browser after they scan the code, so the first interaction stays fast.</div></div>
+          <div class="faq-item"><button class="faq-q">Do I need to replace the QR code when prices change?<span class="plus">+</span></button><div class="faq-a">No. The QR points to your live menu. Update the menu in the owner dashboard and the same printed QR keeps working.</div></div>
+          <div class="faq-item"><button class="faq-q">Can each table have its own QR code?<span class="plus">+</span></button><div class="faq-a">Yes. Table-specific codes can attach location context to orders so staff can see where the order came from.</div></div>
+          <div class="faq-item"><button class="faq-q">Can QRK connect to an existing POS?<span class="plus">+</span></button><div class="faq-a">That is the integration direction: use a POS bridge per provider where an API or supported integration path exists, instead of forcing every business onto one POS.</div></div>
+          <div class="faq-item"><button class="faq-q">What happens if an item sells out?<span class="plus">+</span></button><div class="faq-a">Mark it unavailable in the dashboard. The customer-facing menu can reflect that change immediately, avoiding orders for items the kitchen can no longer serve.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <div class="cta-box">
+          <div class="cta-copy"><h2>Turn a quick scan into a clear next step.</h2><p>Give customers more than a file to read: a fast menu built to help them choose and order.</p></div>
+          <div class="cta-actions"><a class="btn btn-primary" href="mailto:hello@qrkmenu.com?subject=QRK%20Menu%20demo">Book a demo</a><a class="btn btn-ghost" href="#how">See the flow</a></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <img src="/assets/brand/qrk-logo.png" alt="QRK Menu" />
+      <div class="footer-links"><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><span>© 2026 QRK Menu</span></div>
+    </div>
+  </footer>
+
+  <script>
+    // Lightweight decorative QR pattern.
+    const qr = document.getElementById('qrGrid');
+    const on = new Set([0,1,2,3,4,9,13,18,20,22,26,27,31,35,36,37,38,39,40,7,8,16,17,25,26,54,55,56,57,58,63,67,72,74,76,80,73,77,78,79,60,61,44,45,47,49,50,52,33,41,43,48,62,64,65,69,70]);
+    for (let i=0;i<81;i++) { const s=document.createElement('span'); if(on.has(i) || (i%7===0&&i>20)) s.className='on'; qr.appendChild(s); }
+
+    // Polished motion system: calm hero entrance, scroll-scrubbed mobile cards,
+    // and small one-time reveals deeper in the page.
+    const stage = document.querySelector('.product-stage');
+    const hero = document.querySelector('.hero');
+    const heroCopy = document.querySelector('.hero-copy');
+    const ownerCard = document.querySelector('.owner-card');
+    const orderCard = document.querySelector('.order-card');
+    const scrollHint = document.querySelector('.hero-scroll-hint');
+    const navWrap = document.querySelector('.nav-wrap');
+    const mobileMQ = window.matchMedia('(max-width: 700px)');
+    const reduceMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let heroRaf = 0;
+
+    const clamp = (n, min=0, max=1) => Math.min(max, Math.max(min, n));
+    const lerp = (a,b,t) => a + (b-a)*t;
+    const smoothstep = t => t * t * (3 - 2 * t);
+
+    document.body.classList.add('motion-ready');
+    requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('page-loaded')));
+
+    function setDesktopHero() {
+      ownerCard.removeAttribute('style');
+      orderCard.removeAttribute('style');
+      if (scrollHint) scrollHint.style.opacity = '';
+      stage.classList.remove('hero-entrance');
+      void stage.offsetWidth;
+      if (!reduceMotionMQ.matches) stage.classList.add('hero-entrance');
+    }
+
+    function updateMobileHero() {
+      heroRaf = 0;
+      if (!mobileMQ.matches) return;
+
+      if (reduceMotionMQ.matches) {
+        ownerCard.style.cssText = 'opacity:1; transform:translate3d(-76px,-16px,0) scale(.96) rotate(-3deg);';
+        orderCard.style.cssText = 'opacity:1; transform:translate3d(70px,18px,0) scale(.96) rotate(2deg);';
+        if (scrollHint) scrollHint.style.opacity = '0';
+        return;
+      }
+
+      const heroTop = hero.getBoundingClientRect().top + window.scrollY;
+      const copyHeight = heroCopy.offsetHeight;
+      const start = heroTop + Math.max(95, copyHeight * .42);
+      const end = start + 560;
+      const p = clamp((window.scrollY - start) / (end - start));
+
+      // Menu Control glides upward/left first.
+      const p1 = clamp((p - .05) / .58);
+      const e1 = smoothstep(p1);
+      ownerCard.style.opacity = String(clamp(p1 * 1.35));
+      ownerCard.style.transform = `translate3d(${lerp(0,-76,e1)}px, ${lerp(64,-16,e1)}px, 0) scale(${lerp(.78,.96,e1)}) rotate(${lerp(-1,-3,e1)}deg)`;
+
+      // New Table Order follows with the same restrained movement.
+      const p2 = clamp((p - .34) / .56);
+      const e2 = smoothstep(p2);
+      orderCard.style.opacity = String(clamp(p2 * 1.35));
+      orderCard.style.transform = `translate3d(${lerp(0,70,e2)}px, ${lerp(-58,18,e2)}px, 0) scale(${lerp(.78,.96,e2)}) rotate(${lerp(0,2,e2)}deg)`;
+
+      if (scrollHint) scrollHint.style.opacity = String(clamp(1 - p * 2.4));
+    }
+
+    function requestHeroUpdate() {
+      if (!heroRaf) heroRaf = requestAnimationFrame(updateMobileHero);
+      if (navWrap) navWrap.classList.toggle('scrolled', window.scrollY > 12);
+    }
+
+    function configureHeroMotion() {
+      if (mobileMQ.matches) {
+        stage.classList.remove('hero-entrance');
+        updateMobileHero();
+      } else {
+        setDesktopHero();
+      }
+    }
+
+    // Add low-key reveal behavior to meaningful groups only, not every individual line.
+    const revealGroups = [
+      ['.logo-strip-inner', 0],
+      ['.section-head', 0],
+      ['.step', 65],
+      ['.feature-card', 90],
+      ['.mini-feature', 75],
+      ['.compare-wrap', 0],
+      ['.price-copy', 0],
+      ['.price-card', 90],
+      ['.faq > div:first-child', 0],
+      ['.faq-list', 80],
+      ['.cta-box', 0]
+    ];
+
+    const revealEls = [];
+    revealGroups.forEach(([selector, stepDelay]) => {
+      document.querySelectorAll(selector).forEach((el, index) => {
+        el.classList.add('reveal-soft');
+        el.style.setProperty('--reveal-delay', `${Math.min(index * stepDelay, 240)}ms`);
+        revealEls.push(el);
+      });
+    });
+
+    if (reduceMotionMQ.matches || !('IntersectionObserver' in window)) {
+      revealEls.forEach(el => el.classList.add('is-visible'));
+    } else {
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold:.12, rootMargin:'0px 0px -6% 0px' });
+      revealEls.forEach(el => revealObserver.observe(el));
+    }
+
+    window.addEventListener('scroll', requestHeroUpdate, { passive:true });
+    window.addEventListener('resize', () => { configureHeroMotion(); requestHeroUpdate(); }, { passive:true });
+    mobileMQ.addEventListener?.('change', configureHeroMotion);
+    reduceMotionMQ.addEventListener?.('change', () => location.reload());
+    configureHeroMotion();
+    requestHeroUpdate();
+
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => btn.parentElement.classList.toggle('open'));
+    });
+  </script>
+
+  <a class="qrk-mode-switch" href="/landing/?choose=1" aria-label="Switch QRK service mode"><i></i> Switch QRK mode</a>
+</body>
+</html>
