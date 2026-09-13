@@ -25,8 +25,8 @@
 
 @media (min-width: 1080px) {
   body { background: var(--paper); }
-  .customer-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; padding: 0 24px; }
-  .customer-layout > main { width: 100%; }
+  .customer-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; min-height: calc(100dvh - 96px); padding: 0 24px 64px; }
+  .customer-layout > main { width: 100%; min-height: 0; }
   .restaurant, .menu-heading, .categories, .menu-section { padding-inline: 0; }
   .restaurant { padding-top: 42px; }
   .search-wrap, .notice, .active-order { margin-inline: 0; }
@@ -58,7 +58,8 @@
   #cart-dialog #checkout-fields { min-width: 0; padding: 0 24px 22px; border-left: 1px solid var(--line); }
   #cart-dialog .tab-summary, #cart-dialog .draft-order-title, #cart-dialog .cart-empty { grid-column: 1 / -1; margin-inline: 24px; }
   #cart-dialog .cart-total { padding-inline: 24px; }
-  footer { width: min(100%, 1240px); margin-inline: auto; }
+  footer { width: 100%; min-height: 96px; margin: 0; padding: 24px max(24px, env(safe-area-inset-right)) calc(24px + env(safe-area-inset-bottom)); background: var(--global-sidebar); color: color-mix(in srgb, var(--global-sidebar-text) 72%, var(--global-sidebar)); }
+  footer a { color: inherit; }
 }
 
 .cart-bar button {

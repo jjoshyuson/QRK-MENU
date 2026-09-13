@@ -1,5 +1,11 @@
 # Build status
 
+## September 13, 2026 — Public menu desktop page-shell finish
+
+- Removed the desktop customer menu's inherited full-viewport-height content column, which created an abrupt empty seam above the footer on shorter menus.
+- Added a consistent 64px bottom gutter to the centered menu/order workspace and changed the footer into a full-viewport-width closing band with centered content and theme-derived contrast.
+- Kept phone and tablet behavior unchanged. Browser checks at 1440×900, 768×1024, and 390×844 measured zero horizontal overflow. Desktop showed a 64px content-to-footer gap, a full-width footer, and a centered 1240px workspace; tablet retained three menu columns and phone retained two columns with its 54px order action. `npm run check` and `git diff --check` passed.
+
 ## September 13, 2026 — Public menu responsive layout and order review
 
 - Replaced the narrow desktop customer-menu canvas with a dedicated wide layout: a three-column food grid sits beside a sticky live order summary showing line quantities, selections, subtotal, and a focused Review order action.
