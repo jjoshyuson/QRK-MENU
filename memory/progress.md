@@ -2,7 +2,7 @@
 
 As of September 13, 2026:
 
-- GitHub Pages preview-session parity is implemented and locally verified: the profile identity opens Settings/Log out, and logout returns to the sign-in screen with five Client Admin preview workspaces. This remains browser-local and does not synchronize the LAN origin's selected workspace or sessions.
+- GitHub Pages preview-session parity is implemented and locally verified: the profile identity opens Settings/Log out, and logout returns to the sign-in screen with five Client Admin preview workspaces. All five customer presets now follow the LAN field and gate rules on the static deployment; Salo Table customer → staff acceptance → customer unlock passed in separate tabs on one origin. This remains browser-local and does not synchronize the LAN origin or different physical devices.
 
 - The Client Admin/Client Staff Orders workspace now follows the approved reference direction: Received and Preparing are separate, count-labeled queue pages instead of simultaneous columns, with full-area empty states and a separate History view. The order lifecycle and backend contract are unchanged.
 
@@ -30,7 +30,7 @@ As of September 13, 2026:
 - The CSS-generated sidebar wordmark and added CSS backing have been removed. QRK Admin, business navigation and login surfaces now render the canonical transparent combined PNG lockup from `dist/assets/brand/qrk-logo.png`; local desktop and 370px drawer checks passed.
 - Global Appearance now offers four complete light presets with dark sidebars, four complete dark presets, a global mode switch and separate advanced 13-token editors for each mode. Legacy palettes migrate safely; desktop Admin and customer dark-mode surfaces were visually checked.
 - Five development clients are available through one-click local Client Admin shortcuts: Kusina Quick, Salamat Direct Table, Salo Table Approval, Tambay Open Tab and Ihaw Buffet Approval. Their menus are preserved and centrally configured without generated photos.
-- The staff Orders workspace now includes a six-card Tables page. Local testing proved request → staff acceptance → occupied → table cleaned → available; hosted/durable table sessions remain incomplete.
+- The staff Orders workspace now includes a six-card Tables page. LAN testing proved request → staff acceptance → occupied → table cleaned → available. The GitHub Pages preview now uses a same-browser storage fallback and has passed request → staff acceptance → customer unlock; durable cross-device table sessions remain incomplete.
 - The LAN order regression is fixed: Kusina `KM-1050` and Salamat `SL-0207` were submitted through the customer route and appeared in their authenticated Supabase staff queues. The six-table selection and host-controlled join flow also passed across separate browser device sessions. Table sessions use the local preview server only and reset when it restarts.
 
 Read `docs/PROGRESS_MAP.md` for milestone sequencing and `docs/BUILD_STATUS.md` for detailed evidence.

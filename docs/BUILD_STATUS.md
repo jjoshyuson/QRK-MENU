@@ -589,3 +589,11 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Added a browser-local preview session mode to the GitHub Pages artifact. It exposes the same five Client Admin preview choices as the LAN sign-in screen without publishing Supabase credentials.
 - Profile-menu Log out and the Settings logout control now clear the browser-local preview session and return to the shared business sign-in screen.
 - `npm run check`, the Pages build, and a browser flow of Salo Table preview → profile menu → Log out → sign-in screen passed locally. Hosted backend Auth, durable cross-origin session sharing, and hosted Table-session persistence remain separate work.
+
+## September 13, 2026 — Hosted Table preset parity
+
+- Fixed the GitHub Pages customer route so Table presets no longer depend on the LAN-only `/__qrk/table-sessions/` endpoint. Preview deployments now use business-scoped browser storage while the LAN environment keeps its shared preview-server endpoint.
+- Cross-referenced all five development clients against the LAN preview. Kusina remains Quick; Salamat requests table, name and guest count; Salo Table adds staff acceptance; Tambay Café omits guest count and opens directly; Ihaw Buffet requires table, name, guest count and package before staff acceptance.
+- Added a dependency-free automated browser-storage lifecycle check covering request, staff acceptance, occupied-table join request, host approval and cleaning.
+- Browser verification on a Pages-shaped local build confirmed the correct entry fields for every preset. A Salo Table customer request appeared in the staff `Tables` queue, changed to occupied after acceptance and unlocked the customer menu automatically.
+- Hosted preview coordination is intentionally limited to tabs in the same browser profile and origin. Cross-device/durable Table sessions still require the hosted backend milestone.

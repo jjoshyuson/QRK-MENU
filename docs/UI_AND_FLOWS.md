@@ -30,6 +30,10 @@ The owner header identifies `Development · Demo data` while the fallback is act
 
 For QRK Table businesses, the third live-workspace tab is `Tables`. It always shows six compact cards in the current practice setup. Available tables are ready for guests, pending tables show the requesting guest and an `Accept table request` action, and occupied tables use a quieter theme-derived surface with a visible `Occupied` label and `Table cleaned` action. Cleaning ends the local preview session and returns that card to Available.
 
+The five development clients share one capability-driven entry flow. Kusina Manila is Quick and opens without a Table dialog. Salamat asks for table, name and guest count, then opens directly. Salo Table asks for the same fields and waits for staff while allowing the guest to build an order. Tambay Café asks only for table and name, then opens directly. Ihaw Buffet asks for table, name, guest count and a required package, then waits for staff before revealing the menu.
+
+On the LAN preview, Table state is shared by the local preview server and can be exercised across devices. On GitHub Pages, the static preview uses business-scoped browser storage so customer and staff tabs on the same browser origin can demonstrate the same rules. That fallback does not synchronize different browsers or physical devices and is not durable hosted service state.
+
 ## Mobile and tablet
 
 At widths of 1100 CSS pixels or less, the static prototype opens the responsive Business Dashboard. A top-right hamburger opens a right-side navigation drawer with Dashboard, Business profile, Menu Studio, Staff access, Orders and Settings. Menu Studio is a separate in-page view on the same route. This is a viewport-based layout switch, not user-agent detection, authentication or a redirect.

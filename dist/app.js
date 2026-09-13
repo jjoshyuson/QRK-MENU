@@ -4,7 +4,7 @@ import { QrkAuthService } from './data/qrk-auth-service.js';
 import { applyBusinessBrand, getBusinessBrand, prepareBusinessLogo, saveBusinessBrand } from './data/qrk-brand-service.js';
 import { getBusinessExperience } from './data/qrk-businesses.js';
 import { DEVELOPMENT_CLIENTS, SERVICE_PRESETS } from './data/qrk-service-presets.js';
-import { QrkTableSessionService } from './data/qrk-table-session-service.js?v=2';
+import { QrkTableSessionService } from './data/qrk-table-session-service.js?v=3';
 
 const runtimeConfig=resolveQrkConfig();
 const authService=new QrkAuthService(runtimeConfig);
