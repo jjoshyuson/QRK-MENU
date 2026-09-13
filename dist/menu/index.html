@@ -23,13 +23,10 @@
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
-  <dialog id="quick-service-dialog" class="quick-service-dialog" aria-labelledby="quick-service-title">
-    <section class="quick-service-card">
-      <div><p class="eyebrow">QRK QUICK</p><h1 id="quick-service-title">How would you like your order?</h1></div>
-      <div class="quick-service-choices" id="quick-service-choices">
-        <button type="button" data-fulfillment-choice="table"><span class="quick-service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5M7 10v9h10v-9M10 19v-5h4v5"/></svg></span><span><b>Dine in</b><small>Choose your food, then enter your table at checkout</small></span><svg class="quick-service-arrow" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button>
-        <button type="button" data-fulfillment-choice="pickup"><span class="quick-service-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 11H7L6 8Zm3 0V6a3 3 0 0 1 6 0v2"/></svg></span><span><b>Takeout</b><small>Order ahead and collect it at the counter</small></span><svg class="quick-service-arrow" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></svg></button>
-      </div>
+  <dialog id="quick-service-dialog" class="quick-service-dialog" aria-label="Choose dine in or takeout">
+    <section class="quick-service-card" id="quick-service-choices">
+      <button type="button" data-fulfillment-choice="table"><span aria-hidden="true">🍽️</span><b>Dine in</b></button>
+      <button type="button" data-fulfillment-choice="pickup"><span aria-hidden="true">🛍️</span><b>Takeout</b></button>
     </section>
   </dialog>
   <dialog id="table-session-dialog" class="table-entry" aria-labelledby="table-entry-title">

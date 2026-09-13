@@ -10,9 +10,10 @@ const [html, menu, staff, presets, businesses] = await Promise.all([
 ]);
 
 assert.match(html, /id="payment-dialog".*aria-label="Choose payment method"/);
-assert.match(html, /id="quick-service-dialog".*aria-labelledby="quick-service-title"/s);
-assert.match(html, /data-fulfillment-choice="table".*Dine in/s);
-assert.match(html, /data-fulfillment-choice="pickup".*Takeout/s);
+assert.match(html, /id="quick-service-dialog".*aria-label="Choose dine in or takeout"/s);
+assert.match(html, /data-fulfillment-choice="table"><span aria-hidden="true">🍽️<\/span><b>Dine in<\/b>/s);
+assert.match(html, /data-fulfillment-choice="pickup"><span aria-hidden="true">🛍️<\/span><b>Takeout<\/b>/s);
+assert.doesNotMatch(html, /quick-service-title|Choose your food, then enter your table|Order ahead and collect it at the counter/);
 assert.doesNotMatch(html, /How would you like to pay\?|payment-title/);
 assert.match(html, /class="payment-card" id="pay-at-counter"/);
 assert.match(html, /class="payment-card disabled-choice" type="button" disabled/);

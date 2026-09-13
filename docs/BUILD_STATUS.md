@@ -748,3 +748,7 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Made the available choices business-configurable through `serviceProfile.settings.fulfillmentModes`; Quick defaults to both choices, while Table and buffet presets keep their existing dine-in/table entry.
 - The selected entry choice now carries into order review. Checkout shows Pickup or Serve at table, requests a table number only for dine-in, leads with the subtotal, and uses Confirm payment before the payment-method step.
 - `npm run check` and `git diff --check` passed. Browser checks covered both Quick paths, buffet isolation, keyboard focus, and 390×844, 768×1024 and 1280×800 viewports with no horizontal overflow. Hosted payment and a business-facing fulfillment-setting editor remain incomplete.
+
+### Popup simplification
+
+- Replaced the heading, helper copy, arrows and compact rows with an exact 80vw × 80vh centered popup containing only two equal, oversized stacked cards: `Dine in 🍽️` and `Takeout 🛍️`.
