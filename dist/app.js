@@ -185,6 +185,7 @@ function setSignedInState(){
  const admin=['owner','admin'].includes(accessContext.role),permissions=accessContext.permissions||{};
  document.querySelector('.business strong').textContent=accessContext.businessName;
  const breadcrumb=$('.breadcrumb');if(breadcrumb?.firstChild)breadcrumb.firstChild.nodeValue=`${accessContext.businessName} `;
+ const mobileBusinessName=$('#mobile-business-name');if(mobileBusinessName)mobileBusinessName.textContent=accessContext.businessName;
  const greeting=$('.dashboard-heading h1');if(greeting)greeting.textContent=`Good evening, ${accessContext.displayName.split(/\s+/)[0]}.`;
  const profile=$('.sidebar-bottom .profile');profile.querySelector('strong').textContent=accessContext.displayName;profile.querySelector('small').textContent=admin?'Business admin':'Staff account';
  document.querySelector('.business small').textContent=`${businessExperience.serviceLabel} workspace`;

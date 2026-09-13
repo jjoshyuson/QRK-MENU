@@ -180,10 +180,8 @@ body.staff-session .sales-grid{display:none}
 .sound-toggle input{accent-color:var(--brand-600)}
 .sidebar nav button.nav-active svg{color:var(--brand-teal)}
 @media(max-width:1100px){
- .mobile-owner-bar{background:var(--color-black);border-color:var(--gray-800)}
- .mobile-wordmark{display:block;width:150px;height:38px}
- .mobile-wordmark img{display:block;width:100%;height:100%;object-fit:contain;object-position:left center}
- #mobile-menu-nav-toggle{border-color:var(--gray-700);background:var(--gray-900);color:var(--color-white)}
+ .mobile-owner-bar{background:var(--surface);border-color:var(--line);color:var(--ink)}
+ #mobile-menu-nav-toggle{border-color:var(--line);background:var(--surface);color:var(--gray-700)}
 }
 
 .development-client-switcher{margin-top:22px;padding-top:18px;border-top:1px solid var(--gray-200)}.development-client-switcher>strong{font:750 14px Manrope,sans-serif}.development-client-switcher>p{margin:4px 0 12px;color:var(--muted);font-size:12px}.development-client-switcher>div{display:grid;gap:7px}.development-client-switcher button{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:9px 12px;border:1px solid var(--gray-200);border-radius:9px;background:var(--color-white);color:var(--ink);text-align:left}.development-client-switcher button:hover{border-color:var(--brand-400);background:var(--brand-soft)}.development-client-switcher button:focus-visible{outline:3px solid var(--brand-ring);outline-offset:2px}.development-client-switcher button span:first-child,.development-client-switcher button strong,.development-client-switcher button small{display:block}.development-client-switcher button small{margin-top:2px;color:var(--muted);font-size:11px}.development-client-switcher button svg{width:17px}.development-client-switcher button:disabled{opacity:.55}
