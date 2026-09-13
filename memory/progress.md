@@ -2,6 +2,8 @@
 
 As of September 13, 2026:
 
+- The shared Button component now uses the approved pill hierarchy across standard and customer actions while continuing to inherit the active global theme accent. Source variables, catalog specimens and Inspect Element variants are synchronized.
+
 - Each of the five development client profiles now has a distinct scannable test QR in Business Profile. It targets that client's `/menu/?business=<slug>` route and can be opened, copied, or downloaded. QR images use a temporary HTTPS generator; permanent production URLs and first-party generation remain Stage 2 work.
 
 - The component inventory is now backed by a shared production source of truth: `dist/ui-components.css` supplies reusable variables/visual rules to every operational route and `/components/`, while `dist/ui-components.js` gives initial and dynamically rendered elements stable Inspect Element names and variants. The catalog covers 15 UI families and excludes landing pages.

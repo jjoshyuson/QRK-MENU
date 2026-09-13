@@ -18,7 +18,8 @@ const css = await readFile(new URL('../dist/ui-components.css', import.meta.url)
 for (const variable of [
   '--component-control-height', '--component-radius-sm', '--component-border',
   '--component-focus', '--component-disabled-opacity', '--component-card-bg',
-  '--component-primary-bg', '--component-danger-bg',
+  '--component-primary-bg', '--component-danger-bg', '--component-button-radius',
+  '--component-button-padding-inline', '--component-button-subtle-bg', '--component-button-disabled-bg',
 ]) {
   assert.ok(css.includes(variable), `missing shared component variable: ${variable}`);
 }
@@ -31,6 +32,7 @@ assert.match(registry, /dataset\.component\s*=/);
 assert.match(registry, /dataset\.variant\s*=/);
 assert.match(registry, /dataset\.componentSource\s*=\s*['"]\/ui-components\.css/);
 assert.match(registry, /MutationObserver/);
+assert.match(registry, /classList\.contains\('primary-button'\)/);
 assert.match(registry, /attributeFilter:\s*\['class', 'disabled'\]/);
 
 const serviceWorker = await readFile(new URL('../dist/sw.js', import.meta.url), 'utf8');

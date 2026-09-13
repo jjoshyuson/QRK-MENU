@@ -1,5 +1,12 @@
 # Build status
 
+## September 13, 2026 — Shared pill-button hierarchy
+
+- Updated the shared Button source so standard and customer actions use the requested pill silhouette while preserving 44px standard and 50px customer touch targets.
+- Primary buttons inherit the active global accent and calculated foreground; outline buttons retain neutral borders, subtle buttons use the quiet surface, danger actions are red text-only, and disabled buttons use muted semantic tokens.
+- Added named variables for button radius, inline padding, weight, gap, subtle fill and disabled colors to `/components/`; the inspector registry now infers `primary`, `outline` and `text` variants from specialized customer button classes.
+- Validation: the full `npm run check` suite and `git diff --check` passed. Live Brave review confirmed 999px radii, theme-derived primary color, correct semantic treatments and inspector labels. The catalog, owner workspace and customer route had zero horizontal overflow at 390×844, 768×1024 and 1440×900.
+
 ## September 13, 2026 — Public menu header parallax and unified toolbar motion
 
 - Added a restrained scroll-linked parallax treatment to the Kusina Manila banner while keeping the business profile content and menu layout stable.

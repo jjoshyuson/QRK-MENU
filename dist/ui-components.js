@@ -1,7 +1,7 @@
 /* Stable inspect-element labels for the shared QRK component system. */
 (() => {
   const registry = [
-    ['.button,.primary-button,.secondary-button,.text-button', 'Button'],
+    ['.button,.ui-button,.primary-button,.secondary-button,.customer-button,.text-button,.text-action', 'Button'],
     ['.icon-button,.mobile-icon-control', 'Icon control'],
     ['.switch,.switch-control,.mobile-stock-button', 'Switch'],
     ['.workspace-views,.order-tabs,.theme-mode-switch,.order-stage-tabs', 'Tabs'],
@@ -35,6 +35,9 @@
   const variantFor = (element) => {
     const states = ['primary','outline','subtle','danger','active','selected','available','pending','occupied','warning','success','disabled','sold-out','hidden','priority'];
     const found = states.filter((state) => element.classList.contains(state));
+    if (element.classList.contains('primary-button') && !found.includes('primary')) found.push('primary');
+    if (element.classList.contains('secondary-button') && !found.includes('outline')) found.push('outline');
+    if ((element.classList.contains('text-button') || element.classList.contains('text-action')) && !found.includes('text')) found.push('text');
     if (element.matches(':disabled') && !found.includes('disabled')) found.push('disabled');
     return found.join(' ') || 'default';
   };
