@@ -6,6 +6,13 @@
 - Cashless remains visible and disabled for the pilot; pay-at-counter remains the only enabled payment method. No table-session behavior or real payment processing was added.
 - Validation: `npm run check`, the payment-first contract test, and `git diff --check` pass.
 
+## Mobile drawer profile footer — September 13, 2026
+
+- Kept the signed-in profile control permanently visible at the bottom of the phone/tablet navigation drawer.
+- Moved navigation and the UI-preview note into one bounded internal scroll region so dynamic viewport recalculation cannot push account access below the drawer.
+- Preserved the existing account menu, keyboard semantics, drawer navigation, global theme, and safe-area bottom inset.
+- Validation: responsive browser checks passed at 390×700, 390×844, 768×700, and 1280×800 after refresh. The profile stayed within the drawer boundary, the short-phone content area scrolled independently, horizontal overflow remained zero, and the account menu opened and dismissed with Escape.
+
 ## Menu Studio category-tab alignment — September 13, 2026
 
 - Removed the artificial horizontal padding that centered the first and last Menu Studio category tabs.
@@ -695,3 +702,10 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Reused the official QRK logo, `theme.css` and `global-theme.js`, so all three pages inherit the global light/dark mode and advanced color selections without a route-specific theme implementation.
 - Browser review passed at 390×844, 768×1024 and 1280×800. All routes loaded in the active dark theme, the choice grid reflowed from two columns to one, and measured horizontal overflow remained zero. Light-theme visual review and user acceptance remain open.
 - `npm run check`, GitHub Pages artifact generation and route/link validation passed. Commit `ab78378` deployed successfully through GitHub Pages run `34777124517`.
+
+## Supplied-design restoration and copy review — September 13, 2026
+
+- Replaced the initial simplified landing implementation with the actual user-supplied Choice, QRK Quick and QRK Table HTML layouts. Their composition, section order, interactive demonstrations, motion and responsive behavior remain intact.
+- Connected the sample accent variables to the shared `--brand-400` and `--brand-500` tokens, replaced embedded logo data with the official lightweight QRK assets, and aligned typography to Manrope headings with DM Sans body copy.
+- Strengthened the primary hooks to “One QRK. Built for how you serve.”, “Turn every scan into an order.” and “Your guests shouldn’t have to wave for service.” Supporting hero and closing copy was tightened without reducing the supplied page depth.
+- The existing preview server was reused because port 4173 was already active. `npm run check` passed before editing. Browser checks confirmed both new type stacks, the active global accent, zero broken images and no horizontal overflow at 390px, 768px or 1280px. Corrected deployment and final user review remain open.
