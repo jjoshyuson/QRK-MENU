@@ -6,6 +6,8 @@ This file is the high-level route from the current prototype to a production QR 
 
 The public customer menu now has a locally implemented device-specific layout pass: phone remains a compact two-column menu with a floating order action, tablet expands to three menu columns, and desktop uses a broad menu plus sticky order summary and wider review dialog. This is approved local UI work; publication remains pending.
 
+Menu Studio now turns the customer route's previously hard-coded choices into browser-persisted option sets. Owners can define whole-business upsells, category defaults and item-specific choices with price and selection rules. The immediate backend path is still to connect authoring to the existing provider option-group schema and verify cross-device publication before making durability claims.
+
 Tambay Café's approved Open Tab customer slice now has a browser-local whole-tab view: after the first item is added, customers can reopen a prominent running-total control and see all submitted order rounds separated by Accepted, Preparing, and Prepared status. This is local preview evidence, not tab settlement or hosted persistence.
 
 The approved product direction is now one shared QRK platform with QRK Quick and QRK Table operating modes. The implementation and delegation contract is `docs/QUICK_TABLE_MASTER_PLAN.md`. Parallel UI, UX, and backend work must converge through its contract, integration, hosted-development, and explicit publish gates.

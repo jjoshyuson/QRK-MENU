@@ -2,7 +2,7 @@ import { createQrkDataService } from '../data/qrk-data-service.js';
 import { applyBusinessBrand, getBusinessBrand } from '../data/qrk-brand-service.js';
 import { getBusinessExperience } from '../data/qrk-businesses.js';
 import { QrkTableSessionService } from '../data/qrk-table-session-service.js?v=3';
-import { readMenuState, subscribeMenuState } from '../data/qrk-menu-store.js';
+import { menuOptionGroupsForItem, readMenuState, subscribeMenuState } from '../data/qrk-menu-store.js';
 
 const businessSlug=new URLSearchParams(location.search).get('business')||'kusina-manila';
 const businessExperience=getBusinessExperience(businessSlug);
@@ -27,7 +27,11 @@ let menu=[
   {id:'lumpia',category:'Sides',name:'Lumpiang shanghai',description:'Crisp pork spring rolls with sweet chili dip.',price:12000,photo:'/photos/lumpia.jpg',available:false,options:[]},
   {id:'tea',category:'Drinks',name:'Calamansi iced tea',description:'House-brewed tea with fresh calamansi.',price:6500,photo:'/photos/tea.jpg',available:true,options:[{name:'Size',required:true,choices:[['Regular',0],['Large',2000]]},{name:'Sweetness',required:true,choices:[['Regular sugar',0],['Less sugar',0],['No sugar',0]]}]}
 ];
-if(dataService.mode==='demo')menu=readMenuState(businessSlug).items.map(item=>({...item,price:Number(item.price)*100,options:[]}));
+function applyStudioMenu(state){
+ const groups=Array.isArray(state.optionGroups)?state.optionGroups:[];
+ menu=state.items.map(item=>({...item,price:Number(item.price)*100,options:menuOptionGroupsForItem({optionGroups:groups},item).map(group=>({name:group.name,required:Boolean(group.required),multiple:Boolean(group.multiple),choices:(group.choices||[]).map(choice=>[choice.name,Math.round((Number(choice.price)||0)*100),choice.id])}))}));
+}
+if(dataService.mode==='demo')applyStudioMenu(readMenuState(businessSlug));
 let dataLoadError='';
 if(dataService.mode==='supabase'){
   try{const remote=await dataService.getPublicMenu();const remoteItems=remote?.menu?.categories?.flatMap(category=>(category.items||[]).map(item=>({id:item.id,category:category.name,name:item.name,description:item.description,price:item.priceMinor,photo:item.photo?.url||'/photos/adobo.jpg',available:item.available,options:(item.optionGroups||[]).map(group=>({name:group.name,required:group.required,multiple:group.maxSelections>1,choices:(group.options||[]).map(option=>[option.name,option.priceDeltaMinor,option.id])}))})))||[];if(remoteItems.length)menu=remoteItems}catch(error){dataLoadError=error.message||'The published menu could not be loaded.'}
@@ -101,7 +105,7 @@ function updateItemTotal(){if(!selectedItem)return;$('#item-quantity').textConte
 function openItem(item,index=-1){
   if(!storeOpen())return showStoreNotice();selectedItem=item;editingIndex=index;const existing=index>=0?cart[index]:null;itemQuantity=existing?.quantity||1;
   $('#item-name').textContent=item.name;$('#item-description').textContent=item.description;$('#item-price').textContent=format(item.price);$('#item-photo').hidden=!item.photo;if(item.photo){$('#item-photo').src=item.photo;$('#item-photo').alt=item.name}$('#item-notes').value=existing?.notes||'';
-  $('#item-options').innerHTML=item.options.map((group,groupIndex)=>`<fieldset class="option-group"><legend>${escapeText(group.name)} <span>${group.required?'Choose one':'Optional'}</span></legend>${group.choices.map((choice,choiceIndex)=>{const id=`option-${groupIndex}-${choiceIndex}`,checked=existing?existing.selectedOptions.some(option=>option.name===choice[0]):(!group.multiple&&choiceIndex===0);return`<label for="${id}"><span><input id="${id}" type="${group.multiple?'checkbox':'radio'}" name="group-${groupIndex}" value="${escapeText(choice[0])}" data-id="${escapeText(choice[2]||'')}" data-group="${escapeText(group.name)}" data-price="${choice[1]}" ${checked?'checked':''}>${escapeText(choice[0])}</span><span>${choice[1]?`+${format(choice[1])}`:'Included'}</span></label>`}).join('')}</fieldset>`).join('');
+  $('#item-options').innerHTML=item.options.map((group,groupIndex)=>`<fieldset class="option-group" data-required="${group.required}"><legend>${escapeText(group.name)} <span>${group.required?'Required':group.multiple?'Optional · choose any':'Optional'}</span></legend>${group.choices.map((choice,choiceIndex)=>{const id=`option-${groupIndex}-${choiceIndex}`,checked=existing?existing.selectedOptions.some(option=>option.name===choice[0]):(group.required&&!group.multiple&&choiceIndex===0);return`<label for="${id}"><span><input id="${id}" type="${group.multiple?'checkbox':'radio'}" name="group-${groupIndex}" value="${escapeText(choice[0])}" data-id="${escapeText(choice[2]||'')}" data-group="${escapeText(group.name)}" data-price="${choice[1]}" ${group.required&&!group.multiple?'required':''} ${checked?'checked':''}>${escapeText(choice[0])}</span><span>${choice[1]?`+${format(choice[1])}`:'Included'}</span></label>`}).join('')}</fieldset>`).join('');
   $('#add-item span').textContent=existing?'Update item':'Add to order';$('#item-options').onchange=updateItemTotal;updateItemTotal();$('#item-dialog').showModal();
 }
 function renderCart(){
@@ -113,6 +117,7 @@ function renderCart(){
 function openCart(){renderCart();$('#checkout-error').classList.add('hidden');if(openTabEnabled){$('#cart-title').textContent='Your Open Tab';$('.sheet-header .eyebrow').textContent='TABLE TAB';$('#submit-order').textContent=tabOrders.length?'Send another order':'Send first order'}$('#cart-dialog').showModal()}
 function showStoreNotice(){const notice=$('#store-notice');notice.innerHTML=`<h2>Ordering is paused</h2><p>You can still browse the menu, but ${escapeText(customerBrand.businessName)} is not accepting demo orders right now.</p>`;notice.classList.remove('hidden');renderCart()}
 function addSelectedItem(){
+  const missing=[...$('#item-options').querySelectorAll('.option-group[data-required="true"]')].find(group=>!group.querySelector('input:checked'));if(missing){const input=missing.querySelector('input');input.setCustomValidity('Choose at least one option.');input.reportValidity();input.onchange=()=>input.setCustomValidity('');return}
   const options=[...$('#item-options').querySelectorAll('input:checked')].map(input=>({id:input.dataset.id||undefined,group:input.dataset.group,name:input.value,priceMinor:Number(input.dataset.price)})),unitPriceMinor=selectedItem.price+options.reduce((sum,option)=>sum+option.priceMinor,0);
   const line={itemId:selectedItem.id,name:selectedItem.name,quantity:itemQuantity,unitPriceMinor,selectedOptions:options,lineTotalMinor:unitPriceMinor*itemQuantity,notes:$('#item-notes').value.trim()};
   if(editingIndex>=0)cart[editingIndex]=line;else cart.push(line);persistCart();renderCart();$('#item-dialog').close();
@@ -155,6 +160,6 @@ $('#store-notice').addEventListener('click',async event=>{const button=event.tar
 $('#browse-pending-table').addEventListener('click',()=>{if(!pendingTableSession)return;$('#table-session-dialog').close();$('#table-number').value=pendingTableSession.table;const notice=$('#store-notice');notice.innerHTML=`<h2>Table ${escapeText(pendingTableSession.table)} is waiting for staff</h2><p>Build your order while you wait. The submit button will unlock after staff accepts the table.</p>`;notice.classList.remove('hidden')});
 dataService.subscribe({onOrdersChanged:()=>refreshActive(true),onStoreChanged:async()=>{orderingOpen=await dataService.getStoreOpen().catch(()=>false);if(!storeOpen())showStoreNotice();else $('#store-notice').classList.add('hidden')}});
 tableSessionService?.subscribe(()=>{const session=tableSessionService.current();if(session&&['active','bill_requested'].includes(session.status))openTableMenu(session);else if(pendingTableSession&&!session)resetTableEntry('The request ended. Choose a table to try again.')});
-if(dataService.mode==='demo')subscribeMenuState(businessSlug,state=>{menu=state.items.map(item=>({...item,price:Number(item.price)*100,options:[]}));categories=state.categories.filter(category=>menu.some(item=>item.category===category&&item.available&&!item.hidden));renderMenu($('#menu-search').value)});
+if(dataService.mode==='demo')subscribeMenuState(businessSlug,state=>{applyStudioMenu(state);categories=state.categories.filter(category=>menu.some(item=>item.category===category&&item.available&&!item.hidden));renderMenu($('#menu-search').value)});
 renderMenu();renderCart();initializeTableEntry();if(dataLoadError){const notice=$('#store-notice');notice.innerHTML=`<h2>Menu connection unavailable</h2><p>${escapeText(dataLoadError)}</p>`;notice.classList.remove('hidden')}else if(!storeOpen())showStoreNotice();refreshActive();setInterval(()=>refreshActive($('#confirmation-dialog').open),dataService.mode==='demo'?4000:15000);
 refreshTabOrders();addEventListener('qrk:demo-orders-changed',refreshTabOrders);addEventListener('storage',event=>{if(openTabEnabled&&event.key?.includes('qrk_demo_orders_v2'))refreshTabOrders()});setInterval(refreshTabOrders,dataService.mode==='demo'?4000:15000);
