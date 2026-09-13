@@ -22,6 +22,32 @@
 - The category navigation now sits flush at the top of the viewport while its parent menu is active, remains bounded by that menu section, and naturally returns below the search/header when scrolling upward.
 - Added bounded end-of-menu scroll room on phone layouts so even a short menu can move the navbar fully to `top: 0` before the document reaches its scroll limit.
 - Preserved horizontal category scrolling, active-section tracking, 44px targets, semantic navigation, and existing phone/tablet/desktop menu grids. Browser checks confirmed the short 390×844 menu reaches `top: 0` with zero side margin or radius, then returns to its 365px natural position at page top. The 768×1024 and 1280×720 layouts retained three columns and zero horizontal overflow. `npm run check` and `git diff --check` passed.
+## September 13, 2026 — Static component inventory
+
+- Promoted the inventory into a shared component source: `dist/ui-components.css` now owns reusable component variables and cross-route visual rules, while route stylesheets retain page composition and responsive placement.
+- Added a dependency-free component registry that labels initial and dynamically rendered UI with stable `data-component`, `data-variant` and `data-component-source` attributes for Inspect Element.
+- Loaded the same component layer and registry on owner/Client Admin/Client Staff, QRK Admin, customer-menu and catalog routes; added both shared files to the PWA shell cache.
+- Source-of-truth validation: the shared source/catalog contracts, full `npm run check`, `git diff --check` and the GitHub Pages `/QRK-MENU/` base-path build passed. Live Brave inspection confirmed named Button, Metric card and Customer dish card instances point to `/ui-components.css`; the catalog, owner, customer and admin routes each had zero horizontal overflow at 390×844, 768×1024 and 1440×900.
+
+- Added an unlinked `/components/` development route containing 15 organized families of reusable UI from owner tools, Client Admin, Client Staff, QRK Admin and the customer menu; public landing pages are intentionally outside its scope.
+- Cataloged foundations, controls, navigation, feedback, dashboard, menu management, staff, orders/history, tables, settings/appearance, customer menu, cart/checkout, platform administration, forms/dialogs and exceptional states.
+- Each specimen includes its production class or source label so the page works as a visual lookup and copy reference without duplicating application behavior.
+- Added an `AGENTS.md` maintenance rule and a static contract check requiring future reusable components and meaningful states to remain represented.
+- Validation: `npm run check`, `git diff --check` and the GitHub Pages `/QRK-MENU/` base-path build passed. Live Brave checks at 390×844, 768×1024 and 1440×900 found all 15 families and navigation links with zero horizontal overflow; static CSS validation confirms visible `:focus-visible` treatment.
+
+## September 13, 2026 — Mobile drawer profile reflow
+
+- Fixed the signed-in profile footer collapsing and clipping at the bottom of the mobile owner drawer, as observed on an iOS device after zooming.
+- The navigation region now scrolls independently, the account footer cannot shrink, long profile text truncates cleanly, and the drawer reserves the device's bottom/right safe-area insets.
+- Preserved the PWA gesture contract: pinch zoom remains available and double-tap zoom remains suppressed through `touch-action: manipulation`.
+- Validation: the 390×844 live drawer measured one 33px avatar, a rectangular 229px profile-copy region, full containment inside the 320px drawer, and zero horizontal overflow. `npm run check` and `git diff --check` passed.
+
+## September 13, 2026 — Shared PWA app shell
+
+- Added one installable `QRK MENU` web-app manifest for owner tools, client/admin tools and the customer menu, with standalone display, QRK branding and direct shortcuts to each operational surface.
+- Added a dependency-free service worker with a small cached shell and network-first page navigation. This improves installed-app resilience but is not evidence of reliable offline ordering, background sync or push notifications.
+- Applied the shared app interaction layer across `/`, `/admin/` and `/menu/`: viewport safe-area support, installed-mode inset handling, disabled image dragging, reduced browser overscroll and `touch-action: manipulation` to suppress double-tap zoom. Pinch zoom remains available for accessibility; form fields and editable content retain text selection.
+- Validation: `npm run check`, the new PWA shell contract, `git diff --check` and the GitHub Pages `/QRK-MENU/` base-path build passed. Live Brave checks found zero horizontal overflow and active `touch-action: manipulation` on the 390px owner/customer routes and 768px admin route. Desktop owner review at 1920px also had zero horizontal overflow. The automation context did not expose the service-worker API directly, so production install/offline behavior still needs a physical-device installed-PWA check after publication.
 
 ## September 13, 2026 — Public menu desktop page-shell finish
 

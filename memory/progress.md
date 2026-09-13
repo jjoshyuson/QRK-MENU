@@ -4,6 +4,10 @@ As of September 13, 2026:
 
 - Each of the five development client profiles now has a distinct scannable test QR in Business Profile. It targets that client's `/menu/?business=<slug>` route and can be opened, copied, or downloaded. QR images use a temporary HTTPS generator; permanent production URLs and first-party generation remain Stage 2 work.
 
+- The component inventory is now backed by a shared production source of truth: `dist/ui-components.css` supplies reusable variables/visual rules to every operational route and `/components/`, while `dist/ui-components.js` gives initial and dynamically rendered elements stable Inspect Element names and variants. The catalog covers 15 UI families and excludes landing pages.
+
+- A shared PWA shell is implemented locally across owner, client/admin and customer routes. Manifest, standalone metadata, touch behavior and the lightweight service-worker cache pass static/base-path validation; publication and physical-device installed-mode verification remain pending.
+
 - Public customer-menu responsive redesign is implemented locally: desktop adds a sticky order summary and wider order review, tablet uses a three-column menu, and phone preserves its compact two-column menu and floating order action. Final light/dark and representative-width verification is recorded in `docs/BUILD_STATUS.md`; publication remains pending.
 
 - Kusina Manila remains QRK Quick and uses a guided payment-first checkout: `Pay order` opens a minimal dialog with `💵 Pay at the counter` and disabled `💳 Cashless` cards.
