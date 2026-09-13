@@ -7,6 +7,12 @@
 - Added named variables for button radius, inline padding, weight, gap, subtle fill and disabled colors to `/components/`; the inspector registry now infers `primary`, `outline` and `text` variants from specialized customer button classes.
 - Validation: the full `npm run check` suite and `git diff --check` passed. Live Brave review confirmed 999px radii, theme-derived primary color, correct semantic treatments and inspector labels. The catalog, owner workspace and customer route had zero horizontal overflow at 390×844, 768×1024 and 1440×900.
 
+## September 13, 2026 — Unified business-header parallax
+
+- Corrected the public-menu parallax so the banner, overlapping profile logo and business identity text move as one composed visual layer.
+- The header keeps its layout footprint while the visual layer recedes together behind the independently sticky search/category toolbar. Reduced-motion continues to disable the decorative transform.
+- Browser checks confirmed the banner, logo and copy share one transform at 390×844, the toolbar still pins at `top: 0`, reduced-motion removes that transform, and tablet/desktop retain three menu columns with zero horizontal overflow. `npm run check` passed.
+
 ## September 13, 2026 — Public menu header parallax and unified toolbar motion
 
 - Added a restrained scroll-linked parallax treatment to the Kusina Manila banner while keeping the business profile content and menu layout stable.
