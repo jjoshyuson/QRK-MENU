@@ -748,3 +748,8 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Connected the sample accent variables to the shared `--brand-400` and `--brand-500` tokens, replaced embedded logo data with the official lightweight QRK assets, and aligned typography to Manrope headings with DM Sans body copy.
 - Strengthened the primary hooks to “One QRK. Built for how you serve.”, “Turn every scan into an order.” and “Your guests shouldn’t have to wave for service.” Supporting hero and closing copy was tightened without reducing the supplied page depth.
 - The existing preview server was reused because port 4173 was already active. `npm run check` passed before editing. Browser checks confirmed both new type stacks, the active global accent, zero broken images and no horizontal overflow at 390px, 768px or 1280px. Corrected deployment and final user review remain open.
+
+# September 13, 2026 — Mobile cart liquid-glass treatment
+
+- Restyled only the phone/tablet floating checkout action with an opaque, token-driven liquid-glass surface using QRK's active brand color and its lighter/darker variants. The existing size, content, position, footer avoidance, and checkout behavior are unchanged.
+- Preserved readable brand-foreground text, visible focus, safe-area positioning, and a solid brand fallback when reduced transparency is requested.
