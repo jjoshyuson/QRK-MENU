@@ -68,6 +68,11 @@ As of September 14, 2026:
 - The LAN order regression is fixed: Kusina `KM-1050` and Salamat `SL-0207` were submitted through the customer route and appeared in their authenticated Supabase staff queues. The six-table selection and host-controlled join flow also passed across separate browser device sessions. Table sessions use the local preview server only and reset when it restarts.
 
 Read `docs/PROGRESS_MAP.md` for milestone sequencing and `docs/BUILD_STATUS.md` for detailed evidence.
+## September 14, 2026 — Customer device simulation lab
+
+- Added an unlinked `/testing/` lab with ten stable phone identities, all five business presets, pasted-menu URL loading, selectable 1/2/4/6/9/10-tile grids and Meet-style pagination.
+- Device-local customer state is namespaced while shared business/staff coordination state remains common. Automated checks and representative 390/768/desktop browser reviews pass.
+
 ## September 13, 2026 — QRK Quick service choice
 
 - Completed on `P/MENU/2`: configurable Dine in/Takeout entry dialog and fulfillment-aware Quick checkout.

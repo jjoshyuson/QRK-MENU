@@ -3,7 +3,7 @@ const PREVIEW_SESSIONS_KEY='qrk_preview_table_sessions_v1';
 const makeId=()=>globalThis.crypto?.randomUUID?.()||`demo-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
 export class QrkTableSessionService{
-  constructor({businessSlug,profile}){this.businessSlug=businessSlug;this.profile=profile;this.previewMode=globalThis.QRK_CONFIG?.environment==='preview';this.previewKey=`${PREVIEW_SESSIONS_KEY}_${businessSlug}`;this.deviceId=sessionStorage.getItem(DEVICE_KEY)||makeId();sessionStorage.setItem(DEVICE_KEY,this.deviceId);this.sessions=[];this.timer=null}
+  constructor({businessSlug,profile,simulationDeviceId=''}){this.businessSlug=businessSlug;this.profile=profile;this.previewMode=globalThis.QRK_CONFIG?.environment==='preview';this.previewKey=`${PREVIEW_SESSIONS_KEY}_${businessSlug}`;const deviceKey=simulationDeviceId?`${DEVICE_KEY}_${simulationDeviceId}`:DEVICE_KEY;this.deviceId=sessionStorage.getItem(deviceKey)||makeId();sessionStorage.setItem(deviceKey,this.deviceId);this.sessions=[];this.timer=null}
   readPreviewSessions(){try{const value=JSON.parse(localStorage.getItem(this.previewKey)||'[]');return Array.isArray(value)?value:[]}catch{return[]}}
   savePreviewSessions(sessions){localStorage.setItem(this.previewKey,JSON.stringify(sessions))}
   previewRequest(path='',input={}){

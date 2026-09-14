@@ -1,5 +1,13 @@
 # Build status
 
+## September 14, 2026 — Customer device simulation lab
+
+- Added the unlinked development-only `/testing/` route with ten stable simulated phone identities.
+- Added menu URL input, five business presets, selectable 1/2/4/6/9/10-tile layouts, per-device reload controls and previous/next paging.
+- Scoped carts, pending checkout keys, active-order tracking, Open Tab membership and Table device IDs by `simDevice`; shared demo orders, business menu state, store status and Table records remain common so staff/customer workflows can still coordinate.
+- Validation passed: `npm run check`, the new `tests/testing-simulations.mjs` contract, live preset/paging checks, and visual review at the default desktop viewport plus 768×900 and 390×844.
+- Limitation: this is a same-browser development harness. It does not establish hosted persistence or real physical-device synchronization.
+
 ## September 14, 2026 — Development-business menu density
 
 - Applied the Kusina responsive-test rule to Salamat, Salo Table, Tambay Café, and Ihaw Buffet: every business now has seven cuisine- and service-specific categories with exactly three products per category (21 products each).

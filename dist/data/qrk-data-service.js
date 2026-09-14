@@ -10,7 +10,7 @@ const makeToken=()=>{const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',bytes=new Ui
 function emit(name,detail){window.dispatchEvent(new CustomEvent(name,{detail}))}
 
 class DemoDataService{
-  constructor(config){this.mode='demo';this.environment=config.environment||'local';this.destinationSlug=config.destinationSlug||'kusina-manila';const suffix=`_${this.destinationSlug}`;this.orderKey=`qrk_demo_orders_v2${suffix}`;this.activeKey=`qrk_demo_active_order_v2${suffix}`;this.storeKey=`qrk_demo_store_open_v1${suffix}`}
+  constructor(config){this.mode='demo';this.environment=config.environment||'local';this.destinationSlug=config.destinationSlug||'kusina-manila';const suffix=`_${this.destinationSlug}`,deviceSuffix=config.simulationDeviceId?`_${config.simulationDeviceId}`:'';this.orderKey=`qrk_demo_orders_v2${suffix}`;this.activeKey=`qrk_demo_active_order_v2${suffix}${deviceSuffix}`;this.storeKey=`qrk_demo_store_open_v1${suffix}`}
   async getPublicMenu(){return null}
   async listOrders({fallback=[]}={}){const raw=localStorage.getItem(this.orderKey);if(raw!==null)return validOrders(safeParse(raw,[]));const seeded=validOrders(fallback);localStorage.setItem(this.orderKey,JSON.stringify(seeded));return seeded}
   async replaceOrders(orders){localStorage.setItem(this.orderKey,JSON.stringify(validOrders(orders)));emit(ORDER_EVENT,{key:this.orderKey})}
@@ -40,7 +40,7 @@ class DemoDataService{
 }
 
 class SupabaseDataService{
-  constructor(config){this.mode='supabase';this.config=config;this.environment=config.environment;this.destinationSlug=config.destinationSlug;this.activeKey=`qrk_demo_active_order_v1_${this.destinationSlug}`;this.channel=null;this.timer=null}
+  constructor(config){this.mode='supabase';this.config=config;this.environment=config.environment;this.destinationSlug=config.destinationSlug;const deviceSuffix=config.simulationDeviceId?`_${config.simulationDeviceId}`:'';this.activeKey=`qrk_demo_active_order_v1_${this.destinationSlug}${deviceSuffix}`;this.channel=null;this.timer=null}
   headers(authenticated=false){const token=authenticated&&(this.config.staffAccessToken||globalThis.QRK_ACCESS_TOKEN)?(this.config.staffAccessToken||globalThis.QRK_ACCESS_TOKEN):this.config.supabasePublishableKey;return{'content-type':'application/json','apikey':this.config.supabasePublishableKey,'authorization':`Bearer ${token}`}}
   async request(path,{body,authenticated=false,method='POST'}={}){const response=await fetch(`${this.config.supabaseUrl}${path}`,{method,headers:this.headers(authenticated),body:body===undefined?undefined:JSON.stringify(body)});if(!response.ok){const detail=await response.text();throw new Error(`Backend request failed (${response.status}): ${detail.slice(0,240)}`)}return response.status===204?null:response.json()}
   rpc(name,body,authenticated=false){return this.request(`/rest/v1/rpc/${name}`,{body,authenticated})}

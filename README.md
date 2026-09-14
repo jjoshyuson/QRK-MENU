@@ -28,6 +28,7 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 | `dist/menu/` | Standalone customer-only development menu route, including its small route-specific theme layer and CSS/JavaScript payload |
 | `dist/landing/` | Lightweight public choice, QRK Quick and QRK Table landing pages sharing the global QRK theme |
 | `dist/components/` | Unlinked, static development inventory of reusable owner, admin, staff and customer UI components and states |
+| `dist/testing/` | Unlinked development-only grid for exercising ten isolated customer phone identities across the five sample businesses |
 | `dist/menu/payment-first.css` | Small checkout override for the simulated Payment First choices and keyboard focus treatment |
 | `dist/data/` | Shared demo/Supabase data-service adapter and safe public configuration scaffold |
 | `dist/data/qrk-auth-service.js` | Lightweight local Supabase Auth session and tenant-context client |
