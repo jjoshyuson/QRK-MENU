@@ -48,6 +48,77 @@
 .restaurant-copy h1 { font-size: clamp(25px, 5vw, 32px); }
 .menu-tools + #menu-sections .menu-section { scroll-margin-top: 116px; }
 
+.menu.has-menu-background {
+  background-color: var(--surface, #fff);
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--surface, #fff) var(--menu-background-surface-opacity, 72%), transparent),
+      color-mix(in srgb, var(--surface, #fff) var(--menu-background-surface-opacity, 72%), transparent)
+    ),
+    var(--menu-background-image);
+  background-position: center, center;
+  background-size: auto, cover;
+  background-attachment: scroll, fixed;
+}
+
+.menu-section .dish {
+  display: flex;
+  min-width: 0;
+  height: 100%;
+  flex-direction: column;
+  padding: 8px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--line) 88%, var(--ink) 12%);
+  border-radius: var(--component-radius-xl, 16px);
+  background: color-mix(in srgb, var(--surface, #fff) 94%, transparent);
+  box-shadow: 0 8px 24px #1118270d;
+}
+
+.dish .photo { overflow: hidden; border-radius: 12px; }
+.dish img { border-radius: 0; }
+.dish-hit { display: flex; height: 100%; flex-direction: column; border-radius: inherit; }
+.dish h4,.dish strong { font-size: 14px; }
+.dish-copy { display: grid; flex: 1; grid-template-columns: minmax(0, 1fr) auto; align-items: stretch; gap: 10px; padding: 10px 5px 5px; }
+.dish-description { min-width: 0; }
+.dish-copy p {
+  display: -webkit-box;
+  min-height: calc(2em * 1.4);
+  margin: 0;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.dish-actions { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: .5em; }
+.dish-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45em;
+  padding: .38em .72em;
+  border: 1px solid color-mix(in srgb, var(--brand-600) 55%, transparent);
+  border-radius: 999em;
+  background: linear-gradient(135deg, var(--brand-400), var(--brand-500));
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--brand-500) 22%, transparent);
+  color: #111827;
+  font-size: .8em;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+.dish-cta > span { font-size: 1.35em; font-weight: 300; line-height: .75; }
+
+@media (max-width: 600px) {
+  .menu-section .dish { padding: 6px; border-radius: var(--component-radius-lg, 12px); }
+  .dish .photo { border-radius: 10px; }
+  .dish-copy { gap: 7px; padding: 8px 3px 3px; }
+  .dish h4,.dish strong { font-size: 13px; }
+  .dish-copy p { font-size: 12px; }
+  .dish-actions { font-size: .92em; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .restaurant-visual { transform: none; will-change: auto; }
   .menu-tools { transition: none; }

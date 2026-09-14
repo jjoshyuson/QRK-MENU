@@ -14,6 +14,16 @@
 - Preserved the standalone cinematic landing pages, which remain intentionally outside the operational component source and retain their existing authored typography.
 - Validation: pre-change and post-change `npm run check` passed. Desktop browser review confirmed Source Serif 4 on the Kusina Manila identity and menu hierarchy, Inter on search, tabs, prices and the order summary, and no visible layout regression. Automated phone/tablet viewport control was unavailable in the current browser surface; those representative visual checks remain part of release review.
 
+## September 14, 2026 — business-scoped public menu backgrounds
+
+- Business Profile now lets each client choose or remove a customer-menu background and adjust a neutral readability veil from 40% to 95%.
+- Kusina Manila defaults to a bundled illustrated menu background with a 72% surface veil. Other businesses default to no custom background.
+- Uploaded PNG, JPG, or WebP files up to 6 MB are resized to at most 1800 px and stored as compressed WebP data URLs inside the existing business-scoped branding record.
+- Persisted consumer contract: `qrk_demo_branding_v1[slug].publicMenuBackground = { image: string, surfaceOpacity: number }`. `image` is a root-relative bundled asset, a `data:image/webp` URL, or an empty string; `surfaceOpacity` is normalized to `0.40–0.95`.
+- The public `/menu/` route consumes that contract only on the menu browsing surface, leaving the business identity banner independent.
+- Kusina's default is a purpose-built 1200×1500 illustrated wallpaper optimized to 326 KB, with quiet central detail and Filipino-inspired tropical, rattan, capiz, and dining motifs around the edges.
+- Integrated validation passed: `npm run check`, `git diff --check`, the new business-isolation/default/removal contract test, asset existence/size checks, and an HTTP 200 response from the local Kusina menu route. The Business Profile task separately verified its controls at 390px, 768px, and desktop widths; public-menu visual review remains for the next user-facing pass.
+
 ## September 13, 2026 — Shared pill-button hierarchy
 
 - Updated the shared Button source so standard and customer actions use the requested pill silhouette while preserving 44px standard and 50px customer touch targets.
@@ -849,3 +859,21 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 
 - Restyled the phone/tablet floating checkout action and item-sheet Add to order action as one shared, fully pill-shaped liquid-glass control. A mostly neutral translucent surface, restrained brand tint, backdrop blur, thin refractive rim, and quiet depth avoid both a saturated wash and a broad glossy highlight. Existing content, position, footer avoidance, and checkout behavior are unchanged.
 - Preserved readable token-derived text, visible focus, safe-area positioning, and a solid fallback when reduced transparency is requested.
+
+## September 14, 2026 — Public menu card simplification
+
+- Reduced public dish tiles to the requested essentials: photo, food name, and price. Category headings remain, while per-item descriptions and category item-count subtitles are no longer rendered in the browsing grid.
+- Descriptions remain available in item details and searchable menu data, so ordering context and Menu Studio editing are unchanged.
+- `npm run check` and `git diff --check` passed. Browser review at 390×844, 768×1024, and 1280×720 confirmed two phone columns, three tablet/desktop columns, no horizontal overflow, no dish descriptions or category counts in the grid, and preserved item-detail descriptions and options.
+
+## September 14, 2026 — Public menu card redesign
+
+- Reworked each customer dish into a bordered, padded card with a clipped photo, aligned name and PHP price, concise two-line description, and a theme-driven `+ Add` action.
+- Reused the shared customer card and primary-button contracts. The Add action opens the existing item/options sheet, while unavailable dishes expose a disabled Sold out state with an accessible label.
+- `npm run check`, JavaScript syntax validation, and `git diff --check` passed. Automated checks cover the shared component and ordering contracts; final visual acceptance remains open in the existing local preview.
+
+## September 14, 2026 — Compact dish-card actions and description limit
+
+- Split the customer card beneath its full-width photo into a flexible description column and compact price/action rail. The entire available card is the semantic ordering button and exposes the accessible Add label; the visible dark-text `+ Add` pill is a non-interactive cue sized at `0.8em`, proportionally reducing its text, plus, gaps, and padding by 20%.
+- Added a 140-character Menu Studio description limit, live count, accessible helper relationship, and submit guard. Existing stored descriptions remain intact until edited; customer cards visually clamp descriptions to two lines while item details retain the full saved copy.
+- Added an automated description/card contract check. `npm run check`, JavaScript syntax validation, and `git diff --check` passed. A second live screenshot loop verified the slimmer type-relative cue, whole-card focus semantics, and card-to-item-sheet interaction against the supplied reference; final user acceptance remains open.

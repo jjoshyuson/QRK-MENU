@@ -123,6 +123,8 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--brand-500)}
 }
 .form-error,.error-message{color:var(--danger)}
 .success-mark{color:var(--success)}
+.field-meta{display:flex;justify-content:space-between;gap:12px;margin-top:6px;color:var(--muted);font-size:12px;font-weight:400}
+.field-meta output{white-space:nowrap}
 
 /* Source-of-truth documentation helpers used only by /components/. */
 .inspector-guide{display:grid;gap:5px;max-width:900px;margin:0 0 22px;padding:14px 16px;border:var(--component-border);border-left:4px solid var(--brand-500);border-radius:var(--component-radius-md);background:var(--surface)}

@@ -39,6 +39,13 @@ if(dataService.mode==='supabase'){
 }
 let categories=[...new Set(menu.map(item=>item.category))];
 const $=selector=>document.querySelector(selector);
+function applyPublicMenuBackground(brand){
+  const menuSurface=$('.menu'),settings=brand?.publicMenuBackground||{},candidate=String(settings.image||''),image=/^(?:\/|data:image\/(?:png|jpeg|webp);base64,)/i.test(candidate)?candidate:'',opacity=Number(settings.surfaceOpacity),surfaceOpacity=Math.round((Number.isFinite(opacity)?Math.max(.4,Math.min(.95,opacity)):.72)*100);
+  menuSurface.classList.toggle('has-menu-background',Boolean(image));
+  if(image){menuSurface.style.setProperty('--menu-background-image',`url("${image}")`);menuSurface.style.setProperty('--menu-background-surface-opacity',`${surfaceOpacity}%`)}else{menuSurface.style.removeProperty('--menu-background-image');menuSurface.style.removeProperty('--menu-background-surface-opacity')}
+}
+applyPublicMenuBackground(customerBrand);
+addEventListener('storage',event=>{if(event.key==='qrk_demo_branding_v1')applyPublicMenuBackground(getBusinessBrand({businessId:`preview:${businessSlug}`,businessSlug,businessName:businessExperience.businessName}))});
 if(tableSessionService?.previewMode){$('#table-waiting-view .demo-note').textContent='Tabs on this browser share preview table availability and join requests. Other devices are not connected.'}
 let pendingTableSession=null;
 let waitingTimer=null;
@@ -85,11 +92,11 @@ function renderMenu(filter=''){
   categories.forEach(category=>{
     const items=visible.filter(item=>item.category===category);if(!items.length)return;
     const section=document.createElement('section');section.className='menu-section';section.id=categoryId(category);section.setAttribute('aria-labelledby',`${section.id}-title`);
-    section.innerHTML=`<div class="section-heading"><h3 id="${section.id}-title">${escapeText(category)}</h3><span>${items.length} ${items.length===1?'item':'items'}</span></div><div class="dish-grid"></div>`;
+    section.innerHTML=`<div class="section-heading"><h3 id="${section.id}-title">${escapeText(category)}</h3></div><div class="dish-grid"></div>`;
     items.forEach(item=>{
-      const card=$('#dish-template').content.firstElementChild.cloneNode(true);const button=card.querySelector('button');const img=card.querySelector('img');
-      if(item.photo){img.src=item.photo;img.alt=item.name}else{img.remove();const photo=card.querySelector('.photo');photo.classList.add('no-photo');photo.textContent=item.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase()}card.querySelector('h4').textContent=item.name;card.querySelector('p').textContent=item.description;card.querySelector('strong').textContent=format(item.price);
-      if(!item.available){card.classList.add('sold-out');card.querySelector('.sold-label').classList.remove('hidden');button.disabled=true;button.setAttribute('aria-label',`${item.name}, sold out`)}else button.addEventListener('click',()=>openItem(item));
+      const card=$('#dish-template').content.firstElementChild.cloneNode(true);const cardButton=card.querySelector('.dish-hit');const img=card.querySelector('img');
+      if(item.photo){img.src=item.photo;img.alt=item.name}else{img.remove();const photo=card.querySelector('.photo');photo.classList.add('no-photo');photo.textContent=item.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase()}card.querySelector('h4').textContent=item.name;card.querySelector('strong').textContent=format(item.price);card.querySelector('p').textContent=item.description;cardButton.setAttribute('aria-label',`Add ${item.name} to order`);
+      if(!item.available){card.classList.add('sold-out');card.querySelector('.sold-label').classList.remove('hidden');cardButton.disabled=true;card.querySelector('.dish-cta').textContent='Sold out';cardButton.setAttribute('aria-label',`${item.name}, sold out`)}else cardButton.addEventListener('click',()=>openItem(item));
       section.querySelector('.dish-grid').append(card);
     });$('#menu-sections').append(section);
   });
