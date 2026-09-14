@@ -48,6 +48,19 @@
 .restaurant-copy h1 { font-size: clamp(25px, 5vw, 32px); }
 .menu-tools + #menu-sections .menu-section { scroll-margin-top: 116px; }
 
+.menu.has-menu-background {
+  background-color: var(--surface, #fff);
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--surface, #fff) var(--menu-background-surface-opacity, 72%), transparent),
+      color-mix(in srgb, var(--surface, #fff) var(--menu-background-surface-opacity, 72%), transparent)
+    ),
+    var(--menu-background-image);
+  background-position: center, center;
+  background-size: auto, cover;
+  background-attachment: scroll, fixed;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .restaurant-visual { transform: none; will-change: auto; }
   .menu-tools { transition: none; }

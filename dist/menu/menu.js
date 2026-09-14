@@ -39,6 +39,13 @@ if(dataService.mode==='supabase'){
 }
 let categories=[...new Set(menu.map(item=>item.category))];
 const $=selector=>document.querySelector(selector);
+function applyPublicMenuBackground(brand){
+  const menuSurface=$('.menu'),settings=brand?.publicMenuBackground||{},candidate=String(settings.image||''),image=/^(?:\/|data:image\/(?:png|jpeg|webp);base64,)/i.test(candidate)?candidate:'',opacity=Number(settings.surfaceOpacity),surfaceOpacity=Math.round((Number.isFinite(opacity)?Math.max(.4,Math.min(.95,opacity)):.72)*100);
+  menuSurface.classList.toggle('has-menu-background',Boolean(image));
+  if(image){menuSurface.style.setProperty('--menu-background-image',`url("${image}")`);menuSurface.style.setProperty('--menu-background-surface-opacity',`${surfaceOpacity}%`)}else{menuSurface.style.removeProperty('--menu-background-image');menuSurface.style.removeProperty('--menu-background-surface-opacity')}
+}
+applyPublicMenuBackground(customerBrand);
+addEventListener('storage',event=>{if(event.key==='qrk_demo_branding_v1')applyPublicMenuBackground(getBusinessBrand({businessId:`preview:${businessSlug}`,businessSlug,businessName:businessExperience.businessName}))});
 if(tableSessionService?.previewMode){$('#table-waiting-view .demo-note').textContent='Tabs on this browser share preview table availability and join requests. Other devices are not connected.'}
 let pendingTableSession=null;
 let waitingTimer=null;
