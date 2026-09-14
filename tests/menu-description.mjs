@@ -16,7 +16,10 @@ assert.match(customerHtml, /class="dish-description"/);
 assert.match(customerHtml, /class="dish-hit" type="button"/);
 assert.match(customerHtml, /class="dish-cta" aria-hidden="true"/);
 assert.match(customerCss, /-webkit-line-clamp:\s*2/);
-assert.match(customerCss, /\.dish-cta\s*\{[^}]*padding:\s*\.38em \.72em[^}]*color:\s*#111827[^}]*font-size:\s*\.8em/s);
+assert.match(customerCss, /\.dish-cta\s*\{[^}]*padding:\s*\.38em \.72em[^}]*border:\s*0[^}]*color:\s*#111827[^}]*font-size:\s*\.8em/s);
+assert.match(customerCss, /\.menu-section \.dish\s*\{[^}]*border:\s*0/s);
+assert.match(customerCss, /\.menu-tools \.categories\s*\{[^}]*grid-template-columns:\s*repeat\(3,minmax\(0,1fr\)\)/s);
+assert.match(customerHtml, /<svg viewBox="0 0 24 24" fill="none">/);
 assert.match(customerJs, /card\.querySelector\('p'\)\.textContent=item\.description/);
 assert.match(customerJs, /\$\('#item-description'\)\.textContent=item\.description/);
 
