@@ -1,4 +1,5 @@
 import { resolveQrkConfig } from './qrk-config.js';
+import { getDeviceIdentity } from './qrk-device-service.js';
 
 const ORDER_EVENT='qrk:demo-orders-changed',STORE_EVENT='qrk:demo-store-status-changed';
 const allowedStatuses=['received','preparing','ready','completed','cancelled'];
@@ -40,7 +41,7 @@ class DemoDataService{
 }
 
 class SupabaseDataService{
-  constructor(config){this.mode='supabase';this.config=config;this.environment=config.environment;this.destinationSlug=config.destinationSlug;this.activeKey=`qrk_demo_active_order_v1_${this.destinationSlug}`;this.channel=null;this.timer=null}
+  constructor(config){this.mode='supabase';this.config=config;this.environment=config.environment;this.destinationSlug=config.destinationSlug;this.device=getDeviceIdentity();this.activeKey=`qrk_active_order_v2_${this.destinationSlug}_${this.device.id}`;this.channel=null;this.timer=null;this.deviceRegistered=false}
   headers(authenticated=false){const token=authenticated&&(this.config.staffAccessToken||globalThis.QRK_ACCESS_TOKEN)?(this.config.staffAccessToken||globalThis.QRK_ACCESS_TOKEN):this.config.supabasePublishableKey;return{'content-type':'application/json','apikey':this.config.supabasePublishableKey,'authorization':`Bearer ${token}`}}
   async request(path,{body,authenticated=false,method='POST'}={}){const response=await fetch(`${this.config.supabaseUrl}${path}`,{method,headers:this.headers(authenticated),body:body===undefined?undefined:JSON.stringify(body)});if(!response.ok){const detail=await response.text();throw new Error(`Backend request failed (${response.status}): ${detail.slice(0,240)}`)}return response.status===204?null:response.json()}
   rpc(name,body,authenticated=false){return this.request(`/rest/v1/rpc/${name}`,{body,authenticated})}
@@ -52,18 +53,23 @@ class SupabaseDataService{
     }
     return result;
   }
+  async registerDevice(){if(this.deviceRegistered)return;await this.rpc('register_customer_device',{p_destination_slug:this.destinationSlug,p_device_id:this.device.id,p_device_secret:this.device.secret,p_label:'Customer browser',p_metadata:{platform:navigator.platform||'',standalone:matchMedia?.('(display-mode: standalone)')?.matches===true}});this.deviceRegistered=true}
   async listOrders(){
     const rows=await this.request(`/rest/v1/orders?business_id=eq.${encodeURIComponent(this.config.businessId)}&select=id,order_number,verification_token,created_at,updated_at,fulfillment_type,table_number,customer_label,status,subtotal_minor,handoff_verified_at,notes,order_items(id,item_name,quantity,unit_price_minor,line_total_minor,notes,order_item_options(group_name,option_name,price_delta_minor)),order_status_events(to_status,label,created_at)&order=created_at.asc`,{authenticated:true,method:'GET'});
     return rows.map(row=>({id:row.id,orderNumber:row.order_number,verificationToken:row.verification_token,createdAt:row.created_at,updatedAt:row.updated_at,fulfillmentType:row.fulfillment_type,tableNumber:row.table_number,customerLabel:row.customer_label,status:row.status,subtotalMinor:row.subtotal_minor,handoffVerifiedAt:row.handoff_verified_at,notes:row.notes,items:(row.order_items||[]).map(item=>({itemId:item.id,name:item.item_name,quantity:item.quantity,unitPriceMinor:item.unit_price_minor,lineTotalMinor:item.line_total_minor,notes:item.notes,selectedOptions:(item.order_item_options||[]).map(option=>option.price_delta_minor?`${option.option_name} +${option.price_delta_minor}`:option.option_name)})),events:(row.order_status_events||[]).map(event=>({status:event.to_status,label:event.label,at:event.created_at}))}));
   }
   async createOrder(input){
-    return this.rpc('create_public_order',{p_destination_slug:this.destinationSlug,p_request_id:input.idempotencyKey,p_fulfillment:input.fulfillmentType,p_table_number:input.tableNumber||null,p_customer_label:input.customerLabel||null,p_order_notes:input.notes||'',p_line_items:input.items.map(item=>({itemId:item.itemId,quantity:item.quantity,optionIds:(item.selectedOptions||[]).map(option=>option.id).filter(Boolean),notes:item.notes||''}))});
+    await this.registerDevice();
+    return this.rpc('create_device_order',{p_destination_slug:this.destinationSlug,p_request_id:input.idempotencyKey,p_fulfillment:input.fulfillmentType,p_table_number:input.tableNumber||null,p_customer_label:input.customerLabel||null,p_order_notes:input.notes||'',p_line_items:input.items.map(item=>({itemId:item.itemId,quantity:item.quantity,optionIds:(item.selectedOptions||[]).map(option=>option.id).filter(Boolean),notes:item.notes||''})),p_device_id:this.device.id,p_device_secret:this.device.secret,p_table_session_id:input.tableSessionId||null,p_open_tab_id:input.openTabId||null});
   }
   getActiveOrder(){const tracking=safeParse(localStorage.getItem(this.activeKey),null);return tracking?this.getOrderStatus(tracking):null}
   getOrderStatus(tracking){return this.rpc('get_public_order_status',{p_destination_slug:this.destinationSlug,p_order_number:tracking.orderNumber,p_tracking_token:tracking.trackingToken})}
   async transitionOrder({orderId,expectedStatus,nextStatus,handoffToken}){return this.rpc('transition_order_status',{p_order_id:orderId,p_expected_status:expectedStatus,p_next_status:nextStatus,p_handoff_token:handoffToken||null},true)}
   async getStoreOpen(){const result=await this.getPublicMenu();return result?.business?.openForOrders===true}
   setStoreOpen(open){return this.rpc('set_business_ordering_open',{p_business_id:this.config.businessId,p_open:Boolean(open)},true)}
+  listClearBatches(){return this.rpc('list_order_clear_batches',{p_business_id:this.config.businessId},true)}
+  clearOrderActivity(){return this.rpc('clear_order_activity',{p_business_id:this.config.businessId},true)}
+  restoreOrderActivity(batchId){return this.rpc('restore_order_activity',{p_batch_id:batchId},true)}
   rememberActiveOrder(order){localStorage.setItem(this.activeKey,JSON.stringify({orderNumber:order.orderNumber,trackingToken:order.trackingToken}))}
   subscribe({onOrdersChanged,onStoreChanged}={}){
     const refresh=()=>{onOrdersChanged?.();onStoreChanged?.()};

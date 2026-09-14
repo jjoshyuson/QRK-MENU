@@ -3,6 +3,7 @@ import { applyBusinessBrand, getBusinessBrand } from '../data/qrk-brand-service.
 import { getBusinessExperience } from '../data/qrk-businesses.js';
 import { QrkTableSessionService } from '../data/qrk-table-session-service.js?v=3';
 import { menuOptionGroupsForItem, readMenuState, subscribeMenuState } from '../data/qrk-menu-store.js';
+import { deviceScopedKey } from '../data/qrk-device-service.js';
 
 const businessSlug=new URLSearchParams(location.search).get('business')||'kusina-manila';
 const businessExperience=getBusinessExperience(businessSlug);
@@ -12,9 +13,9 @@ const previewOnly=businessExperience.developmentClient&&!['kusina-manila','salam
 const dataService=createQrkDataService({destinationSlug:businessSlug,...(previewOnly?{supabaseUrl:'',supabasePublishableKey:''}:{})});
 const customerBrand=getBusinessBrand({businessId:`preview:${businessSlug}`,businessSlug,businessName:businessExperience.businessName});applyBusinessBrand(customerBrand);document.querySelector('meta[name="theme-color"]')?.setAttribute('content',getComputedStyle(document.documentElement).getPropertyValue('--nav').trim()||'#0b0c0e');
 const storageSuffix=`_${businessSlug}_${dataService.mode}`;
-const CART_KEY=`qrk_demo_cart_v1${storageSuffix}`;
-const PENDING_KEY=`qrk_pending_order_request_v1${storageSuffix}`;
-const TAB_ORDER_KEY=`qrk_open_tab_orders_v1${storageSuffix}`;
+const CART_KEY=deviceScopedKey(businessSlug,`cart:${dataService.mode}`);
+const PENDING_KEY=deviceScopedKey(businessSlug,`pending-order:${dataService.mode}`);
+const TAB_ORDER_KEY=deviceScopedKey(businessSlug,`open-tab-orders:${dataService.mode}`);
 const openTabEnabled=serviceProfile.preset==='open_tab';
 const paymentFirst=serviceProfile.settings.paymentTiming==='upfront'&&serviceProfile.settings.packageMode==='none';
 const fulfillmentModes=serviceProfile.settings.fulfillmentModes||['table'];

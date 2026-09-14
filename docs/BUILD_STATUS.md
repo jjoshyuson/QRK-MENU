@@ -1,5 +1,13 @@
 # Build status
 
+## September 14, 2026 — Supabase order sync and reversible clearing
+
+- Added browser-installation identity, device-attached order creation, database foundations for table/open-tab activity, and server-side operational clear batches.
+- Added Settings → Order data with typed confirmation and restoration of either of the newest two non-restored clears.
+- Added the authoritative database/VPS portability plan and an `AGENTS.md` trigger for future Supabase replacement work.
+- Added optional GitHub build-time staging configuration using only the Supabase URL and publishable key.
+- Local database execution is currently blocked because Docker Desktop is not running. Hosted linking and deployment are blocked because the Supabase CLI has no access token and no project is linked.
+
 ## September 14, 2026 — Development-business menu density
 
 - Applied the Kusina responsive-test rule to Salamat, Salo Table, Tambay Café, and Ihaw Buffet: every business now has seven cuisine- and service-specific categories with exactly three products per category (21 products each).

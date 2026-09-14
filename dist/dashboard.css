@@ -226,3 +226,4 @@ body[data-current-page="orders"] .topbar-history{margin-left:auto}
 /* Orders use one Received queue, plus Tables only for Table-mode businesses. */
 .order-stage-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
 .order-stage-tabs:has(#table-requests-tab[hidden]){grid-template-columns:1fr}
+.clear-batch-list{display:grid;gap:8px;margin:8px 0 16px}.clear-batch-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line)}.clear-batch-row span{display:grid;gap:3px}.clear-batch-row small{color:var(--muted)}

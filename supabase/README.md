@@ -1,5 +1,13 @@
 # QRK MENU backend foundation
 
+> Supabase is the temporary development and initial staging provider. PostgreSQL and the adapter contracts are authoritative. Read `docs/DATABASE_SYNC_AND_PORTABILITY_PLAN.md` before replacing Supabase or moving to a VPS.
+
+## Order synchronization and recovery
+
+Migration `202609140001_order_sync_and_recovery.sql` adds registered browser installations, device-attached order creation, table/open-tab storage foundations, and tenant-scoped clear batches. `clear_order_activity` archives operational data while preserving restaurant, account, staff, menu, product, photo, branding, and destination records. Either of the two newest non-restored clear batches can be restored atomically.
+
+The customer stores a random device UUID and secret. Only the secret digest reaches durable storage. This identifies a browser installation and prevents accidental namespace overlap; it is not a hardware identifier.
+
 This folder is the canonical, version-controlled database source of truth. It is provider-ready, but no hosted Supabase project is created, linked, configured, or verified yet.
 
 ## Structure
