@@ -57,6 +57,8 @@ A business-approved trusted-customer/VIP account model has been captured for pro
 
 ## Immediate path
 
+0. Deploy the approved customer-menu performance branch, then confirm smooth scrolling on a representative low-end physical phone.
+
 1. Publish the PWA branch when approved, then install it on representative iOS and Android devices and verify standalone launch, safe areas, pinch zoom, double-tap behavior, shortcuts and service-worker updates.
 2. Review `/landing/`, `/landing/quick.html`, and `/landing/table.html` in both global theme modes and approve or revise the public copy and visual direction.
 3. Review the corrected customer entry points for Kusina Quick, Salamat Direct Table, Salo Table Approval, Tambay Open Tab and Ihaw Buffet Approval; treat same-browser staff/customer coordination as preview evidence only.

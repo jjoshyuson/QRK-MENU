@@ -883,3 +883,9 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Fixed a staging freeze where the service worker could combine a newly deployed `app.js` with an older cached imported module. The visible page rendered, but module initialization stopped before navigation handlers were attached.
 - GitHub Pages builds now give every local JavaScript/CSS entry and static JavaScript import the same commit-derived version. The service worker also fetches code and styles from the network first, with its cache used only as an offline fallback.
 - The PWA shell contract guards both behaviors. `npm run check`, `git diff --check`, and a GitHub Pages-shaped build passed. Deployment run `34879939278` succeeded; the previously frozen normal-profile Brave tab recovered on reload, opened Kusina Manila, navigated to Menu Studio, and reported no console errors. Manual site-data deletion was not required.
+## September 14, 2026 — Customer menu performance remediation
+
+- Profiled the live Kusina Manila route. Its modest DOM was not the bottleneck: it eagerly decoded every dish photo, used a full-menu fixed background, blurred a sticky toolbar, and ran parallax plus layout reads during scroll.
+- Added lazy, asynchronous dish-image decoding and removed the continuous parallax, fixed-background repaint, and sticky-toolbar blur costs.
+- Added dependency-free, browser-native WebP optimization for Menu Studio uploads: 960px maximum edge and an approximately 160 KB target. Original files are retained in IndexedDB, and existing browser-local data-URL uploads migrate automatically in the background.
+- Added an automated performance contract. A browser check compressed a representative 326 KB image to a 91 KB WebP (72% smaller) at 768×960. At 390×844, the menu had zero horizontal overflow and confirmed lazy/async/low-priority dish images with no fixed background, toolbar blur, or header transform.

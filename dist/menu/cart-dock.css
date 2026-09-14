@@ -27,7 +27,7 @@
   padding-top: 10px;
   border-block: 1px solid var(--line);
   background: color-mix(in srgb, var(--surface, #fff) 92%, transparent);
-  backdrop-filter: blur(12px);
+  backdrop-filter: none;
   box-shadow: 0 1px 0 color-mix(in srgb, var(--line) 72%, transparent);
   transition: box-shadow 160ms ease, background-color 160ms ease;
 }
@@ -38,7 +38,7 @@
 .menu-tools .categories { position: static; margin-inline: 0; border: 0; border-radius: 0; background: transparent; backdrop-filter: none; }
 
 .restaurant { display: block; padding: 0 0 24px; overflow: hidden; }
-.restaurant-visual { transform: translate3d(0, var(--header-parallax, 0px), 0); will-change: transform; }
+.restaurant-visual { transform: none; }
 .restaurant-banner { display: block; width: 100%; height: auto; aspect-ratio: 3 / 1; object-fit: cover; background: var(--surface-soft, #eef0f3); }
 .restaurant-profile { display: flex; align-items: flex-start; gap: 14px; padding: 0 18px; }
 .restaurant-profile .restaurant-mark { width: 88px; height: 88px; margin-top: -38px; border: 4px solid var(--surface, #fff); border-radius: 50%; overflow: hidden; box-shadow: 0 5px 18px #11182720; }
@@ -58,7 +58,7 @@
     var(--menu-background-image);
   background-position: center, center;
   background-size: auto, cover;
-  background-attachment: scroll, fixed;
+  background-attachment: scroll;
 }
 
 .menu-section .dish {
