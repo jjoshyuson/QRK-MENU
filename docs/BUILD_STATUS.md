@@ -860,6 +860,6 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 
 ## September 14, 2026 — Compact dish-card actions and description limit
 
-- Split the customer card beneath its full-width photo into a flexible description column and compact price/action rail. The entire available card is now the semantic ordering button and exposes the accessible Add label; the visible white `+ Add` pill is a non-interactive cue sized dynamically in `em` to stay close to the price’s visual weight.
+- Split the customer card beneath its full-width photo into a flexible description column and compact price/action rail. The entire available card is the semantic ordering button and exposes the accessible Add label; the visible dark-text `+ Add` pill is a non-interactive cue sized at `0.8em`, proportionally reducing its text, plus, gaps, and padding by 20%.
 - Added a 140-character Menu Studio description limit, live count, accessible helper relationship, and submit guard. Existing stored descriptions remain intact until edited; customer cards visually clamp descriptions to two lines while item details retain the full saved copy.
 - Added an automated description/card contract check. `npm run check`, JavaScript syntax validation, and `git diff --check` passed. A second live screenshot loop verified the slimmer type-relative cue, whole-card focus semantics, and card-to-item-sheet interaction against the supplied reference; final user acceptance remains open.

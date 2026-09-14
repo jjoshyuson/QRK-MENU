@@ -16,7 +16,7 @@ assert.match(customerHtml, /class="dish-description"/);
 assert.match(customerHtml, /class="dish-hit" type="button"/);
 assert.match(customerHtml, /class="dish-cta" aria-hidden="true"/);
 assert.match(customerCss, /-webkit-line-clamp:\s*2/);
-assert.match(customerCss, /\.dish-cta\s*\{[^}]*padding:\s*\.38em \.72em[^}]*font-size:\s*1em/s);
+assert.match(customerCss, /\.dish-cta\s*\{[^}]*padding:\s*\.38em \.72em[^}]*color:\s*#111827[^}]*font-size:\s*\.8em/s);
 assert.match(customerJs, /card\.querySelector\('p'\)\.textContent=item\.description/);
 assert.match(customerJs, /\$\('#item-description'\)\.textContent=item\.description/);
 
