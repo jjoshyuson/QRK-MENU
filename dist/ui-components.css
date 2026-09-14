@@ -56,7 +56,6 @@
   box-shadow:none;
 }
 .primary-button,.secondary-button,.customer-button{min-height:var(--component-customer-control-height)}
-.customer-button.compact{min-height:var(--component-control-height);padding-inline:14px;font-size:13px}
 .button.primary,.ui-button.primary,.primary-button,.customer-button.primary,.table-card.pending .table-card-action{
   border-color:transparent;
   background:var(--component-primary-bg);

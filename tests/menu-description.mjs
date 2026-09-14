@@ -13,9 +13,10 @@ assert.match(app, /field\.maxLength=ITEM_DESCRIPTION_LIMIT/);
 assert.match(app, /item-description-count/);
 assert.match(app, /description\.length>ITEM_DESCRIPTION_LIMIT/);
 assert.match(customerHtml, /class="dish-description"/);
-assert.match(customerHtml, /class="dish-actions"/);
+assert.match(customerHtml, /class="dish-hit" type="button"/);
+assert.match(customerHtml, /class="dish-cta" aria-hidden="true"/);
 assert.match(customerCss, /-webkit-line-clamp:\s*2/);
-assert.match(customerCss, /\.dish-actions \.customer-button\.compact\s*\{[^}]*width:\s*120px[^}]*min-height:\s*50px/s);
+assert.match(customerCss, /\.dish-cta\s*\{[^}]*padding:\s*\.38em \.72em[^}]*font-size:\s*1em/s);
 assert.match(customerJs, /card\.querySelector\('p'\)\.textContent=item\.description/);
 assert.match(customerJs, /\$\('#item-description'\)\.textContent=item\.description/);
 
