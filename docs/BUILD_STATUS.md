@@ -860,6 +860,6 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 
 ## September 14, 2026 — Compact dish-card actions and description limit
 
-- Split the customer card beneath its full-width photo into a flexible description column and a compact action rail. The price now sits directly above a smaller Add button while the control retains a 44px minimum touch target.
+- Split the customer card beneath its full-width photo into a flexible description column and a compact action rail. The price sits directly above a reference-matched Add pill: 96×48px in the phone grid and 120×50px on wider cards, with a larger thin plus, theme-derived gradient, restrained rim, and preserved accessible name.
 - Added a 140-character Menu Studio description limit, live count, accessible helper relationship, and submit guard. Existing stored descriptions remain intact until edited; customer cards visually clamp descriptions to two lines while item details retain the full saved copy.
-- Added an automated description/card contract check. `npm run check`, JavaScript syntax validation, `git diff --check`, and the existing local route response passed; final visual acceptance remains open in the local preview.
+- Added an automated description/card contract check. `npm run check`, JavaScript syntax validation, and `git diff --check` passed. A live screenshot comparison loop verified the phone-grid scale and spacing against the supplied reference, and the Add action was exercised through the existing item-details sheet; final user acceptance remains open.

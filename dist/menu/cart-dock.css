@@ -90,18 +90,28 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
-.dish-actions { display: flex; min-width: 78px; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 7px; }
-.dish-add { min-width: 78px; min-height: 44px; padding: 7px 13px; font-size: 13px; }
-.dish-add > span { font-size: 18px; font-weight: 400; line-height: 1; }
+.dish-actions { display: flex; min-width: 120px; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 7px; }
+.dish-actions .customer-button.compact {
+  width: 120px;
+  min-height: 50px;
+  gap: 10px;
+  padding: 9px 18px;
+  border: 1px solid color-mix(in srgb, var(--brand-600) 55%, transparent);
+  background: linear-gradient(135deg, var(--brand-400), var(--brand-500));
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--brand-500) 22%, transparent);
+  font-size: 15px;
+}
+.dish-add > span { font-size: 25px; font-weight: 300; line-height: .8; }
 
-@media (max-width: 430px) {
+@media (max-width: 600px) {
   .menu-section .dish { padding: 6px; border-radius: var(--component-radius-lg, 12px); }
   .dish .photo { border-radius: 10px; }
   .dish-copy { gap: 7px; padding: 8px 3px 3px; }
   .dish h4,.dish strong { font-size: 13px; }
   .dish-copy p { font-size: 12px; }
-  .dish-actions { min-width: 70px; }
-  .dish-add { min-width: 70px; padding-inline: 10px; }
+  .dish-actions { min-width: 96px; }
+  .dish-actions .customer-button.compact { width: 96px; min-height: 48px; padding-inline: 12px; font-size: 14px; }
+  .dish-add > span { font-size: 23px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -15,7 +15,7 @@ assert.match(app, /description\.length>ITEM_DESCRIPTION_LIMIT/);
 assert.match(customerHtml, /class="dish-description"/);
 assert.match(customerHtml, /class="dish-actions"/);
 assert.match(customerCss, /-webkit-line-clamp:\s*2/);
-assert.match(customerCss, /\.dish-add\s*\{[^}]*min-height:\s*44px/s);
+assert.match(customerCss, /\.dish-actions \.customer-button\.compact\s*\{[^}]*width:\s*120px[^}]*min-height:\s*50px/s);
 assert.match(customerJs, /card\.querySelector\('p'\)\.textContent=item\.description/);
 assert.match(customerJs, /\$\('#item-description'\)\.textContent=item\.description/);
 
