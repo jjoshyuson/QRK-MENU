@@ -891,6 +891,12 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Descriptions remain available in item details and searchable menu data, so ordering context and Menu Studio editing are unchanged.
 - `npm run check` and `git diff --check` passed. Browser review at 390×844, 768×1024, and 1280×720 confirmed two phone columns, three tablet/desktop columns, no horizontal overflow, no dish descriptions or category counts in the grid, and preserved item-detail descriptions and options.
 
+## September 14, 2026 — Compact public menu controls
+
+- Reduced the visible search field, category pills, and floating order action heights by 30% while preserving their existing widths, content, and behavior.
+- Centralized the new relative heights in shared component tokens and mirrored them in the component catalog so the public menu controls stay consistent.
+- `npm run check` and `git diff --check` passed. Browser measurement confirmed rendered heights of 33.59px, 30.80px, and 37.8px respectively, with no horizontal overflow; the shared tokens apply unchanged across phone, tablet, and desktop breakpoints.
+
 ## September 14, 2026 — Public menu card redesign
 
 - Reworked each customer dish into a bordered, padded card with a clipped photo, aligned name and PHP price, concise two-line description, and a theme-driven `+ Add` action.
