@@ -18,9 +18,11 @@ This folder is the canonical, version-controlled database source of truth. The d
 | `supabase/migrations/202609090001_initial_schema.sql` | Portable application tables, constraints, indexes, snapshots, and lifecycle guards |
 | `supabase/migrations/202609090002_supabase_security.sql` | Supabase Auth/RLS, narrow RPCs, Realtime Broadcast, and Storage policies |
 | `supabase/seed.sql` | Development-only Kusina Manila sample data; never production data |
+| `supabase/development_catalog.sql` | Generated development-only published catalogs for Salo, Tambay, and Ihaw |
 | `supabase/tests/001_security_and_orders.sql` | pgTAP coverage for public boundaries, tenant isolation, idempotency, and ordered staff transitions |
 | `supabase/migrations/202609120001_local_auth_and_permissions.sql` | Global usernames, tenant access context and granular staff permission enforcement |
 | `supabase/migrations/202609120002_service_mode_context.sql` | Quick/Table service mode in the tenant access context |
+| `supabase/migrations/202609140002_hosted_table_sessions.sql` | Device-authenticated Table requests, joins, staff acceptance, cleanup, and reconciliation |
 | `supabase/tests/002_auth_and_permissions.sql` | Username and staff-permission coverage |
 
 The application schema uses UUIDs, PHP integer minor units, tenant foreign keys, immutable order snapshots, and append-only status events. Supabase-specific behavior is deliberately isolated in the second migration so a VPS move can retain the first migration and replace Auth claims, RPC exposure, Realtime, and Storage integration.

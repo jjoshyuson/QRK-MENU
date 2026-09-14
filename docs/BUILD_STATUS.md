@@ -975,3 +975,13 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - All ten accounts have unique temporary password hashes and `must_change_password: true`; the plaintext handoff values exist only in a gitignored local environment file and were not added to Git or browser code.
 - Local and hosted database verification both report 5 businesses, 10 Auth users, 10 active memberships, 5 owners, and 5 order staff. All ten Auth records have password hashes and the first-login flag.
 - Full hosted menus for Salo, Tambay, and Ihaw, safe browser runtime configuration, real login checks, recovery/clear drills, private Realtime, Storage, and physical two-device synchronization remain incomplete. Production was not connected or changed.
+
+## September 14, 2026 — Hosted staging runtime and five-tenant synchronization
+
+- Configured the existing GitHub Pages workflow with the disposable development project URL and publishable browser key. No service-role or database secret is shipped to the browser.
+- Removed the browser-only override for Salo, Tambay, and Ihaw and published 21-item development catalogs for each. The catalog generator and generated SQL keep clean development resets reproducible.
+- Added device-authenticated, tenant-scoped Supabase Table RPCs and a staging browser transport for requests, joins, staff acceptance, customer reconciliation, cancellation, and cleanup. Local preview/LAN transports remain available.
+- Fixed authenticated Realtime setup to consume the restored user session token; interval, focus, online, and manual reconciliation remain authoritative fallbacks.
+- Hosted smoke evidence passed for all five businesses: public menu read, device registration, order creation, real admin login, correct tenant context, and authenticated order visibility. Salo additionally passed customer request → staff acceptance → customer reconciliation → cleanup.
+- Validation passed: clean local database rebuild, 40 pgTAP tests, local and hosted database lint, `npm run check`, `git diff --check`, and a Pages-shaped staging build with only safe public configuration.
+- Remaining exit evidence: deploy the commit, verify the Pages workflow, perform the same flows through two physical browsers/networks, exercise both clear restore slots through the UI, and verify private Realtime/Storage behavior. Production was not connected or changed.

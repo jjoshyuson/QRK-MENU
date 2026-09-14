@@ -76,8 +76,9 @@ class SupabaseDataService{
     const focus=()=>{if(document.visibilityState==='visible')refresh()};addEventListener('online',refresh);addEventListener('focus',refresh);addEventListener('visibilitychange',focus);
     this.timer=setInterval(refresh,Math.max(5000,this.config.reconciliationIntervalMs||15000));
     const client=globalThis.QRK_SUPABASE_CLIENT;
-    if(client&&this.config.staffAccessToken&&this.config.businessId){
-      client.realtime?.setAuth?.(this.config.staffAccessToken);
+    const accessToken=this.config.staffAccessToken||globalThis.QRK_ACCESS_TOKEN;
+    if(client&&accessToken&&this.config.businessId){
+      client.realtime?.setAuth?.(accessToken);
       this.channel=client.channel(`business:${this.config.businessId}:orders`,{config:{private:true}}).on('broadcast',{event:'order_changed'},()=>onOrdersChanged?.()).subscribe(status=>{if(status==='SUBSCRIBED')onOrdersChanged?.()});
     }
     return()=>{clearInterval(this.timer);removeEventListener('online',refresh);removeEventListener('focus',refresh);removeEventListener('visibilitychange',focus);if(this.channel)client?.removeChannel?.(this.channel)};
