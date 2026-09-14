@@ -966,4 +966,12 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Replaced three incompatible dashboard-created migration records and their legacy development schema through the explicitly approved remote development reset. All five canonical repository migrations and `supabase/seed.sql` now rebuild the hosted database.
 - Fixed `202609140001_order_sync_and_recovery.sql` by adding composite uniqueness for `open_tabs(id, business_id)`, matching its tenant-safe foreign key from `orders`.
 - Hosted migration history now matches all five local versions. Hosted and local database lint report no schema errors; the local rebuild succeeds; all 40 pgTAP tests pass after correcting the recovery test's required seeded option; and `npm run check` passes with 21 tables, 9 RPCs and 5 migrations.
-- Hosted Auth users, safe browser runtime values, tenant/RPC checks, clear/restore verification, private Realtime, Storage, and physical two-device synchronization remain incomplete. Do not call the hosted backend operational until those exit checks pass.
+- At this schema-deployment checkpoint, hosted Auth users and the remaining runtime exit checks were incomplete; the following milestone records the subsequent account provisioning. Do not call the hosted backend operational until all remaining exit checks pass.
+
+## September 14, 2026 — Five-business hosted development accounts
+
+- Provisioned ten hosted development Auth identities: one Client Admin and one Client Staff account for Kusina Manila, Salamat, Salo Table, Tambay Café, and Ihaw Buffet.
+- Added active tenant memberships and service-mode tenant shells for Salo, Tambay, and Ihaw. The original Kusina and Salamat passwords were rotated away from the repeatable local seed values.
+- All ten accounts have unique temporary password hashes and `must_change_password: true`; the plaintext handoff values exist only in a gitignored local environment file and were not added to Git or browser code.
+- Local and hosted database verification both report 5 businesses, 10 Auth users, 10 active memberships, 5 owners, and 5 order staff. All ten Auth records have password hashes and the first-login flag.
+- Full hosted menus for Salo, Tambay, and Ihaw, safe browser runtime configuration, real login checks, recovery/clear drills, private Realtime, Storage, and physical two-device synchronization remain incomplete. Production was not connected or changed.

@@ -18,7 +18,7 @@ On September 13, 2026, a new Quick/Table configuration slice began. QRK Admin no
 
 The approved Payment First pilot flow is enabled for Kusina Manila while it remains QRK Quick. Review order leads with `Pay order`, then a focused two-card dialog presents `💵 Pay at the counter` and disabled `💳 Cashless` with a `Soon` badge. This is a same-browser simulation only; provider selection, charging, reconciliation, refunds, and hosted payment metadata remain unresolved production work.
 
-The customer ordering and staff operations workstreams remain a working same-origin demonstration. The disposable hosted project `qrk-menu-development` is now linked and rebuilt from the five repository migrations plus development seed; hosted migration history matches Git and lint passes. Browser runtime configuration, hosted Auth identities, recovery checks and physical two-device delivery are still incomplete, so hosted persistence is not yet an operational claim.
+The customer ordering and staff operations workstreams remain a working same-origin demonstration. The disposable hosted project `qrk-menu-development` is linked and rebuilt from the five repository migrations plus development seed; hosted migration history matches Git and lint passes. Ten hosted development Auth identities now cover one Client Admin and one Client Staff account for each of the five preview businesses, with active memberships and forced first-login password changes. Browser runtime configuration, full hosted menu data for the three added tenant shells, recovery checks and physical two-device delivery are still incomplete, so hosted persistence is not yet an operational claim.
 
 Menu Studio and the matching Customer Menu now share a business-scoped browser snapshot in demo mode, so Kusina and the other preview tenants no longer render independently authored menus. This closes same-browser preview parity only; durable publication to other devices remains Stage 2 work.
 
@@ -67,8 +67,8 @@ A business-approved trusted-customer/VIP account model has been captured for pro
 3. Review the corrected customer entry points for Kusina Quick, Salamat Direct Table, Salo Table Approval, Tambay Open Tab and Ihaw Buffet Approval; treat same-browser staff/customer coordination as preview evidence only.
 4. Review logo upload, suggested/overridden colors and identity continuity across Client Admin, Client Staff and `/menu/?business=<slug>` at phone, tablet and desktop widths.
 5. Replace the verified browser-local temporary-password preview with trusted server-side staff and client-admin provisioning before hosted rollout; never place privileged keys in browser code.
-6. Create the hosted development Auth identities and memberships using a trusted administrative path; never place privileged keys in browser code.
-7. Connect runtime development configuration using only the hosted URL and publishable key, then verify tenant isolation and public/staff RPC behavior.
+6. Connect runtime development configuration using only the hosted URL and publishable key, then verify the ten provisioned identities, tenant isolation and public/staff RPC behavior.
+7. Migrate the approved menus for Salo Table, Tambay Café and Ihaw Buffet into their hosted tenant shells.
 8. Exercise clear activity and both available restore slots while verifying restaurant, business, menu and product records remain unchanged.
 9. Produce hosted Quick/Table exit evidence across two tenants and two physical devices before declaring the backend operational. Keep physical iOS/Android, full screen-reader, OS text-scaling and large-dataset checks listed as remaining UI verification.
 

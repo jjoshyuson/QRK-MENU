@@ -8,7 +8,7 @@ Migration `202609140001_order_sync_and_recovery.sql` adds registered browser ins
 
 The customer stores a random device UUID and secret. Only the secret digest reaches durable storage. This identifies a browser installation and prevents accidental namespace overlap; it is not a hardware identifier.
 
-This folder is the canonical, version-controlled database source of truth. The disposable hosted development project `qrk-menu-development` was linked and rebuilt from all five migrations plus `seed.sql` on September 14, 2026. Hosted Auth setup, browser runtime configuration, two-device synchronization, Storage checks, and recovery drills remain unverified; production is separate and was not touched.
+This folder is the canonical, version-controlled database source of truth. The disposable hosted development project `qrk-menu-development` was linked and rebuilt from all five migrations plus `seed.sql` on September 14, 2026. Hosted development now has one Client Admin and one Client Staff Auth identity for each of the five preview businesses, with active tenant memberships and forced first-login password changes. Temporary credentials live only in a gitignored local file. Browser runtime configuration, two-device synchronization, Storage checks, and recovery drills remain unverified; production is separate and was not touched.
 
 ## Structure
 
@@ -52,7 +52,7 @@ Repeatable local-only logins after `supabase db reset --local`:
 | Salamat business admin | `salamat-admin` | internal synthetic email | `QRK-local-salamat-admin-2026!` |
 | Salamat order staff | `salamat-staff` | internal synthetic email | `QRK-local-salamat-staff-2026!` |
 
-Kusina Manila is the QRK Quick tenant; Salamat is the QRK Table tenant. These credentials exist only in the disposable development seed. Username sign-in maps to an internal `@accounts.qrkmenu.invalid` Auth address. Production recovery and staff invitation/activation remain a hosted milestone.
+Kusina Manila is the QRK Quick tenant; Salamat is the QRK Table tenant. The repeatable repository seed contains those two tenants and four local identities. The hosted development project additionally has tenant/account shells for Salo Table, Tambay Café, and Ihaw Buffet, for ten identities total. Username sign-in maps to an internal `@accounts.qrkmenu.invalid` Auth address. The hosted temporary passwords are not committed and must be reprovisioned after a remote reset; production recovery and staff invitation/activation remain future milestones.
 
 ## Environments
 
