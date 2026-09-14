@@ -2,7 +2,7 @@
 
 As of September 13, 2026:
 
-- Customer-menu performance remediation is complete locally: live profiling identified eager image decoding, fixed-background repainting, blur, and scroll-time parallax/layout work as the main mobile costs. Dish photos now lazy-decode, costly scroll effects are removed, and Menu Studio optimizes new and existing browser-local uploads while retaining originals in IndexedDB. Deployment verification remains pending.
+- Customer-menu performance remediation includes the main page and all customer popups: dish photos lazy-decode, costly page scroll effects are removed, every dialog uses static dimming instead of live backdrop blur, and Menu Studio optimizes new and existing browser-local uploads while retaining originals in IndexedDB.
 
 - The September 14 GitHub Pages cache freeze is fixed and deployed. Commit-versioned JavaScript/CSS references plus network-first service-worker handling for code prevent mixed-release modules; the previously broken normal Brave profile recovered on reload and navigated without console errors.
 

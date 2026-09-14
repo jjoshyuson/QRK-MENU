@@ -889,3 +889,8 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Added lazy, asynchronous dish-image decoding and removed the continuous parallax, fixed-background repaint, and sticky-toolbar blur costs.
 - Added dependency-free, browser-native WebP optimization for Menu Studio uploads: 960px maximum edge and an approximately 160 KB target. Original files are retained in IndexedDB, and existing browser-local data-URL uploads migrate automatically in the background.
 - Added an automated performance contract. A browser check compressed a representative 326 KB image to a 91 KB WebP (72% smaller) at 768×960. At 390×844, the menu had zero horizontal overflow and confirmed lazy/async/low-priority dish images with no fixed background, toolbar blur, or header transform.
+
+### Popup follow-up
+
+- Profiled every customer dialog and found full-viewport live backdrop blur on entry, table, item, cart, payment, and confirmation popups. Item details also applied a 24px live blur to its fixed action.
+- Replaced those compositor-heavy effects with static dimming and solid/translucent surfaces, and removed modal-wide transitions. Popup structure, focus behavior, touch targets, and ordering flows remain unchanged.
