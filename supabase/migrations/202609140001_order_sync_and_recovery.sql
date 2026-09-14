@@ -83,7 +83,8 @@ create table public.open_tabs (
   updated_at timestamptz not null default now(),
   foreign key (session_id, business_id) references public.table_sessions(id, business_id) on delete restrict,
   foreign key (clear_batch_id, business_id) references public.data_clear_batches(id, business_id) on delete restrict,
-  unique (session_id)
+  unique (session_id),
+  unique (id, business_id)
 );
 
 alter table public.orders add column device_id uuid;

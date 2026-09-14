@@ -959,3 +959,11 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 
 - Profiled every customer dialog and found full-viewport live backdrop blur on entry, table, item, cart, payment, and confirmation popups. Item details also applied a 24px live blur to its fixed action.
 - Replaced those compositor-heavy effects with static dimming and solid/translucent surfaces, and removed modal-wide transitions. Popup structure, focus behavior, touch targets, and ordering flows remain unchanged.
+
+## September 14, 2026 — Hosted development schema deployment
+
+- Linked this checkout only to the disposable Supabase project `qrk-menu-development` (`agxlgxjbanxkwxifhjil`). Production was not connected or changed.
+- Replaced three incompatible dashboard-created migration records and their legacy development schema through the explicitly approved remote development reset. All five canonical repository migrations and `supabase/seed.sql` now rebuild the hosted database.
+- Fixed `202609140001_order_sync_and_recovery.sql` by adding composite uniqueness for `open_tabs(id, business_id)`, matching its tenant-safe foreign key from `orders`.
+- Hosted migration history now matches all five local versions. Hosted and local database lint report no schema errors; the local rebuild succeeds; all 40 pgTAP tests pass after correcting the recovery test's required seeded option; and `npm run check` passes with 21 tables, 9 RPCs and 5 migrations.
+- Hosted Auth users, safe browser runtime values, tenant/RPC checks, clear/restore verification, private Realtime, Storage, and physical two-device synchronization remain incomplete. Do not call the hosted backend operational until those exit checks pass.

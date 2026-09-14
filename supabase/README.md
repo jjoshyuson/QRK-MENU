@@ -8,7 +8,7 @@ Migration `202609140001_order_sync_and_recovery.sql` adds registered browser ins
 
 The customer stores a random device UUID and secret. Only the secret digest reaches durable storage. This identifies a browser installation and prevents accidental namespace overlap; it is not a hardware identifier.
 
-This folder is the canonical, version-controlled database source of truth. It is provider-ready, but no hosted Supabase project is created, linked, configured, or verified yet.
+This folder is the canonical, version-controlled database source of truth. The disposable hosted development project `qrk-menu-development` was linked and rebuilt from all five migrations plus `seed.sql` on September 14, 2026. Hosted Auth setup, browser runtime configuration, two-device synchronization, Storage checks, and recovery drills remain unverified; production is separate and was not touched.
 
 ## Structure
 
