@@ -830,3 +830,8 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 ### Popup simplification
 
 - Replaced the heading, helper copy, arrows and compact rows with an exact 80vw × 80vh centered popup containing only two equal, oversized stacked cards: `Dine in 🍽️` and `Takeout 🛍️`.
+
+## September 14, 2026 — Mobile cart liquid-glass treatment
+
+- Restyled the phone/tablet floating checkout action and item-sheet Add to order action as one shared, fully pill-shaped liquid-glass control. A mostly neutral translucent surface, restrained brand tint, backdrop blur, thin refractive rim, and quiet depth avoid both a saturated wash and a broad glossy highlight. Existing content, position, footer avoidance, and checkout behavior are unchanged.
+- Preserved readable token-derived text, visible focus, safe-area positioning, and a solid fallback when reduced transparency is requested.

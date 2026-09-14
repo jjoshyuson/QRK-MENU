@@ -102,8 +102,58 @@
   footer a { color: inherit; }
 }
 
+.cart-bar button,
+#add-item {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--ink) 16%, var(--surface) 84%);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 88%, var(--brand-500));
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--surface) 76%, transparent) 0%,
+    color-mix(in srgb, var(--surface) 62%, var(--brand-500) 16%) 55%,
+    color-mix(in srgb, var(--brand-500) 24%, transparent) 100%
+  );
+  color: var(--ink);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--surface) 88%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--ink) 10%, transparent),
+    0 10px 26px color-mix(in srgb, var(--ink) 20%, transparent);
+  backdrop-filter: saturate(1.3) blur(24px);
+  -webkit-backdrop-filter: saturate(1.3) blur(24px);
+}
+
 .cart-bar button {
   width: 100%;
+}
+
+.cart-bar button::before,
+#add-item::before {
+  content: '';
+  position: absolute;
+  inset: 1px 9% auto;
+  height: 1px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--surface) 92%, transparent), transparent);
+  pointer-events: none;
+}
+
+.cart-bar button > *,
+#add-item > * {
+  position: relative;
+  z-index: 1;
+}
+
+.cart-bar b {
+  border: 1px solid color-mix(in srgb, var(--brand-500) 40%, var(--line));
+  background: color-mix(in srgb, var(--brand-500) 16%, var(--surface));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface) 78%, transparent);
+}
+
+.cart-bar button:active,
+#add-item:active {
+  filter: brightness(.95) saturate(1.08);
 }
 
 .menu {
@@ -164,4 +214,10 @@ footer {
 
 @media (prefers-reduced-transparency: reduce) {
   .open-tab-control { background: var(--surface); backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .cart-bar button,
+  #add-item {
+    background: color-mix(in srgb, var(--surface) 88%, var(--brand-500));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
