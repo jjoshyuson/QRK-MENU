@@ -46,6 +46,11 @@
   --component-menu-active-bg:var(--brand-soft);
 }
 
+/* Category navigation shares the same pill silhouette on owner and customer surfaces. */
+.categories a,.category-tab,#mobile-category-tabs button,.phone-tab{
+  border-radius:var(--component-radius-pill);
+}
+
 /* Typography foundation: one interface face, with serif reserved for customer-facing
    restaurant and menu hierarchy. Route styles may control size and line-height only. */
 html,body,button,input,select,textarea{font-family:var(--font-interface)!important}
