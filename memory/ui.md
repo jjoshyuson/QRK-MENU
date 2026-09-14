@@ -9,6 +9,7 @@
 - Shared Webflow-like color variables live in `dist/theme.css`. Change the neutral scale or `--brand-400`/`--brand-500`/`--brand-600` there before adding route-specific color literals.
 - Canonical transparent brand assets live in `dist/assets/brand/`: `qrk-mark.png` for favicon/icon use, `qrk-wordmark.png` for text-only use, and `qrk-logo.png` for the combined lockup. They are cleaned extractions of the approved generated artwork; do not replace them with hand-drawn approximations.
 - Dish tiles prioritize photo, name and PHP price. Descriptions remain editable but are not shown on compact tiles.
+- Desktop Menu Studio rows use the item's saved photo in their thumbnail slot and fall back to generated initials only when the item has no photo.
 - Photo editor mode omits the restaurant identity header. Customer preview restores that header and hides item edit, availability and add controls, but this is not an authorization boundary.
 - Mobile/customer category tabs jump to menu sections and follow scrolling. Empty categories appear for owners but not customers. Desktop management retains its `All items` filter.
 - Responsive Menu Studio category tabs keep their natural left-to-right alignment while the active tab is fully visible. They recenter the active tab only after it becomes clipped or moves outside the visible horizontal strip.

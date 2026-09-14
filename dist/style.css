@@ -49,3 +49,4 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .phone-tab.active{background:var(--brand-soft);border-color:var(--brand-400);color:var(--brand-600)}
 .page-footer>strong{color:var(--gray-600)}
 @media(max-width:700px){.logo{width:150px;height:38px}}
+.item-details img.item-stamp{display:block;object-fit:cover}

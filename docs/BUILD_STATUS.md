@@ -1,5 +1,11 @@
 # Build status
 
+## September 14, 2026 — Desktop Menu Studio photo thumbnails
+
+- Desktop Menu Studio item rows now render each item's saved photo in the existing thumbnail slot instead of always showing generated initials.
+- Items without a photo retain the compact initials tile as a lightweight fallback; mobile/tablet photo views and editing behavior are unchanged.
+- Validation: `npm run check` and `git diff --check` passed. Responsive browser review confirmed photo-backed desktop rows, unchanged phone/tablet photo cards, preserved edit labels, and no console errors.
+
 ## September 13, 2026 — Public menu desktop page-shell finish
 
 - Removed the desktop customer menu's inherited full-viewport-height content column, which created an abrupt empty seam above the footer on shorter menus.
