@@ -751,5 +751,5 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 
 # September 13, 2026 — Mobile cart liquid-glass treatment
 
-- Restyled only the phone/tablet floating checkout action with an opaque, token-driven liquid-glass surface using QRK's active brand color and its lighter/darker variants. The existing size, content, position, footer avoidance, and checkout behavior are unchanged.
+- Restyled the phone/tablet floating checkout action and item-sheet Add to order action as one shared, fully pill-shaped liquid-glass control. Layered translucent brand variants, backdrop blur, edge highlights, internal glow, and depth make the material visibly glass-like without copying the reference's rainbow background. The existing content, position, footer avoidance, and checkout behavior are unchanged.
 - Preserved readable brand-foreground text, visible focus, safe-area positioning, and a solid brand fallback when reduced transparency is requested.
