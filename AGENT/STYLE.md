@@ -5,7 +5,7 @@ This is the project’s visual source of truth. Read it before every UI, UX, lay
 ## Visual direction
 
 - Keep QRK lightweight, compact, operational, and easy to scan. The product is a working surface, not a collection of decorative dashboard panels.
-- Preserve the existing QRK assets, global theme tokens, and established typography. Use shared semantic variables before adding route-specific colors.
+- Preserve the existing QRK assets, global theme tokens, and approved typography: Inter for interface text and Source Serif 4 only for customer-facing brand and menu headings. Use the shared typography variables in `dist/ui-components.css` rather than route-specific font stacks, and use shared semantic variables before adding route-specific colors.
 - Prefer one continuous content plane. Use fills, borders, shadows, blur, and rounded containers only when they clarify hierarchy or interaction.
 - Do not add headings, subtitles, eyebrow labels, help text, or wrappers that repeat information already supplied by navigation or a control label.
 

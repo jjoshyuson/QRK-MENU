@@ -12,7 +12,7 @@
 - Open mobile/tablet on Dashboard and use a top-right hamburger for workspace navigation.
 - Keep Menu Studio's mobile/tablet Photo editor as a simple two-column food-photo menu with owner controls; add a compact table only for fast availability changes.
 - Hide the restaurant identity header while editing and restore it in Customer view.
-- Preserve existing DM Sans / Manrope typography. Use black, white and gray as the dominant interface palette; teal/cyan is the complementary QRK brand accent rather than a full-page theme.
+- Use Inter for interface, body, control and dashboard text. Reserve Source Serif 4 for customer-facing restaurant and menu headings. Keep both font roles centralized in `dist/ui-components.css`. Use black, white and gray as the dominant interface palette; teal/cyan is the complementary QRK brand accent rather than a full-page theme.
 - Keep interface colors centralized in `dist/theme.css` so palette experimentation does not require editing each route independently.
 - Optimize for a very lightweight customer experience and use minimal code.
 - Polish and verify the UI before starting broader product development.

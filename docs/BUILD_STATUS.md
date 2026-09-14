@@ -6,6 +6,84 @@
 - Items without a photo retain the compact initials tile as a lightweight fallback; mobile/tablet photo views and editing behavior are unchanged.
 - Validation: `npm run check` and `git diff --check` passed. Responsive browser review confirmed photo-backed desktop rows, unchanged phone/tablet photo cards, preserved edit labels, and no console errors.
 
+## September 14, 2026 — Shared Inter and Source Serif typography
+
+- Adopted the approved option 4 pairing: Inter for interface, body, controls and operational content; Source Serif 4 for customer-facing restaurant and menu headings.
+- Centralized both font roles as `--font-interface` and `--font-menu-display` in `dist/ui-components.css`, which remains the visual source loaded by the owner, Client Admin, Client Staff, QRK Admin, customer-menu and component-catalog routes.
+- Updated the component catalog typography specimen and rotated the shared stylesheet and PWA cache versions so returning clients receive the new typography.
+- Preserved the standalone cinematic landing pages, which remain intentionally outside the operational component source and retain their existing authored typography.
+- Validation: pre-change and post-change `npm run check` passed. Desktop browser review confirmed Source Serif 4 on the Kusina Manila identity and menu hierarchy, Inter on search, tabs, prices and the order summary, and no visible layout regression. Automated phone/tablet viewport control was unavailable in the current browser surface; those representative visual checks remain part of release review.
+
+## September 13, 2026 — Shared pill-button hierarchy
+
+- Updated the shared Button source so standard and customer actions use the requested pill silhouette while preserving 44px standard and 50px customer touch targets.
+- Primary buttons inherit the active global accent and calculated foreground; outline buttons retain neutral borders, subtle buttons use the quiet surface, danger actions are red text-only, and disabled buttons use muted semantic tokens.
+- Added named variables for button radius, inline padding, weight, gap, subtle fill and disabled colors to `/components/`; the inspector registry now infers `primary`, `outline` and `text` variants from specialized customer button classes.
+- Rotated the component asset URLs to `v=2` and the PWA shell cache to `v3` so installed and previously visited clients replace the cached pre-pill component stylesheet.
+- Validation: the full `npm run check` suite and `git diff --check` passed. Live Brave review confirmed 999px radii, theme-derived primary color, correct semantic treatments and inspector labels. The catalog, owner workspace and customer route had zero horizontal overflow at 390×844, 768×1024 and 1440×900.
+
+## September 13, 2026 — Unified business-header parallax
+
+- Corrected the public-menu parallax so the banner, overlapping profile logo and business identity text move as one composed visual layer.
+- The header keeps its layout footprint while the visual layer recedes together behind the independently sticky search/category toolbar. Reduced-motion continues to disable the decorative transform.
+- Browser checks confirmed the banner, logo and copy share one transform at 390×844, the toolbar still pins at `top: 0`, reduced-motion removes that transform, and tablet/desktop retain three menu columns with zero horizontal overflow. `npm run check` passed.
+
+## September 13, 2026 — Public menu header parallax and unified toolbar motion
+
+- Added a restrained scroll-linked parallax treatment to the Kusina Manila banner while keeping the business profile content and menu layout stable.
+- The search field and category tabs remain one intact sticky toolbar: they travel upward together with normal page scrolling, then settle at the viewport edge with a subtle elevation cue.
+- The effect uses one animation-frame update, compositor transforms, passive listeners and no dependency. Reduced-motion preferences disable the banner transform and toolbar transition.
+- Browser checks confirmed progressive banner movement and whole-toolbar travel at 390×844, a pinned `top: 0` state with correct category tracking, reduced-motion output with no transform or transition, and zero horizontal overflow at phone, 768×1024 tablet and 1280×720 desktop sizes. `npm run check` passed.
+
+## September 13, 2026 — Public menu branded identity and unified sticky tools
+
+- Replaced the redundant public-menu eyebrow, “Today’s menu,” “What would you like?” and total-item copy with a compact business-first header.
+- Added optimized illustrated Kusina Manila banner and profile-mark assets. The circular mark overlaps the banner edge in a familiar social-profile pattern while retaining the business name, description, currency and location.
+- Grouped search and category navigation into one bounded sticky toolbar. Category jumps and active tracking account for the full toolbar height, and the combined control returns to its natural position when scrolling back above the menu.
+- Preserved the existing responsive menu grids, ordering flows, tenant logo override, semantic search/navigation and 44px category targets.
+- Browser checks confirmed the banner/avatar composition and zero horizontal overflow at 390×844, a flush sticky toolbar with Drinks tracking correctly, three menu columns at 768×1024, and the three-column menu plus desktop order summary at 1280×720. `npm run check` passed.
+
+## September 13, 2026 — profile-specific test QR codes
+
+- Business Profile now renders a scannable test QR for the signed-in client instead of the decorative placeholder.
+- The five development clients resolve to five distinct customer destinations using `/menu/?business=<slug>`.
+- `Download QR`, `Open customer view`, and `Copy link` use the same profile-specific destination. The test image is generated over HTTPS by the goQR API; production QR generation and the permanent public domain remain part of the future public-menu/QR milestone.
+- Local phone scanning requires opening the dashboard through `npm run start:lan` and the computer's LAN address. A QR created from `127.0.0.1` is only reachable on the same computer.
+- Validation: `npm run check` passed, including the new five-profile URL contract; `node scripts/build-pages.mjs` passed; Kusina Manila's QR rendered in the Business Profile card and exposed the expected encoded customer URL in browser review.
+
+## September 13, 2026 — Customer category navbar sticky boundary
+
+- Removed the late compact-theme margins, rounded container, and top offset that made the public-menu category navigation appear suspended over menu items.
+- The category navigation now sits flush at the top of the viewport while its parent menu is active, remains bounded by that menu section, and naturally returns below the search/header when scrolling upward.
+- Added bounded end-of-menu scroll room on phone layouts so even a short menu can move the navbar fully to `top: 0` before the document reaches its scroll limit.
+- Preserved horizontal category scrolling, active-section tracking, 44px targets, semantic navigation, and existing phone/tablet/desktop menu grids. Browser checks confirmed the short 390×844 menu reaches `top: 0` with zero side margin or radius, then returns to its 365px natural position at page top. The 768×1024 and 1280×720 layouts retained three columns and zero horizontal overflow. `npm run check` and `git diff --check` passed.
+## September 13, 2026 — Static component inventory
+
+- Promoted the inventory into a shared component source: `dist/ui-components.css` now owns reusable component variables and cross-route visual rules, while route stylesheets retain page composition and responsive placement.
+- Added a dependency-free component registry that labels initial and dynamically rendered UI with stable `data-component`, `data-variant` and `data-component-source` attributes for Inspect Element.
+- Loaded the same component layer and registry on owner/Client Admin/Client Staff, QRK Admin, customer-menu and catalog routes; added both shared files to the PWA shell cache.
+- Source-of-truth validation: the shared source/catalog contracts, full `npm run check`, `git diff --check` and the GitHub Pages `/QRK-MENU/` base-path build passed. Live Brave inspection confirmed named Button, Metric card and Customer dish card instances point to `/ui-components.css`; the catalog, owner, customer and admin routes each had zero horizontal overflow at 390×844, 768×1024 and 1440×900.
+
+- Added an unlinked `/components/` development route containing 15 organized families of reusable UI from owner tools, Client Admin, Client Staff, QRK Admin and the customer menu; public landing pages are intentionally outside its scope.
+- Cataloged foundations, controls, navigation, feedback, dashboard, menu management, staff, orders/history, tables, settings/appearance, customer menu, cart/checkout, platform administration, forms/dialogs and exceptional states.
+- Each specimen includes its production class or source label so the page works as a visual lookup and copy reference without duplicating application behavior.
+- Added an `AGENTS.md` maintenance rule and a static contract check requiring future reusable components and meaningful states to remain represented.
+- Validation: `npm run check`, `git diff --check` and the GitHub Pages `/QRK-MENU/` base-path build passed. Live Brave checks at 390×844, 768×1024 and 1440×900 found all 15 families and navigation links with zero horizontal overflow; static CSS validation confirms visible `:focus-visible` treatment.
+
+## September 13, 2026 — Mobile drawer profile reflow
+
+- Fixed the signed-in profile footer collapsing and clipping at the bottom of the mobile owner drawer, as observed on an iOS device after zooming.
+- The navigation region now scrolls independently, the account footer cannot shrink, long profile text truncates cleanly, and the drawer reserves the device's bottom/right safe-area insets.
+- Preserved the PWA gesture contract: pinch zoom remains available and double-tap zoom remains suppressed through `touch-action: manipulation`.
+- Validation: the 390×844 live drawer measured one 33px avatar, a rectangular 229px profile-copy region, full containment inside the 320px drawer, and zero horizontal overflow. `npm run check` and `git diff --check` passed.
+
+## September 13, 2026 — Shared PWA app shell
+
+- Added one installable `QRK MENU` web-app manifest for owner tools, client/admin tools and the customer menu, with standalone display, QRK branding and direct shortcuts to each operational surface.
+- Added a dependency-free service worker with a small cached shell and network-first page navigation. This improves installed-app resilience but is not evidence of reliable offline ordering, background sync or push notifications.
+- Applied the shared app interaction layer across `/`, `/admin/` and `/menu/`: viewport safe-area support, installed-mode inset handling, disabled image dragging, reduced browser overscroll and `touch-action: manipulation` to suppress double-tap zoom. Pinch zoom remains available for accessibility; form fields and editable content retain text selection.
+- Validation: `npm run check`, the new PWA shell contract, `git diff --check` and the GitHub Pages `/QRK-MENU/` base-path build passed. Live Brave checks found zero horizontal overflow and active `touch-action: manipulation` on the 390px owner/customer routes and 768px admin route. Desktop owner review at 1920px also had zero horizontal overflow. The automation context did not expose the service-worker API directly, so production install/offline behavior still needs a physical-device installed-PWA check after publication.
+
 ## September 13, 2026 — Public menu desktop page-shell finish
 
 - Removed the desktop customer menu's inherited full-viewport-height content column, which created an abrupt empty seam above the footer on shorter menus.
@@ -21,16 +99,17 @@
 
 ## Customer order-number emphasis — September 13, 2026
 
-- Restyled the confirmation's order number as a centered, unboxed `ORDER NUMBER` label with the generated identifier directly below in large bold type, matching the supplied visual reference.
-- Preserved the confirmation status, verification code, progress tracker, and actions.
-- Validation: `npm run check` passed. Live browser checks confirmed the revised hierarchy with order `KM-1049` at 390×844, 768×700, and the default desktop viewport without horizontal overflow or clipped confirmation controls.
+- Reduced the post-submit confirmation to one centered popup containing only `ORDER SENT`, `ORDER NUMBER`, and the generated identifier in large bold type.
+- Removed waiting/preparing/ready/completed status content, verification details, development notes, confirmation buttons, and the post-close customer tracking panel. The popup dismisses through its backdrop or Escape.
+- Validation: `npm run check` passed. Live browser checks at 390×844 and the default desktop viewport confirmed the centered three-line popup, no customer status panel after dismissal, working Escape and backdrop dismissal, and no horizontal overflow.
 
 ## Guided Kusina payment step — September 13, 2026
 
 - Changed Kusina's QRK Quick checkout from an inline payment fieldset to a guided second step. Review order now ends with `Pay order`, which opens a focused payment dialog containing two large semantic button cards.
 - Simplified the dialog to a text Back control and two label-only cards: `💵 Pay at the counter` and disabled `💳 Cashless` with a compact `Soon` badge. Repeated helper copy, price, unavailable label, pilot note, eyebrow, and close icon were removed.
 - The payment dialog restores the order-review dialog through its Back control or Escape, retains the cart and checkout fields, and moves keyboard focus to the enabled payment choice on entry.
-- Validation: `npm run check` and `git diff --check` pass. Live browser inspection confirmed the minimal dialog exposes only Back, the heading, and two card choices; focus lands on Pay at the counter, Cashless is disabled and announces `Soon Cashless`, and Back restores the populated review with Pickup still selected.
+- Removed the visible `How would you like to pay?` heading; the dialog keeps a concise accessible name without adding visual copy.
+- Validation: `npm run check` and `git diff --check` pass. Live browser inspection confirmed the minimal dialog exposes only Back and two card choices; focus lands on Pay at the counter, Cashless is disabled and announces `Soon Cashless`, and Back restores the populated review with Pickup still selected.
 
 ## Business workspace preview-label removal — September 13, 2026
 
@@ -747,3 +826,26 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Connected the sample accent variables to the shared `--brand-400` and `--brand-500` tokens, replaced embedded logo data with the official lightweight QRK assets, and aligned typography to Manrope headings with DM Sans body copy.
 - Strengthened the primary hooks to “One QRK. Built for how you serve.”, “Turn every scan into an order.” and “Your guests shouldn’t have to wave for service.” Supporting hero and closing copy was tightened without reducing the supplied page depth.
 - The existing preview server was reused because port 4173 was already active. `npm run check` passed before editing. Browser checks confirmed both new type stacks, the active global accent, zero broken images and no horizontal overflow at 390px, 768px or 1280px. Corrected deployment and final user review remain open.
+## September 13, 2026 — Configurable ordering option sets
+
+- Replaced Menu Studio's plain-text option note with persisted option sets that apply to the whole business, one category, or one item.
+- Added required/optional, single/multiple selection, named choices and nonnegative price adjustments. Kusina's starter state demonstrates business extras, Mains add-ons, Drinks size/sweetness and Sisig-specific spice level.
+- Connected demo Customer Menu item sheets to inherited option sets and enforced required selections before adding an item. Supabase-backed customer menus continue to use the provider RPC; provider-backed Menu Studio writes remain incomplete.
+- Added a dependency-free inheritance test. `npm run check` passed, and browser review confirmed the desktop editor, item-level Configure entry, stacked option dialog, 375px mobile entry point and 44px mobile settings control. The active local Supabase adapter prevented an end-to-end demo-store browser check, so the shared inheritance contract is covered automatically and the provider route remains correctly isolated.
+- Nothing was deployed.
+
+## September 13, 2026 — QRK Quick service choice
+
+- Added a blocking QRK Quick entry dialog that occupies at least 80% of the viewport and presents Dine in and Takeout as two stacked action cards.
+- Made the available choices business-configurable through `serviceProfile.settings.fulfillmentModes`; Quick defaults to both choices, while Table and buffet presets keep their existing dine-in/table entry.
+- The selected entry choice now carries into order review. Checkout shows Pickup or Serve at table, requests a table number only for dine-in, leads with the subtotal, and uses Confirm payment before the payment-method step.
+- `npm run check` and `git diff --check` passed. Browser checks covered both Quick paths, buffet isolation, keyboard focus, and 390×844, 768×1024 and 1280×800 viewports with no horizontal overflow. Hosted payment and a business-facing fulfillment-setting editor remain incomplete.
+
+### Popup simplification
+
+- Replaced the heading, helper copy, arrows and compact rows with an exact 80vw × 80vh centered popup containing only two equal, oversized stacked cards: `Dine in 🍽️` and `Takeout 🛍️`.
+
+## September 14, 2026 — Mobile cart liquid-glass treatment
+
+- Restyled the phone/tablet floating checkout action and item-sheet Add to order action as one shared, fully pill-shaped liquid-glass control. A mostly neutral translucent surface, restrained brand tint, backdrop blur, thin refractive rim, and quiet depth avoid both a saturated wash and a broad glossy highlight. Existing content, position, footer avoidance, and checkout behavior are unchanged.
+- Preserved readable token-derived text, visible focus, safe-area positioning, and a solid fallback when reduced transparency is requested.

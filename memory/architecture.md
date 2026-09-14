@@ -1,14 +1,16 @@
 # Architecture memory
 
 - The current app is static HTML, layered CSS and vanilla JavaScript with no third-party JavaScript dependencies.
+- The operational `/`, `/admin/` and `/menu/` routes share `manifest.webmanifest`, `pwa.css`, `pwa.js`, `sw.js`, `ui-components.css` and `ui-components.js`. The component stylesheet is the reusable visual source of truth; the lightweight registry adds stable Inspect Element names to initial and dynamically rendered components. This remains one same-domain standalone PWA shell with a small cache; it does not make ordering reliably offline or provide background sync/push.
 - `dist/` contains authored source and must not be treated as disposable build output.
 - `dist/index.html` holds the Business Dashboard, menu workspaces and dialogs; `dist/app.js` owns browser-memory state/rendering/interactions; `dist/style.css`, `dist/devices.css`, `dist/mobile-menu.css` and `dist/dashboard.css` form the CSS layers.
 - Node is used only for the dependency-free local preview server in `scripts/serve.mjs`.
-- Menu Studio state is persisted per business in browser storage through `dist/data/qrk-menu-store.js`; the matching demo `/menu/` route reads and live-refreshes from that state. Uploaded photos remain browser-local data URLs.
+- Menu Studio state is persisted per business in browser storage through `dist/data/qrk-menu-store.js`; the matching demo `/menu/` route reads and live-refreshes items plus inherited business/category/item option groups from that state. Uploaded photos remain browser-local data URLs.
 - There is no framework or connected/operational hosted backend. Canonical Supabase/PostgreSQL source lives in `supabase/`; on September 11, 2026 it rebuilt successfully in local Docker, passed all 19 pgTAP tests, and linted with no schema errors. A hosted project exists but is not linked or migrated; Auth, durable upload and cross-device ordering remain unverified.
 - `/menu/` remains a standalone customer-only route with its own small CSS/JavaScript payload. In demo mode it consumes the business-scoped Menu Studio snapshot and omits unavailable and hidden items; Supabase mode continues to use the public-menu RPC.
 - Customer and staff order operations use business-slug-scoped `localStorage` and survive refresh in one browser profile. Kusina and Salamat demo state stays isolated, but neither synchronizes across physical devices.
 - Dashboard orders, sales, staff, QR/link and password controls remain preview-oriented. Local Supabase sessions and hosted browser-local preview sessions both expose the profile account menu; Log out clears the active origin's session and returns to sign-in.
+- Business Profile builds its customer URL from the current app root plus the active business slug. Test QR images are requested from the HTTPS goQR API; this is a replaceable preview seam, not the production QR service.
 - Keep implementation and customer payloads minimal. Add dependencies or abstractions only for a demonstrated requirement.
 - A future production public route should send only public menu data and customer code, not the owner editor bundle.
 - Any future private backend must enforce tenant authorization on every request; hiding controls is insufficient.
