@@ -1,5 +1,12 @@
 # Build status
 
+## September 14, 2026 — Development-business menu density
+
+- Applied the Kusina responsive-test rule to Salamat, Salo Table, Tambay Café, and Ihaw Buffet: every business now has seven cuisine- and service-specific categories with exactly three products per category (21 products each).
+- Kept the identities distinct: Salamat emphasizes attentive Filipino table dining, Salo Table uses shareable Filipino group dishes, Tambay Café supports coffee-and-snack tab ordering, and Ihaw Buffet organizes packages and included grill selections.
+- Added an automated density and tenant-isolation contract covering category order, counts, item fields, preset parity, distinct category sets, and a saved Salamat menu edit that must not affect Salo Table.
+- Validation: `npm run check` and `git diff --check` passed. Local browser checks for all four businesses at 390×844, 768×1024, and 1280×720 rendered seven sections and 21 products with zero page-level horizontal overflow; grids used two columns on phone and three on tablet/desktop.
+
 ## September 14, 2026 — Kusina responsive test menu
 
 - Expanded Kusina Manila's shared Menu Studio/customer seed to eight categories with exactly three realistic Filipino products per category (24 products total).
