@@ -270,11 +270,10 @@ footer {
   padding-bottom: 34px;
 }
 
+.customer-session-controls { position: fixed; z-index: 6; top: max(14px, env(safe-area-inset-top)); right: max(14px, env(safe-area-inset-right)); display: grid; justify-items: end; gap: 8px; }
+.order-history-control { display: flex; min-height: 44px; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--glass-strong, var(--surface)); color: var(--ink); box-shadow: 0 6px 18px #11182718; font-weight: 700; cursor: pointer; }
+.order-history-control b { display: grid; min-width: 24px; height: 24px; place-items: center; border-radius: 999px; background: var(--brand-soft); color: var(--brand-600); font-size: 11px; }
 .open-tab-control {
-  position: fixed;
-  z-index: 6;
-  top: max(14px, env(safe-area-inset-top));
-  right: max(14px, env(safe-area-inset-right));
   display: flex;
   align-items: center;
   gap: 9px;
@@ -312,10 +311,24 @@ footer {
 .tab-status.prepared { background: #ddf4e8; color: #176a45; }
 .tab-status.cancelled { background: #ffebe8; color: var(--red); }
 .tab-empty-copy { margin: 13px 0 2px; color: var(--muted); font-size: 13px; }
+.device-order-history { display: grid; gap: 14px; }
+.history-order { padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.history-order:last-child { border-bottom: 0; }
+.history-order header, .history-order footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.history-order h3 { margin: 0; font-size: 15px; }
+.history-order time, .history-order p { color: var(--muted); font-size: 12px; }
+.history-order p { margin: 6px 0; }
+.history-actions { padding: 12px 18px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); }
+.history-clear-confirm { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 8px; }
+.history-clear-confirm span { font-size: 12px; }
 
 @media (max-width: 420px) {
-  .open-tab-control { top: max(10px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); min-height: 54px; }
+  .customer-session-controls { top: max(10px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); }
+  .order-history-control { min-height: 44px; padding-block: 5px; }
+  .open-tab-control { min-height: 54px; }
   .open-tab-count { min-width: 40px; height: 40px; }
+  .history-clear-confirm { grid-template-columns: 1fr 1fr; }
+  .history-clear-confirm span { grid-column: 1 / -1; }
 }
 
 @media (prefers-reduced-transparency: reduce) {

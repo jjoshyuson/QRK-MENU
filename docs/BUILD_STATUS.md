@@ -931,6 +931,13 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Centering uses smooth movement by default and switches to an immediate position update when reduced motion is requested.
 - Responsive trailing space lets the final categories reach the true center instead of stopping against the carousel's right edge.
 
+## September 14, 2026 — Device order history and Open Tab closure
+
+- Added a separate, always-available Order history control to every customer menu. It stores only this browser's submitted order snapshots, scoped by business/data mode, capped at 25 records and expired after 30 days.
+- History shows order number, date/time, status, item summary and total. Clear order history uses an inline confirmation and removes only the local snapshots; it does not delete staff-side orders or change an active table session.
+- Open Tab now records its table-session ID separately from historical orders. Cleaned, cancelled, expired or missing sessions clear the active tab IDs and draft cart, while submitted rounds remain available in device history.
+- `npm run check`, the new device-history contract and `git diff --check` passed. Browser validation created Kusina order `KM-R7IN8`, verified its saved details, and exercised the clear confirmation. A Tambay Table 1 session then submitted an order, received a staff cleanup event, hid Open Tab after polling, and retained one history record.
+
 ## September 14, 2026 — Public menu card redesign
 
 - Reworked each customer dish into a bordered, padded card with a clipped photo, aligned name and PHP price, concise two-line description, and a theme-driven `+ Add` action.

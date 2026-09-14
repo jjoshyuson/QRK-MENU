@@ -50,6 +50,7 @@
 - That branch now uses one seamless content plane by default: primary content containers are transparent and borderless, status/help regions use quiet token-derived fills, and glass-like blur is reserved for navigation, sticky category controls and floating actions. This follows Apple's functional-layer approach instead of applying blur to every card.
 
 - The customer cart action is an 85vw floating card without a viewport-wide backing strip. As the footer enters the viewport, the card moves upward and stays 12px above it; footer tracking is immediate with no transition.
+- Customer menus expose a separate Order history control even without an active order or Open Tab. Its drawer has saved-order and empty states plus an inline confirmation before clearing device-only history.
 - Public-menu search, category pills, and the floating order action use shared relative-height tokens at 70% of their former visible heights; keep their widths and behavior unchanged when refining density.
 - Public-menu categories always occupy one horizontally swipeable, snap-assisted row; additional categories must never wrap into a second toolbar row.
 - When section scrolling activates a category outside the currently visible carousel area, center that pill horizontally; do not reposition the track while the active pill is already visible, and honor reduced-motion preferences.
