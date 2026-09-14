@@ -11,7 +11,7 @@ const tableBase={
 };
 
 export const SERVICE_PRESETS={
-  quick:{id:'quick',name:'Quick / counter service',summary:'Customers order ahead or pay at the counter.',settings:{serviceMode:'quick',tableIdentification:'none',staffAcceptance:false,guestCountRequired:false,packageMode:'none',paymentTiming:'counter',additionalDevices:false,joinPolicy:'disabled',guestOrderPolicy:'direct',proximityPolicy:'off',proximityRadiusM:250,acceptanceTimeoutSeconds:90,sessionExpiryMinutes:60,billLocksOrdering:false}},
+  quick:{id:'quick',name:'Quick / counter service',summary:'Customers choose dine-in or takeout, then order and pay.',settings:{serviceMode:'quick',fulfillmentModes:['table','pickup'],tableIdentification:'none',staffAcceptance:false,guestCountRequired:false,packageMode:'none',paymentTiming:'counter',additionalDevices:false,joinPolicy:'disabled',guestOrderPolicy:'direct',proximityPolicy:'off',proximityRadiusM:250,acceptanceTimeoutSeconds:90,sessionExpiryMinutes:60,billLocksOrdering:false}},
   direct_table:{id:'direct_table',name:'Direct table ordering',summary:'A table QR opens ordering immediately.',settings:{...tableBase,staffAcceptance:false,guestOrderPolicy:'direct'}},
   table_approval:{id:'table_approval',name:'Table approval',summary:'Guests may build a cart while staff confirms the table.',settings:{...tableBase}},
   open_tab:{id:'open_tab',name:'Open table tab',summary:'Staff opens the table once for multiple order rounds.',settings:{...tableBase,staffAcceptance:false,guestCountRequired:false,guestOrderPolicy:'direct'}},

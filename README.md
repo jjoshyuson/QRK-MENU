@@ -21,10 +21,13 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 | `dist/` | Editable source of the working static site, despite the folder name |
 | `dist/assets/brand/` | Canonical transparent PNG QRK mark, wordmark and combined logo assets |
 | `dist/theme.css` | Shared neutral and QRK accent variables used by owner and customer routes |
+| `dist/ui-components.css`, `dist/ui-components.js` | Shared component variables/visual rules plus stable Inspect Element labels used by every operational route and the catalog |
+| `dist/manifest.webmanifest`, `dist/pwa.*`, `dist/sw.js` | Shared installable app metadata, app-like touch behavior and lightweight service-worker shell |
 | `dist/photos/` | Six bundled sample food photographs |
 | `dist/dashboard.css` | Business Dashboard layout and responsive workspace styles |
 | `dist/menu/` | Standalone customer-only development menu route, including its small route-specific theme layer and CSS/JavaScript payload |
 | `dist/landing/` | Lightweight public choice, QRK Quick and QRK Table landing pages sharing the global QRK theme |
+| `dist/components/` | Unlinked, static development inventory of reusable owner, admin, staff and customer UI components and states |
 | `dist/menu/payment-first.css` | Small checkout override for the simulated Payment First choices and keyboard focus treatment |
 | `dist/data/` | Shared demo/Supabase data-service adapter and safe public configuration scaffold |
 | `dist/data/qrk-auth-service.js` | Lightweight local Supabase Auth session and tenant-context client |
@@ -52,6 +55,8 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 ## Current state
 
 - Desktop: Business Dashboard with overview, profile, Menu Studio, staff access, orders, and settings sections.
+- PWA shell: owner tools, client/admin tools and the customer menu share standalone install metadata, safe-area handling and app-like touch behavior. Double-tap zoom is suppressed without disabling deliberate pinch zoom.
+- Component system: `dist/ui-components.css` is the shared visual source of truth, and `/components/` renders that layer as an unlinked development catalog. Inspect an element to read its stable `data-component`, `data-variant` and `data-component-source` labels. Landing-page UI is intentionally excluded.
 - Brand: black, white and gray dominate the interface, with cyan/teal reserved for actions and selection. Separate transparent PNG icon, wordmark and combined assets preserve the approved generated artwork; the favicon uses the icon-only mark.
 - Mobile/tablet at viewport widths up to 1100 CSS pixels: Dashboard opens first; a top-right hamburger opens navigation, and Menu Studio is a separate view with photo-grid and quick availability-table modes.
 - Owners can add/edit/delete items, set PHP prices and option notes, create/reorder categories, rename the menu, set available/sold-out/hidden states, and replace photos.
@@ -60,9 +65,10 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 - The root dashboard provides the matching staff-side active/history queue, order details, status progression, handoff-token verification, cancellation, and store-open controls.
 - The `Restaurant · pay first` preset simulates a pilot checkout with disabled cashless and enabled pay-at-counter choices. Submitted orders remain Received until staff explicitly accepts them into Preparing; no payment is taken.
 - Customer and staff order state survives refresh only through same-origin `localStorage` in one browser profile. Different physical devices do not synchronize.
+- Business Profile shows a distinct scannable test QR for each of the five development clients. Each QR opens that client's customer-menu slug; permanent production destinations and first-party QR generation remain future work.
 - A provider-ready Supabase/PostgreSQL foundation now exists under `supabase/`, and both public routes use a shared adapter that automatically stays in demo mode while backend configuration is absent.
 - Menu Studio changes persist in this browser and immediately drive the matching `/menu/` Customer Menu; unavailable and hidden items are omitted there. This is browser-preview synchronization, not durable cross-device publishing.
-- The repository includes tenant RLS, server-validated order RPCs, local Auth/permission migrations, development logins, private Broadcast and photo-storage policies. The hosted project is not linked, migrated or verified; hosted login, staff activation, operational persistence, real QR generation, durable UI publishing, payments, notifications and offline support remain incomplete.
+- The repository includes tenant RLS, server-validated order RPCs, local Auth/permission migrations, development logins, private Broadcast and photo-storage policies. The hosted project is not linked, migrated or verified; hosted login, staff activation, operational persistence, real QR generation, durable UI publishing, payments and notifications remain incomplete. The service worker provides a basic cached shell, not a verified offline ordering workflow.
 
 The running app is still a UI-only same-browser ordering demonstration, not a production ordering service. Provider-ready SQL is not evidence of an operational backend. The sample business and food prices are illustrative. The prototype still loads its fonts from Google Fonts; all food photos are bundled locally.
 
