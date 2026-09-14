@@ -22,6 +22,8 @@ The customer ordering and staff operations workstreams remain a working same-ori
 
 Menu Studio and the matching Customer Menu now share a business-scoped browser snapshot in demo mode, so Kusina and the other preview tenants no longer render independently authored menus. This closes same-browser preview parity only; durable publication to other devices remains Stage 2 work.
 
+All five development businesses now provide responsive-density test menus. Kusina has eight categories and 24 products; Salamat, Salo Table, Tambay Café, and Ihaw Buffet each have seven business-specific categories and 21 products. Every category contains three products, and automated coverage confirms browser-menu state remains isolated by business slug.
+
 Desktop Menu Studio rows now reflect the same saved item photos used by responsive Menu Studio and Customer Menu cards, while retaining initials only for items without photos.
 
 A business-approved trusted-customer/VIP account model has been captured for product discovery only. It is not approved implementation work and does not change the immediate hosted-development verification path.
