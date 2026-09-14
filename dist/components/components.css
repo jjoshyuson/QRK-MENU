@@ -9,8 +9,9 @@
 .menu-search #component-menu-search:focus,.menu-search #component-menu-search:focus-visible{outline:0;outline-offset:0;box-shadow:0 5px 18px #1118270a}
 .menu-search span{left:1em;right:auto;top:50%;display:grid;width:1.125em;height:1.125em;place-items:center;color:var(--muted);transform:translateY(-50%)}
 .menu-search svg{width:100%;height:100%;stroke:currentColor}
-.customer-categories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
-.customer-categories button{min-width:0;height:var(--component-menu-category-height);min-height:0;padding-block:.2em;border-color:var(--component-menu-control-border);background:var(--component-menu-control-bg)}
+.customer-categories{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:inline proximity;scrollbar-width:none}
+.customer-categories::-webkit-scrollbar{display:none}
+.customer-categories button{flex:0 0 clamp(6.5rem,32%,8.5rem);min-width:0;height:var(--component-menu-category-height);min-height:0;padding-block:.2em;border-color:var(--component-menu-control-border);background:var(--component-menu-control-bg);scroll-snap-align:start}
 .customer-categories .active{border-color:transparent;background:var(--component-menu-active-bg)}
 .customer-dishes article{border:0}
 .cart-action{height:var(--component-menu-floating-order-height);min-height:0;padding-block:.25em}

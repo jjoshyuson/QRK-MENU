@@ -911,6 +911,12 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Centralized the new relative heights in shared component tokens and mirrored them in the component catalog so the public menu controls stay consistent.
 - `npm run check` and `git diff --check` passed. Browser measurement confirmed rendered heights of 33.59px, 30.80px, and 37.8px respectively, with no horizontal overflow; the shared tokens apply unchanged across phone, tablet, and desktop breakpoints.
 
+## September 14, 2026 — Single-row category carousel
+
+- Replaced the wrapping three-column category grid with one horizontally swipeable row. Category pills retain compact sizing, show roughly three choices at phone widths, and use proximity snapping without exposing a scrollbar.
+- Mirrored the carousel contract in the shared component catalog; menu content remains vertically scrollable while category overflow stays contained to the toolbar.
+- `npm run check` and `git diff --check` passed. Browser validation at a 503px viewport rendered all eight Kusina categories on one row, with a 1,160px swipe track inside a 488px toolbar and zero page-level horizontal overflow.
+
 ## September 14, 2026 — Public menu card redesign
 
 - Reworked each customer dish into a bordered, padded card with a clipped photo, aligned name and PHP price, concise two-line description, and a theme-driven `+ Add` action.
