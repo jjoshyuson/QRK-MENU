@@ -7,6 +7,8 @@
 - Removed dark outlines from customer dish cards and from the non-interactive `+ Add` cue while retaining whole-card button semantics and visible keyboard focus.
 - Reduced the full `+ Add` cue by 10% through its relative type scale and centered the plus glyph and label on the same optical line.
 - Updated the component catalog specimen and added shared menu-control tokens so the reference and public route stay aligned.
+- Per explicit direction, the public-menu search field and its catalog specimen have no resting border and suppress all visual focus outlines or glows; native focus and keyboard entry behavior remain intact.
+- Browser verification confirmed both resting and focused search states compute to a `0px` border and `none`/`0px` outline; focus remains functional without introducing a state-specific shadow.
 - Validation: `npm run check` and `git diff --check` passed. Browser checks at 390×844, 768×1024, and 1440×900 confirmed the 999px search radius, three equal category controls, zero-pixel dish/CTA borders, the expected two/three-column menu layouts, desktop order summary, and no horizontal overflow. The reduced cue remained centered at every width with a measured zero-pixel vertical center offset for the plus glyph.
 
 ## September 14, 2026 — Desktop Menu Studio photo thumbnails
