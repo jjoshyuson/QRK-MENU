@@ -1,5 +1,13 @@
 # Build status
 
+## September 14, 2026 — business-scoped public menu backgrounds
+
+- Business Profile now lets each client choose or remove a customer-menu background and adjust a neutral readability veil from 40% to 95%.
+- Kusina Manila defaults to a bundled illustrated menu background with a 72% surface veil. Other businesses default to no custom background.
+- Uploaded PNG, JPG, or WebP files up to 6 MB are resized to at most 1800 px and stored as compressed WebP data URLs inside the existing business-scoped branding record.
+- Persisted consumer contract: `qrk_demo_branding_v1[slug].publicMenuBackground = { image: string, surfaceOpacity: number }`. `image` is a root-relative bundled asset, a `data:image/webp` URL, or an empty string; `surfaceOpacity` is normalized to `0.40–0.95`.
+- The public `/menu/` route consumes that contract only on the menu browsing surface, leaving the business identity banner independent.
+
 ## September 13, 2026 — Shared pill-button hierarchy
 
 - Updated the shared Button source so standard and customer actions use the requested pill silhouette while preserving 44px standard and 50px customer touch targets.
