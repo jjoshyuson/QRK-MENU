@@ -16,6 +16,7 @@
 - A future production public route should send only public menu data and customer code, not the owner editor bundle.
 - Any future private backend must enforce tenant authorization on every request; hiding controls is insufficient.
 - `dist/data/qrk-data-service.js` is the shared app seam. Blank safe config selects local demo behavior; valid public Supabase config selects the provider adapter. Supabase-specific Auth/RLS/Realtime/Storage SQL is isolated from the portable application schema for a future VPS move.
+- GitHub Pages builds stamp all local JavaScript/CSS references and static module imports with one commit-derived version. The PWA service worker uses network-first handling for code and styles so online clients cannot combine modules from different deployments; cached copies remain an offline fallback.
 - Realtime messages are change hints only. Initial fetch plus reconnect, focus, interval and manual refetch are authoritative.
 - Local Supabase Auth has globally unique usernames, tenant context and individually enforced staff permissions. The browser refreshes short-lived local sessions. GitHub Pages injects only `environment: preview` and `authEnabled: true`, enabling browser-local workspace selection and logout without publishing Supabase credentials.
 - The local seed has two tenants and four repeatable identities: Kusina admin/staff for Quick and Salamat admin/staff for Table. `business_profiles.settings.serviceMode` is returned in the tenant access context.

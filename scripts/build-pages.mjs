@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const sourceDir = path.join(projectRoot, 'dist');
 const outputDir = path.join(projectRoot, '_site');
+const buildVersion = String(process.env.QRK_BUILD_VERSION || process.env.GITHUB_SHA || 'local').slice(0, 12);
 
 function defaultBasePath() {
   const repository = process.env.GITHUB_REPOSITORY?.split('/').pop();
@@ -38,6 +39,22 @@ function rewriteForBasePath(source, extension, basePath) {
   return result;
 }
 
+function versionCodeReferences(source, extension) {
+  if (extension === '.html') {
+    return source.replace(
+      /((?:href|src)=["'])(\/[^"'?#]+\.(?:css|js))(?:\?[^"']*)?(["'])/g,
+      `$1$2?v=${buildVersion}$3`,
+    );
+  }
+  if (extension === '.js') {
+    return source.replace(
+      /((?:from\s+|import\s*)["'])(\.{1,2}\/[^"'?]+\.js)(?:\?[^"']*)?(["'])/g,
+      `$1$2?v=${buildVersion}$3`,
+    );
+  }
+  return source;
+}
+
 async function collectFiles(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
   const files = [];
@@ -66,6 +83,7 @@ for (const file of await collectFiles(outputDir)) {
   if (!['.html', '.css', '.js'].includes(extension)) continue;
   const original = await readFile(file, 'utf8');
   let built = rewriteForBasePath(original, extension, basePath);
+  built = versionCodeReferences(built, extension);
   if (built !== original) await writeFile(file, built, 'utf8');
 }
 
@@ -73,4 +91,5 @@ await writeFile(path.join(outputDir, '.nojekyll'), '', 'utf8');
 
 console.log(`Built GitHub Pages artifact at ${outputDir}`);
 console.log(`Base path: ${basePath}`);
+console.log(`Code asset version: ${buildVersion}`);
 console.log('Published with browser-local preview sessions; no hosted backend credentials are injected.');

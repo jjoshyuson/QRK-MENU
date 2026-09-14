@@ -1,4 +1,4 @@
-const CACHE_NAME = 'qrk-app-shell-v4';
+const CACHE_NAME = 'qrk-app-shell-v5';
 const APP_SHELL = [
   './',
   './admin/',
@@ -40,6 +40,21 @@ self.addEventListener('fetch', (event) => {
           return response;
         })
         .catch(() => caches.match(event.request).then((cached) => cached || caches.match('./'))),
+    );
+    return;
+  }
+
+  const isCodeRequest = ['script', 'style', 'worker', 'sharedworker'].includes(event.request.destination)
+    || /\.(?:css|js)$/.test(requestUrl.pathname);
+
+  if (isCodeRequest) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.ok) caches.open(CACHE_NAME).then((cache) => cache.put(event.request, response.clone()));
+          return response;
+        })
+        .catch(() => caches.match(event.request)),
     );
     return;
   }

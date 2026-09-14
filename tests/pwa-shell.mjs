@@ -24,4 +24,12 @@ assert.match(dashboardCss, /sidebar-bottom \.profile>\.profile-copy/);
 assert.match(dashboardCss, /sidebar-bottom \.profile \.profile-copy strong.*text-overflow:ellipsis/);
 assert.match(dashboardCss, /safe-area-inset-bottom/);
 
+const serviceWorker = await readFile(new URL('../dist/sw.js', import.meta.url), 'utf8');
+assert.match(serviceWorker, /const isCodeRequest =/);
+assert.match(serviceWorker, /if \(isCodeRequest\)[\s\S]*fetch\(event\.request\)[\s\S]*catch\(\(\) => caches\.match\(event\.request\)\)/);
+
+const pagesBuild = await readFile(new URL('../scripts/build-pages.mjs', import.meta.url), 'utf8');
+assert.match(pagesBuild, /process\.env\.GITHUB_SHA/);
+assert.match(pagesBuild, /versionCodeReferences/);
+
 console.log('PWA shell contract passed.');
