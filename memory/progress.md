@@ -1,6 +1,8 @@
 # Progress memory
 
-As of September 13, 2026:
+As of September 14, 2026:
+
+- Kusina Manila's responsive test seed now contains 24 products across eight categories, with exactly three products in each category and only the existing lightweight local food photos. The shared Menu Studio/customer seed and development-client preset carry the same category/product coverage.
 
 - Public customer-menu responsive redesign is implemented locally: desktop adds a sticky order summary and wider order review, tablet uses a three-column menu, and phone preserves its compact two-column menu and floating order action. Final light/dark and representative-width verification is recorded in `docs/BUILD_STATUS.md`; publication remains pending.
 

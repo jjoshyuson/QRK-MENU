@@ -1,5 +1,12 @@
 # Build status
 
+## September 14, 2026 — Kusina responsive test menu
+
+- Expanded Kusina Manila's shared Menu Studio/customer seed to eight categories with exactly three realistic Filipino products per category (24 products total).
+- Populated Breakfast, Desserts, Snacks, Specials, and Platters while bringing Sides and Drinks to three products each; reused the six existing lightweight local food photos with no new assets or dependencies.
+- Added an automated seed contract covering category order, product counts, required product fields, local photo paths, and the matching development-client preset.
+- Validation: `npm run check` and `git diff --check` passed. Browser checks at 390×844, 768×1024, and 1280×720 rendered all eight categories with three products each and zero page-level horizontal overflow; the phone category strip retained intentional horizontal scrolling, while tablet and desktop fit all category links.
+
 ## September 13, 2026 — Customer category navbar sticky boundary
 
 - Removed the late compact-theme margins, rounded container, and top offset that made the public-menu category navigation appear suspended over menu items.
