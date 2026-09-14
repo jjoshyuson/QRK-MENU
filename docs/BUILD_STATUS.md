@@ -7,6 +7,8 @@
 - Uploaded PNG, JPG, or WebP files up to 6 MB are resized to at most 1800 px and stored as compressed WebP data URLs inside the existing business-scoped branding record.
 - Persisted consumer contract: `qrk_demo_branding_v1[slug].publicMenuBackground = { image: string, surfaceOpacity: number }`. `image` is a root-relative bundled asset, a `data:image/webp` URL, or an empty string; `surfaceOpacity` is normalized to `0.40–0.95`.
 - The public `/menu/` route consumes that contract only on the menu browsing surface, leaving the business identity banner independent.
+- Kusina's default is a purpose-built 1200×1500 illustrated wallpaper optimized to 326 KB, with quiet central detail and Filipino-inspired tropical, rattan, capiz, and dining motifs around the edges.
+- Integrated validation passed: `npm run check`, `git diff --check`, the new business-isolation/default/removal contract test, asset existence/size checks, and an HTTP 200 response from the local Kusina menu route. The Business Profile task separately verified its controls at 390px, 768px, and desktop widths; public-menu visual review remains for the next user-facing pass.
 
 ## September 13, 2026 — Shared pill-button hierarchy
 
