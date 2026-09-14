@@ -10,6 +10,7 @@
 - Customer and staff order operations use business-slug-scoped `localStorage` and survive refresh in one browser profile. Kusina and Salamat demo state stays isolated, but neither synchronizes across physical devices.
 - Dashboard orders, sales, staff, QR/link and password controls remain preview-oriented. Local Supabase sessions and hosted browser-local preview sessions both expose the profile account menu; Log out clears the active origin's session and returns to sign-in.
 - Business Profile builds its customer URL from the current app root plus the active business slug. Test QR images are requested from the HTTPS goQR API; this is a replaceable preview seam, not the production QR service.
+- Public-menu background settings extend the existing `qrk_demo_branding_v1` record as `publicMenuBackground: { image, surfaceOpacity }`. The image is a bundled path, compressed WebP data URL, or empty string; opacity is a normalized `0.40–0.95` neutral surface veil. Kusina defaults to its bundled illustrated banner at `0.72`; other clients default to no image.
 - Keep implementation and customer payloads minimal. Add dependencies or abstractions only for a demonstrated requirement.
 - A future production public route should send only public menu data and customer code, not the owner editor bundle.
 - Any future private backend must enforce tenant authorization on every request; hiding controls is insufficient.

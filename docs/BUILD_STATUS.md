@@ -1,5 +1,14 @@
 # Build status
 
+## September 14, 2026 — business-scoped public menu backgrounds
+
+- Business Profile now lets each client choose or remove a customer-menu background and adjust a neutral readability veil from 40% to 95%.
+- Kusina Manila defaults to the approved bundled illustrated food artwork at `/assets/businesses/kusina-manila-banner.webp` with a 72% surface veil. Other businesses default to no custom background.
+- Uploaded PNG, JPG, or WebP files up to 6 MB are resized to at most 1800 px and stored as compressed WebP data URLs inside the existing business-scoped branding record.
+- Persisted consumer contract: `qrk_demo_branding_v1[slug].publicMenuBackground = { image: string, surfaceOpacity: number }`. `image` is a root-relative bundled asset, a `data:image/webp` URL, or an empty string; `surfaceOpacity` is normalized to `0.40–0.95`.
+- This branch implements the owner controls and storage contract. The public `/menu/` consumer must apply the image and surface veil only to the menu browsing surface, not the identity banner.
+- Validation: `npm run check` passes the new business-isolation/default/removal contract alongside the existing suite. Browser review passed at 390px, 768px, and desktop widths; Kusina's seeded artwork preview, 72% output, keyboard-addressable range, 44px actions, and single-column phone reflow were verified.
+
 ## September 13, 2026 — profile-specific test QR codes
 
 - Business Profile now renders a scannable test QR for the signed-in client instead of the decorative placeholder.

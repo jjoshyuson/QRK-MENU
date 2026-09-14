@@ -2,6 +2,8 @@
 
 As of September 13, 2026:
 
+- Business Profile now owns a business-scoped public-menu background contract with upload, remove/reset, and a neutral surface-veil control. Kusina is seeded with its bundled illustrated food artwork at 72%; public `/menu/` rendering is the consumer integration boundary.
+
 - Each of the five development client profiles now has a distinct scannable test QR in Business Profile. It targets that client's `/menu/?business=<slug>` route and can be opened, copied, or downloaded. QR images use a temporary HTTPS generator; permanent production URLs and first-party generation remain Stage 2 work.
 
 - Public customer-menu responsive redesign is implemented locally: desktop adds a sticky order summary and wider order review, tablet uses a three-column menu, and phone preserves its compact two-column menu and floating order action. Final light/dark and representative-width verification is recorded in `docs/BUILD_STATUS.md`; publication remains pending.
