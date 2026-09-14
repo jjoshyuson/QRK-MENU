@@ -77,6 +77,11 @@
 - `Download QR`, `Open customer view`, and `Copy link` use the same profile-specific destination. The test image is generated over HTTPS by the goQR API; production QR generation and the permanent public domain remain part of the future public-menu/QR milestone.
 - Local phone scanning requires opening the dashboard through `npm run start:lan` and the computer's LAN address. A QR created from `127.0.0.1` is only reachable on the same computer.
 - Validation: `npm run check` passed, including the new five-profile URL contract; `node scripts/build-pages.mjs` passed; Kusina Manila's QR rendered in the Business Profile card and exposed the expected encoded customer URL in browser review.
+## September 14, 2026 — Rounded category navigation pills
+
+- Restyled category navigation in Menu Studio, its embedded customer preview, and the public customer menu as fully rounded, centered pills matching the supplied reference.
+- Preserved the existing QRK theme tokens, active-state contrast, horizontal overflow behavior for long category lists, semantic selection state, and 44px touch targets.
+- Browser checks covered 390×844 phone, 768×1024 tablet, and 1280×800 desktop layouts with zero page-level horizontal overflow. Category selection remained functional in Menu Studio.
 
 ## September 13, 2026 — Customer category navbar sticky boundary
 

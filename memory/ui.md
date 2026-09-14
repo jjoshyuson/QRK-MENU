@@ -23,6 +23,7 @@
 - Banner, profile logo and business identity copy belong to one shared parallax layer; do not animate the banner independently from the profile content.
 - The public menu browsing surface can use a business-scoped background image with a 40–95% neutral surface veil. Kusina defaults to a purpose-built warm Filipino illustrated wallpaper at 72%; the identity banner remains a separate visual layer.
 - Responsive Menu Studio category tabs keep their natural left-to-right alignment while the active tab is fully visible. They recenter the active tab only after it becomes clipped or moves outside the visible horizontal strip.
+- Menu Studio, its embedded customer preview, and the public customer menu use fully rounded category pills with centered labels, outlined inactive states, a soft brand-selected state, and at least 44px interactive targets.
 - Preserve item/category creation, item editing/deletion, availability, menu rename and photo selection/removal flows.
 - Desktop now opens to a balanced Business Dashboard overview with routes for Business profile, Menu Studio, Staff access, Orders and Settings.
 - Phone/tablet opens to the responsive Dashboard; the navigation drawer switches to the separate Menu Studio and back to Dashboard.
