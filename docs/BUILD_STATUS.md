@@ -851,3 +851,9 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Reduced public dish tiles to the requested essentials: photo, food name, and price. Category headings remain, while per-item descriptions and category item-count subtitles are no longer rendered in the browsing grid.
 - Descriptions remain available in item details and searchable menu data, so ordering context and Menu Studio editing are unchanged.
 - `npm run check` and `git diff --check` passed. Browser review at 390×844, 768×1024, and 1280×720 confirmed two phone columns, three tablet/desktop columns, no horizontal overflow, no dish descriptions or category counts in the grid, and preserved item-detail descriptions and options.
+
+## September 14, 2026 — Public menu card redesign
+
+- Reworked each customer dish into a bordered, padded card with a clipped photo, aligned name and PHP price, concise two-line description, and a theme-driven `+ Add` action.
+- Reused the shared customer card and primary-button contracts. The Add action opens the existing item/options sheet, while unavailable dishes expose a disabled Sold out state with an accessible label.
+- `npm run check`, JavaScript syntax validation, and `git diff --check` passed. Automated checks cover the shared component and ordering contracts; final visual acceptance remains open in the existing local preview.
