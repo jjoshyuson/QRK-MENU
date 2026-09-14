@@ -55,6 +55,7 @@
 
 - QRK Table staff use a `Tables` tab with six narrow operational cards. Pending requests can be accepted; occupied cards are muted through shared theme tokens and expose `Table cleaned`, which returns the table to Available in the local preview.
 - The Tables tab's normal badge counts occupied tables. A separate high-contrast red badge with white text counts pending table and join requests and is hidden at zero; it does not inherit the customizable navigation-badge colors. Table controls rerender only when shared session state changes, keeping cleanup actions and customer session notices stable between polls.
+- Table choice density follows the saved business table count: 1–10 retains roomy quick cards; 11+ uses a compact, five-column glass number grid. Order review uses buttons instead of manual table entry. QR-selected Table visits present the chosen table as locked.
 
 See `docs/UI_AND_FLOWS.md` for detailed behavior and test cases.
 ## QRK Quick entry and checkout — September 13, 2026

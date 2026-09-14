@@ -2,6 +2,8 @@
 
 As of September 13, 2026:
 
+- The main integration adds a business-profile table count, defaulting Salamat to 20, plus automatic quick-card (1–10) and compact number-grid (11+) table selection. Quick order review no longer asks customers to type a table number; table-QR links support and lock multi-digit selections. Per-table QR output remains a test placeholder, not production identity.
+
 - Customer-menu performance remediation is complete locally: live profiling identified eager image decoding, fixed-background repainting, blur, and scroll-time parallax/layout work as the main mobile costs. Dish photos now lazy-decode, costly scroll effects are removed, and Menu Studio optimizes new and existing browser-local uploads while retaining originals in IndexedDB. Deployment verification remains pending.
 
 - The September 14 GitHub Pages cache freeze is fixed and deployed. Commit-versioned JavaScript/CSS references plus network-first service-worker handling for code prevent mixed-release modules; the previously broken normal Brave profile recovered on reload and navigated without console errors.
