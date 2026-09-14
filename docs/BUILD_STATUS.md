@@ -835,3 +835,9 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 
 - Restyled the phone/tablet floating checkout action and item-sheet Add to order action as one shared, fully pill-shaped liquid-glass control. A mostly neutral translucent surface, restrained brand tint, backdrop blur, thin refractive rim, and quiet depth avoid both a saturated wash and a broad glossy highlight. Existing content, position, footer avoidance, and checkout behavior are unchanged.
 - Preserved readable token-derived text, visible focus, safe-area positioning, and a solid fallback when reduced transparency is requested.
+
+## September 14, 2026 — Public menu card simplification
+
+- Reduced public dish tiles to the requested essentials: photo, food name, and price. Category headings remain, while per-item descriptions and category item-count subtitles are no longer rendered in the browsing grid.
+- Descriptions remain available in item details and searchable menu data, so ordering context and Menu Studio editing are unchanged.
+- `npm run check` and `git diff --check` passed. Browser review at 390×844, 768×1024, and 1280×720 confirmed two phone columns, three tablet/desktop columns, no horizontal overflow, no dish descriptions or category counts in the grid, and preserved item-detail descriptions and options.

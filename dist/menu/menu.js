@@ -85,10 +85,10 @@ function renderMenu(filter=''){
   categories.forEach(category=>{
     const items=visible.filter(item=>item.category===category);if(!items.length)return;
     const section=document.createElement('section');section.className='menu-section';section.id=categoryId(category);section.setAttribute('aria-labelledby',`${section.id}-title`);
-    section.innerHTML=`<div class="section-heading"><h3 id="${section.id}-title">${escapeText(category)}</h3><span>${items.length} ${items.length===1?'item':'items'}</span></div><div class="dish-grid"></div>`;
+    section.innerHTML=`<div class="section-heading"><h3 id="${section.id}-title">${escapeText(category)}</h3></div><div class="dish-grid"></div>`;
     items.forEach(item=>{
       const card=$('#dish-template').content.firstElementChild.cloneNode(true);const button=card.querySelector('button');const img=card.querySelector('img');
-      if(item.photo){img.src=item.photo;img.alt=item.name}else{img.remove();const photo=card.querySelector('.photo');photo.classList.add('no-photo');photo.textContent=item.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase()}card.querySelector('h4').textContent=item.name;card.querySelector('p').textContent=item.description;card.querySelector('strong').textContent=format(item.price);
+      if(item.photo){img.src=item.photo;img.alt=item.name}else{img.remove();const photo=card.querySelector('.photo');photo.classList.add('no-photo');photo.textContent=item.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase()}card.querySelector('h4').textContent=item.name;card.querySelector('strong').textContent=format(item.price);
       if(!item.available){card.classList.add('sold-out');card.querySelector('.sold-label').classList.remove('hidden');button.disabled=true;button.setAttribute('aria-label',`${item.name}, sold out`)}else button.addEventListener('click',()=>openItem(item));
       section.querySelector('.dish-grid').append(card);
     });$('#menu-sections').append(section);
