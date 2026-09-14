@@ -56,6 +56,7 @@
   margin-inline: 0;
   overflow-x: auto;
   overflow-y: hidden;
+  padding-right: max(18px, calc(50% - 4.25rem));
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -65,7 +66,7 @@
   scrollbar-width: none;
 }
 .menu-tools .categories::-webkit-scrollbar { display: none; }
-.menu-tools .categories a { flex: 0 0 clamp(6.5rem, 32%, 8.5rem); justify-content: center; min-width: 0; height: var(--component-menu-category-height); min-height: 0; padding: .2em .625em; border-color: var(--component-menu-control-border); background: var(--component-menu-control-bg); text-align: center; scroll-snap-align: start; }
+.menu-tools .categories a { flex: 0 0 clamp(6.5rem, 32%, 8.5rem); justify-content: center; min-width: 0; height: var(--component-menu-category-height); min-height: 0; padding: .2em .625em; border-color: var(--component-menu-control-border); background: var(--component-menu-control-bg); text-align: center; scroll-snap-align: center; }
 .menu-tools .categories a.active { border-color: transparent; background: var(--component-menu-active-bg); }
 
 .restaurant { display: block; padding: 0 0 24px; overflow: hidden; }

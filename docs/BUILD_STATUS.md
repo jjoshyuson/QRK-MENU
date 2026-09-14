@@ -917,6 +917,12 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Mirrored the carousel contract in the shared component catalog; menu content remains vertically scrollable while category overflow stays contained to the toolbar.
 - `npm run check` and `git diff --check` passed. Browser validation at a 503px viewport rendered all eight Kusina categories on one row, with a 1,160px swipe track inside a 488px toolbar and zero page-level horizontal overflow.
 
+## September 14, 2026 — Active category carousel tracking
+
+- The public menu now horizontally centers an active category when vertical section scrolling moves the highlight beyond the visible carousel area. Already-visible pills do not cause track movement.
+- Centering uses smooth movement by default and switches to an immediate position update when reduced motion is requested.
+- Responsive trailing space lets the final categories reach the true center instead of stopping against the carousel's right edge.
+
 ## September 14, 2026 — Public menu card redesign
 
 - Reworked each customer dish into a bordered, padded card with a clipped photo, aligned name and PHP price, concise two-line description, and a theme-driven `+ Add` action.

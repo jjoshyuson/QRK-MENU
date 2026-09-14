@@ -105,7 +105,9 @@ function renderMenu(filter=''){
 }
 function bindCategoryLinks(){
   const links=[...document.querySelectorAll('.categories a')],sections=links.map(link=>document.querySelector(link.hash)).filter(Boolean);
-  const activate=id=>links.forEach(link=>{const on=link.hash===`#${id}`;link.classList.toggle('active',on);on?link.setAttribute('aria-current','true'):link.removeAttribute('aria-current')});
+  const track=$('#categories');let activeId=links.find(link=>link.matches('[aria-current="true"]'))?.hash.slice(1)||'';
+  const centerIfClipped=link=>{const trackBox=track.getBoundingClientRect(),linkBox=link.getBoundingClientRect();if(linkBox.left>=trackBox.left&&linkBox.right<=trackBox.right)return;track.scrollTo({left:link.offsetLeft-(track.clientWidth-link.offsetWidth)/2,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})};
+  const activate=id=>{let activeLink=null;links.forEach(link=>{const on=link.hash===`#${id}`;link.classList.toggle('active',on);if(on){activeLink=link;link.setAttribute('aria-current','true')}else link.removeAttribute('aria-current')});if(activeLink&&id!==activeId){activeId=id;centerIfClipped(activeLink)}};
   links.forEach(link=>link.addEventListener('click',event=>{event.preventDefault();history.replaceState(null,'',link.hash);document.querySelector(link.hash)?.scrollIntoView({behavior:'smooth',block:'start'});activate(link.hash.slice(1))}));
   window.onscroll=()=>{if(!sections.length)return;const marker=scrollY+($('.menu-tools')?.offsetHeight||70)+96;let current=sections[0];sections.forEach(section=>{if(section.offsetTop<=marker)current=section});if(innerHeight+scrollY>=document.documentElement.scrollHeight-2)current=sections.at(-1);activate(current.id)};
 }
