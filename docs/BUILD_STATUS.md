@@ -5,8 +5,9 @@
 - Restyled the sticky customer-menu toolbar as one responsive unit: a pill-shaped search field with a left-aligned vector icon and three equal category pills below it.
 - Inactive categories keep a subtle neutral outline; the active category uses a soft theme-accent fill without a heavy border.
 - Removed dark outlines from customer dish cards and from the non-interactive `+ Add` cue while retaining whole-card button semantics and visible keyboard focus.
+- Reduced the full `+ Add` cue by 10% through its relative type scale and centered the plus glyph and label on the same optical line.
 - Updated the component catalog specimen and added shared menu-control tokens so the reference and public route stay aligned.
-- Validation: `npm run check` and `git diff --check` passed. Browser checks at 390×844, 768×1024, and 1440×900 confirmed the 999px search radius, three equal category controls, zero-pixel dish/CTA borders, the expected two/three-column menu layouts, desktop order summary, and no horizontal overflow.
+- Validation: `npm run check` and `git diff --check` passed. Browser checks at 390×844, 768×1024, and 1440×900 confirmed the 999px search radius, three equal category controls, zero-pixel dish/CTA borders, the expected two/three-column menu layouts, desktop order summary, and no horizontal overflow. The reduced cue remained centered at every width with a measured zero-pixel vertical center offset for the plus glyph.
 
 ## September 14, 2026 — Desktop Menu Studio photo thumbnails
 
