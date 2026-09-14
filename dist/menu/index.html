@@ -5,23 +5,40 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="description" content="Browse and place a demo order from Kusina Manila.">
   <meta name="theme-color" content="#F7F9FC">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="QRK MENU">
   <title>Kusina Manila — Order</title>
   <link rel="icon" type="image/png" href="/assets/brand/qrk-mark.png">
+  <link rel="apple-touch-icon" href="/assets/brand/qrk-mark.png">
+  <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/theme.css?v=1">
+  <link rel="stylesheet" href="/pwa.css?v=1">
   <link rel="stylesheet" href="/menu/menu.css?v=4">
   <link rel="stylesheet" href="/menu/brand.css?v=2">
   <link rel="stylesheet" href="/menu/table-session.css?v=1">
   <link rel="stylesheet" href="/reference-theme.css?v=2">
-  <link rel="stylesheet" href="/modern-compact.css?v=1">
-  <link rel="stylesheet" href="/menu/cart-dock.css?v=6">
+  <link rel="stylesheet" href="/modern-compact.css?v=2">
+  <link rel="stylesheet" href="/menu/cart-dock.css?v=10">
   <link rel="stylesheet" href="/menu/payment-first.css?v=1">
   <link rel="stylesheet" href="/menu/order-confirmation.css?v=1">
+  <link rel="stylesheet" href="/menu/quick-service.css?v=1">
+  <link rel="stylesheet" href="/ui-components.css?v=4">
   <script src="/global-theme.js"></script>
+  <script src="/pwa.js" defer></script>
+  <script src="/ui-components.js?v=2" defer></script>
   <script src="/data/qrk-config.local.js"></script>
-  <script type="module" src="/menu/menu.js?v=6"></script>
+  <script type="module" src="/menu/menu.js?v=10"></script>
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
+  <dialog id="quick-service-dialog" class="quick-service-dialog" aria-label="Choose dine in or takeout">
+    <section class="quick-service-card" id="quick-service-choices">
+      <button type="button" data-fulfillment-choice="table"><span aria-hidden="true">🍽️</span><b>Dine in</b></button>
+      <button type="button" data-fulfillment-choice="pickup"><span aria-hidden="true">🛍️</span><b>Takeout</b></button>
+    </section>
+  </dialog>
   <dialog id="table-session-dialog" class="table-entry" aria-labelledby="table-entry-title">
     <section class="table-entry-card" id="table-entry-form-view">
       <div id="table-choice-view"><p class="eyebrow">QRK TABLE</p><h1 id="table-entry-title">Choose your table</h1><p id="table-entry-intro">Select the table where you are seated.</p><div class="table-choice-grid" id="table-choice-grid" role="list"></div><p class="table-choice-help"><span></span> Available <span></span> Open — request to join</p></div>
@@ -42,15 +59,20 @@
   <div class="customer-layout">
   <main id="menu-content">
     <section class="restaurant" aria-labelledby="restaurant-name">
-      <div><p class="eyebrow">DINE IN OR PICKUP</p><h1 id="restaurant-name">Kusina Manila</h1><p>Filipino favorites, made with love.</p><span>PHP ₱ <i>•</i> Ermita, Manila</span></div>
-      <div class="restaurant-mark" aria-hidden="true">K.</div>
+      <div class="restaurant-visual">
+        <img class="restaurant-banner" id="restaurant-banner" src="/assets/businesses/kusina-manila-banner.webp" alt="" width="1440" height="480">
+        <div class="restaurant-profile">
+          <div class="restaurant-mark" aria-hidden="true">K.</div>
+          <div class="restaurant-copy"><h1 id="restaurant-name">Kusina Manila</h1><p>Filipino favorites, made with love.</p><span>PHP ₱ <i>•</i> Ermita, Manila</span></div>
+        </div>
+      </div>
     </section>
     <section class="notice hidden" id="store-notice" aria-live="polite"></section>
-    <section class="active-order hidden" id="active-order" aria-live="polite"></section>
-    <section class="menu" aria-labelledby="menu-title">
-      <div class="menu-heading"><div><p class="eyebrow">TODAY'S MENU</p><h2 id="menu-title">What would you like?</h2></div><span id="item-count">6 items</span></div>
-      <div class="search-wrap"><label class="sr-only" for="menu-search">Search the menu</label><input id="menu-search" type="search" placeholder="Search dishes and drinks" autocomplete="off"><span aria-hidden="true">⌕</span></div>
-      <nav class="categories" id="categories" aria-label="Menu categories"></nav>
+    <section class="menu" aria-label="Menu">
+      <div class="menu-tools">
+        <div class="search-wrap"><label class="sr-only" for="menu-search">Search the menu</label><input id="menu-search" type="search" placeholder="Search dishes and drinks" autocomplete="off"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7"></circle><path d="m16.2 16.2 4.3 4.3"></path></svg></span></div>
+        <nav class="categories" id="categories" aria-label="Menu categories"></nav>
+      </div>
       <div id="menu-sections"></div>
       <section class="empty-state hidden" id="menu-empty" aria-live="polite"><div aria-hidden="true">⌕</div><h3>No menu items found</h3><p>Try another search or clear the search to browse everything.</p><button class="text-button" id="clear-search" type="button">Clear search</button></section>
     </section>
@@ -93,8 +115,8 @@
         <div id="cart-items"></div>
         <section class="cart-empty hidden" id="cart-empty"><div aria-hidden="true">○</div><h3>Your order is empty</h3><p>Add a favorite from the menu to get started.</p><button class="secondary-button" value="cancel">Browse menu</button></section>
         <section id="checkout-fields">
-          <fieldset class="fulfillment"><legend>How will you get your order?</legend><label><input type="radio" name="fulfillment" value="table" checked><span><b>Dine in</b><small>We'll bring it to your table</small></span></label><label><input type="radio" name="fulfillment" value="pickup"><span><b>Pickup</b><small>Collect at the counter</small></span></label></fieldset>
-          <label class="field-label" id="table-label" for="table-number">Table number</label><input id="table-number" type="text" inputmode="numeric" maxlength="3" placeholder="Example: 12">
+          <fieldset class="fulfillment"><legend>Pickup or serve at table?</legend><label><input type="radio" name="fulfillment" value="table" checked><span><b>Serve at table</b><small>Choose your table below</small></span></label><label><input type="radio" name="fulfillment" value="pickup"><span><b>Pickup</b><small>Collect at the counter</small></span></label></fieldset>
+          <div class="review-table-field" id="review-table-field"><span class="field-label" id="table-label">Choose your table</span><input id="table-number" type="hidden"><div class="table-number-panel" id="review-table-panel"><div class="table-number-grid" id="review-table-grid" role="radiogroup" aria-labelledby="table-label"></div><p id="selected-review-table" aria-live="polite">Select a table number</p></div></div>
           <label class="field-label" for="customer-label">Name for the order <span>Optional</span></label><input id="customer-label" type="text" maxlength="40" placeholder="Example: Mia">
           <label class="field-label" for="order-notes">Order notes <span>Optional</span></label><textarea id="order-notes" rows="2" maxlength="180" placeholder="Anything the staff should know?"></textarea>
           <p class="form-error hidden" id="checkout-error" role="alert"></p>
@@ -105,32 +127,26 @@
     </form>
   </dialog>
 
-  <dialog id="payment-dialog" class="sheet payment-sheet" aria-labelledby="payment-title">
+  <dialog id="payment-dialog" class="sheet payment-sheet" aria-label="Choose payment method">
     <div class="sheet-card">
-      <header class="sheet-header"><div><p class="eyebrow">PAYMENT</p><h2 id="payment-title">How would you like to pay?</h2></div><button class="icon-button" id="close-payment" type="button" aria-label="Back to order review">×</button></header>
+      <header class="payment-header"><button class="payment-back" id="close-payment" type="button"><span aria-hidden="true">←</span> Back to order</button></header>
       <div class="sheet-content payment-content">
-        <p class="payment-intro">Choose a payment method to continue your order.</p>
         <div class="payment-cards">
-          <button class="payment-card" id="pay-at-counter" type="button"><span><b>Pay at the counter</b><small>Staff will confirm your order before preparing it.</small></span><strong id="payment-total">₱0</strong></button>
-          <button class="payment-card disabled-choice" type="button" disabled><span><b>Cashless</b><small>Coming after the pilot</small></span><strong>Unavailable</strong></button>
+          <button class="payment-card" id="pay-at-counter" type="button"><span class="payment-emoji" aria-hidden="true">💵</span><b>Pay at the counter</b></button>
+          <button class="payment-card disabled-choice" type="button" disabled><span class="payment-badge">Soon</span><span class="payment-emoji" aria-hidden="true">💳</span><b>Cashless</b></button>
         </div>
-        <p class="demo-note">No payment is taken in this pilot.</p>
       </div>
     </div>
   </dialog>
 
-  <dialog id="confirmation-dialog" class="sheet confirmation-sheet" aria-labelledby="confirmation-title">
+  <dialog id="confirmation-dialog" class="sheet confirmation-sheet" aria-labelledby="confirmation-title" tabindex="-1">
     <div class="sheet-card">
       <div class="sheet-content confirmation-content">
-        <div class="success-mark" aria-hidden="true">✓</div><p class="eyebrow">ORDER SENT</p><h2 id="confirmation-title">Waiting for staff acceptance</h2>
-        <div class="order-number"><span>ORDER NUMBER</span><strong id="confirmation-number"></strong></div>
-        <div class="verification-card"><div id="verification-mark" class="verification-mark" aria-hidden="true"></div><div><span>Verification code</span><strong id="confirmation-token"></strong><small>Staff can match this code on this device.</small></div></div>
-        <div id="order-progress" class="order-progress"></div>
-        <p class="demo-note" id="confirmation-data-note">This is a local development order, not a production order.</p><p class="form-error hidden" id="order-error" role="alert"></p>
+        <p class="eyebrow">ORDER SENT</p>
+        <div class="order-number"><h2 id="confirmation-title">ORDER NUMBER</h2><strong id="confirmation-number"></strong></div>
       </div>
-      <div class="sheet-action confirmation-actions"><button class="secondary-button" id="close-confirmation" type="button">Back to menu</button><button class="primary-button" id="refresh-status" type="button">Refresh status</button></div>
     </div>
   </dialog>
-  <template id="dish-template"><article class="dish"><button type="button"><div class="photo"><img alt="" width="640" height="480"><span class="sold-label hidden">Sold out</span></div><div class="dish-copy"><h4></h4><p></p><strong></strong></div></button></article></template>
+  <template id="dish-template"><article class="dish"><button class="dish-hit" type="button"><div class="photo"><img alt="" width="640" height="480"><span class="sold-label hidden">Sold out</span></div><div class="dish-copy"><div class="dish-description"><h4></h4><p></p></div><div class="dish-actions"><strong></strong><span class="dish-cta" aria-hidden="true"><span>+</span> Add</span></div></div></button></article></template>
 </body>
 </html>

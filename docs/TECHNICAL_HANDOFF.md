@@ -25,7 +25,7 @@ The layered CSS reflects iterative design work. Consolidation is reasonable afte
 
 ## Data and state
 
-Current item fields: `id`, `name`, `description`, `price`, `category`, `options`, `available`, `hidden`, `photo`.
+Current item fields: `id`, `name`, `description`, `price`, `category`, `available`, `hidden`, `photo`. Browser menu state also contains `optionGroups`; each group records `id`, `name`, `scope`, its category or item target when applicable, `required`, `multiple`, and `choices` with IDs, names and peso price adjustments.
 
 Categories are name strings. Item IDs for additions use `Date.now()`. Photos are local sample paths or temporary data URLs. Rendering is rebuilt from state with HTML escaping applied to text/attributes. This state is not a production data model: use stable database IDs, integer minor units for money, server validation and tenant-scoped queries in the durable implementation.
 
@@ -74,7 +74,7 @@ Supabase is now the confirmed initial backend target, not a connected service. K
 | Order (later) | Business ID, status, idempotency key, table/session context, authoritative totals |
 | Order line (later) | Item/variation references plus immutable ordered name/price/options snapshot |
 
-Variations/add-ons are later schema candidates when the pilot requires them. Do not silently treat every item as having variations.
+The browser preview now models business-, category-, and item-scoped variations/add-ons explicitly. The provider schema and public-menu RPC already expose item option groups, but Menu Studio does not yet write these changes to Supabase; provider-backed authoring, validation and publication remain part of the hosted milestone.
 
 ## Production boundaries
 

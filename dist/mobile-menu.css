@@ -64,7 +64,7 @@ button:disabled{cursor:wait;opacity:.6}
  .mobile-category-nav{position:sticky;top:0;z-index:1;display:flex;align-items:center;gap:10px;background:#fff;padding:12px 18px 14px;border-bottom:1px solid #f1f2f5}
  #mobile-category-tabs{display:flex;gap:8px;align-items:center;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
  #mobile-category-tabs::-webkit-scrollbar{display:none}
- #mobile-category-tabs button{min-height:44px;padding:9px 16px;border:1px solid #e9ebf0;border-radius:8px;background:white;color:#808898;font-size:14px;white-space:nowrap}
+ #mobile-category-tabs button{display:flex;align-items:center;justify-content:center;min-width:112px;min-height:44px;padding:9px 18px;border:1px solid #e9ebf0;border-radius:999px;background:white;color:#808898;font-size:14px;white-space:nowrap}
  #mobile-category-tabs button[aria-pressed=true]{background:#fff0e9;border-color:#ffe1d3;color:#de5728;font-weight:600}
  .mobile-add-category{width:44px;height:44px;border:1px dashed #d9dee6;border-radius:8px;background:white;color:#8b94a3;display:grid;place-items:center;flex-shrink:0}
  #mobile-menu-sections{padding:0 18px}
@@ -202,3 +202,4 @@ button:disabled{cursor:wait;opacity:.6}
 .mobile-table-group-title{background:var(--gray-50);border-color:var(--gray-200)}
 #mobile-add-item{background:var(--brand-teal);color:var(--color-black);box-shadow:0 7px 20px var(--brand-ring)}
 .phone-tab[aria-pressed=true]{background:var(--brand-soft);border-color:var(--brand-400);color:var(--brand-600)}
+.phone-tab{display:flex;align-items:center;justify-content:center;min-width:88px;min-height:44px;border-radius:999px}

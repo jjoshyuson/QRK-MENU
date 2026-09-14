@@ -4,9 +4,25 @@ As of September 14, 2026:
 
 - Kusina Manila's responsive test seed now contains 24 products across eight categories, with exactly three products in each category and only the existing lightweight local food photos. The shared Menu Studio/customer seed and development-client preset carry the same category/product coverage.
 
+- Customer-menu performance remediation includes the main page and all customer popups: dish photos lazy-decode, costly page scroll effects are removed, every dialog uses static dimming instead of live backdrop blur, and Menu Studio optimizes new and existing browser-local uploads while retaining originals in IndexedDB.
+
+- The main integration adds a business-profile table count, defaulting Salamat to 20, plus automatic quick-card (1–10) and compact number-grid (11+) table selection. Quick order review no longer asks customers to type a table number; table-QR links support and lock multi-digit selections. Per-table QR output remains a test placeholder, not production identity.
+
+- The September 14 GitHub Pages cache freeze is fixed and deployed. Commit-versioned JavaScript/CSS references plus network-first service-worker handling for code prevent mixed-release modules; the previously broken normal Brave profile recovered on reload and navigated without console errors.
+
+- The shared Button component now uses the approved pill hierarchy across standard and customer actions while continuing to inherit the active global theme accent. Source variables, catalog specimens and Inspect Element variants are synchronized.
+
+- Business Profile and the public customer route now share a business-scoped public-menu background contract with upload, remove/reset, and a neutral surface-veil control. Kusina is seeded with its bundled illustrated wallpaper at 72%; other businesses remain image-free until customized.
+
+- Each of the five development client profiles now has a distinct scannable test QR in Business Profile. It targets that client's `/menu/?business=<slug>` route and can be opened, copied, or downloaded. QR images use a temporary HTTPS generator; permanent production URLs and first-party generation remain Stage 2 work.
+
+- The component inventory is now backed by a shared production source of truth: `dist/ui-components.css` supplies reusable variables/visual rules to every operational route and `/components/`, while `dist/ui-components.js` gives initial and dynamically rendered elements stable Inspect Element names and variants. The catalog covers 15 UI families and excludes landing pages.
+
+- A shared PWA shell is implemented locally across owner, client/admin and customer routes. Manifest, standalone metadata, touch behavior and the lightweight service-worker cache pass static/base-path validation; publication and physical-device installed-mode verification remain pending.
+
 - Public customer-menu responsive redesign is implemented locally: desktop adds a sticky order summary and wider order review, tablet uses a three-column menu, and phone preserves its compact two-column menu and floating order action. Final light/dark and representative-width verification is recorded in `docs/BUILD_STATUS.md`; publication remains pending.
 
-- Kusina Manila remains QRK Quick and uses a guided payment-first checkout: `Pay order` opens a separate two-card payment dialog, with pay-at-counter enabled and Cashless disabled for the pilot.
+- Kusina Manila remains QRK Quick and uses a guided payment-first checkout: `Pay order` opens a minimal dialog with `💵 Pay at the counter` and disabled `💳 Cashless` cards.
 
 - The public landing-page set at `/landing/` has been corrected locally to preserve the three supplied HTML designs. The revised pages retain their original structure, visuals, motion and content depth; use Manrope/DM Sans, official QRK assets, global-theme accent colors, and stronger Quick/Table hooks. Local 390px, 768px, and 1280px overflow checks passed; corrected deployment and user review remain open.
 
@@ -14,7 +30,7 @@ As of September 14, 2026:
 
 - Confirmation-gated Table requests now support customer cancellation and automatic expiry. The default acceptance wait is 90 seconds, client setup can configure 30–600 seconds, and terminal requests no longer resolve as the device's current session.
 
-- The browser-preview Menu Studio is now the single source for the matching Customer Menu. Kusina defaults to the full six-item studio menu, edits persist per business, open customer tabs refresh on changes, and unavailable/hidden items are omitted. Durable cross-device publication still depends on the hosted backend milestone.
+- The browser-preview Menu Studio is now the single source for the matching Customer Menu. Kusina defaults to the full six-item studio menu, edits persist per business, open customer tabs refresh on changes, and unavailable/hidden items are omitted. Ordering option sets are configurable at business, category and item scope and inherit into customer item choices with prices and selection rules. Durable provider-backed authoring and cross-device publication still depend on the hosted backend milestone.
 
 - Payment First is implemented as an approved local pilot simulation for the `Restaurant · pay first` preset: cashless is visible but disabled, pay-at-counter is required, and received orders need explicit staff acceptance before Preparing. Payment execution and hosted payment metadata remain future work.
 
@@ -50,3 +66,8 @@ As of September 14, 2026:
 - The LAN order regression is fixed: Kusina `KM-1050` and Salamat `SL-0207` were submitted through the customer route and appeared in their authenticated Supabase staff queues. The six-table selection and host-controlled join flow also passed across separate browser device sessions. Table sessions use the local preview server only and reset when it restarts.
 
 Read `docs/PROGRESS_MAP.md` for milestone sequencing and `docs/BUILD_STATUS.md` for detailed evidence.
+## September 13, 2026 — QRK Quick service choice
+
+- Completed on `P/MENU/2`: configurable Dine in/Takeout entry dialog and fulfillment-aware Quick checkout.
+- Validation passed for automated checks, both customer paths, buffet isolation and representative responsive widths.
+- Business-facing controls for editing allowed fulfillment modes and real payment processing remain incomplete.

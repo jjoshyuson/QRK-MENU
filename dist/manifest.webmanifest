@@ -1,0 +1,38 @@
+{
+  "name": "QRK MENU",
+  "short_name": "QRK",
+  "description": "Manage, publish, and use QRK menus from one installed web app.",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "background_color": "#F7F9FC",
+  "theme_color": "#F7F9FC",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "assets/brand/qrk-mark.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Owner tools",
+      "short_name": "Owner",
+      "url": "./"
+    },
+    {
+      "name": "Customer menu",
+      "short_name": "Menu",
+      "url": "menu/"
+    },
+    {
+      "name": "QRK Admin",
+      "short_name": "Admin",
+      "url": "admin/"
+    }
+  ]
+}
