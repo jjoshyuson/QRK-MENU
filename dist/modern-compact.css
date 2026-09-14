@@ -44,8 +44,8 @@ body,.platform-admin-body,.app,.platform-workspace,.dashboard-page,.platform-con
  .mobile-menu-main{border:0!important}
  .mobile-menu-heading{padding-top:18px}
  .mobile-category-nav{top:6px;margin-inline:8px;padding:7px 8px;border:0;border-radius:12px;background:var(--glass-strong);backdrop-filter:saturate(1.25) blur(18px);-webkit-backdrop-filter:saturate(1.25) blur(18px)}
- #mobile-category-tabs button{border:0;border-radius:var(--compact-radius);background:transparent}
- #mobile-category-tabs button[aria-pressed=true]{border:0;background:var(--brand-soft);color:var(--brand-600)}
+ #mobile-category-tabs button{border:1px solid var(--line);border-radius:999px;background:transparent}
+ #mobile-category-tabs button[aria-pressed=true]{border-color:var(--brand-400);background:var(--brand-soft);color:var(--brand-600)}
  .mobile-add-category{border:0;border-radius:var(--compact-radius);background:var(--quiet-fill)}
  .mobile-dish-photo{border-radius:var(--compact-radius-sm)}
  .mobile-add-in-category{border:0;border-radius:var(--compact-radius);background:var(--quiet-fill)}

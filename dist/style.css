@@ -42,6 +42,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .outline{border-color:var(--gray-200);color:var(--gray-800)}
 .eyebrow,.category-tab.active{color:var(--brand-600)}
 .category-tab.active{border-color:var(--brand-teal)}
+
+/* Rounded category pills shared by the desktop Menu Studio filter. */
+.category-bar{gap:10px;padding-block:10px}
+.category-bar>div{gap:10px}
+.category-tab{display:inline-flex;align-items:center;justify-content:center;min-width:112px;min-height:44px;padding:8px 18px;border:1px solid var(--gray-200);border-radius:999px;background:var(--color-white);color:var(--gray-600)}
+.category-tab.active{border-color:var(--brand-400);background:var(--brand-soft);color:var(--brand-600)}
 .menu-mark{background:var(--surface-muted);border-color:var(--gray-200);color:var(--brand-600)}
 .search:focus-within{outline-color:var(--brand-500)}
 .item-stamp,.restaurant-monogram{background:var(--surface-muted);border-color:var(--gray-200);color:var(--gray-700)}

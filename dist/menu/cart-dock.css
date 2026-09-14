@@ -29,6 +29,21 @@
   box-shadow: 0 1px 0 color-mix(in srgb, var(--line) 72%, transparent);
 }
 
+/* Equal, fully rounded category controls matching Menu Studio. */
+.menu > .categories { gap: 10px; padding-block: 12px; }
+.menu > .categories a {
+  flex: 1 0 max-content;
+  justify-content: center;
+  min-width: 112px;
+  border-color: var(--line);
+  border-radius: 999px;
+}
+.menu > .categories a.active {
+  border-color: var(--brand-400, #ffb494);
+  background: var(--brand-soft, var(--orange-soft));
+  color: var(--brand-600, var(--orange-dark));
+}
+
 @media (min-width: 760px) {
   main { width: min(100%, 980px); }
   .dish-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }

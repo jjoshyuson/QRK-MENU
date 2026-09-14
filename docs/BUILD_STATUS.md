@@ -1,5 +1,11 @@
 # Build status
 
+## September 14, 2026 — Rounded category navigation pills
+
+- Restyled category navigation in Menu Studio, its embedded customer preview, and the public customer menu as fully rounded, centered pills matching the supplied reference.
+- Preserved the existing QRK theme tokens, active-state contrast, horizontal overflow behavior for long category lists, semantic selection state, and 44px touch targets.
+- Browser checks covered 390×844 phone, 768×1024 tablet, and 1280×800 desktop layouts with zero page-level horizontal overflow. Category selection remained functional in Menu Studio.
+
 ## September 13, 2026 — Customer category navbar sticky boundary
 
 - Removed the late compact-theme margins, rounded container, and top offset that made the public-menu category navigation appear suspended over menu items.
