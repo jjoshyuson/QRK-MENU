@@ -4,7 +4,7 @@ This file is the high-level route from the current prototype to a production QR 
 
 ## Current position
 
-The owner, client/admin and customer surfaces now share a locally implemented PWA shell. They can use standalone install metadata and app-like touch behavior, including double-tap suppression without disabling pinch zoom. An unlinked `/components/` route now inventories their reusable UI and representative states for development reference. Publication and physical-device install/offline verification remain pending.
+The owner, client/admin and customer surfaces now share a locally implemented PWA shell. They can use standalone install metadata and app-like touch behavior, including double-tap suppression without disabling pinch zoom. An unlinked `/components/` route now inventories their reusable UI and representative states for development reference. The approved operational typography is also centralized there: Inter drives interface content and Source Serif 4 is limited to customer-facing brand/menu headings. Publication and physical-device install/offline verification remain pending.
 
 Menu Studio now turns the customer route's previously hard-coded choices into browser-persisted option sets. Owners can define whole-business upsells, category defaults and item-specific choices with price and selection rules. The immediate backend path is still to connect authoring to the existing provider option-group schema and verify cross-device publication before making durability claims.
 

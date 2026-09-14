@@ -1,5 +1,13 @@
 # Build status
 
+## September 14, 2026 — Shared Inter and Source Serif typography
+
+- Adopted the approved option 4 pairing: Inter for interface, body, controls and operational content; Source Serif 4 for customer-facing restaurant and menu headings.
+- Centralized both font roles as `--font-interface` and `--font-menu-display` in `dist/ui-components.css`, which remains the visual source loaded by the owner, Client Admin, Client Staff, QRK Admin, customer-menu and component-catalog routes.
+- Updated the component catalog typography specimen and rotated the shared stylesheet and PWA cache versions so returning clients receive the new typography.
+- Preserved the standalone cinematic landing pages, which remain intentionally outside the operational component source and retain their existing authored typography.
+- Validation: pre-change and post-change `npm run check` passed. Desktop browser review confirmed Source Serif 4 on the Kusina Manila identity and menu hierarchy, Inter on search, tabs, prices and the order summary, and no visible layout regression. Automated phone/tablet viewport control was unavailable in the current browser surface; those representative visual checks remain part of release review.
+
 ## September 13, 2026 — Shared pill-button hierarchy
 
 - Updated the shared Button source so standard and customer actions use the requested pill silhouette while preserving 44px standard and 50px customer touch targets.
