@@ -20,6 +20,8 @@ assert.match(customerCss, /\.dish-cta\s*\{[^}]*padding:\s*\.38em \.72em[^}]*bord
 assert.match(customerCss, /\.dish-cta > span\s*\{[^}]*place-items:\s*center[^}]*line-height:\s*1/s);
 assert.match(customerCss, /\.menu-section \.dish\s*\{[^}]*border:\s*0/s);
 assert.match(customerCss, /\.menu-tools \.categories\s*\{[^}]*grid-template-columns:\s*repeat\(3,minmax\(0,1fr\)\)/s);
+assert.match(customerCss, /\.menu-tools \.search-wrap #menu-search\s*\{[^}]*border:\s*0/s);
+assert.match(customerCss, /#menu-search:focus-visible\s*\{[^}]*outline:\s*0[^}]*box-shadow:\s*0 5px 18px/s);
 assert.match(customerHtml, /<svg viewBox="0 0 24 24" fill="none">/);
 assert.match(customerJs, /card\.querySelector\('p'\)\.textContent=item\.description/);
 assert.match(customerJs, /\$\('#item-description'\)\.textContent=item\.description/);
