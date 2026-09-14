@@ -19,8 +19,8 @@
   <link rel="stylesheet" href="/menu/brand.css?v=2">
   <link rel="stylesheet" href="/menu/table-session.css?v=1">
   <link rel="stylesheet" href="/reference-theme.css?v=2">
-  <link rel="stylesheet" href="/modern-compact.css?v=1">
-  <link rel="stylesheet" href="/menu/cart-dock.css?v=9">
+  <link rel="stylesheet" href="/modern-compact.css?v=2">
+  <link rel="stylesheet" href="/menu/cart-dock.css?v=10">
   <link rel="stylesheet" href="/menu/payment-first.css?v=1">
   <link rel="stylesheet" href="/menu/order-confirmation.css?v=1">
   <link rel="stylesheet" href="/menu/quick-service.css?v=1">
@@ -70,7 +70,7 @@
     <section class="notice hidden" id="store-notice" aria-live="polite"></section>
     <section class="menu" aria-label="Menu">
       <div class="menu-tools">
-        <div class="search-wrap"><label class="sr-only" for="menu-search">Search the menu</label><input id="menu-search" type="search" placeholder="Search dishes and drinks" autocomplete="off"><span aria-hidden="true">⌕</span></div>
+        <div class="search-wrap"><label class="sr-only" for="menu-search">Search the menu</label><input id="menu-search" type="search" placeholder="Search dishes and drinks" autocomplete="off"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7"></circle><path d="m16.2 16.2 4.3 4.3"></path></svg></span></div>
         <nav class="categories" id="categories" aria-label="Menu categories"></nav>
       </div>
       <div id="menu-sections"></div>
@@ -115,8 +115,8 @@
         <div id="cart-items"></div>
         <section class="cart-empty hidden" id="cart-empty"><div aria-hidden="true">○</div><h3>Your order is empty</h3><p>Add a favorite from the menu to get started.</p><button class="secondary-button" value="cancel">Browse menu</button></section>
         <section id="checkout-fields">
-          <fieldset class="fulfillment"><legend>Pickup or serve at table?</legend><label><input type="radio" name="fulfillment" value="table" checked><span><b>Serve at table</b><small>Enter your table below</small></span></label><label><input type="radio" name="fulfillment" value="pickup"><span><b>Pickup</b><small>Collect at the counter</small></span></label></fieldset>
-          <label class="field-label" id="table-label" for="table-number">Table number</label><input id="table-number" type="text" inputmode="numeric" maxlength="3" placeholder="Example: 12">
+          <fieldset class="fulfillment"><legend>Pickup or serve at table?</legend><label><input type="radio" name="fulfillment" value="table" checked><span><b>Serve at table</b><small>Choose your table below</small></span></label><label><input type="radio" name="fulfillment" value="pickup"><span><b>Pickup</b><small>Collect at the counter</small></span></label></fieldset>
+          <div class="review-table-field" id="review-table-field"><span class="field-label" id="table-label">Choose your table</span><input id="table-number" type="hidden"><div class="table-number-panel" id="review-table-panel"><div class="table-number-grid" id="review-table-grid" role="radiogroup" aria-labelledby="table-label"></div><p id="selected-review-table" aria-live="polite">Select a table number</p></div></div>
           <label class="field-label" for="customer-label">Name for the order <span>Optional</span></label><input id="customer-label" type="text" maxlength="40" placeholder="Example: Mia">
           <label class="field-label" for="order-notes">Order notes <span>Optional</span></label><textarea id="order-notes" rows="2" maxlength="180" placeholder="Anything the staff should know?"></textarea>
           <p class="form-error hidden" id="checkout-error" role="alert"></p>

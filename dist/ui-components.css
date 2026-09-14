@@ -41,6 +41,9 @@
   --component-button-subtle-bg:var(--surface-muted);
   --component-button-disabled-bg:var(--surface-muted);
   --component-button-disabled-fg:var(--muted);
+  --component-menu-control-bg:color-mix(in srgb,var(--surface) 96%,transparent);
+  --component-menu-control-border:color-mix(in srgb,var(--line) 88%,var(--ink) 12%);
+  --component-menu-active-bg:var(--brand-soft);
 }
 
 /* Typography foundation: one interface face, with serif reserved for customer-facing

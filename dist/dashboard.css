@@ -1,3 +1,4 @@
+@import url('./table-picker.css?v=1');
 /* Business Dashboard UI layer. The app remains a static, browser-memory preview. */
 .sidebar nav{display:flex;flex-direction:column;gap:4px}
 .sidebar nav button{background:transparent;color:#b9c0cf;text-align:left;min-height:44px}

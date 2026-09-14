@@ -1,6 +1,6 @@
 const STORAGE_KEY='qrk_demo_branding_v1';
 const HEX=/^#[0-9a-f]{6}$/i;
-const DEFAULTS={businessName:'Kusina Manila',businessSlug:'kusina-manila',primary:'#0fb9c0',nav:'#0b0c0e',logoDataUrl:''};
+const DEFAULTS={businessName:'Kusina Manila',businessSlug:'kusina-manila',primary:'#0fb9c0',nav:'#0b0c0e',logoDataUrl:'',tableCount:6};
 const DEFAULT_MENU_BACKGROUND=Object.freeze({image:'',surfaceOpacity:.72});
 const KUSINA_MENU_BACKGROUND='/assets/businesses/kusina-manila-menu-background.jpg';
 
@@ -20,7 +20,7 @@ const contextKey=context=>String(context?.businessSlug||context?.businessId||DEF
 
 function readAll(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}')}catch{return{}}}
 function normalizeMenuBackground(value,slug){const source=value&&typeof value==='object'?value:{},image=Object.prototype.hasOwnProperty.call(source,'image')?String(source.image||''):(slug==='kusina-manila'?KUSINA_MENU_BACKGROUND:DEFAULT_MENU_BACKGROUND.image),opacity=Number(source.surfaceOpacity);return{image,surfaceOpacity:Number.isFinite(opacity)?Math.max(.4,Math.min(.95,opacity)):DEFAULT_MENU_BACKGROUND.surfaceOpacity}}
-export function getBusinessBrand(context={}){const saved=readAll()[contextKey(context)]||{},businessSlug=saved.businessSlug||context.businessSlug||DEFAULTS.businessSlug;return{...DEFAULTS,...saved,businessName:saved.businessName||context.businessName||DEFAULTS.businessName,businessSlug,publicMenuBackground:normalizeMenuBackground(saved.publicMenuBackground,businessSlug)}}
+export function getBusinessBrand(context={}){const saved=readAll()[contextKey(context)]||{},businessSlug=saved.businessSlug||context.businessSlug||DEFAULTS.businessSlug,tableCount=Number(saved.tableCount??(businessSlug==='salamat'?20:DEFAULTS.tableCount));return{...DEFAULTS,...saved,businessName:saved.businessName||context.businessName||DEFAULTS.businessName,businessSlug,tableCount:Number.isInteger(tableCount)?Math.max(1,Math.min(200,tableCount)):DEFAULTS.tableCount,publicMenuBackground:normalizeMenuBackground(saved.publicMenuBackground,businessSlug)}}
 export function saveBusinessBrand(context,brand){const all=readAll(),next={...getBusinessBrand(context),...brand,updatedAt:new Date().toISOString()};all[contextKey(context)]=next;localStorage.setItem(STORAGE_KEY,JSON.stringify(all));return next}
 export function themeValues(brand){const primary=HEX.test(brand.primary)?brand.primary:DEFAULTS.primary,nav=safeNav(HEX.test(brand.nav)?brand.nav:DEFAULTS.nav);return{primary,primaryStrong:readableAccent(primary),primarySoft:mix(primary,[255,255,255],.9),primaryRing:`rgba(${hexToRgb(primary).join(',')},.28)`,primaryForeground:readableOn(primary),nav}}
 export function applyBusinessBrand(brand,root=document.documentElement){

@@ -1,5 +1,14 @@
 # Build status
 
+## September 14, 2026 — Public menu search, category pills, and borderless cards
+
+- Restyled the sticky customer-menu toolbar as one responsive unit: a pill-shaped search field with a left-aligned vector icon and three equal category pills below it.
+- Inactive categories keep a subtle neutral outline; the active category uses a soft theme-accent fill without a heavy border.
+- Removed dark outlines from customer dish cards and from the non-interactive `+ Add` cue while retaining whole-card button semantics and visible keyboard focus.
+- Reduced the full `+ Add` cue by 10% through its relative type scale and centered the plus glyph and label on the same optical line.
+- Updated the component catalog specimen and added shared menu-control tokens so the reference and public route stay aligned.
+- Validation: `npm run check` and `git diff --check` passed. Browser checks at 390×844, 768×1024, and 1440×900 confirmed the 999px search radius, three equal category controls, zero-pixel dish/CTA borders, the expected two/three-column menu layouts, desktop order summary, and no horizontal overflow. The reduced cue remained centered at every width with a measured zero-pixel vertical center offset for the plus glyph.
+
 ## September 14, 2026 — Desktop Menu Studio photo thumbnails
 
 - Desktop Menu Studio item rows now render each item's saved photo in the existing thumbnail slot instead of always showing generated initials.
@@ -13,6 +22,14 @@
 - Updated the component catalog typography specimen and rotated the shared stylesheet and PWA cache versions so returning clients receive the new typography.
 - Preserved the standalone cinematic landing pages, which remain intentionally outside the operational component source and retain their existing authored typography.
 - Validation: pre-change and post-change `npm run check` passed. Desktop browser review confirmed Source Serif 4 on the Kusina Manila identity and menu hierarchy, Inter on search, tabs, prices and the order summary, and no visible layout regression. Automated phone/tablet viewport control was unavailable in the current browser surface; those representative visual checks remain part of release review.
+
+## September 14, 2026 — configurable numbered table picker
+
+- Business Profile now saves a browser-local table count from 1–200; Salamat defaults to 20 for review.
+- Table service uses the existing roomy quick cards at 10 tables or fewer and switches automatically to a compact five-column, calendar-inspired glass number grid at 11 or more.
+- Quick order review replaces manual table entry with the same numbered selection model. QRK Table visits lock the chosen table, and table-specific test links now accept multi-digit destinations such as `?business=salamat&table=20`.
+- Table-mode Business Profile includes a per-table QR preview. It is explicitly placeholder routing built on the current test QR generator; production QR identity and lifecycle rules remain unresolved.
+- Validation: `npm run check` and `git diff --check` pass. Browser review verified Salamat's 20-table grid, table 20 selection, the multi-digit table-QR route, and Kusina's six-card order-review picker at the available browser viewport. Live Pages verification also caught and corrected repository-base-relative stylesheet loading. Exact device-emulated 390/768/1280 capture was not available in this session.
 
 ## September 14, 2026 — business-scoped public menu backgrounds
 
@@ -60,6 +77,11 @@
 - `Download QR`, `Open customer view`, and `Copy link` use the same profile-specific destination. The test image is generated over HTTPS by the goQR API; production QR generation and the permanent public domain remain part of the future public-menu/QR milestone.
 - Local phone scanning requires opening the dashboard through `npm run start:lan` and the computer's LAN address. A QR created from `127.0.0.1` is only reachable on the same computer.
 - Validation: `npm run check` passed, including the new five-profile URL contract; `node scripts/build-pages.mjs` passed; Kusina Manila's QR rendered in the Business Profile card and exposed the expected encoded customer URL in browser review.
+## September 14, 2026 — Rounded category navigation pills
+
+- Restyled category navigation in Menu Studio, its embedded customer preview, and the public customer menu as fully rounded, centered pills matching the supplied reference.
+- Preserved the existing QRK theme tokens, active-state contrast, horizontal overflow behavior for long category lists, semantic selection state, and 44px touch targets.
+- Browser checks covered 390×844 phone, 768×1024 tablet, and 1280×800 desktop layouts with zero page-level horizontal overflow. Category selection remained functional in Menu Studio.
 
 ## September 13, 2026 — Customer category navbar sticky boundary
 

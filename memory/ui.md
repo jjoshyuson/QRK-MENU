@@ -13,7 +13,8 @@
 - Canonical transparent brand assets live in `dist/assets/brand/`: `qrk-mark.png` for favicon/icon use, `qrk-wordmark.png` for text-only use, and `qrk-logo.png` for the combined lockup. They are cleaned extractions of the approved generated artwork; do not replace them with hand-drawn approximations.
 - Dish tiles prioritize photo, name and PHP price. Descriptions remain editable but are not shown on compact tiles.
 - Desktop Menu Studio rows use the item's saved photo in their thumbnail slot and fall back to generated initials only when the item has no photo.
-- Public customer dish cards are the semantic ordering buttons: selecting anywhere on an available card opens its item sheet, with visible focus around the whole card. The lower area keeps name/two-line description on the left and price on the right; the nearby dark-text `+ Add` pill is a non-interactive visual cue sized at `0.8em`, so its text, plus, gaps, and `em` padding scale together at 80% of the surrounding type. Menu Studio limits new or edited product descriptions to 140 characters with a live counter; existing longer stored descriptions are not silently truncated. Category item counts remain hidden from the browsing grid.
+- Public customer dish cards are the semantic ordering buttons: selecting anywhere on an available card opens its item sheet, with visible focus around the whole card. The lower area keeps name/two-line description on the left and price on the right; the nearby dark-text `+ Add` pill is a non-interactive visual cue sized at `0.72em`, so its centered text, plus, gaps, and `em` padding scale together at 72% of the surrounding type. Menu Studio limits new or edited product descriptions to 140 characters with a live counter; existing longer stored descriptions are not silently truncated. Category item counts remain hidden from the browsing grid.
+- The public menu toolbar uses a pill search field with a left vector icon and three equal category pills. Inactive category pills retain a subtle neutral outline; active state uses a soft accent fill. Customer dish cards and the `+ Add` cue are borderless, while whole-card keyboard focus remains visible.
 - Photo editor mode omits the restaurant identity header. Customer preview restores that header and hides item edit, availability and add controls, but this is not an authorization boundary.
 - Mobile/customer category tabs jump to menu sections and follow scrolling. Empty categories appear for owners but not customers. Desktop management retains its `All items` filter.
 - On the public customer route, category navigation is a flush, full-width sticky navbar at viewport top while the menu section is active. It has no floating margin, rounded outer container, or top gap, and returns to its normal place beneath menu controls when scrolling upward.
@@ -22,6 +23,7 @@
 - Banner, profile logo and business identity copy belong to one shared parallax layer; do not animate the banner independently from the profile content.
 - The public menu browsing surface can use a business-scoped background image with a 40–95% neutral surface veil. Kusina defaults to a purpose-built warm Filipino illustrated wallpaper at 72%; the identity banner remains a separate visual layer.
 - Responsive Menu Studio category tabs keep their natural left-to-right alignment while the active tab is fully visible. They recenter the active tab only after it becomes clipped or moves outside the visible horizontal strip.
+- Menu Studio, its embedded customer preview, and the public customer menu use fully rounded category pills with centered labels, outlined inactive states, a soft brand-selected state, and at least 44px interactive targets.
 - Preserve item/category creation, item editing/deletion, availability, menu rename and photo selection/removal flows.
 - Desktop now opens to a balanced Business Dashboard overview with routes for Business profile, Menu Studio, Staff access, Orders and Settings.
 - Phone/tablet opens to the responsive Dashboard; the navigation drawer switches to the separate Menu Studio and back to Dashboard.
@@ -54,6 +56,7 @@
 
 - QRK Table staff use a `Tables` tab with six narrow operational cards. Pending requests can be accepted; occupied cards are muted through shared theme tokens and expose `Table cleaned`, which returns the table to Available in the local preview.
 - The Tables tab's normal badge counts occupied tables. A separate high-contrast red badge with white text counts pending table and join requests and is hidden at zero; it does not inherit the customizable navigation-badge colors. Table controls rerender only when shared session state changes, keeping cleanup actions and customer session notices stable between polls.
+- Table choice density follows the saved business table count: 1–10 retains roomy quick cards; 11+ uses a compact, five-column glass number grid. Order review uses buttons instead of manual table entry. QR-selected Table visits present the chosen table as locked.
 
 See `docs/UI_AND_FLOWS.md` for detailed behavior and test cases.
 ## QRK Quick entry and checkout — September 13, 2026

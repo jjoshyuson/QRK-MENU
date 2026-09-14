@@ -4,6 +4,8 @@ As of September 13, 2026:
 
 - Customer-menu performance remediation includes the main page and all customer popups: dish photos lazy-decode, costly page scroll effects are removed, every dialog uses static dimming instead of live backdrop blur, and Menu Studio optimizes new and existing browser-local uploads while retaining originals in IndexedDB.
 
+- The main integration adds a business-profile table count, defaulting Salamat to 20, plus automatic quick-card (1–10) and compact number-grid (11+) table selection. Quick order review no longer asks customers to type a table number; table-QR links support and lock multi-digit selections. Per-table QR output remains a test placeholder, not production identity.
+
 - The September 14 GitHub Pages cache freeze is fixed and deployed. Commit-versioned JavaScript/CSS references plus network-first service-worker handling for code prevent mixed-release modules; the previously broken normal Brave profile recovered on reload and navigated without console errors.
 
 - The shared Button component now uses the approved pill hierarchy across standard and customer actions while continuing to inherit the active global theme accent. Source variables, catalog specimens and Inspect Element variants are synchronized.
