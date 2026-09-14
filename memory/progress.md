@@ -2,6 +2,8 @@
 
 As of September 13, 2026:
 
+- The local review branch adds a business-profile table count, defaulting Salamat to 20, plus automatic quick-card (1–10) and compact number-grid (11+) table selection. Quick order review no longer asks customers to type a table number; table-QR links support and lock multi-digit selections. Per-table QR output remains a test placeholder, not production identity.
+
 - Business Profile now owns a business-scoped public-menu background contract with upload, remove/reset, and a neutral surface-veil control. Kusina is seeded with its bundled illustrated food artwork at 72%; public `/menu/` rendering is the consumer integration boundary.
 
 - Each of the five development client profiles now has a distinct scannable test QR in Business Profile. It targets that client's `/menu/?business=<slug>` route and can be opened, copied, or downloaded. QR images use a temporary HTTPS generator; permanent production URLs and first-party generation remain Stage 2 work.

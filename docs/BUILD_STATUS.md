@@ -1,5 +1,13 @@
 # Build status
 
+## September 14, 2026 — configurable numbered table picker
+
+- Business Profile now saves a browser-local table count from 1–200; Salamat defaults to 20 for review.
+- Table service uses the existing roomy quick cards at 10 tables or fewer and switches automatically to a compact five-column, calendar-inspired glass number grid at 11 or more.
+- Quick order review replaces manual table entry with the same numbered selection model. QRK Table visits lock the chosen table, and table-specific test links now accept multi-digit destinations such as `?business=salamat&table=20`.
+- Table-mode Business Profile includes a per-table QR preview. It is explicitly placeholder routing built on the current test QR generator; production QR identity and lifecycle rules remain unresolved.
+- Validation: `npm run check` and `git diff --check` pass. Browser review verified Salamat's 20-table grid, table 20 selection, the multi-digit table-QR route, and Kusina's six-card order-review picker at the available browser viewport. Exact device-emulated 390/768/1280 capture was not available in this session.
+
 ## September 14, 2026 — business-scoped public menu backgrounds
 
 - Business Profile now lets each client choose or remove a customer-menu background and adjust a neutral readability veil from 40% to 95%.
