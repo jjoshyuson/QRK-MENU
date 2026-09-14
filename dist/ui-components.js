@@ -33,7 +33,7 @@
   ];
 
   const variantFor = (element) => {
-    const states = ['primary','outline','subtle','danger','active','selected','available','pending','occupied','warning','success','disabled','sold-out','hidden','priority'];
+    const states = ['primary','outline','subtle','danger','compact','active','selected','available','pending','occupied','warning','success','disabled','sold-out','hidden','priority'];
     const found = states.filter((state) => element.classList.contains(state));
     if (element.classList.contains('primary-button') && !found.includes('primary')) found.push('primary');
     if (element.classList.contains('secondary-button') && !found.includes('outline')) found.push('outline');

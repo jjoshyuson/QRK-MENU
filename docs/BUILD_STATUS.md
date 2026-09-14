@@ -857,3 +857,9 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Reworked each customer dish into a bordered, padded card with a clipped photo, aligned name and PHP price, concise two-line description, and a theme-driven `+ Add` action.
 - Reused the shared customer card and primary-button contracts. The Add action opens the existing item/options sheet, while unavailable dishes expose a disabled Sold out state with an accessible label.
 - `npm run check`, JavaScript syntax validation, and `git diff --check` passed. Automated checks cover the shared component and ordering contracts; final visual acceptance remains open in the existing local preview.
+
+## September 14, 2026 — Compact dish-card actions and description limit
+
+- Split the customer card beneath its full-width photo into a flexible description column and a compact action rail. The price now sits directly above a smaller Add button while the control retains a 44px minimum touch target.
+- Added a 140-character Menu Studio description limit, live count, accessible helper relationship, and submit guard. Existing stored descriptions remain intact until edited; customer cards visually clamp descriptions to two lines while item details retain the full saved copy.
+- Added an automated description/card contract check. `npm run check`, JavaScript syntax validation, `git diff --check`, and the existing local route response passed; final visual acceptance remains open in the local preview.
