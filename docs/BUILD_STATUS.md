@@ -882,4 +882,4 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 
 - Fixed a staging freeze where the service worker could combine a newly deployed `app.js` with an older cached imported module. The visible page rendered, but module initialization stopped before navigation handlers were attached.
 - GitHub Pages builds now give every local JavaScript/CSS entry and static JavaScript import the same commit-derived version. The service worker also fetches code and styles from the network first, with its cache used only as an offline fallback.
-- The PWA shell contract now guards both behaviors. Live deployment and normal-profile Brave recovery are the remaining completion checks.
+- The PWA shell contract guards both behaviors. `npm run check`, `git diff --check`, and a GitHub Pages-shaped build passed. Deployment run `34879939278` succeeded; the previously frozen normal-profile Brave tab recovered on reload, opened Kusina Manila, navigated to Menu Studio, and reported no console errors. Manual site-data deletion was not required.

@@ -2,6 +2,8 @@
 
 As of September 13, 2026:
 
+- The September 14 GitHub Pages cache freeze is fixed and deployed. Commit-versioned JavaScript/CSS references plus network-first service-worker handling for code prevent mixed-release modules; the previously broken normal Brave profile recovered on reload and navigated without console errors.
+
 - The shared Button component now uses the approved pill hierarchy across standard and customer actions while continuing to inherit the active global theme accent. Source variables, catalog specimens and Inspect Element variants are synchronized.
 
 - Business Profile and the public customer route now share a business-scoped public-menu background contract with upload, remove/reset, and a neutral surface-veil control. Kusina is seeded with its bundled illustrated wallpaper at 72%; other businesses remain image-free until customized.
