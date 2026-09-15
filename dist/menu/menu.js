@@ -113,8 +113,8 @@ function renderMenu(filter=''){
     section.innerHTML=`<div class="section-heading"><h3 id="${section.id}-title">${escapeText(category)}</h3></div><div class="dish-grid"></div>`;
     items.forEach(item=>{
       const card=$('#dish-template').content.firstElementChild.cloneNode(true);const cardButton=card.querySelector('.dish-hit');const img=card.querySelector('img');
-      if(item.photo){img.src=item.photo;img.alt=item.name;img.loading='lazy';img.decoding='async';img.fetchPriority='low'}else{img.remove();const photo=card.querySelector('.photo');photo.classList.add('no-photo');photo.textContent=item.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase()}card.querySelector('h4').textContent=item.name;card.querySelector('strong').textContent=format(item.price);card.querySelector('p').textContent=item.description;cardButton.setAttribute('aria-label',`Add ${item.name} to order`);
-      if(!item.available){card.classList.add('sold-out');card.querySelector('.sold-label').classList.remove('hidden');cardButton.disabled=true;card.querySelector('.dish-cta').textContent='Sold out';cardButton.setAttribute('aria-label',`${item.name}, sold out`)}else cardButton.addEventListener('click',()=>openItem(item));
+      if(item.photo){img.src=item.photo;img.alt=item.name;img.loading='lazy';img.decoding='async';img.fetchPriority='low'}else{img.remove();const photo=card.querySelector('.photo');photo.classList.add('no-photo');photo.textContent=item.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase()}card.querySelector('h4').textContent=item.name;card.querySelector('strong').textContent=format(item.price);cardButton.setAttribute('aria-label',`Add ${item.name} to order`);
+      if(!item.available){card.classList.add('sold-out');card.querySelector('.sold-label').classList.remove('hidden');cardButton.disabled=true;card.querySelector('.dish-cta').classList.add('hidden');cardButton.setAttribute('aria-label',`${item.name}, sold out`)}else cardButton.addEventListener('click',()=>openItem(item));
       section.querySelector('.dish-grid').append(card);
     });$('#menu-sections').append(section);
   });

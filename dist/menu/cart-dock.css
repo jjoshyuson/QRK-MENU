@@ -94,6 +94,7 @@
 }
 
 .menu-section .dish {
+  position: relative;
   display: flex;
   min-width: 0;
   height: 100%;
@@ -110,45 +111,34 @@
 .dish img { border-radius: 0; }
 .dish-hit { display: flex; height: 100%; flex-direction: column; border-radius: inherit; }
 .dish h4,.dish strong { font-size: 14px; }
-.dish-copy { display: grid; flex: 1; grid-template-columns: minmax(0, 1fr) auto; align-items: stretch; gap: 10px; padding: 10px 5px 5px; }
-.dish-description { min-width: 0; }
-.dish-copy p {
-  display: -webkit-box;
-  min-height: calc(2em * 1.4);
-  margin: 0;
-  overflow: hidden;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.4;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-.dish-actions { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: .5em; }
+.dish-copy { display: grid; flex: 1; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 10px; padding: 10px 5px 5px; }
 .dish-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: .45em;
-  padding: .38em .72em;
+  position: absolute;
+  z-index: 1;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  padding: 0;
   border: 0;
-  border-radius: 999em;
+  border-radius: 50%;
   background: linear-gradient(135deg, var(--brand-400), var(--brand-500));
   box-shadow: 0 6px 14px color-mix(in srgb, var(--brand-500) 22%, transparent);
   color: #111827;
-  font-size: .72em;
-  font-weight: 700;
+  font-size: 21px;
+  font-weight: 400;
   line-height: 1;
-  white-space: nowrap;
+  place-items: center;
+  pointer-events: none;
 }
-.dish-cta > span { display: inline-grid; place-items: center; font-size: 1.25em; font-weight: 300; line-height: 1; }
 
 @media (max-width: 600px) {
   .menu-section .dish { padding: 6px; border-radius: var(--component-radius-lg, 12px); }
   .dish .photo { border-radius: 10px; }
   .dish-copy { gap: 7px; padding: 8px 3px 3px; }
   .dish h4,.dish strong { font-size: 13px; }
-  .dish-copy p { font-size: 12px; }
-  .dish-actions { font-size: .92em; }
+  .dish-cta { top: 11px; right: 11px; width: 28px; height: 28px; font-size: 20px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

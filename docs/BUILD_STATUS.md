@@ -1,5 +1,11 @@
 # Build status
 
+## September 15, 2026 — Public menu card content simplification
+
+- Removed browsing-card descriptions and the visible `Add` label while preserving every stored description, description-based search, and the full description in the item detail/order sheet.
+- Kept each available dish as one full-card semantic ordering button with an item-specific accessible label, visible whole-card keyboard focus, and no nested interactive control. A compact non-interactive plus cue now sits at the card's top-right; sold-out cards retain their disabled label and hide the plus cue, while hidden items remain omitted.
+- Validation: the focused menu-card contract, `npm run check`, and `git diff --check` passed. Live browser checks at 320×700, 390×844, 768×1024, and 1440×900 confirmed two/three-column layouts, zero visible `Add` labels or browsing descriptions, no nested buttons, no horizontal overflow, and full-card targets above 44px. Keyboard Enter opened the item sheet with its full description intact.
+
 ## September 15, 2026 — Remember Client Workspace Tab
 
 - Client workspaces now remember the last permitted section selected by each business/user identity in the same browser. A genuinely unseen Client Admin still opens Dashboard; staff accounts retain the existing permission-based Orders/Menu fallback.

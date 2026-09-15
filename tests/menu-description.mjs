@@ -13,12 +13,10 @@ assert.match(app, /ITEM_DESCRIPTION_LIMIT=140/);
 assert.match(app, /field\.maxLength=ITEM_DESCRIPTION_LIMIT/);
 assert.match(app, /item-description-count/);
 assert.match(app, /description\.length>ITEM_DESCRIPTION_LIMIT/);
-assert.match(customerHtml, /class="dish-description"/);
 assert.match(customerHtml, /class="dish-hit" type="button"/);
-assert.match(customerHtml, /class="dish-cta" aria-hidden="true"/);
-assert.match(customerCss, /-webkit-line-clamp:\s*2/);
-assert.match(customerCss, /\.dish-cta\s*\{[^}]*padding:\s*\.38em \.72em[^}]*border:\s*0[^}]*color:\s*#111827[^}]*font-size:\s*\.72em/s);
-assert.match(customerCss, /\.dish-cta > span\s*\{[^}]*place-items:\s*center[^}]*line-height:\s*1/s);
+assert.doesNotMatch(customerHtml, /class="dish-description"/);
+assert.match(customerHtml, /class="dish-cta" aria-hidden="true">\+<\/span>/);
+assert.match(customerCss, /\.dish-cta\s*\{[^}]*position:\s*absolute[^}]*top:\s*14px[^}]*right:\s*14px[^}]*width:\s*30px[^}]*height:\s*30px[^}]*border:\s*0[^}]*pointer-events:\s*none/s);
 assert.match(customerCss, /\.menu-section \.dish\s*\{[^}]*border:\s*0/s);
 assert.match(customerCss, /\.menu-tools \.categories\s*\{[^}]*display:\s*flex[^}]*flex-wrap:\s*nowrap[^}]*overflow-x:\s*auto[^}]*scroll-snap-type:\s*inline proximity/s);
 assert.match(customerCss, /\.menu-tools \.categories\s*\{[^}]*padding-right:\s*max\(18px, calc\(50% - 4\.25rem\)\)/s);
@@ -32,8 +30,10 @@ assert.match(customerCss, /#menu-search\s*\{[^}]*height:\s*var\(--component-menu
 assert.match(customerCss, /\.menu-tools \.categories a\s*\{[^}]*height:\s*var\(--component-menu-category-height\)[^}]*min-height:\s*0/s);
 assert.match(customerCss, /\.cart-bar button\s*\{[^}]*height:\s*var\(--component-menu-floating-order-height\)[^}]*min-height:\s*0/s);
 assert.match(customerHtml, /<svg viewBox="0 0 24 24" fill="none">/);
-assert.match(customerJs, /card\.querySelector\('p'\)\.textContent=item\.description/);
+assert.doesNotMatch(customerJs, /card\.querySelector\('p'\)\.textContent=item\.description/);
 assert.match(customerJs, /\$\('#item-description'\)\.textContent=item\.description/);
+assert.match(customerJs, /cardButton\.setAttribute\('aria-label',`Add \$\{item\.name\} to order`\)/);
+assert.match(customerJs, /card\.querySelector\('\.dish-cta'\)\.classList\.add\('hidden'\)/);
 assert.match(customerJs, /centerIfClipped=link=>\{[^}]*getBoundingClientRect\(\)[^}]*track\.scrollTo\(\{left:link\.offsetLeft-\(track\.clientWidth-link\.offsetWidth\)\/2/s);
 assert.match(customerJs, /prefers-reduced-motion: reduce/);
 

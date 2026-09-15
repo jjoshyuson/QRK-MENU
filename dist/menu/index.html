@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="/menu/table-session.css?v=1">
   <link rel="stylesheet" href="/reference-theme.css?v=2">
   <link rel="stylesheet" href="/modern-compact.css?v=2">
-  <link rel="stylesheet" href="/menu/cart-dock.css?v=13">
+  <link rel="stylesheet" href="/menu/cart-dock.css?v=14">
   <link rel="stylesheet" href="/menu/payment-first.css?v=1">
   <link rel="stylesheet" href="/menu/order-confirmation.css?v=1">
   <link rel="stylesheet" href="/menu/quick-service.css?v=1">
@@ -29,7 +29,7 @@
   <script src="/pwa.js" defer></script>
   <script src="/ui-components.js?v=2" defer></script>
   <script src="/data/qrk-config.local.js"></script>
-  <script type="module" src="/menu/menu.js?v=13"></script>
+  <script type="module" src="/menu/menu.js?v=14"></script>
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
@@ -171,6 +171,6 @@
       <footer class="history-actions"><button class="text-button" id="clear-history" type="button">Clear order history</button><div class="history-clear-confirm hidden" id="history-clear-confirm"><span>Clear saved history from this device?</span><button class="secondary-button" id="cancel-clear-history" type="button">Cancel</button><button class="primary-button" id="confirm-clear-history" type="button">Clear</button></div></footer>
     </div>
   </dialog>
-  <template id="dish-template"><article class="dish"><button class="dish-hit" type="button"><div class="photo"><img alt="" width="640" height="480"><span class="sold-label hidden">Sold out</span></div><div class="dish-copy"><div class="dish-description"><h4></h4><p></p></div><div class="dish-actions"><strong></strong><span class="dish-cta" aria-hidden="true"><span>+</span> Add</span></div></div></button></article></template>
+  <template id="dish-template"><article class="dish"><button class="dish-hit" type="button"><span class="dish-cta" aria-hidden="true">+</span><div class="photo"><img alt="" width="640" height="480"><span class="sold-label hidden">Sold out</span></div><div class="dish-copy"><h4></h4><strong></strong></div></button></article></template>
 </body>
 </html>
