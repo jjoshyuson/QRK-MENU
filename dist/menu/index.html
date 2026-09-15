@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="/pwa.css?v=1">
   <link rel="stylesheet" href="/menu/menu.css?v=4">
   <link rel="stylesheet" href="/menu/brand.css?v=2">
-  <link rel="stylesheet" href="/menu/table-session.css?v=1">
+  <link rel="stylesheet" href="/menu/table-session.css?v=2">
   <link rel="stylesheet" href="/reference-theme.css?v=2">
   <link rel="stylesheet" href="/modern-compact.css?v=2">
   <link rel="stylesheet" href="/menu/cart-dock.css?v=14">
@@ -29,7 +29,7 @@
   <script src="/pwa.js" defer></script>
   <script src="/ui-components.js?v=2" defer></script>
   <script src="/data/qrk-config.local.js"></script>
-  <script type="module" src="/menu/menu.js?v=14"></script>
+  <script type="module" src="/menu/menu.js?v=15"></script>
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
@@ -48,7 +48,7 @@
         <label class="remember-name"><input id="entry-save-name" name="saveName" type="checkbox" checked><span>Save name on this device</span></label>
         <input id="entry-table" name="table" type="hidden" required>
         <label class="field-label" id="entry-guests-label" for="entry-guests">Number of guests</label><input id="entry-guests" name="guestCount" type="number" min="1" max="40" value="1" required>
-        <label class="field-label hidden" id="entry-package-label" for="entry-package">Package</label><select class="entry-select hidden" id="entry-package" name="package"><option value="classic">Classic buffet · ₱599 per guest</option><option value="premium">Premium buffet · ₱799 per guest</option></select>
+        <fieldset class="bundle-gate hidden" id="bundle-gate"><legend>Choose a package <span>Required</span></legend><p class="bundle-payment-copy" id="bundle-payment-copy"></p><div class="bundle-options" id="bundle-options"></div><p class="form-error hidden" id="bundle-gate-error" role="alert"></p></fieldset>
         <section class="location-note" id="location-note"><strong>Venue proximity check</strong><p>QRK may check whether this device is near the restaurant. If the result is unavailable, staff can still help.</p></section>
         <p class="form-error hidden" id="table-entry-error" role="alert"></p><button class="primary-button entry-submit" type="submit">Request this table</button>
       </form>

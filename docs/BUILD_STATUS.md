@@ -1,5 +1,12 @@
 # Build status
 
+## September 15, 2026 — Public-menu bundle selection gate
+
+- Replaced the buffet package dropdown with required, keyboard-accessible package cards that show per-guest price, included menu categories, and whether the package is paid before ordering, after dining, or split from later extras.
+- The gate is capability-driven and omitted completely when `bundleSelection` / required package mode is off. Missing, incomplete, unavailable, or expired bundle records fail closed with a customer-facing staff-help message instead of opening ordering without a package.
+- Integration assumption: the DA-owned contract is not yet present on `origin/main`. The public-menu adapter accepts bundle arrays supplied as `serviceProfile.bundles`, `settings.bundles`, `settings.packages`, or `settings.servicePackages`; until that contract lands, it derives the review fallback from visible `Packages` menu items and zero-price included categories. This is a view compatibility seam, not a new persisted data model.
+- Validation: the focused bundle contract, `npm run check`, and `git diff --check` passed. Live browser checks on the local public route covered required selection, named-package waiting state, gate omission for Salamat, phone/tablet/desktop containment at 390/768/1280 CSS pixels, and a clear console. The existing session test continues to cover request expiry.
+
 ## September 15, 2026 — Public menu card content simplification
 
 - Removed browsing-card descriptions and the visible `Add` label while preserving every stored description, description-based search, and the full description in the item detail/order sheet.
