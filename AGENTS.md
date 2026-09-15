@@ -24,6 +24,7 @@ Keep this file short. It contains rules that apply to every task. Use `memory/RE
 
 ## Role boundaries
 
+- **Orchestrator chat:** is the user’s default entry point. It turns rough ideas into a work packet, consults Planner when decisions conflict, creates or contacts the smallest necessary build/QA/Release tasks, and reports one consolidated result. It does not implement or deploy unless explicitly taking that role.
 - **Planner chat:** owns approved scope, sequencing, architecture decisions, and `docs/PROGRESS_MAP.md`. It does not routinely implement or deploy.
 - **Domain build chats:** own one bounded product area and branch. They implement, run proportionate checks, and prepare a concise handoff. They do not merge or deploy.
 - **QA chat:** reviews a release candidate, runs risk-based functional, responsive, accessibility, performance, and regression checks, and records pass/fail evidence. It does not silently fix or deploy.
@@ -43,5 +44,6 @@ Detailed ownership and handoff formats are in `docs/ORCHESTRATION.md`.
 
 - Feature work ends with a focused commit on its owned branch and a handoff to QA or Release. Pushing the feature branch is allowed when needed for review; it is not deployment.
 - Only Release merges approved work into `main` and pushes `main`. A successful GitHub Pages workflow is required before describing development as deployed.
+- After a branch is merged, deployed when required, and accepted by the user, Release may archive the completed task and remove its managed worktree and fully merged temporary branches. Verify the exact task, worktree, merge state, and remote branch before cleanup. Keep commits and release evidence recoverable.
 - Never merge production, force-push shared history, delete work-bearing branches, or change production resources without explicit approval.
 - Do not use or reinstall `ui-ux-pro-max`; it was removed by user decision.

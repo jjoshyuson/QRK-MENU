@@ -36,12 +36,15 @@ For concurrent development, prefer one chat, one branch, and one worktree. Each 
 
 Use durable role chats when a project is large enough:
 
+- Orchestrator: the default user-facing intake that converts rough ideas into plans and coordinates the other roles.
 - Planner: scope, decisions, architecture, dependencies, and milestone order.
 - Domain build chats: bounded implementation areas and focused branches.
 - QA: independent release-candidate verification.
 - Release: the only normal integrator/deployer to shared development or production branches.
 
 Feature chats hand off a branch/commit, outcome, checks, limits, and QA focus. They do not merge or deploy unless the project explicitly assigns them the Release role.
+
+For bounded work, prefer ephemeral Codex-managed worktrees. After the intended commits are merged, required checks pass, and the user accepts the result, archive the task and remove its clean worktree and fully merged temporary branches. Preserve durable Orchestrator, Planner, QA, and Release tasks, Git history, and release evidence.
 
 Use subagents only when the user or project guidance requests them and independent parallel work materially helps. Prefer read-heavy delegation; parallel write-heavy work often adds conflicts and consumes more tokens.
 
