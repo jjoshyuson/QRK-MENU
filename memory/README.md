@@ -6,6 +6,7 @@ Use this folder as the fast entry point for a new chat. Read this file first, th
 
 | Topic | Read | Authoritative detail |
 | --- | --- | --- |
+| Existing focused tasks and their specialties | `memory/specialists.md` | Current Codex task list when live status is needed |
 | Rough notes, random ideas and questions awaiting review | `memory/inbox.md` | Route stable conclusions to the relevant topic and authoritative document |
 | Product purpose, audience and constraints | `memory/product.md` | `docs/PRODUCT_PLAN.md` |
 | UI direction and editing flows | `memory/ui.md` | `AGENT/STYLE.md`, `docs/UI_AND_FLOWS.md` |
@@ -22,7 +23,7 @@ Use this folder as the fast entry point for a new chat. Read this file first, th
 
 ## Reading rule
 
-For a routine UI change, read `AGENT/STYLE.md`, `ui.md`, `architecture.md`, `progress.md` and `workflow.md`. For product or roadmap work, read `product.md`, `progress.md` and `decisions.md`; consult `inbox.md` only when reviewing newly captured ideas. For backend/data work, read `architecture.md`, `orders.md`, `progress.md`, `workflow.md`, then the full `supabase/README.md`. Master Builder and focused tasks read `workflow.md` and use `docs/ORCHESTRATION.md` only when task-routing details are needed. Read `docs/DEPLOYMENT.md` only when the user asks the focused task to deploy. Read the full authoritative document when implementation depends on nuance or verification evidence.
+For a routine UI change, read `AGENT/STYLE.md`, `ui.md`, `architecture.md`, `progress.md` and `workflow.md`. For product or roadmap work, read `product.md`, `progress.md` and `decisions.md`; consult `inbox.md` only when reviewing newly captured ideas. For backend/data work, read `architecture.md`, `orders.md`, `progress.md`, `workflow.md`, then the full `supabase/README.md`. Master Builder reads `specialists.md` when routing work and checks the current Codex task list only when live status is needed. Master Builder and focused tasks read `workflow.md` and use `docs/ORCHESTRATION.md` only when task-routing details are needed. Read `docs/DEPLOYMENT.md` only when the user asks the focused task to deploy. Read the full authoritative document when implementation depends on nuance or verification evidence.
 
 ## Maintenance rule
 

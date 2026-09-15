@@ -36,6 +36,8 @@ Omit levels that add no value. Examples: `CO / Business Profile`, `PM / Shopping
 
 Reuse an existing focused task when its scope and context still match. Create a new task for a materially different area, genuine parallel work, or required isolation. The user works with that task directly; it does not need to report through Master Builder.
 
+Master Builder keeps durable routing identities in `memory/specialists.md`. When the user asks a focused task to introduce itself, record its human-readable name, task ID, category, durable specialty, usefulness, and confirmation date there. Do not store transcripts, build reports, commits, or test logs in the registry.
+
 ## Starting a coding project
 
 Before editing, every coding task must:
