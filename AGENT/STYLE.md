@@ -26,6 +26,7 @@ This is the project’s visual source of truth. Read it before every UI, UX, lay
 - Treat sheet edits as drafts. Done commits them to the parent workflow; Close, backdrop click, or Escape discards them and restores the prior values and focus.
 - Use shared grouped rows, checkbox choices, choice popovers, focused value editors, and ordered lists. Do not use browser-native select, date, or time popups when the shared QRK control exists.
 - Keep the charcoal material restrained: translucent dark surface, soft blur and ambient shadow, faint light separators, white primary text, muted secondary text, and one accent color. Avoid opaque gray slabs and decorative nesting.
+- Sheet controls and choice popovers are borderless at rest. Separate related values with one low-contrast internal divider and use tonal fill, spacing and blur for grouping; do not outline the trigger, popup, grouped section, every ordered row and its surrounding container at the same time. A visible outline is reserved for keyboard focus or a state that cannot be communicated by fill and text alone.
 
 ## Navigation and control grouping
 
