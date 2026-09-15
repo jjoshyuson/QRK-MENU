@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-const [html,menu,staff]=await Promise.all([
+const [html,menu,staff,cartStyles]=await Promise.all([
   readFile(new URL('../dist/menu/index.html',import.meta.url),'utf8'),
   readFile(new URL('../dist/menu/menu.js',import.meta.url),'utf8'),
-  readFile(new URL('../dist/app.js',import.meta.url),'utf8')
+  readFile(new URL('../dist/app.js',import.meta.url),'utf8'),
+  readFile(new URL('../dist/menu/cart-dock.css',import.meta.url),'utf8')
 ]);
 
 assert.match(html,/id="entry-save-name"[^>]*type="checkbox" checked/);
@@ -18,6 +19,11 @@ assert.doesNotMatch(html,/class="sheet-content cart-content">\s*<section class="
 assert.match(menu,/\$\('#open-tab-control'\)\.addEventListener\('click',openTab\)/);
 assert.match(menu,/\$\('\.fulfillment'\)\.classList\.add\('hidden'\);\$\('#review-table-field'\)\.classList\.add\('hidden'\)/);
 assert.match(menu,/\$\('#cart-empty'\)\.classList\.toggle\('hidden',cart\.length>0\)/);
+assert.match(menu,/class="cart-item-controls"/);
+assert.match(menu,/tabOrders\.length\?'Send another order':'Send order'/);
+assert.match(cartStyles,/#cart-dialog \.cart-item \{ display: grid; grid-template-columns: minmax\(0, 1fr\) auto;/);
+assert.match(cartStyles,/#cart-dialog \.remove-item \{ min-width: 44px; min-height: 44px;/);
+assert.match(cartStyles,/#cart-dialog #submit-order \{ min-height: 44px;[^}]*border-radius: 999px;/);
 assert.match(staff,/tableOrders=orders\.filter\(order=>order\.fulfillmentType==='table'/);
 assert.match(staff,/for\(const order of tableOrders\)\{await completeOrder\(order\)/);
 assert.match(staff,/await tableSessionService\.clean\(sessionId\)/);

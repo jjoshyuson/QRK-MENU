@@ -14,7 +14,7 @@ const authService=new QrkAuthService(runtimeConfig);
 let accessContext=authService.enabled?await authService.restore():null;
 if(accessContext){globalThis.QRK_ACCESS_TOKEN=authService.accessToken();runtimeConfig.businessId=accessContext.businessId;runtimeConfig.destinationSlug=accessContext.businessSlug}
 const dataService=createQrkDataService({...runtimeConfig,...(authService.enabled&&(!accessContext||accessContext.isPreview)?{supabaseUrl:'',supabasePublishableKey:''}:{})});
-const businessContext=accessContext||{businessId:'demo:kusina-manila',businessName:'Kusina Manila',businessSlug:'kusina-manila'};
+const businessContext=accessContext||{businessId:'demo:kusina-manila',businessName:"Kusina Nanay Mila's",businessSlug:'kusina-manila'};
 const businessExperience={...getBusinessExperience(businessContext.businessSlug),...(businessContext.serviceMode?{serviceMode:businessContext.serviceMode,serviceLabel:`QRK ${businessContext.serviceMode==='table'?'Table':'Quick'}`}:{})};
 businessExperience.preset=businessExperience.serviceProfile.preset;
 const tableSessionService=businessExperience.serviceMode==='table'?new QrkTableSessionService({businessSlug:businessContext.businessSlug,profile:businessExperience.serviceProfile}):null;

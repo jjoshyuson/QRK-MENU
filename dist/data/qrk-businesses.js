@@ -1,7 +1,7 @@
 import {DEVELOPMENT_CLIENTS,findPreviewClient,normalizeServiceProfile} from './qrk-service-presets.js';
 
 const BUSINESSES={
-  'kusina-manila':{businessName:'Kusina Manila',serviceMode:'quick',serviceLabel:'QRK Quick',description:'Filipino favorites, made with love.',location:'Ermita, Manila',serviceProfile:normalizeServiceProfile({preset:'quick',locationName:'Ermita',settings:{paymentTiming:'upfront'}})},
+  'kusina-manila':{businessName:"Kusina Nanay Mila's",serviceMode:'quick',serviceLabel:'QRK Quick',description:'Filipino favorites, made with love.',location:'Ermita, Manila',serviceProfile:normalizeServiceProfile({preset:'quick',locationName:'Ermita',settings:{paymentTiming:'upfront'}})},
   'salamat':{businessName:'Salamat',serviceMode:'table',serviceLabel:'QRK Table',description:'Filipino food and attentive table service.',location:'Makati, Metro Manila',serviceProfile:normalizeServiceProfile({preset:'direct_table',locationName:'Makati'})}
 };
 
