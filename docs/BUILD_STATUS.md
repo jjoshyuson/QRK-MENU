@@ -1,5 +1,9 @@
 # Build status
 
+## September 15, 2026 — Floating View order height refinement
+
+- Increased only the public-menu floating View order control height by approximately 10%, from `2.3625rem` to `2.6rem`, while preserving its width, glass styling, typography, measured content clearance, and footer avoidance behavior.
+
 ## September 15, 2026 — Consolidated item and post-review fulfillment sheets
 
 - Replaced the item-option wizard with one consolidated configuration sheet: persistent option/add-on lists, top-corner cancel and confirm controls, an informational bottom total, and an optional special-request field revealed on demand.

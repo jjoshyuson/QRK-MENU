@@ -28,7 +28,7 @@ assert.match(customerCss, /\.menu-tools \.search-wrap #menu-search\s*\{[^}]*bord
 assert.match(customerCss, /#menu-search:focus-visible\s*\{[^}]*outline:\s*0[^}]*box-shadow:\s*0 5px 18px/s);
 assert.match(componentCss, /--component-menu-search-height:2\.1rem/);
 assert.match(componentCss, /--component-menu-category-height:1\.925rem/);
-assert.match(componentCss, /--component-menu-floating-order-height:2\.3625rem/);
+assert.match(componentCss, /--component-menu-floating-order-height:2\.6rem/);
 assert.match(customerCss, /#menu-search\s*\{[^}]*height:\s*var\(--component-menu-search-height\)[^}]*min-height:\s*0/s);
 assert.match(customerCss, /\.menu-tools \.categories a\s*\{[^}]*height:\s*var\(--component-menu-category-height\)[^}]*min-height:\s*0/s);
 assert.match(customerCss, /\.cart-bar button\s*\{[^}]*height:\s*var\(--component-menu-floating-order-height\)[^}]*min-height:\s*0/s);
