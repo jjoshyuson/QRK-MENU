@@ -17,6 +17,7 @@ if (!host || !Number.isInteger(port) || port < 0 || port > 65535) {
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.avif': 'image/avif', '.svg': 'image/svg+xml', '.json': 'application/json; charset=utf-8', '.webmanifest': 'application/manifest+json; charset=utf-8' };
 const tableSessions = new Map();
+const tableEntryTokens = new Map();
 const sendJson=(res,status,value)=>{const bytes=Buffer.from(JSON.stringify(value));res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Content-Length':bytes.length,'Cache-Control':'no-store'});res.end(bytes)};
 const readJson=req=>new Promise((resolve,reject)=>{let body='';req.on('data',chunk=>{body+=chunk;if(body.length>100000)reject(new Error('Request too large'))});req.on('end',()=>{try{resolve(body?JSON.parse(body):{})}catch(error){reject(error)}});req.on('error',reject)});
 async function tableApi(req,res,pathname){
@@ -24,6 +25,17 @@ async function tableApi(req,res,pathname){
   if(req.method==='GET'){sendJson(res,200,sessions);return}
   if(req.method!=='POST'){res.writeHead(405,{Allow:'GET, POST'});res.end();return}
   const input=await readJson(req),now=new Date().toISOString();
+  if(action==='staff-open'){
+    let session=sessions.find(item=>item.table===String(input.table)&&['active','bill_requested'].includes(item.status));
+    if(!session){session={id:crypto.randomUUID(),table:String(input.table),status:'active',guestCount:Number(input.guestCount)||1,packageId:input.packageId||null,createdAt:now,updatedAt:now,lastActivityAt:input.lastActivityAt||now,participants:[],joinRequests:[],events:[{type:'session_opened_by_staff',at:now}]};sessions.push(session)}
+    const entryToken=crypto.randomUUID();tableEntryTokens.set(entryToken,{slug,sessionId:session.id,role:input.role==='host'?'host':'guest',name:String(input.name||'Guest').slice(0,40),expiresAt:Date.now()+15*60*1000});tableSessions.set(slug,sessions);sendJson(res,200,{entryToken,sessionId:session.id,table:session.table});return;
+  }
+  if(action==='exchange'){
+    const entry=tableEntryTokens.get(String(input.entryToken||''));
+    if(!entry||entry.slug!==slug||entry.expiresAt<=Date.now()){tableEntryTokens.delete(String(input.entryToken||''));sendJson(res,410,{error:'This entry link is unavailable or has already been used.'});return}
+    const session=sessions.find(item=>item.id===entry.sessionId&&['active','bill_requested'].includes(item.status));if(!session){sendJson(res,409,{error:'This table session has ended.'});return}
+    tableEntryTokens.delete(String(input.entryToken));if(!session.participants.some(person=>person.deviceId===input.deviceId))session.participants.push({id:crypto.randomUUID(),deviceId:input.deviceId,name:entry.name,role:entry.role,permission:entry.role==='host'?'approve':'direct',joinedAt:now});session.updatedAt=now;session.lastActivityAt=now;session.events.push({type:'entry_token_exchanged',at:now});sendJson(res,200,session);return;
+  }
   if(action==='request'){
     let session=sessions.find(item=>item.table===String(input.table)&&['pending','active','bill_requested'].includes(item.status));
     if(session){if(!session.participants.some(person=>person.deviceId===input.deviceId)&&!session.joinRequests.some(item=>item.deviceId===input.deviceId&&item.status==='pending'))session.joinRequests.push({id:crypto.randomUUID(),deviceId:input.deviceId,name:input.name||'Guest',status:'pending',requestedAt:now,expiresAt:new Date(Date.now()+(Number(input.acceptanceTimeoutSeconds)||90)*1000).toISOString(),approvalBy:input.joinPolicy||'host'});}
@@ -35,6 +47,7 @@ async function tableApi(req,res,pathname){
   if(action==='cancel'){const join=session.joinRequests.find(item=>item.deviceId===input.deviceId&&item.status==='pending');if(join){join.status='cancelled';join.resolvedAt=now}else if(session.status==='pending'&&session.participants.some(person=>person.deviceId===input.deviceId)){session.status='cancelled';session.updatedAt=now;session.events.push({type:'session_cancelled',at:now})}else{sendJson(res,409,{error:'This request can no longer be cancelled'});return}sendJson(res,200,session);return}
   if(['clean','cleaned','release','reopen'].includes(action)){session.status='cleaned';session.updatedAt=now;session.events.push({type:'table_cleaned',at:now});sendJson(res,200,session);return}
   if(action==='paid'){session.status='settled';session.updatedAt=now;session.events.push({type:'customer_paid',at:now});sendJson(res,200,session);return}
+  if(action==='touch'){if(!session.participants.some(person=>person.deviceId===input.deviceId)){sendJson(res,403,{error:'This device is not part of the table session.'});return}session.lastActivityAt=now;session.updatedAt=now;delete session.inactivityWarningAt;delete session.inactivityExpiresAt;session.events.push({type:'session_activity',at:now});sendJson(res,200,session);return}
   if(action==='approve-join'){const join=session.joinRequests.find(item=>item.id===input.requestId&&item.status==='pending');if(!join){sendJson(res,404,{error:'Join request not found'});return}join.status='approved';join.resolvedAt=now;session.participants.push({id:crypto.randomUUID(),deviceId:join.deviceId,name:join.name,role:'guest',permission:input.permission||'direct',joinedAt:now});sendJson(res,200,session);return}
   sendJson(res,404,{error:'Unknown table action'});
 }
