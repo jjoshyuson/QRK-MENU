@@ -15,6 +15,13 @@
 - Integration assumption: the DA-owned contract is not yet present on `origin/main`. The public-menu adapter accepts bundle arrays supplied as `serviceProfile.bundles`, `settings.bundles`, `settings.packages`, or `settings.servicePackages`; until that contract lands, it derives the review fallback from visible `Packages` menu items and zero-price included categories. This is a view compatibility seam, not a new persisted data model.
 - Validation: the focused bundle contract, `npm run check`, and `git diff --check` passed. Live browser checks on the local public route covered required selection, named-package waiting state, gate omission for Salamat, phone/tablet/desktop containment at 390/768/1280 CSS pixels, and a clear console. The existing session test continues to cover request expiry.
 
+## Public menu entitlement and refill gate — September 15, 2026
+
+- Added a public-menu compatibility gate for the DA-owned `entitlementMode`, `refillPolicy`, and `paymentTiming` service settings plus the active table session `packageId`.
+- Active bundled menus distinguish included refills, chargeable extras, counter-only extras, package mismatches, missing packages, inactive sessions, and expired sessions. Each item exposes one non-contradictory action; unavailable and counter-only items cannot enter the cart.
+- Refill actions emit `qrk:refill-requested` with item, session, and package identifiers and show an in-page acknowledgement. Durable request persistence remains outside this UI task and must be connected through the future request adapter.
+- `npm run check` passes, including `tests/entitlement-gate.mjs`. Local browser verification on `/menu/?business=ihaw-buffet` used a temporary capability fixture and confirmed active-package `Included` / `Request refill` and upfront-extra `Order at counter` states. The temporary fixture was removed after testing.
+
 ## September 15, 2026 — Public menu card content simplification
 
 - Removed browsing-card descriptions and the visible `Add` label while preserving every stored description, description-based search, and the full description in the item detail/order sheet.

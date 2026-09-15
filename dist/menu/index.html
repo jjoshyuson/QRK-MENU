@@ -72,6 +72,7 @@
       </div>
     </section>
     <section class="notice hidden" id="store-notice" aria-live="polite"></section>
+    <section class="notice request-status hidden" id="request-status" aria-live="polite"></section>
     <section class="menu" aria-label="Menu">
       <div class="menu-tools">
         <div class="search-wrap"><label class="sr-only" for="menu-search">Search the menu</label><input id="menu-search" type="search" placeholder="Search dishes and drinks" autocomplete="off"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7"></circle><path d="m16.2 16.2 4.3 4.3"></path></svg></span></div>
@@ -105,6 +106,7 @@
       <img id="item-photo" alt="" width="640" height="480">
       <div class="sheet-content">
         <div class="item-title-row"><div><h2 id="item-name"></h2><p id="item-description"></p></div><strong id="item-price"></strong></div>
+        <p class="item-entitlement hidden" id="item-entitlement"></p>
         <div id="item-options"></div>
         <label class="field-label" for="item-notes">Special request <span>Optional</span></label><textarea id="item-notes" rows="2" maxlength="140" placeholder="Example: sauce on the side"></textarea>
         <div class="quantity-row"><span>Quantity</span><div class="stepper"><button type="button" id="item-minus" aria-label="Decrease quantity">−</button><output id="item-quantity" aria-live="polite">1</output><button type="button" id="item-plus" aria-label="Increase quantity">+</button></div></div>
