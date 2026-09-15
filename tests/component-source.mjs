@@ -10,7 +10,7 @@ const routeFiles = [
 
 for (const route of routeFiles) {
   const html = await readFile(new URL(route, import.meta.url), 'utf8');
-  assert.match(html, /href="\/ui-components\.css\?v=7"/, `${route} must load the shared visual source`);
+  assert.match(html, /href="\/ui-components\.css\?v=8"/, `${route} must load the shared visual source`);
   assert.match(html, /src="\/ui-components\.js\?v=3"/, `${route} must load stable inspector labels`);
 }
 
@@ -42,6 +42,8 @@ assert.match(registry, /window\.QrkSheet\s*=\s*\{create\}/);
 assert.match(registry, /event\.key === 'Escape'/);
 assert.match(css, /height:min\(90dvh,calc\(100dvh - 20px\)\)/);
 assert.match(css, /min-width:60px/);
+assert.match(css, /background:transparent!important;color:var\(--component-sheet-text\)!important/);
+assert.match(css, /settings-form>label:focus-within/);
 
 const serviceWorker = await readFile(new URL('../dist/sw.js', import.meta.url), 'utf8');
 assert.match(serviceWorker, /'\.\/ui-components\.css'/);
