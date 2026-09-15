@@ -2,9 +2,10 @@
 
 ## September 15, 2026 — Consolidated Business Profile
 
-- Replaced the dense mixed Business Profile form with one compact four-row overview for business details, logo, customer-menu background, and menu link/QR access. Each row opens a focused dialog while retaining the existing fields, upload/removal controls, readability veil, table count, customer links, downloadable QR, and browser-local save behavior.
+- Replaced the dense mixed Business Profile form with one compact overview for business details, logo, customer-menu background, and menu access. The general Menu link and mode-specific Table QR codes are separate destinations instead of sharing one dialog.
+- Table businesses show a compact adaptive table grid: six tables use three columns by two rows, larger sets expand into calendar-like four-, five-, or six-column layouts, and phones retain a three-column grid. Selecting a table opens its focused QR, exact table URL, download, and copy actions with an accessible return to the grid.
 - Kept global appearance ownership and the existing service preset/data contracts unchanged; no service-gate model or provider adapter was added or duplicated.
-- Validation: `npm run check` and `git diff --check` passed. Live browser checks on port 4197 at 390×844, 768×1024, and 1280×800 confirmed the compact overview, semantic dialog focus, save-and-close flow, responsive reflow, QR/background controls, no horizontal overflow, and a clear browser console.
+- Validation: `npm run check` and `git diff --check` passed. Live Salamat browser checks on port 4197 confirmed a 20-table grid at 390×844 and 768×1024, three/five responsive columns, the Table 12 QR and exact `?table=12` link, semantic buttons and return focus, no horizontal overflow, and a clear browser console. The earlier 1280×800 profile check also remains valid.
 
 ## September 15, 2026 — Public menu card content simplification
 
