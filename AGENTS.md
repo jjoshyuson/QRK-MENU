@@ -16,7 +16,7 @@ Keep this file short. It contains rules that apply to every task. Use `memory/RE
 - Preserve the existing HTML, CSS, and vanilla JavaScript stack while practical. `dist/` contains authored source.
 - Keep one responsive product and domain. Desktop is the management workspace; mobile/tablet opens Dashboard; Menu Studio remains a separate customer-shaped editor.
 - Preserve existing item, category, photo, availability, ordering, and preview flows unless the task explicitly changes them.
-- Preserve the established QRK brand and follow `AGENT/STYLE.md` for UI work. Use `ui-ux-pro-max` when the task is materially visual.
+- Preserve the established QRK brand and follow `AGENT/STYLE.md` for UI work.
 - Customer preview hides owner controls but is not an authorization boundary.
 - Keep provider calls behind existing adapters. For backend/data work read `supabase/README.md`; for provider migration read `docs/DATABASE_SYNC_AND_PORTABILITY_PLAN.md`.
 - Do not claim persistence, authentication, offline use, QR publishing, payments, or cross-device behavior until verified.
@@ -44,3 +44,4 @@ Detailed ownership and handoff formats are in `docs/ORCHESTRATION.md`.
 - Feature work ends with a focused commit on its owned branch and a handoff to QA or Release. Pushing the feature branch is allowed when needed for review; it is not deployment.
 - Only Release merges approved work into `main` and pushes `main`. A successful GitHub Pages workflow is required before describing development as deployed.
 - Never merge production, force-push shared history, delete work-bearing branches, or change production resources without explicit approval.
+- Do not use or reinstall `ui-ux-pro-max`; it was removed by user decision.
