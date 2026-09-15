@@ -7,6 +7,8 @@ import { deviceScopedKey } from '../data/qrk-device-service.js';
 
 const businessSlug=new URLSearchParams(location.search).get('business')||'kusina-manila';
 const businessExperience=getBusinessExperience(businessSlug);
+const requestedService=new URLSearchParams(location.search).get('service');
+if(businessExperience.serviceProfile.serviceModes?.includes(requestedService))businessExperience.serviceMode=requestedService;
 const serviceProfile=businessExperience.serviceProfile;
 const tableSessionService=businessExperience.serviceMode==='table'?new QrkTableSessionService({businessSlug,profile:serviceProfile}):null;
 const dataService=createQrkDataService({destinationSlug:businessSlug});

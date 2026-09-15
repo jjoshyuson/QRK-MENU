@@ -1,7 +1,7 @@
 # Progress memory
 
 As of September 15, 2026:
-- Configurable service gates are implemented locally on the Quick/Table foundation. Seven Table examples cover host-controlled Open Tab, prepaid/pay-later/timed buffet, limited quantity, minimum spend and deposit entry. QR entry tokens are server-validated and removed from the URL; inactive sessions warn after 120 minutes plus grace but remain occupied until explicit staff closure. Hosted migration/deployment remains pending.
+- Configurable service gates are implemented locally on the Quick/Table foundation. Client creation uses a compact ordered-gate builder: Quick, Table or both; presets populate editable gate journeys; custom may start empty; gates reorder, add, remove and configure inline. Seven Table examples cover host-controlled Open Tab, prepaid/pay-later/timed buffet, limited quantity, minimum spend and deposit entry. QR entry tokens are server-validated and removed from the URL; inactive sessions warn after 120 minutes plus grace but remain occupied until explicit staff closure. Hosted migration/deployment remains pending.
 
 - “Remember Client Workspace Tab” is deployed: the last valid section survives refresh per business/user identity, unseen admins start on Dashboard, staff keep permission-aware fallback, and valid deep links are consumed without leaking section state across logout.
 

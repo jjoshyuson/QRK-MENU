@@ -50,9 +50,13 @@ export function presetSettings(id='traditional'){return structuredClone(SERVICE_
 export function normalizeServiceProfile(profile={}){
   const preset=SERVICE_PRESETS[profile.preset]?.id||'traditional';
   const settings={...presetSettings(preset),...(profile.settings||{})};
+  const serviceModes=[...new Set((profile.serviceModes||settings.serviceModes||[settings.serviceMode]).filter(mode=>['quick','table'].includes(mode)))];
+  if(!serviceModes.length)serviceModes.push(settings.serviceMode==='quick'?'quick':'table');
+  settings.serviceModes=serviceModes;
+  settings.serviceMode=serviceModes.includes('table')?'table':'quick';
   if(settings.packageMode==='required'&&settings.bundleSelection==='none')settings.bundleSelection='required';
   settings.packageMode=settings.bundleSelection==='required'?'required':'none';
-  return{preset,locationName:String(profile.locationName||'Main location'),inheritsBusinessDefaults:profile.inheritsBusinessDefaults!==false,settings,layers:deriveServiceLayers(settings)};
+  return{preset,serviceModes,locationName:String(profile.locationName||'Main location'),inheritsBusinessDefaults:profile.inheritsBusinessDefaults!==false,settings,layers:deriveServiceLayers(settings)};
 }
 export function describeServiceProfile(profile){
   const value=normalizeServiceProfile(profile),s=value.settings;
