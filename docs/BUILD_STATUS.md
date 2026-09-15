@@ -1,5 +1,11 @@
 # Build status
 
+## September 15, 2026 — Consolidated Business Profile
+
+- Replaced the dense mixed Business Profile form with one compact four-row overview for business details, logo, customer-menu background, and menu link/QR access. Each row opens a focused dialog while retaining the existing fields, upload/removal controls, readability veil, table count, customer links, downloadable QR, and browser-local save behavior.
+- Kept global appearance ownership and the existing service preset/data contracts unchanged; no service-gate model or provider adapter was added or duplicated.
+- Validation: `npm run check` and `git diff --check` passed. Live browser checks on port 4197 at 390×844, 768×1024, and 1280×800 confirmed the compact overview, semantic dialog focus, save-and-close flow, responsive reflow, QR/background controls, no horizontal overflow, and a clear browser console.
+
 ## September 15, 2026 — Public menu card content simplification
 
 - Removed browsing-card descriptions and the visible `Add` label while preserving every stored description, description-based search, and the full description in the item detail/order sheet.
