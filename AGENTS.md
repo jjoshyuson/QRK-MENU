@@ -1,69 +1,104 @@
-# Working instructions
+# QRK MENU working instructions
 
-## Before starting work
+Keep work lightweight, focused, and easy for the user to review. Use `memory/README.md` as the routing index and read only the topics needed for the current project.
 
-- Domain owners and implementation tasks proceed on routine, reversible decisions using the approved work packet, existing patterns and documented product intent. Domain owners may answer and record routine assumptions so work keeps moving.
-- Ask the user only when unresolved ambiguity would materially change product behavior or scope, architecture, access or privacy, destructive data handling, cost, or release authorization and cannot be responsibly inferred.
-- Read `memory/README.md` and only the topic files relevant to the request. Consult the longer handoff documents when the memory index points to them or when detailed evidence is required.
-- Before every UI, UX, layout, styling, branding, or responsive change, read and follow `AGENT/STYLE.md` as the project’s visual source of truth.
-- For backend, data, order, Auth, Realtime, Storage, migration, or recovery work, also read `supabase/README.md` before changing schema or adapter code.
-- Keep `memory/` concise and current after material decisions or milestone changes so a new chat can orient itself without scanning the whole project.
+## Product guardrails
 
-## Preserve the direction
+- QRK MENU is a lightweight digital-menu and ordering product for small businesses, initially Philippine restaurants.
+- `dist/` contains authored source. Preserve the existing HTML, CSS, and vanilla JavaScript stack while practical.
+- Desktop is the management workspace. Mobile and tablet open Dashboard. Menu Studio remains a separate customer-shaped editor.
+- Preserve established item, category, image, availability, ordering, table, preview, and permission flows unless the project explicitly changes them.
+- Follow `AGENT/STYLE.md` for UI work. Keep interfaces compact and operational; avoid padded decorative cards, nested wrappers, repeated headings, and unnecessary explanatory copy.
+- Customer preview hides owner controls but is not an authorization boundary.
+- Keep provider calls behind existing adapters. Read `supabase/README.md` before backend, Auth, Realtime, Storage, migration, recovery, or destructive data work.
+- Do not claim persistence, authentication, offline use, QR publishing, payments, or cross-device behavior until verified.
+- Never commit credentials or secrets. Preserve image provenance.
 
-- This is QRK MENU, a lightweight digital menu and future ordering product for small businesses, initially restaurants in the Philippines.
-- Build on the existing UI. `dist/` currently contains authored source, not disposable build output.
-- Desktop stays a management workspace with a customer preview.
-- Mobile/tablet opens to the responsive Dashboard. Menu Studio is a separate view that keeps the customer-shaped, two-column photo menu with owner editing controls. Its compact table mode is only for fast availability changes, not a replacement customer layout. The user explicitly rejected a shrunken desktop table and an ornate restaurant-style mobile page.
-- Keep the same site/domain. No separate mobile website or device redirect is required.
-- Preserve DM Sans / Manrope and the existing QRK orange unless the user requests a new visual direction.
-- Customer preview must hide owner controls. It is not an authorization boundary.
-- Do not remove existing item, category, availability, or photo editing flows while polishing.
-- Keep interface structure compact and operational. Avoid redundant page headings, padded decorative cards, nested wrappers, and repeated explanatory copy; use progressive disclosure and whole-card actions as defined in `AGENT/STYLE.md`.
+## Master Builder workflow
 
-## Scope and implementation
+The user's primary QRK chat is **Master Builder**. It receives brain dumps, identifies the actual concerns, asks only about material blockers, and converts the request into the smallest useful set of named specialist projects.
 
-### Temporary Supabase provider and future VPS migration
+Master Builder plans directly. Do not add Planner, domain-manager, QA, or Deployment forwarding layers unless the user explicitly requests them.
 
-- Supabase is the temporary development and initial staging provider; PostgreSQL and the application service contracts are the durable architecture.
-- Keep Supabase-specific Auth, REST, Realtime, and Storage code behind the existing adapters. Do not place provider calls throughout UI code.
-- When the user mentions upgrading, migrating, self-hosting, or moving away from Supabase to a VPS, read `docs/DATABASE_SYNC_AND_PORTABILITY_PLAN.md` before planning or changing code.
-- Preserve portable tenant keys, constraints, integer-money fields, idempotency, lifecycle guards, immutable order snapshots, and migration history during a provider move.
-- Realtime events are hints only. PostgreSQL reads remain authoritative under both Supabase and any future VPS implementation.
+Specialist project categories:
 
-- Read the handoff docs before changes. Treat confirmed requirements and proposed future work differently.
-- Workstream 3 is a provider-ready Supabase/PostgreSQL foundation, not an operational backend. Until a hosted development project, Auth flow, migrations, SQL tests and two-device checks are connected and verified, preserve the automatic local/demo fallback and do not claim cross-device behavior.
-- Do not implement all roadmap features at once. Keep stages reviewable and usable.
-- Do not claim persistence, authentication, offline operation, QR publishing, or ordering exists until actually implemented and verified.
-- Use practical, plain language in the UI. Keep developer notes outside customer-facing production flows.
-- No payment provider, database service, framework migration, AI provider, or paid subscription has been chosen by the user.
-- Do not add real credentials to files, commits, browser code, or examples.
-- Preserve image provenance. Use owned/licensed photos for a public launch.
-- `deployment/original-hosting.json` is reference metadata, not a request to deploy. Work locally unless the user authorizes publishing in the new environment.
-- The website's primary technical goal is to remain very lightweight, especially for customers on mobile devices and slow connections.
-- Use the minimum code and dependencies needed for the requested result. Prefer the existing HTML, CSS and vanilla JavaScript approach while it remains practical; do not add a framework, package or abstraction without a concrete benefit.
-- Keep customer payloads and runtime work small. Avoid duplicated implementations, oversized assets and decorative features that do not improve the core menu experience.
+- `CO` — Client & Operations: Dashboard, Business Profile, Settings, Menu Studio, staff tools, orders, tables, and management workflows.
+- `PM` — Public Menu: customer browsing, product cards, cart, Review Order, fulfillment, bundles, table sessions, Open Tab, and order history.
+- `DA` — Data & Admin: business configuration, service presets, database, Auth, permissions, migrations, adapters, and administrative tools.
+- `LP` — Landing Page: marketing, pricing, onboarding, public documentation, and acquisition pages.
 
-## Working habits
+Name projects from broad to specific:
 
-- Follow `docs/ORCHESTRATION.md` for concurrent-task ownership and approval gates, and `docs/DEPLOYMENT.md` for baseline, integration, deployment and cleanup rules. Planner routes work through durable domain owners; QA and Deployment remain separate durable roles. Only explicit user approval after QA and local review authorizes Deployment.
-- Give every user-visible application or software project one stable human-readable project name. Lead work packets, implementation tasks, QA reports, review requests and release requests with that name and explain the change in plain language before branch names or commit hashes.
-- After QA passes, Orchestrator must tell the user the exact implementation task title to open and clearly ask them to run and test that named project locally. Only the user's explicit approval using the human-readable project name authorizes Deployment. Revisions return the same named project to implementation and QA before another review request. Documentation-only work may be summarized directly when there is nothing meaningful to inspect visually, but still requires named-project approval.
-- Start with `npm start` and `npm run check`.
-- In this repository, **cloud development** means the GitHub-hosted development stage: the `main` branch on `origin` and its GitHub Pages deployment at `https://jjoshyuson.github.io/QRK-MENU/`. It does not mean the Sites-hosted prototype or a production environment.
-- Implementation tasks commit only their intended candidate changes and hand exact commits to QA; they do not merge or deploy. Deployment alone integrates an approved candidate, runs the release gate, pushes `main` to `origin`, and verifies the GitHub Pages development deployment at `https://jjoshyuson.github.io/QRK-MENU/` before describing it as deployed.
-- For layout work in this next Codex session, use available browser tools to verify representative phone, tablet and desktop sizes; do not rely only on syntax checks.
-- Test meaningful flows and specific risks; avoid redundant tests that just mirror the source.
-- Keep the latest working UI intact during changes.
-- Update `docs/BUILD_STATUS.md` after each milestone and state what remains incomplete.
-- Update `docs/PROGRESS_MAP.md` when milestone status, ordering, dependencies or exit criteria change.
-- Ask only for decisions that materially change scope, privacy, external costs or access; proceed with routine reversible work.
+`CATEGORY / FEATURE / BUSINESS OR MODE / SPECIFIC CONCERN`
 
-## Component inventory maintenance
+Omit levels that add no value. Examples: `CO / Business Profile`, `PM / Shopping Cart / Salamat`, `PM / Bundle Selection / Mr. Samgyeopsal`, `DA / Service Presets`. Use descriptive suffixes instead of `/ 1` and `/ 2` unless two simultaneous attempts truly have identical scope.
 
-- Treat `dist/ui-components.css` as the source of truth for reusable component variables and visual rules across owner tools, Client Admin, Client Staff, QRK Admin, the customer menu and the unlinked `/components/` reference. Keep page composition and responsive placement in route stylesheets. Landing-page components are intentionally excluded.
-- Use the stable inspect-element labels generated by `dist/ui-components.js`: every registered component exposes `data-component`, `data-variant` and `data-component-source`. Keep names human-readable and stable when markup changes.
-- Before creating a reusable component, check `/components/` and the shared source named on its specimen so an existing pattern is reused when practical.
-- Whenever a reusable component, shared variable or meaningful variant/state is added or materially changed, update `dist/ui-components.css`, its registry entry, and its matching `/components/` specimen in the same milestone.
-- Keep the inventory dependency-free. It renders the production component layer for visibility, copy and reference; it is not a second implementation, automated test harness or product-navigation destination.
-- Organize specimens by role and component family, and show representative default, selected, disabled, empty, loading, warning, success and destructive states where those states exist.
+Reuse an existing specialist task when its scope and context still match and it has no conflicting unfinished candidate. Create a new task only for a materially different area, genuine parallel work, or required isolation. Every task reports directly to Master Builder.
+
+## Starting a coding project
+
+Before editing, every coding task must:
+
+1. Read `memory/README.md`, then only its category topic and directly relevant contracts.
+2. Fetch `origin` and resolve the exact current `origin/main` commit.
+3. Confirm the intended worktree is clean.
+4. Create a dedicated `codex/` branch and worktree from that exact remote commit. Never start from a dirty checkout or stale local `main`.
+5. Declare its human-readable project name, category, scope, expected files, branch/worktree, baseline, and unique local preview port.
+6. Inspect the relevant implementation before changing it.
+
+Parallel coding projects may proceed independently, but they must not share a writable worktree, branch, preview port, or destructive database state.
+
+## Questions and decisions
+
+- Infer routine, reversible details from the user's request, existing behavior, relevant memory, and established patterns.
+- Ask one focused question only when unresolved ambiguity could materially change product behavior or scope, architecture, access or privacy, destructive data handling, cost, or release authority.
+- When a non-material detail is uncertain, choose the smallest reversible option, record the assumption in the task report, and continue.
+- Never ask the user to reconfirm behavior they already requested.
+
+## Implementation and self-review
+
+- Own one bounded candidate and change only intended files.
+- Prefer the smallest coherent implementation and avoid speculative infrastructure.
+- Run focused checks for the changed behavior. Run `npm run check` once before presenting a shared-behavior or release candidate.
+- UI work requires representative phone, tablet, and desktop checks plus relevant keyboard, focus, contrast, reflow, state, and reduced-motion checks.
+- Review the diff and commit the complete candidate before requesting user approval.
+- Update documentation only when its truth changes. `docs/BUILD_STATUS.md` stores meaningful release evidence; `docs/PROGRESS_MAP.md` changes only when milestone direction changes; memory stores concise current facts and routes.
+
+## Completion report and local review
+
+Every completed coding task sends Master Builder a direct report containing:
+
+- Human-readable project name and category.
+- Plain-language outcome.
+- Exact task title.
+- Local startup command, claimed port, URL, and short test checklist.
+- Branch/worktree, baseline, and candidate commit as secondary technical references.
+- Intended files, checks performed, assumptions, and known limitations.
+
+For user-visible work, Master Builder opens or names the exact specialist task and asks the user to run and physically review that local candidate. Revisions remain under the same project name and return to the same specialist task when practical.
+
+Only explicit user approval using the human-readable project name authorizes deployment. Documentation-only changes may be reviewed from a plain-language summary when no meaningful visual test exists.
+
+## Direct release
+
+The approved specialist task or Master Builder may release directly; do not create separate QA or Deployment tasks by default.
+
+Before pushing:
+
+1. Acquire the single QRK release slot so two tasks cannot update `main` simultaneously.
+2. Fetch current `origin/main` again.
+3. Confirm candidate scope and ancestry, then integrate onto current `origin/main` without overwriting unrelated work.
+4. Resolve only understood conflicts and preserve every already-deployed change.
+5. Run `npm run check` once and `git diff --check`.
+6. Push `main` without force.
+7. Verify the exact GitHub **Deploy development** run and smoke-test `https://jjoshyuson.github.io/QRK-MENU/` before reporting deployment success.
+
+Database changes require their relevant migration, isolation, rollback, and hosted verification steps in addition to this Git release flow.
+
+After verified deployment and user acceptance, archive the completed specialist task when it is no longer useful to retain. Remove only verified-clean, fully integrated temporary branches and managed worktrees. Preserve unique work, Git history, release evidence, Master Builder, and any reusable specialist tasks.
+
+## Component inventory
+
+- `dist/ui-components.css` is the shared component source for owner tools, Client Admin, Client Staff, QRK Admin, customer menu, and `/components/`; landing-page components are separate.
+- Reuse existing components when practical. When a shared component or meaningful state changes, update its registry and `/components/` specimen in the same project.
+- Keep the inventory dependency-free and preserve stable `data-component`, `data-variant`, and `data-component-source` labels.
