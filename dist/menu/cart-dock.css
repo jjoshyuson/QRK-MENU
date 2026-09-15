@@ -100,7 +100,7 @@
   height: 100%;
   flex-direction: column;
   padding: 8px;
-  overflow: hidden;
+  overflow: visible;
   border: 0;
   border-radius: var(--component-radius-xl, 16px);
   background: color-mix(in srgb, var(--surface, #fff) 94%, transparent);
@@ -115,8 +115,8 @@
 .dish-cta {
   position: absolute;
   z-index: 1;
-  top: 14px;
-  right: 14px;
+  top: 0;
+  right: 0;
   display: grid;
   width: 30px;
   height: 30px;
@@ -131,6 +131,7 @@
   line-height: 1;
   place-items: center;
   pointer-events: none;
+  transform: translate(50%, -50%);
 }
 
 @media (max-width: 600px) {
@@ -138,7 +139,7 @@
   .dish .photo { border-radius: 10px; }
   .dish-copy { gap: 7px; padding: 8px 3px 3px; }
   .dish h4,.dish strong { font-size: 13px; }
-  .dish-cta { top: 11px; right: 11px; width: 28px; height: 28px; font-size: 20px; }
+  .dish-cta { width: 28px; height: 28px; font-size: 20px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
