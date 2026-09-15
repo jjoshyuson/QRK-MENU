@@ -5,25 +5,26 @@ This document is the authoritative contract for coordinating concurrent Codex ta
 ## Roles
 
 - **Orchestrator** is the user-facing intake and coordination task. It turns rough requests or brain dumps into bounded work, dispatches independent work in parallel when useful, and returns control promptly instead of synchronously babysitting running tasks.
-- **Planner** resolves product scope, contracts, dependencies and implementation packets. It does not implement, integrate or deploy unless the user separately changes its role.
-- **Ephemeral build tasks** own one bounded candidate in an isolated branch/worktree. The user may open these tasks directly, answer their questions there and refine their work without routing routine conversation through Orchestrator.
+- **Planner** resolves product scope, contracts and dependencies, then sends bounded work packets to the relevant durable domain owner. It does not routinely implement, verify, integrate or deploy.
+- **Domain owners** are durable senior coordinators for QRK Client & Operations, QRK Customer Menu and QRK Platform Data. Each owns decisions and sequencing in its product area, creates the smallest useful set of ephemeral implementation tasks and consolidates their candidates and risks.
+- **Ephemeral implementation tasks** own one bounded candidate in an isolated branch/worktree. The user may open these tasks directly, answer their questions there and refine their work without routing routine conversation through Orchestrator.
 - **QA** independently verifies every completed build candidate. QA reports evidence, regressions, limitations and either PASS or FAIL; it does not integrate or deploy.
-- **Release** is the only normal integrator and development deployer. It integrates only a candidate explicitly approved by the user after local review, runs the release gate, pushes `main`, verifies the development deployment and reports the result.
-- **Cleaner** performs post-acceptance cleanup. It is dispatched only by Orchestrator after Release reports successful deployment verification and the user explicitly accepts the result.
+- **Deployment** is the only normal integrator and deployer. It integrates only an immutable candidate explicitly approved by the user after QA and local review, runs the release gate, pushes `main`, verifies the development deployment and reports the result.
 
-Orchestrator, Planner, QA, Release and Cleaner are durable roles. Feature-specific build tasks are ephemeral.
+Orchestrator, Planner, the three domain owners, QA and Deployment are durable roles. Implementation tasks are ephemeral.
 
 ## Candidate lifecycle
 
-1. **Intake and split:** Orchestrator captures the request, identifies decisions that materially affect scope, and splits independent work into bounded candidates. Parallel work is preferred only when ownership is clear and merge conflicts are unlikely.
-2. **Dispatch and handoff:** Each build task receives its scope, authoritative references, branch/worktree ownership, acceptance criteria, validation expectations and explicit non-goals. Orchestrator tells the user which tasks were started and yields control.
-3. **Direct collaboration:** The user may talk directly with any build task. Build-task questions stay in that task by default. Escalate to Orchestrator only when a decision affects multiple candidates, shared architecture, sequencing, cost, privacy, access or release scope.
-4. **Build candidate:** The task inspects inherited changes, edits only owned files, runs proportionate checks and commits its intended changes. Its handoff includes the commit, outcome, checks, limitations and QA focus. It does not merge, push `main` or deploy.
-5. **QA gate:** Every completed build candidate goes to QA. A FAIL returns to the owning build task for correction and another QA pass. A PASS returns to Orchestrator, never directly to Release.
-6. **Local review gate:** Orchestrator identifies the QA-passed candidate and asks the user to open and test that local candidate. QA PASS is evidence, not release authorization.
-7. **Approval gate:** After local review, the user explicitly approves or rejects the candidate. Rejected work returns to the appropriate build task. Silence or a QA PASS never counts as approval.
-8. **Release gate:** Orchestrator sends the approved commit and evidence to Release. Release verifies scope and approvals, integrates intentionally, runs the release gate once, pushes `main`, verifies the GitHub Pages development deployment and reports the exact result. No other role performs these actions in the normal workflow.
-9. **Acceptance and cleanup:** After successful deployment verification, Orchestrator asks for or records the user's explicit acceptance. Only then may Orchestrator dispatch Cleaner.
+1. **Intake:** Orchestrator captures the request, identifies decisions that materially affect scope, sends the organized request to Planner and returns control promptly.
+2. **Plan and route:** Planner creates a dependency-aware to-do list and sends each bounded work packet to QRK Client & Operations, QRK Customer Menu or QRK Platform Data. Cross-domain dependencies are explicit before implementation starts.
+3. **Domain dispatch:** The owning domain creates the smallest useful set of ephemeral implementation tasks. Each receives its scope, authoritative references, approved `origin/main` baseline, branch/worktree ownership, acceptance criteria, validation expectations and explicit non-goals.
+4. **Direct collaboration:** The user may talk directly with the owning domain or implementation task. Task questions stay there by default. Escalate only decisions that affect multiple domains, shared architecture, sequencing, cost, privacy, access or release scope.
+5. **Build candidate:** The task edits only owned files, runs proportionate checks and commits its intended changes. Its handoff includes the branch/worktree, exact commit, outcome, checks, limitations and QA focus. It does not merge, push `main` or deploy.
+6. **QA gate:** Every completed candidate goes to QA as an immutable commit. A FAIL returns through the domain owner for correction and another QA pass. A PASS returns to Orchestrator, never directly to Deployment.
+7. **Local review gate:** Orchestrator identifies the QA-passed candidate and asks the user to open and test it locally. QA PASS is evidence, not deployment authorization.
+8. **Approval gate:** After local review, the user explicitly approves or rejects the candidate. Rejected work returns to its domain owner. Silence or a QA PASS never counts as approval.
+9. **Deployment gate:** Orchestrator sends the approved commit and evidence to Deployment. Deployment verifies scope and approvals, integrates intentionally, runs the release gate once, pushes `main`, verifies GitHub Pages and reports the exact result.
+10. **Acceptance and cleanup:** After verified deployment and user acceptance, completed ephemeral tasks may be archived and only verified-clean managed worktrees and fully merged temporary branches may be removed. Durable roles, Git history and unique work remain.
 
 ## Handoff contracts
 
@@ -44,7 +45,7 @@ Orchestrator, Planner, QA, Release and Cleaner are durable roles. Feature-specif
 - Regressions, unresolved risks and environment limitations
 - Exact retest target when failed
 
-### Orchestrator to Release
+### Orchestrator to Deployment
 
 - User-approved candidate and exact commit
 - QA PASS evidence
@@ -53,7 +54,7 @@ Orchestrator, Planner, QA, Release and Cleaner are durable roles. Feature-specif
 - Required release checks and development smoke tests
 - Confirmation that the user explicitly authorized release
 
-### Release to Orchestrator
+### Deployment to Orchestrator
 
 - Integrated commits and resulting `main` commit
 - Release-gate results
@@ -61,11 +62,9 @@ Orchestrator, Planner, QA, Release and Cleaner are durable roles. Feature-specif
 - Development URLs and smoke-test evidence
 - Rollback target and any remaining limitations
 
-## Cleaner safety contract
+## Cleanup safety contract
 
-Cleaner may act only after Orchestrator dispatches it following verified deployment and explicit user acceptance.
-
-Before removing anything, Cleaner must confirm that:
+Cleanup may occur only after verified deployment and explicit user acceptance. The actor performing cleanup must first confirm that:
 
 - the target is an ephemeral completed task;
 - its worktree is clean;
@@ -73,13 +72,13 @@ Before removing anything, Cleaner must confirm that:
 - its temporary local and remote branches are fully merged;
 - no unique or unmerged changes, untracked work, credentials or user data would be lost.
 
-Cleaner may archive the completed ephemeral task and remove only the verified-clean managed worktree and fully merged temporary branches. It must never delete Git history, rewrite shared history, remove durable role tasks, or touch work with unique/unmerged changes. Any failed precondition stops cleanup and returns a precise report to Orchestrator.
+The completed task may then be archived and only its verified-clean managed worktree and fully merged temporary branches removed. Cleanup must never delete Git history, rewrite shared history, remove durable role tasks, or touch unique/unmerged work. Any failed precondition stops cleanup and returns a precise report to Orchestrator.
 
 ## Boundaries
 
 - One task owns each candidate and commits only its own changes.
-- Cross-cutting decisions return to Orchestrator or Planner before competing implementations begin.
+- Cross-cutting decisions return to Orchestrator or Planner before competing implementations begin; domain owners do not silently redefine another domain's contract.
 - QA does not imply release approval.
-- Only explicit user approval after local candidate review authorizes Release.
-- Only Release normally integrates to and pushes `main` or deploys development.
+- Only explicit user approval after local candidate review authorizes Deployment.
+- Only Deployment normally integrates to and pushes `main` or deploys development.
 - Production deployment remains separately authorized and is not implied by this development workflow.

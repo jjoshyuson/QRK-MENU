@@ -46,10 +46,10 @@
 
 ## Working habits
 
-- Follow `docs/ORCHESTRATION.md` for concurrent-task ownership and gates. Orchestrator dispatches bounded work and returns control; users collaborate directly with build tasks; every candidate passes QA and returns to Orchestrator for local user review. Only explicit user approval sends work to Release, and only Release integrates, pushes `main`, deploys development and verifies it. Orchestrator alone may dispatch Cleaner after verified deployment and user acceptance.
+- Follow `docs/ORCHESTRATION.md` for concurrent-task ownership and approval gates, and `docs/DEPLOYMENT.md` for baseline, integration, deployment and cleanup rules. Planner routes work through durable domain owners; QA and Deployment remain separate durable roles. Only explicit user approval after QA and local review authorizes Deployment.
 - Start with `npm start` and `npm run check`.
 - In this repository, **cloud development** means the GitHub-hosted development stage: the `main` branch on `origin` and its GitHub Pages deployment at `https://jjoshyuson.github.io/QRK-MENU/`. It does not mean the Sites-hosted prototype or a production environment.
-- Build tasks commit only their intended candidate changes and hand them to QA; they do not merge or deploy. After local user approval, Release alone integrates the approved commit, runs the release gate, pushes `main` to `origin`, and verifies the GitHub Pages development deployment at `https://jjoshyuson.github.io/QRK-MENU/` before describing it as deployed.
+- Implementation tasks commit only their intended candidate changes and hand exact commits to QA; they do not merge or deploy. Deployment alone integrates an approved candidate, runs the release gate, pushes `main` to `origin`, and verifies the GitHub Pages development deployment at `https://jjoshyuson.github.io/QRK-MENU/` before describing it as deployed.
 - For layout work in this next Codex session, use available browser tools to verify representative phone, tablet and desktop sizes; do not rely only on syntax checks.
 - Test meaningful flows and specific risks; avoid redundant tests that just mirror the source.
 - Keep the latest working UI intact during changes.

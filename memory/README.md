@@ -17,10 +17,12 @@ Use this folder as the fast entry point for a new chat. Read this file first, th
 | Current progress and next milestone | `memory/progress.md` | `docs/PROGRESS_MAP.md`, `docs/BUILD_STATUS.md` |
 | Confirmed decisions and unresolved choices | `memory/decisions.md` | `docs/PRODUCT_PLAN.md` |
 | Local commands and verification | `memory/workflow.md` | `README.md`, `docs/BUILD_STATUS.md` |
+| Multi-task roles, ownership and approval gates | `memory/workflow.md` | `docs/ORCHESTRATION.md` |
+| Git baseline, candidate, deployment and cleanup gates | `memory/workflow.md` | `docs/DEPLOYMENT.md` |
 
 ## Reading rule
 
-For a routine UI change, read `AGENT/STYLE.md`, `ui.md`, `architecture.md`, `progress.md` and `workflow.md`. For product or roadmap work, read `product.md`, `progress.md` and `decisions.md`; consult `inbox.md` only when reviewing newly captured ideas. For backend/data work, read `architecture.md`, `orders.md`, `progress.md`, `workflow.md`, then the full `supabase/README.md`. Read the full authoritative document when implementation depends on nuance or verification evidence.
+For a routine UI change, read `AGENT/STYLE.md`, `ui.md`, `architecture.md`, `progress.md` and `workflow.md`. For product or roadmap work, read `product.md`, `progress.md` and `decisions.md`; consult `inbox.md` only when reviewing newly captured ideas. For backend/data work, read `architecture.md`, `orders.md`, `progress.md`, `workflow.md`, then the full `supabase/README.md`. Planner and all durable roles read `workflow.md` and route to `docs/ORCHESTRATION.md`; QA and Deployment also read `docs/DEPLOYMENT.md`. Read the full authoritative document when implementation depends on nuance or verification evidence.
 
 ## Maintenance rule
 
@@ -29,4 +31,4 @@ For a routine UI change, read `AGENT/STYLE.md`, `ui.md`, `architecture.md`, `pro
 - Do not paste long logs or duplicate detailed evidence.
 - Update the matching topic file after a material decision or milestone change.
 - Date facts that can become stale and distinguish confirmed decisions from proposals.
-- Last refreshed: September 9, 2026.
+- Last refreshed: September 15, 2026.
