@@ -7,6 +7,13 @@
 - Invalid, inaccessible, missing-identity, and unavailable-storage states fail safely without bypassing role or page permissions.
 - Validation: the focused workspace-section contract, `npm run check`, and `git diff --check` passed. Live Chrome review at the responsive layout confirmed unseen Kusina and Salamat admins opened Dashboard independently, Settings survived refresh for Kusina, a Salamat `#orders` deep link opened Orders and cleared its hash, Orders survived the next refresh, and the browser console remained clear.
 
+## September 15, 2026 — Quick Review Order fulfillment cards
+
+- Replaced the extra Quick checkout disclosure/selector with immediate semantic `Pickup` and `Serve at table` cards inside Review Order. When both configured fulfillment modes are available, neither card is preselected and the subtotal/primary action is absent until a choice is made.
+- Preserved the existing numbered table picker after `Serve at table`. Active QRK Table and Open Tab visits derive table fulfillment from their established session and do not ask the customer to choose a fulfillment mode again.
+- Centered Review Order in the usable viewport across phone, tablet, and desktop layouts while preserving native dialog focus and Escape behavior, safe-area height limits, dark/light tokens, narrow-phone reflow, and zero horizontal overflow.
+- Validation: `npm run check`, `git diff --check`, and focused payment-first, Open Tab, and table-picker contracts passed. Live browser checks passed at 390×844, 768×1024, and 1280×800 for unselected, Pickup, table selection, Escape recovery, and established Open Tab behavior.
+
 ## September 15, 2026 — Open Tab history, remembered name, and cart recovery
 
 - Fixed Table cleanup so every active order for that table is completed into Order History before the table session is marked available. If any order cannot be archived, the table remains occupied and staff receive an error instead of losing the session context.

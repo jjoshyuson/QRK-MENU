@@ -17,13 +17,14 @@ assert.doesNotMatch(menu,/if\(openTabEnabled\)\{\$\('#cart-bar'\)\.classList\.ad
 assert.match(html,/id="open-tab-dialog"/);
 assert.doesNotMatch(html,/class="sheet-content cart-content">\s*<section class="tab-summary/);
 assert.match(menu,/\$\('#open-tab-control'\)\.addEventListener\('click',openTab\)/);
-assert.match(menu,/\$\('\.fulfillment'\)\.classList\.add\('hidden'\);\$\('#choose-fulfillment'\)\.classList\.add\('hidden'\)/);
+assert.match(menu,/\$\('\.fulfillment'\)\.classList\.add\('hidden'\);\$\('#review-table-field'\)\.classList\.add\('hidden'\)/);
+assert.match(menu,/function openTableMenu\(session\).*setReviewTableNumber\(session\.table\);setFulfillmentChoice\('table'\)/);
 assert.match(menu,/\$\('#cart-empty'\)\.classList\.toggle\('hidden',cart\.length>0\)/);
 assert.match(menu,/class="cart-item-controls"/);
 assert.match(menu,/tabOrders\.length\?'Send another order':'Send order'/);
 assert.match(menu,/if\(quantity<=0\)cart\.splice\(index,1\)/);
 assert.match(menu,/\$\('#checkout-details'\)\.open=false/);
-assert.match(html,/id="choose-fulfillment"[^>]*aria-haspopup="dialog"/);
+assert.doesNotMatch(html,/id="choose-fulfillment"/);
 assert.match(html,/id="checkout-details"/);
 assert.match(html,/id="fulfillment-dialog"/);
 assert.doesNotMatch(html,/id="checkout-data-note"/);

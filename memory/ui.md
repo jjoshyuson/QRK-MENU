@@ -1,5 +1,7 @@
 # UI memory
 
+- September 15 Quick Review Order refinement: when both fulfillment capabilities are enabled, `Pickup` and `Serve at table` are immediate semantic cards, neither is preselected, and the primary action stays absent until selection. Active Table/Open Tab sessions omit this choice and use the established table; Review Order is centered in the usable viewport.
+
 - Desktop is a management workspace with a customer preview.
 - Mobile/tablet at 1100 CSS pixels or less opens to Dashboard. A top-right hamburger opens a right-side navigation drawer, and Menu Studio is a separate view.
 - Menu Studio Photo editor retains the customer-shaped two-column photo menu with owner controls layered on top. Its Availability view uses tall, Messenger-inspired touch rows with larger round images, item names and right-aligned Available/Out of stock controls. Availability view omits prices and option notes and is not a customer layout.

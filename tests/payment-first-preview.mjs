@@ -27,6 +27,16 @@ assert.match(menu, /quick-service-dialog'\)\.addEventListener\('cancel',event=>e
 assert.match(menu, /paymentStatus:paymentMethod==='counter'\?'due_at_counter'/);
 assert.match(menu, /if\(paymentFirst\)\$\('#submit-order'\)\.textContent='Confirm payment'/);
 assert.match(menu, /paymentFirst\?openPaymentStep\(\):createOrder\(\)/);
+assert.match(html, /class="fulfillment review-fulfillment".*value="pickup".*<b>Pickup<\/b>.*value="table".*<b>Serve at table<\/b>/s);
+assert.doesNotMatch(html, /id="choose-fulfillment"|id="fulfillment-summary"|id="fulfillment-popup-choices"|data-review-fulfillment/);
+assert.match(html, /class="sheet-action cart-total hidden" id="cart-action"/);
+assert.match(menu, /if\(reviewChoiceRequired\)\{document\.querySelectorAll\('input\[name="fulfillment"\]'\)\.forEach\(input=>input\.checked=false\)/);
+assert.match(menu, /function updateCheckoutActionVisibility\(\).*reviewChoiceRequired&&!hasChoice/s);
+assert.match(menu, /\.review-fulfillment'\)\.addEventListener\('change'.*input\.value==='table'.*fulfillment-dialog/s);
+assert.match(menu, /\.review-fulfillment'\)\.addEventListener\('click'.*input\?\.value==='table'.*!selectedReviewTable/s);
+assert.match(menu, /function closeTableSelection\(\).*tableChoice\.checked=false.*updateCheckoutActionVisibility/s);
+assert.match(menu, /fulfillment-dialog'\)\.addEventListener\('cancel',event=>\{event\.preventDefault\(\);closeTableSelection\(\)\}\)/);
+assert.match(menu, /function openTableMenu\(session\).*setFulfillmentChoice\('table'\)/);
 assert.match(menu, /\$\('#pay-at-counter'\)\.addEventListener\('click',\(\)=>createOrder\('counter'\)\)/);
 assert.match(html, /<p class="eyebrow">ORDER SENT<\/p>/);
 assert.match(html, /<h2 id="confirmation-title">ORDER NUMBER<\/h2><strong id="confirmation-number"><\/strong>/);

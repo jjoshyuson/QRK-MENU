@@ -90,6 +90,8 @@ Update this map only when stage status, order, dependencies or exit criteria cha
 
 **Approved and completed:** QRK Quick asks Dine in or Takeout before menu browsing when both are enabled. The choice carries into checkout, where customers can confirm Pickup or Serve at table, enter a table number only when needed, review the subtotal, and continue to payment selection.
 
+**September 15 refinement implemented locally:** Review Order presents Pickup and Serve at table directly with no preselection or primary action until selection. Serve at table retains the numbered picker; established Table/Open Tab sessions use their active table without repeating the choice. Independent QA and deployment remain pending.
+
 **Dependency:** Business availability is represented by `serviceProfile.settings.fulfillmentModes`. A management UI for changing that setting is proposed, not yet approved or built.
 
 **Exit evidence:** Automated checks pass; local browser verification covers both paths, Table/buffet isolation, focus behavior, and phone/tablet/desktop reflow.
