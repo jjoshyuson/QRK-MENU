@@ -1014,3 +1014,9 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Traced the reported Tambay phone order to hosted Supabase as `TC-0103`, received for Table 2 with a registered device. The order was not lost.
 - Fixed staging authentication so an old browser-preview session is discarded instead of silently selecting the local-storage data adapter. Hosted staging now requires a real Supabase account before showing a staff workspace.
 - Added a regression contract for rejecting preview sessions in staging. After deployment, existing dashboard browsers must reload and sign in as the appropriate hosted admin or staff user.
+# September 15, 2026 — Open Tab and View Order separation
+
+- The floating `View order` panel now contains only the current editable draft and send-order fields. Submitted Open Tab rounds no longer appear there.
+- The top-right `Open Tab` control opens its own submitted-round history panel with submitted totals and statuses.
+- Table-mode order review no longer repeats the already-established table assignment.
+- Validation: `npm run check` passes, including the updated Open Tab contract. Local browser inspection confirmed the draft-only cart and separate Open Tab empty/submitted-history surface; a hosted-mode test submission from the local origin was correctly rejected because that preview device was not a member of the hosted table session.
