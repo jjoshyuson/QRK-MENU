@@ -17,12 +17,12 @@ Use this folder as the fast entry point for a new chat. Read this file first, th
 | Current progress and next milestone | `memory/progress.md` | `docs/PROGRESS_MAP.md`, `docs/BUILD_STATUS.md` |
 | Confirmed decisions and unresolved choices | `memory/decisions.md` | `docs/PRODUCT_PLAN.md` |
 | Local commands and verification | `memory/workflow.md` | `README.md`, `docs/BUILD_STATUS.md` |
-| Multi-task roles, ownership and approval gates | `memory/workflow.md` | `docs/ORCHESTRATION.md` |
-| Git baseline, candidate, deployment and cleanup gates | `memory/workflow.md` | `docs/DEPLOYMENT.md` |
+| Master Builder task creation and direct task workflow | `memory/workflow.md` | `docs/ORCHESTRATION.md` |
+| Git baseline, direct deployment and cleanup safety | `memory/workflow.md` | `docs/DEPLOYMENT.md` when detailed deployment help is needed |
 
 ## Reading rule
 
-For a routine UI change, read `AGENT/STYLE.md`, `ui.md`, `architecture.md`, `progress.md` and `workflow.md`. For product or roadmap work, read `product.md`, `progress.md` and `decisions.md`; consult `inbox.md` only when reviewing newly captured ideas. For backend/data work, read `architecture.md`, `orders.md`, `progress.md`, `workflow.md`, then the full `supabase/README.md`. Planner and all durable roles read `workflow.md` and route to `docs/ORCHESTRATION.md`; QA and Deployment also read `docs/DEPLOYMENT.md`. Read the full authoritative document when implementation depends on nuance or verification evidence.
+For a routine UI change, read `AGENT/STYLE.md`, `ui.md`, `architecture.md`, `progress.md` and `workflow.md`. For product or roadmap work, read `product.md`, `progress.md` and `decisions.md`; consult `inbox.md` only when reviewing newly captured ideas. For backend/data work, read `architecture.md`, `orders.md`, `progress.md`, `workflow.md`, then the full `supabase/README.md`. Master Builder and focused tasks read `workflow.md` and use `docs/ORCHESTRATION.md` only when task-routing details are needed. Read `docs/DEPLOYMENT.md` only when the user asks the focused task to deploy. Read the full authoritative document when implementation depends on nuance or verification evidence.
 
 ## Maintenance rule
 

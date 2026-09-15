@@ -2,28 +2,24 @@
 
 ## Start
 
-1. Read `AGENTS.md` and `memory/README.md`.
-2. Proceed on routine, reversible details using the approved packet, existing patterns and documented product intent. Domain owners may answer and record routine assumptions; ask the user only when unresolved ambiguity materially changes behavior or scope, architecture, access or privacy, destructive data handling, cost, or release authorization.
-3. Before UI or visual work, read and follow `AGENT/STYLE.md`; then read only the relevant memory topics and linked authoritative docs.
-4. Run `npm start` and `npm run check`. The local URL is `http://127.0.0.1:4173`.
-5. For backend work, read `supabase/README.md`, keep Docker Desktop running, and use the project-local CLI as `npx.cmd supabase ...` on Windows. Before any hosted operation, pass the explicit target flag and verify the linked project ref.
+1. Read `AGENTS.md` and `memory/README.md`, then only the topics relevant to the task.
+2. Before UI work, read `AGENT/STYLE.md`. Before backend or database work, read `supabase/README.md`.
+3. Before editing, fetch `origin`, resolve the exact current `origin/main`, and start from that clean shared baseline. Do not treat a dirty checkout or stale local `main` as the baseline.
+4. Use a dedicated branch/worktree and a unique preview port when parallel work makes isolation useful.
 
-## During work
+## Working model
 
-- Preserve the latest working UI and make the smallest practical change.
-- Prefer existing HTML, CSS and vanilla JavaScript; avoid unnecessary packages and abstractions.
-- For layout work, verify representative phone, tablet and desktop sizes with browser tools.
-- Test meaningful flows and risks, not only syntax.
-- Do not deploy or activate archived hosting metadata without explicit authorization.
-- For concurrent work, follow `docs/ORCHESTRATION.md`: Planner routes dependency-aware packets through the durable domain owners; users collaborate directly in the relevant domain or implementation task; every immutable candidate passes independent QA and local user review.
-- Lead every work packet, implementation task, QA report, review request and release request with one stable human-readable project name and a plain-language outcome; keep branches and commit hashes as secondary verification details.
+- Master Builder organizes brain dumps, creates or names focused tasks, tells the user where to work, and then stops unless asked to coordinate again.
+- The user collaborates directly with each focused task through implementation, local testing, revisions, commits, and deployment.
+- Do not create mandatory Planner, domain-owner, QA, Release, Deployment, approval, or reporting stages.
+- Ask only when ambiguity materially changes behavior, scope, architecture, access, privacy, destructive data handling, cost, or production authority.
+- Preserve unrelated work and make the smallest practical change using the existing stack and patterns.
 
 ## Finish
 
-- Run `npm run check` and task-relevant tests such as `node tests/photo-races.mjs`.
-- Update `docs/BUILD_STATUS.md` with evidence, limitations and exact next action.
-- Update `docs/PROGRESS_MAP.md` only if milestone structure or status changed.
-- Update relevant `memory/` topics when stable facts or decisions changed.
-- “Cloud development” means `origin/main` and its GitHub Pages development deployment at `https://jjoshyuson.github.io/QRK-MENU/`; it excludes the Sites prototype and production.
-- Build tasks commit only owned changes and hand exact commits to QA. After QA PASS, Orchestrator names the exact implementation task where the user should run and test the project locally. Only explicit approval using the human-readable project name authorizes Deployment; revisions return the same named project through implementation and QA. Documentation-only work may be summarized directly but still requires named-project approval.
-- Git worktrees do not isolate database state. Isolate schema-changing or destructive data work. Cleanup starts only after verified deployment and user acceptance and preserves durable roles and unique/unmerged work.
+- Run focused checks and `npm run check` when shared behavior or deployment risk warrants it.
+- Commit only intended files.
+- A focused task may push or deploy directly when the user instructs it to do so; fetch current `origin/main` again first, integrate without force, run appropriate checks, and verify the resulting development deployment.
+- Production, destructive database operations, force-pushes, secrets, and deletion still require clear authorization.
+- “Cloud development” means `origin/main` and its GitHub Pages development deployment at `https://jjoshyuson.github.io/QRK-MENU/`.
+- Git worktrees do not isolate database state. Isolate schema-changing or destructive data work.

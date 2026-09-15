@@ -16,15 +16,16 @@ Keep work lightweight, focused, and easy for the user to review. Use `memory/REA
 
 ## Master Builder workflow
 
-The user's primary QRK chat is **Master Builder**. It receives brain dumps, identifies the actual concerns, asks only about material blockers, and converts the request into the smallest useful set of named specialist projects.
+The user's primary QRK chat is **Master Builder**. It receives brain dumps, identifies the actual concerns, asks only about material blockers, and converts the request into the smallest useful set of clearly named, focused tasks.
 
-Master Builder plans directly. Do not add Planner, domain-manager, QA, or Deployment forwarding layers unless the user explicitly requests them.
+Master Builder is a lightweight organizer, not a development pipeline. It gives each task the necessary context and tells the user which task to open, then stops unless the user asks it to coordinate again. Do not add Planner, domain-manager, QA, Release, Deployment, approval, or progress-reporting layers unless the user explicitly requests them.
 
 Specialist project categories:
 
 - `CO` — Client & Operations: Dashboard, Business Profile, Settings, Menu Studio, staff tools, orders, tables, and management workflows.
 - `PM` — Public Menu: customer browsing, product cards, cart, Review Order, fulfillment, bundles, table sessions, Open Tab, and order history.
 - `DA` — Data & Admin: business configuration, service presets, database, Auth, permissions, migrations, adapters, and administrative tools.
+- `DBRS` — Database Relations: cross-surface data contracts, relational integrity, synchronization, constraints, and schema/application vocabulary.
 - `LP` — Landing Page: marketing, pricing, onboarding, public documentation, and acquisition pages.
 
 Name projects from broad to specific:
@@ -33,7 +34,7 @@ Name projects from broad to specific:
 
 Omit levels that add no value. Examples: `CO / Business Profile`, `PM / Shopping Cart / Salamat`, `PM / Bundle Selection / Mr. Samgyeopsal`, `DA / Service Presets`. Use descriptive suffixes instead of `/ 1` and `/ 2` unless two simultaneous attempts truly have identical scope.
 
-Reuse an existing specialist task when its scope and context still match and it has no conflicting unfinished candidate. Create a new task only for a materially different area, genuine parallel work, or required isolation. Every task reports directly to Master Builder.
+Reuse an existing focused task when its scope and context still match. Create a new task for a materially different area, genuine parallel work, or required isolation. The user works with that task directly; it does not need to report through Master Builder.
 
 ## Starting a coding project
 
@@ -64,38 +65,15 @@ Parallel coding projects may proceed independently, but they must not share a wr
 - Review the diff and commit the complete candidate before requesting user approval.
 - Update documentation only when its truth changes. `docs/BUILD_STATUS.md` stores meaningful release evidence; `docs/PROGRESS_MAP.md` changes only when milestone direction changes; memory stores concise current facts and routes.
 
-## Completion report and local review
+## Completion and direct deployment
 
-Every completed coding task sends Master Builder a direct report containing:
-
-- Human-readable project name and category.
-- Plain-language outcome.
-- Exact task title.
-- Local startup command, claimed port, URL, and short test checklist.
-- Branch/worktree, baseline, and candidate commit as secondary technical references.
-- Intended files, checks performed, assumptions, and known limitations.
-
-For user-visible work, Master Builder opens or names the exact specialist task and asks the user to run and physically review that local candidate. Revisions remain under the same project name and return to the same specialist task when practical.
-
-Only explicit user approval using the human-readable project name authorizes deployment. Documentation-only changes may be reviewed from a plain-language summary when no meaningful visual test exists.
-
-## Direct release
-
-The approved specialist task or Master Builder may release directly; do not create separate QA or Deployment tasks by default.
-
-Before pushing:
-
-1. Acquire the single QRK release slot so two tasks cannot update `main` simultaneously.
-2. Fetch current `origin/main` again.
-3. Confirm candidate scope and ancestry, then integrate onto current `origin/main` without overwriting unrelated work.
-4. Resolve only understood conflicts and preserve every already-deployed change.
-5. Run `npm run check` once and `git diff --check`.
-6. Push `main` without force.
-7. Verify the exact GitHub **Deploy development** run and smoke-test `https://jjoshyuson.github.io/QRK-MENU/` before reporting deployment success.
-
-Database changes require their relevant migration, isolation, rollback, and hosted verification steps in addition to this Git release flow.
-
-After verified deployment and user acceptance, archive the completed specialist task when it is no longer useful to retain. Remove only verified-clean, fully integrated temporary branches and managed worktrees. Preserve unique work, Git history, release evidence, Master Builder, and any reusable specialist tasks.
+- The user reviews, revises, and continues work directly inside the focused task.
+- Do not require a handoff to Master Builder, independent QA, or a separate Release or Deployment task.
+- A focused task may commit, push, and deploy directly when the user tells that task to do so.
+- Before pushing, fetch current `origin/main` again, integrate without force, preserve unrelated changes, run proportionate checks, and verify the resulting development deployment.
+- Production deployment, destructive database work, force-pushes, secret handling, and deletion still require clear authorization.
+- Database changes still require the relevant migration, isolation, rollback, and hosted verification steps.
+- Remove only verified-clean, fully integrated temporary branches and worktrees; preserve unique work and Git history.
 
 ## Component inventory maintenance
 

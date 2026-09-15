@@ -1,93 +1,49 @@
-# QRK MENU orchestration workflow
+# QRK MENU lightweight task workflow
 
-This document is the authoritative contract for coordinating concurrent Codex tasks. Product, architecture, UI and release requirements remain in their topic-specific sources.
+This document defines how Master Builder prepares focused Codex tasks. It intentionally has no mandatory Planner, QA, Release, or Deployment stages.
 
-## Roles
+## Master Builder
 
-- **Orchestrator** is the user-facing intake and coordination task. It turns rough requests or brain dumps into bounded work, dispatches independent work in parallel when useful, and returns control promptly instead of synchronously babysitting running tasks.
-- **Planner** resolves product scope, contracts and dependencies, then sends bounded work packets to the relevant durable domain owner. It does not routinely implement, verify, integrate or deploy.
-- **Domain owners** are durable senior coordinators for QRK Client & Operations, QRK Customer Menu and QRK Platform Data. Each owns decisions and sequencing in its product area, creates the smallest useful set of ephemeral implementation tasks and consolidates their candidates and risks.
-- **Ephemeral implementation tasks** own one bounded candidate in an isolated branch/worktree. The user may open these tasks directly, answer their questions there and refine their work without routing routine conversation through Orchestrator.
-- **QA** independently verifies every completed build candidate. QA reports evidence, regressions, limitations and either PASS or FAIL; it does not integrate or deploy.
-- **Deployment** is the only normal integrator and deployer. It integrates only an immutable candidate explicitly approved by the user after QA and local review, runs the release gate, pushes `main`, verifies the development deployment and reports the result.
+Master Builder is the user's brain-dump and task-creation chat. It:
 
-Orchestrator, Planner, the three domain owners, QA and Deployment are durable roles. Implementation tasks are ephemeral.
+1. Identifies and organizes the user's concerns.
+2. Asks only when ambiguity would materially change the requested result.
+3. Creates or identifies clearly named, narrowly scoped tasks.
+4. Gives each task the relevant context, constraints, and acceptance criteria.
+5. Tells the user which task to open, then stops coordinating that work unless the user asks for help.
 
-## Project identity
+Master Builder does not automatically supervise implementation, collect progress reports, route work through QA, request approval, or create a separate release task.
 
-- Every user-visible application or software change has one stable human-readable project name. Work packets, implementation task prompts, QA reports, local-review requests and release requests lead with that name.
-- Reports explain what the project changes in plain language before branch names, commit hashes or other technical references. Branches and commits remain required verification details, not the user's primary project identity.
-- The project name remains unchanged through implementation, revisions, repeat QA, local review, approval and deployment.
+## Focused tasks
 
-## Candidate lifecycle
+Use a stable human-readable name, normally:
 
-1. **Intake:** Orchestrator captures the request, identifies decisions that materially affect scope, sends the organized request to Planner and returns control promptly.
-2. **Plan and route:** Planner creates a dependency-aware to-do list and sends each bounded work packet to QRK Client & Operations, QRK Customer Menu or QRK Platform Data. Cross-domain dependencies are explicit before implementation starts.
-3. **Domain dispatch:** The owning domain creates the smallest useful set of ephemeral implementation tasks. Each receives the stable human-readable project name first, followed by its scope, authoritative references, approved `origin/main` baseline, branch/worktree ownership, acceptance criteria, validation expectations and explicit non-goals.
-4. **Direct collaboration and delegated judgment:** The user may talk directly with the owning domain or implementation task. Domain owners and implementation tasks resolve routine, reversible details from the approved packet, existing patterns and documented product intent; domain owners may answer and record routine assumptions. Ask the user only when unresolved ambiguity would materially change product behavior or scope, architecture, access or privacy, destructive data handling, cost, or release authorization and cannot be responsibly inferred.
-5. **Build candidate:** The task edits only owned files, runs proportionate checks and commits its intended changes. Its handoff leads with the human-readable project name and plain-language outcome, then gives the branch/worktree, exact commit, checks, limitations and QA focus. It does not merge, push `main` or deploy.
-6. **QA gate:** Every completed candidate goes to QA under its human-readable project name as an immutable commit. A FAIL returns the same named project through the domain owner for correction and another QA pass. A PASS returns to Orchestrator, never directly to Deployment.
-7. **Local review gate:** For user-visible application or software changes, Orchestrator identifies the QA-passed project, gives the exact ephemeral implementation task title to open, and clearly tells the user to run and test that project locally there. Documentation-only changes may instead be summarized directly when there is nothing meaningful to inspect visually. QA PASS is evidence, not deployment authorization.
-8. **Approval gate:** After local review, the user explicitly approves or rejects the human-readable project name. A revision request returns that same named project to implementation and QA before Orchestrator asks for review again. Silence, a commit reference or QA PASS never counts as approval.
-9. **Deployment gate:** Orchestrator sends Deployment a release request led by the explicitly approved human-readable project name, followed by its plain-language outcome, exact commit and evidence. Deployment verifies scope and approval, integrates intentionally, runs the release gate once, pushes `main`, verifies GitHub Pages and reports the exact result.
-10. **Acceptance and cleanup:** After verified deployment and user acceptance, completed ephemeral tasks may be archived and only verified-clean managed worktrees and fully merged temporary branches may be removed. Durable roles, Git history and unique work remain.
+`CATEGORY / FEATURE / BUSINESS OR MODE / SPECIFIC CONCERN`
 
-## Handoff contracts
+Categories are `CO` for Client and Operations, `PM` for Public Menu, `DA` for Data and Admin, `DBRS` for Database Relations, and `LP` for Landing Page.
 
-### Build task to QA
+Each focused task is the user's direct workspace for that area. The user may discuss, revise, implement, test, commit, push, and deploy from that same task. Do not create downstream Planner, QA, Release, Deployment, domain-owner, or reporting tasks unless the user explicitly asks for them.
 
-- Human-readable project name and owning implementation task title
-- Plain-language outcome and acceptance criteria
-- Branch/worktree and exact commit
-- Intended file set and inherited changes excluded from ownership
-- Checks run and results
-- Known limitations, risks and focused QA requests
+## Start from the shared baseline
 
-### QA to Orchestrator
+Before editing code, a focused task must:
 
-- Human-readable project name and plain-language outcome
-- PASS or FAIL
-- Exact implementation task title for local review
-- Branch/worktree and exact commit tested
-- Evidence for each acceptance criterion
-- Regressions, unresolved risks and environment limitations
-- Exact retest target when failed
+1. Read only the relevant project guidance and files.
+2. Fetch `origin`.
+3. Resolve the exact current `origin/main` commit.
+4. Start its branch/worktree from that commit and confirm the worktree is clean.
+5. Preserve unrelated local work and use a unique local preview port when needed.
 
-### Orchestrator to Deployment
+This baseline pull is required. A dirty checkout or stale local `main` is not the shared baseline. Database state is separate from Git and must be handled according to `supabase/README.md`.
 
-- Human-readable project name explicitly approved by the user
-- Plain-language outcome and exact commit
-- QA PASS evidence
-- Scope approved during local review
-- Integration order or dependency notes
-- Required release checks and development smoke tests
-- Confirmation that the user explicitly authorized release
+## Work and completion
 
-### Deployment to Orchestrator
+- Make the smallest coherent change and ask only material questions.
+- Run checks proportionate to the change; use `npm run check` for shared behavior or before deployment.
+- Let the user inspect user-visible work locally in the same task.
+- Commit only intended files.
+- Push or deploy only when the user tells that focused task to do so.
+- Before pushing `main`, fetch again, integrate without force, preserve unrelated changes, run the appropriate checks, and verify the resulting development deployment.
+- Production, destructive database work, force-pushes, secret handling, and deletion remain separately authorized.
 
-- Integrated commits and resulting `main` commit
-- Release-gate results
-- Push and GitHub Pages workflow result
-- Development URLs and smoke-test evidence
-- Rollback target and any remaining limitations
-
-## Cleanup safety contract
-
-Cleanup may occur only after verified deployment and explicit user acceptance. The actor performing cleanup must first confirm that:
-
-- the target is an ephemeral completed task;
-- its worktree is clean;
-- its intended commits are reachable from the accepted `main` history;
-- its temporary local and remote branches are fully merged;
-- no unique or unmerged changes, untracked work, credentials or user data would be lost.
-
-The completed task may then be archived and only its verified-clean managed worktree and fully merged temporary branches removed. Cleanup must never delete Git history, rewrite shared history, remove durable role tasks, or touch unique/unmerged work. Any failed precondition stops cleanup and returns a precise report to Orchestrator.
-
-## Boundaries
-
-- One task owns each candidate and commits only its own changes.
-- Cross-cutting decisions return to Orchestrator or Planner before competing implementations begin; domain owners do not silently redefine another domain's contract.
-- QA does not imply release approval.
-- Only explicit user approval after local candidate review authorizes Deployment.
-- Only Deployment normally integrates to and pushes `main` or deploys development.
-- Production deployment remains separately authorized and is not implied by this development workflow.
+No separate QA or Release handoff is required. A focused task may self-review and complete the full workflow directly with the user.
