@@ -8,6 +8,14 @@
 - Restored the floating `View order` cart for Open Tab drafts while retaining the separate top-right Open Tab running-total control.
 - Validation: `npm run check` and `git diff --check` passed, including the new regression contract for archive-before-clean ordering. Browser verification at 390×844 confirmed the separate top Open Tab and bottom floating cart, visible default-on save-name controls, `Josh` prefill, and staff receipt as `Table 1 · Josh`; completing that order produced a history row with name, item count, timestamp, Served state, and total. Desktop history was also visually checked with no visible regression.
 
+## September 14, 2026 — Supabase order sync and reversible clearing
+
+- Added browser-installation identity, device-attached order creation, database foundations for table/open-tab activity, and server-side operational clear batches.
+- Added Settings → Order data with typed confirmation and restoration of either of the newest two non-restored clears.
+- Added the authoritative database/VPS portability plan and an `AGENTS.md` trigger for future Supabase replacement work.
+- Added optional GitHub build-time staging configuration using only the Supabase URL and publishable key.
+- Local database execution is currently blocked because Docker Desktop is not running. Hosted linking and deployment are blocked because the Supabase CLI has no access token and no project is linked.
+
 ## September 14, 2026 — Development-business menu density
 
 - Applied the Kusina responsive-test rule to Salamat, Salo Table, Tambay Café, and Ihaw Buffet: every business now has seven cuisine- and service-specific categories with exactly three products per category (21 products each).
@@ -931,6 +939,13 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Centering uses smooth movement by default and switches to an immediate position update when reduced motion is requested.
 - Responsive trailing space lets the final categories reach the true center instead of stopping against the carousel's right edge.
 
+## September 14, 2026 — Device order history and Open Tab closure
+
+- Added a separate, always-available Order history control to every customer menu. It stores only this browser's submitted order snapshots, scoped by business/data mode, capped at 25 records and expired after 30 days.
+- History shows order number, date/time, status, item summary and total. Clear order history uses an inline confirmation and removes only the local snapshots; it does not delete staff-side orders or change an active table session.
+- Open Tab now records its table-session ID separately from historical orders. Cleaned, cancelled, expired or missing sessions clear the active tab IDs and draft cart, while submitted rounds remain available in device history.
+- `npm run check`, the new device-history contract and `git diff --check` passed. Browser validation created Kusina order `KM-R7IN8`, verified its saved details, and exercised the clear confirmation. A Tambay Table 1 session then submitted an order, received a staff cleanup event, hid Open Tab after polling, and retained one history record.
+
 ## September 14, 2026 — Public menu card redesign
 
 - Reworked each customer dish into a bordered, padded card with a clipped photo, aligned name and PHP price, concise two-line description, and a theme-driven `+ Add` action.
@@ -959,3 +974,43 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 
 - Profiled every customer dialog and found full-viewport live backdrop blur on entry, table, item, cart, payment, and confirmation popups. Item details also applied a 24px live blur to its fixed action.
 - Replaced those compositor-heavy effects with static dimming and solid/translucent surfaces, and removed modal-wide transitions. Popup structure, focus behavior, touch targets, and ordering flows remain unchanged.
+## Open Tab settlement correction — September 14, 2026
+
+- Tambay Café now keeps repeated customer requests inside one table-scoped Open Tab instead of adding every request to device Order history immediately.
+- The staff Tables action reads `Customer paid` for the Open Tab preset. Confirming it closes the session, completes the table's active order rounds, and moves one combined tab snapshot into the customer's device history.
+- Customer confirmations identify the table rather than exposing each internal round number. Other Table presets retain `Table cleaned`.
+- Validation: `npm run check`, `git diff --check`, and a live Tambay browser flow passed. The live flow confirmed history stayed at 0 after submission, Open Tab remained active, and payment changed the customer state to one history entry with no active tab.
+- Follow-up hosted fix: customer refresh now uses a device-authenticated order-list RPC instead of the staff-only order query, and each new round records its table-session ID. This addresses the physical-phone regression where Open Tab disappeared immediately after `Send first order`.
+
+## September 14, 2026 — Hosted development schema deployment
+
+- Linked this checkout only to the disposable Supabase project `qrk-menu-development` (`agxlgxjbanxkwxifhjil`). Production was not connected or changed.
+- Replaced three incompatible dashboard-created migration records and their legacy development schema through the explicitly approved remote development reset. All five canonical repository migrations and `supabase/seed.sql` now rebuild the hosted database.
+- Fixed `202609140001_order_sync_and_recovery.sql` by adding composite uniqueness for `open_tabs(id, business_id)`, matching its tenant-safe foreign key from `orders`.
+- Hosted migration history now matches all five local versions. Hosted and local database lint report no schema errors; the local rebuild succeeds; all 40 pgTAP tests pass after correcting the recovery test's required seeded option; and `npm run check` passes with 21 tables, 9 RPCs and 5 migrations.
+- At this schema-deployment checkpoint, hosted Auth users and the remaining runtime exit checks were incomplete; the following milestone records the subsequent account provisioning. Do not call the hosted backend operational until all remaining exit checks pass.
+
+## September 14, 2026 — Five-business hosted development accounts
+
+- Provisioned ten hosted development Auth identities: one Client Admin and one Client Staff account for Kusina Manila, Salamat, Salo Table, Tambay Café, and Ihaw Buffet.
+- Added active tenant memberships and service-mode tenant shells for Salo, Tambay, and Ihaw. The original Kusina and Salamat passwords were rotated away from the repeatable local seed values.
+- All ten accounts have unique temporary password hashes and `must_change_password: true`; the plaintext handoff values exist only in a gitignored local environment file and were not added to Git or browser code.
+- Local and hosted database verification both report 5 businesses, 10 Auth users, 10 active memberships, 5 owners, and 5 order staff. All ten Auth records have password hashes and the first-login flag.
+- Full hosted menus for Salo, Tambay, and Ihaw, safe browser runtime configuration, real login checks, recovery/clear drills, private Realtime, Storage, and physical two-device synchronization remain incomplete. Production was not connected or changed.
+
+## September 14, 2026 — Hosted staging runtime and five-tenant synchronization
+
+- Configured the existing GitHub Pages workflow with the disposable development project URL and publishable browser key. No service-role or database secret is shipped to the browser.
+- Removed the browser-only override for Salo, Tambay, and Ihaw and published 21-item development catalogs for each. The catalog generator and generated SQL keep clean development resets reproducible.
+- Added device-authenticated, tenant-scoped Supabase Table RPCs and a staging browser transport for requests, joins, staff acceptance, customer reconciliation, cancellation, and cleanup. Local preview/LAN transports remain available.
+- Fixed authenticated Realtime setup to consume the restored user session token; interval, focus, online, and manual reconciliation remain authoritative fallbacks.
+- Hosted smoke evidence passed for all five businesses: public menu read, device registration, order creation, real admin login, correct tenant context, and authenticated order visibility. Salo additionally passed customer request → staff acceptance → customer reconciliation → cleanup.
+- Validation passed: clean local database rebuild, 40 pgTAP tests, local and hosted database lint, `npm run check`, `git diff --check`, and a Pages-shaped staging build with only safe public configuration.
+- GitHub Pages deployment `34911305544` succeeded. The live public configuration returned `environment: staging`, referenced the intended development project, contained no service-role/secret key, and all five QR routes returned HTTP 200. A rendered-browser reload of Kusina showed its hosted three-item available catalog rather than the former browser-local 24-item preview.
+- Remaining exit evidence: perform the same flows through two physical browsers/networks, exercise both clear restore slots through the UI, and verify private Realtime/Storage behavior. Production was not connected or changed.
+
+## September 14, 2026 — Stale preview-session cloud queue fix
+
+- Traced the reported Tambay phone order to hosted Supabase as `TC-0103`, received for Table 2 with a registered device. The order was not lost.
+- Fixed staging authentication so an old browser-preview session is discarded instead of silently selecting the local-storage data adapter. Hosted staging now requires a real Supabase account before showing a staff workspace.
+- Added a regression contract for rejecting preview sessions in staging. After deployment, existing dashboard browsers must reload and sign in as the appropriate hosted admin or staff user.

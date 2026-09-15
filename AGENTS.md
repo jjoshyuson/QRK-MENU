@@ -23,6 +23,14 @@
 
 ## Scope and implementation
 
+### Temporary Supabase provider and future VPS migration
+
+- Supabase is the temporary development and initial staging provider; PostgreSQL and the application service contracts are the durable architecture.
+- Keep Supabase-specific Auth, REST, Realtime, and Storage code behind the existing adapters. Do not place provider calls throughout UI code.
+- When the user mentions upgrading, migrating, self-hosting, or moving away from Supabase to a VPS, read `docs/DATABASE_SYNC_AND_PORTABILITY_PLAN.md` before planning or changing code.
+- Preserve portable tenant keys, constraints, integer-money fields, idempotency, lifecycle guards, immutable order snapshots, and migration history during a provider move.
+- Realtime events are hints only. PostgreSQL reads remain authoritative under both Supabase and any future VPS implementation.
+
 - Read the handoff docs before changes. Treat confirmed requirements and proposed future work differently.
 - Workstream 3 is a provider-ready Supabase/PostgreSQL foundation, not an operational backend. Until a hosted development project, Auth flow, migrations, SQL tests and two-device checks are connected and verified, preserve the automatic local/demo fallback and do not claim cross-device behavior.
 - Do not implement all roadmap features at once. Keep stages reviewable and usable.

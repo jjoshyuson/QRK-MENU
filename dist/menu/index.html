@@ -87,9 +87,12 @@
   </aside>
   </div>
 
-  <button class="open-tab-control hidden" id="open-tab-control" type="button" aria-controls="cart-dialog" aria-haspopup="dialog">
-    <span class="open-tab-count" id="open-tab-count">0</span><span><b>Open Tab</b><small id="open-tab-total">₱0 · 0 items</small></span>
-  </button>
+  <div class="customer-session-controls">
+    <button class="order-history-control" id="order-history-control" type="button" aria-controls="history-dialog" aria-haspopup="dialog"><span>Order history</span><b id="order-history-count">0</b></button>
+    <button class="open-tab-control hidden" id="open-tab-control" type="button" aria-controls="cart-dialog" aria-haspopup="dialog">
+      <span class="open-tab-count" id="open-tab-count">0</span><span><b>Open Tab</b><small id="open-tab-total">₱0 · 0 items</small></span>
+    </button>
+  </div>
   <div class="cart-bar hidden" id="cart-bar"><button type="button" id="open-cart"><span><b id="cart-count">0</b> <span id="cart-label">items</span></span><strong>View order · <span id="cart-subtotal">₱0</span></strong></button></div>
   <footer><span>Local development ordering</span><span class="powered-by">Powered by <img src="/assets/brand/qrk-wordmark.png" alt="QRK menu" width="98" height="19"></span><a href="/photo-credits.html">Sample photo credits</a></footer>
 
@@ -147,6 +150,14 @@
         <p class="eyebrow">ORDER SENT</p>
         <div class="order-number"><h2 id="confirmation-title">ORDER NUMBER</h2><strong id="confirmation-number"></strong></div>
       </div>
+    </div>
+  </dialog>
+
+  <dialog id="history-dialog" class="sheet" aria-labelledby="history-title">
+    <div class="sheet-card">
+      <header class="sheet-header"><div><p class="eyebrow">THIS DEVICE</p><h2 id="history-title">Order history</h2></div><button class="icon-button" id="close-history" type="button" aria-label="Close order history">×</button></header>
+      <div class="sheet-content"><div class="device-order-history" id="device-order-history"></div><section class="cart-empty hidden" id="history-empty"><div aria-hidden="true">○</div><h3>No saved orders</h3><p>Orders placed on this device will appear here for up to 30 days.</p></section></div>
+      <footer class="history-actions"><button class="text-button" id="clear-history" type="button">Clear order history</button><div class="history-clear-confirm hidden" id="history-clear-confirm"><span>Clear saved history from this device?</span><button class="secondary-button" id="cancel-clear-history" type="button">Cancel</button><button class="primary-button" id="confirm-clear-history" type="button">Clear</button></div></footer>
     </div>
   </dialog>
   <template id="dish-template"><article class="dish"><button class="dish-hit" type="button"><div class="photo"><img alt="" width="640" height="480"><span class="sold-label hidden">Sold out</span></div><div class="dish-copy"><div class="dish-description"><h4></h4><p></p></div><div class="dish-actions"><strong></strong><span class="dish-cta" aria-hidden="true"><span>+</span> Add</span></div></div></button></article></template>

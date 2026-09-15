@@ -10,12 +10,13 @@ const [html,menu,staff]=await Promise.all([
 assert.match(html,/id="entry-save-name"[^>]*type="checkbox" checked/);
 assert.match(html,/id="save-customer-name"[^>]*type="checkbox" checked/);
 assert.match(html,/Save name on this device/);
-assert.match(menu,/CUSTOMER_NAME_KEY=`qrk_customer_name_v1_\$\{businessSlug\}`/);
+assert.match(menu,/CUSTOMER_NAME_KEY=deviceScopedKey\(businessSlug,'customer-name'\)/);
 assert.match(menu,/presetCustomerName\(participant\?\.name\)/);
 assert.doesNotMatch(menu,/if\(openTabEnabled\)\{\$\('#cart-bar'\)\.classList\.add\('hidden'\)/);
 assert.match(staff,/tableOrders=orders\.filter\(order=>order\.fulfillmentType==='table'/);
 assert.match(staff,/for\(const order of tableOrders\)\{await completeOrder\(order\)/);
-assert.match(staff,/await tableSessionService\.clean\(tableAction\.dataset\.cleanTable\)/);
+assert.match(staff,/await tableSessionService\.clean\(sessionId\)/);
+assert.ok(staff.indexOf('for(const order of tableOrders){await completeOrder(order)')<staff.indexOf('await tableSessionService.markPaid(sessionId)'));
 assert.match(staff,/return`\$\{location\}\$\{order\.customerLabel/);
 assert.match(staff,/dateStyle:'medium',timeStyle:'short'/);
 
