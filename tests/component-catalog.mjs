@@ -18,6 +18,7 @@ for (const id of requiredSections) {
 for (const sourceLabel of [
   '.button', '.metric-card', '.item-row', '.staff-row', '.order-queue-card',
   '.table-card', '.settings-row', '.dish', '.cart-item', '.platform-client-row', '.form-error',
+  '.qrk-settings-list', '.qrk-sheet',
 ]) {
   assert.ok(html.includes(sourceLabel), `missing production source label: ${sourceLabel}`);
 }

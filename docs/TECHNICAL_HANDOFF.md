@@ -1,5 +1,9 @@
 # Technical handoff
 
+## Shared material-sheet contract
+
+`dist/ui-components.css` owns `.qrk-settings-list`, `.qrk-sheet`, `.qrk-sheet-backdrop`, grouped sheet sections, and QRK choice-popover styling. `dist/ui-components.js` exposes `window.QrkSheet.create({sheet, backdrop, onDismiss})`, which owns presentation, backdrop/Escape dismissal, focus containment, focus restoration, motion timing, and reduced-motion behavior. Product routes continue to own field rendering, validation, and draft data; they pass the commit result through `onDismiss` and must restore their snapshot when `commit` is false. Nested editors replace the current sheet body and use Back navigation rather than constructing another modal layer.
+
 ## Current implementation
 
 The app remains static HTML, CSS and vanilla JavaScript with no third-party JavaScript dependencies. Node is used by the local preview and validation scripts. A canonical Supabase/PostgreSQL foundation is now versioned under `supabase/`, but no hosted API or database is connected.

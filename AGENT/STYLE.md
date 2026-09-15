@@ -18,6 +18,15 @@ This is the project’s visual source of truth. Read it before every UI, UX, lay
 - Avoid nested cards. Use dividers, alignment, type weight, and spacing to organize detail views.
 - Settings overview pages use one compact rounded list container. Each setting is a full-width row with a clean outline icon, a short left-aligned label, and a right-aligned chevron; separate outlined cards are not the QRK Settings pattern.
 
+## Material sheets and form editing
+
+- Decision-heavy forms open from a compact settings row into the shared QRK material sheet. Do not expose an entire multi-step form on the overview or stack dialogs and cards.
+- Desktop and tablet use an inset floating sheet with continuous rounded corners; phone attaches the same sheet to the bottom edge with rounded top corners. Preserve the underlying page behind a separate dimmed backdrop.
+- Use the standard sheet header: Close or Back on the left, a centered title, and Done on the right. Nested decisions replace the sheet body and return with Back; they never open a second sheet above the first.
+- Treat sheet edits as drafts. Done commits them to the parent workflow; Close, backdrop click, or Escape discards them and restores the prior values and focus.
+- Use shared grouped rows, checkbox choices, choice popovers, focused value editors, and ordered lists. Do not use browser-native select, date, or time popups when the shared QRK control exists.
+- Keep the charcoal material restrained: translucent dark surface, soft blur and ambient shadow, faint light separators, white primary text, muted secondary text, and one accent color. Avoid opaque gray slabs and decorative nesting.
+
 ## Navigation and control grouping
 
 - Keep peer navigation choices on one line when three compact labels fit. In Orders, `Received`, `Preparing`, and `Tables` are exactly three equal columns in one uninterrupted row.
