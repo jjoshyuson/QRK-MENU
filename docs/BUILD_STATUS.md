@@ -1,5 +1,12 @@
 # Build status
 
+## September 15, 2026 — Remember Client Workspace Tab
+
+- Client workspaces now remember the last permitted section selected by each business/user identity in the same browser. A genuinely unseen Client Admin still opens Dashboard; staff accounts retain the existing permission-based Orders/Menu fallback.
+- Valid `#orders`-style and `#section=orders` deep links take precedence when opened, then become the remembered section without leaving a stale hash that could leak navigation state into the next signed-in business.
+- Invalid, inaccessible, missing-identity, and unavailable-storage states fail safely without bypassing role or page permissions.
+- Validation: the focused workspace-section contract, `npm run check`, and `git diff --check` passed. Live Chrome review at the responsive layout confirmed unseen Kusina and Salamat admins opened Dashboard independently, Settings survived refresh for Kusina, a Salamat `#orders` deep link opened Orders and cleared its hash, Orders survived the next refresh, and the browser console remained clear.
+
 ## September 15, 2026 — Open Tab history, remembered name, and cart recovery
 
 - Fixed Table cleanup so every active order for that table is completed into Order History before the table session is marked available. If any order cannot be archived, the table remains occupied and staff receive an error instead of losing the session context.

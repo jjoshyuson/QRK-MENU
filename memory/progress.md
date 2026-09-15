@@ -1,6 +1,8 @@
 # Progress memory
 
 As of September 15, 2026:
+- “Remember Client Workspace Tab” is implemented as a local candidate: the last valid section survives refresh per business/user identity, unseen admins start on Dashboard, staff keep permission-aware fallback, and valid deep links are consumed without leaking section state across logout. QA, local user review, and deployment approval remain pending.
+
 - September 15 Open Tab recovery is implemented locally: Table cleanup archives active table orders before releasing the table; history includes customer name, item count, timestamp, and total; customer names can be remembered per business with a default-on opt-out control; and the floating draft cart is restored alongside the separate Open Tab running-total control.
 
 - All five hosted development businesses now publish 50 products across 10 business-specific categories, exactly five products per category. A canonical catalog drives browser fallback and generated Supabase revision-2 SQL; live database counts pass for all five slugs. Category-level Unsplash images are development placeholders and require production provenance review or replacement.

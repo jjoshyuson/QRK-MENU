@@ -8,6 +8,7 @@ import { menuOptionGroupsForItem, readMenuState, saveMenuState } from './data/qr
 import { QrkTableSessionService } from './data/qrk-table-session-service.js?v=3';
 import { customerMenuUrl as buildCustomerMenuUrl, testQrImageUrl } from './data/qrk-qr-code.js';
 import { optimizeLegacyMenuPhotos, prepareMenuPhoto } from './data/qrk-image-service.js';
+import { rememberWorkspaceSection, resolveWorkspaceSection, workspaceDeepLink } from './data/qrk-workspace-section.js';
 
 const runtimeConfig=resolveQrkConfig();
 const authService=new QrkAuthService(runtimeConfig);
@@ -203,6 +204,9 @@ $('#expand-preview').onclick=()=>openPreview();
 document.querySelectorAll('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close()}}));render();
 
 const loginScreen=$('#login-screen');
+const dashboardLabels={dashboard:'Dashboard',profile:'Business profile',menu:'Menu studio',staff:'Staff access',orders:'Orders',settings:'Settings'};
+let workspaceAllowed=Object.fromEntries(Object.keys(dashboardLabels).map(page=>[page,true]));
+async function signOutAndReload(){await authService.signOut();history.replaceState(history.state,'',`${location.pathname}${location.search}`);location.reload()}
 function setSignedInState(){
  const required=authService.enabled;
  document.body.classList.toggle('auth-required',required&&!accessContext);
@@ -218,11 +222,12 @@ function setSignedInState(){
  const settingsUsername=$('#settings-username'),accountForm=$('#account-details-form');if(settingsUsername)settingsUsername.textContent=`@${accessContext.username}`;if(accountForm){accountForm.elements.username.value=accessContext.username;accountForm.elements.email.value=accessContext.email||''}
  setupAccountMenu(profile,admin);
  const allowed={dashboard:admin,profile:admin,menu:admin||permissions.editMenu||permissions.changeAvailability,staff:admin||permissions.manageStaff,orders:admin||permissions.viewOrders,settings:admin};
+ workspaceAllowed=allowed;
  Object.entries(allowed).forEach(([page,visible])=>{document.querySelector(`[data-dashboard-nav="${page}"]`)?.toggleAttribute('hidden',!visible);document.querySelector(`[data-dashboard-page="${page}"]`)?.toggleAttribute('data-access-denied',!visible)});
  document.querySelectorAll('[data-dashboard-go]').forEach(button=>{if(!allowed[button.dataset.dashboardGo])button.hidden=true});
  $('#add-staff').hidden=!(admin||permissions.manageStaff);
  $('#cancel-order').dataset.permission='cancelOrders';
- if(!admin){document.body.classList.add('staff-session');showDashboardPage(allowed.orders?'orders':allowed.menu?'menu':'dashboard')}
+ if(!admin)document.body.classList.add('staff-session');
  if(accessContext.mustChangePassword)requestAnimationFrame(()=>{$('#first-login-dialog').showModal();$('#first-login-form').elements.newPassword.focus()});
 }
 function setupAccountMenu(profile,admin){
@@ -232,7 +237,7 @@ function setupAccountMenu(profile,admin){
  const menu=$('#account-menu'),open=()=>{menu.hidden=false;profile.setAttribute('aria-expanded','true');requestAnimationFrame(()=>$('#account-settings').focus())},close=()=>{menu.hidden=true;profile.setAttribute('aria-expanded','false')},toggle=()=>menu.hidden?open():close();
  profile.onclick=toggle;profile.onkeydown=event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle()}if(event.key==='ArrowUp'||event.key==='ArrowDown'){event.preventDefault();open()}};
  $('#account-settings').onclick=()=>{close();closeMobileNav();if(admin){showDashboardPage('settings');return}let dialog=$('#personal-settings-dialog');if(!dialog){document.body.insertAdjacentHTML('beforeend',`<dialog id="personal-settings-dialog" aria-labelledby="personal-settings-title"><div class="dialog-heading"><div><p class="eyebrow">YOUR ACCOUNT</p><h2 id="personal-settings-title">Account settings</h2></div><button type="button" class="icon-button" id="close-personal-settings" aria-label="Close account settings"><span data-icon="close"></span></button></div><div class="personal-settings-summary"><span>${esc(initials||'U')}</span><div><strong>${esc(accessContext.displayName)}</strong><small>@${esc(accessContext.username)} · ${esc(String(accessContext.role).replace('_',' '))}</small></div></div><p class="dialog-intro">Your business administrator controls your role and permissions. Password and profile editing will be added with the staff activation flow.</p><div class="dialog-footer"><span></span><button type="button" class="button outline" id="done-personal-settings">Done</button></div></dialog>`);dialog=$('#personal-settings-dialog');$('#close-personal-settings').onclick=$('#done-personal-settings').onclick=()=>dialog.close();icons(dialog)}dialog.showModal()};
- $('#account-logout').onclick=async()=>{close();await authService.signOut();location.reload()};
+ $('#account-logout').onclick=async()=>{close();await signOutAndReload()};
  document.addEventListener('click',event=>{if(!menu.hidden&&!menu.contains(event.target)&&!profile.contains(event.target))close()});
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!menu.hidden){close();profile.focus()}});
  icons(menu);
@@ -240,14 +245,14 @@ function setupAccountMenu(profile,admin){
 $('#login-form').onsubmit=async event=>{event.preventDefault();const form=event.currentTarget,button=form.querySelector('button'),error=$('#login-error');button.disabled=true;error.textContent='';try{await authService.signIn(form.elements.identifier.value,form.elements.password.value);location.reload()}catch{error.textContent='Sign-in failed. Check your username or email and password.';form.elements.password.select()}finally{button.disabled=false}};
 const developmentButtons=$('#development-client-buttons');if(['local','preview'].includes(runtimeConfig.environment)){if(runtimeConfig.environment==='preview'){$('#development-client-title').textContent='Preview workspaces';$('#development-client-switcher p').textContent='Choose a Client Admin workspace to explore this browser preview.'}developmentButtons.innerHTML=DEVELOPMENT_CLIENTS.map(client=>`<button type="button" data-development-client="${esc(client.slug)}"><span><strong>${esc(client.businessName)}</strong><small>${esc(SERVICE_PRESETS[client.serviceProfile.preset].name)}</small></span><span data-icon="arrow"></span></button>`).join('');developmentButtons.onclick=async event=>{const button=event.target.closest('[data-development-client]');if(!button)return;const client=DEVELOPMENT_CLIENTS.find(item=>item.slug===button.dataset.developmentClient);button.disabled=true;try{await authService.signInDevelopment({displayName:client.admin.name,username:client.admin.username,email:client.admin.email,role:'admin',permissions:{viewOrders:true,acceptOrders:true,prepareOrders:true,markReady:true,completeOrders:true,cancelOrders:true,changeAvailability:true,editMenu:true,viewOrderHistory:true,viewSales:true,manageStaff:true},businessId:`preview:${client.slug}`,businessName:client.businessName,businessSlug:client.slug,serviceMode:client.serviceProfile.settings.serviceMode,active:true});location.reload()}catch(error){$('#login-error').textContent=error.message;button.disabled=false}};icons(developmentButtons)}else $('#development-client-switcher').hidden=true;
 $('#first-login-form').onsubmit=async event=>{event.preventDefault();const form=event.currentTarget,error=$('#first-login-error'),password=form.elements.newPassword.value;if(password!==form.elements.confirmPassword.value){error.textContent='The passwords do not match.';form.elements.confirmPassword.select();return}error.textContent='';const button=form.querySelector('[type="submit"]');button.disabled=true;try{accessContext=await authService.updatePassword(password);$('#first-login-dialog').close();announce('Password updated. Welcome to your workspace.')}catch{error.textContent='Your password could not be updated. Please try again.'}finally{button.disabled=false}};
-$('#first-login-logout').onclick=async()=>{await authService.signOut();location.reload()};
-const dashboardLabels={dashboard:'Dashboard',profile:'Business profile',menu:'Menu studio',staff:'Staff access',orders:'Orders',settings:'Settings'};
-function showDashboardPage(page){
+$('#first-login-logout').onclick=signOutAndReload;
+function showDashboardPage(page,{remember=true}={}){
  if(!dashboardLabels[page])return;
- if(document.querySelector(`[data-dashboard-page="${page}"]`)?.hasAttribute('data-access-denied'))return;
+ if(!workspaceAllowed[page]||document.querySelector(`[data-dashboard-page="${page}"]`)?.hasAttribute('data-access-denied'))return;
  const compact=matchMedia('(max-width:1100px)').matches;document.body.classList.remove('mobile-nav-open');
  document.querySelectorAll('[data-dashboard-nav]').forEach(button=>{const active=button.dataset.dashboardNav===page;button.classList.toggle('nav-active',active);button.toggleAttribute('aria-current',active)});
  $('#current-page-label').textContent=dashboardLabels[page];document.body.dataset.currentPage=page;$('#show-order-history').hidden=page!=='orders';
+ if(remember&&accessContext)rememberWorkspaceSection(accessContext,page,{allowed:workspaceAllowed});
  if(page==='menu'&&compact){document.body.classList.remove('mobile-dashboard-open');mobileCustomer=false;mobileTable=false;renderMobileMenu();document.title='QRK MENU — Menu studio';window.scrollTo({top:0,behavior:'instant'});return}
  if(compact)document.body.classList.add('mobile-dashboard-open');
  document.querySelectorAll('[data-dashboard-page]').forEach(panel=>panel.hidden=panel.dataset.dashboardPage!==page);
@@ -256,6 +261,12 @@ function showDashboardPage(page){
  if(page==='menu')requestAnimationFrame(()=>{render();fitPreview()});
 }
 setSignedInState();
+if(!authService.enabled||accessContext){
+ const initialPage=resolveWorkspaceSection({context:businessContext,allowed:workspaceAllowed,hash:location.hash});
+ if(initialPage)showDashboardPage(initialPage,{remember:Boolean(accessContext)});
+ if(workspaceDeepLink(location.hash))history.replaceState(history.state,'',`${location.pathname}${location.search}`);
+ addEventListener('hashchange',()=>{const deepLink=workspaceDeepLink(location.hash);if(!deepLink||!workspaceAllowed[deepLink])return;showDashboardPage(deepLink);history.replaceState(history.state,'',`${location.pathname}${location.search}`)});
+}
 const staffPreviewBanner=document.querySelector('[data-dashboard-page="staff"] .demo-banner p');
 if(staffPreviewBanner)staffPreviewBanner.innerHTML='<strong>Local preview accounts.</strong> Generated logins work only in this browser. Hosted account creation and invitations are not connected yet.';
 document.querySelectorAll('[data-dashboard-nav],[data-dashboard-go]').forEach(button=>button.addEventListener('click',()=>showDashboardPage(button.dataset.dashboardNav||button.dataset.dashboardGo)));
@@ -411,5 +422,5 @@ dataService.subscribe({onOrdersChanged:()=>syncOrders({announceNew:true}),onStor
 setInterval(()=>renderOrders(),30000);
 
 const logoutButton=[...document.querySelectorAll('.session-card button')].find(button=>button.textContent.includes('Log out'));
-if(logoutButton&&authService.enabled){logoutButton.classList.remove('demo-action');logoutButton.dataset.demoMessage='';logoutButton.onclick=async()=>{await authService.signOut();location.reload()}}
-if((!authService.enabled||accessContext)&&matchMedia('(max-width:1100px)').matches){document.body.classList.add('mobile-dashboard-open');showDashboardPage('dashboard');requestAnimationFrame(()=>window.scrollTo(0,0))}
+if(logoutButton&&authService.enabled){logoutButton.classList.remove('demo-action');logoutButton.dataset.demoMessage='';logoutButton.onclick=signOutAndReload}
+if((!authService.enabled||accessContext)&&matchMedia('(max-width:1100px)').matches){document.body.classList.toggle('mobile-dashboard-open',document.body.dataset.currentPage!=='menu');requestAnimationFrame(()=>window.scrollTo(0,0))}
