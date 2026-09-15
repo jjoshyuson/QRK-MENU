@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {formatTimeRemaining,getTimeLimitGate} from '../dist/data/qrk-time-limit.js';
+const now=Date.parse('2026-09-15T12:00:00.000Z'),startedAt='2026-09-15T11:00:00.000Z';
+assert.deepEqual(getTimeLimitGate({}, {createdAt:startedAt}, now),{enabled:false});
+assert.equal(getTimeLimitGate({timeLimitEnabled:true},{createdAt:startedAt},now).state,'incomplete');
+assert.equal(getTimeLimitGate({timeLimitEnabled:true,timeLimitMinutes:90},{createdAt:startedAt},now).state,'active');
+assert.equal(getTimeLimitGate({timeLimitEnabled:true,timeLimitMinutes:70},{createdAt:startedAt},now).state,'warning');
+assert.equal(getTimeLimitGate({timeLimitEnabled:true,timeLimitMinutes:64},{createdAt:startedAt},now).state,'urgent');
+assert.equal(getTimeLimitGate({timeLimitEnabled:true,timeLimitMinutes:60},{createdAt:startedAt},now).state,'expired');
+assert.equal(getTimeLimitGate({timeLimitEnabled:true,timeLimitMinutes:60},{createdAt:startedAt,serviceEndsAt:'2026-09-15T13:00:00.000Z',timeLimitExtension:{status:'approved',minutes:60}},now).extension.status,'approved');
+assert.equal(formatTimeRemaining(3661000),'1:01:01');
+const [html,menu,css]=await Promise.all([readFile(new URL('../dist/menu/index.html',import.meta.url),'utf8'),readFile(new URL('../dist/menu/menu.js',import.meta.url),'utf8'),readFile(new URL('../dist/menu/time-limit.css',import.meta.url),'utf8')]);
+assert.match(html,/id="time-limit-control"/);assert.match(html,/id="time-limit-dialog"/);assert.match(menu,/timeLimitExpired/);assert.match(menu,/Ordering time for this visit has ended/);assert.match(css,/\.time-limit-control\.warning/);assert.match(css,/\.time-limit-expired \.dish-hit/);
+console.log('Time-limit customer gate passed.');

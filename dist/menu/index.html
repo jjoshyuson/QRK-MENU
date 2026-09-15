@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="/menu/payment-first.css?v=1">
   <link rel="stylesheet" href="/menu/order-confirmation.css?v=1">
   <link rel="stylesheet" href="/menu/quick-service.css?v=1">
+  <link rel="stylesheet" href="/menu/time-limit.css?v=1">
   <link rel="stylesheet" href="/ui-components.css?v=4">
   <script src="/global-theme.js"></script>
   <script src="/pwa.js" defer></script>
@@ -88,11 +89,13 @@
   </div>
 
   <div class="customer-session-controls">
+    <button class="time-limit-control hidden" id="time-limit-control" type="button" aria-controls="time-limit-dialog" aria-haspopup="dialog"><span id="time-limit-control-label">Time left</span><b id="time-limit-control-value">--:--</b></button>
     <button class="order-history-control" id="order-history-control" type="button" aria-controls="history-dialog" aria-haspopup="dialog"><span>Order history</span><b id="order-history-count">0</b></button>
     <button class="open-tab-control hidden" id="open-tab-control" type="button" aria-controls="cart-dialog" aria-haspopup="dialog">
       <span class="open-tab-count" id="open-tab-count">0</span><span><b>Open Tab</b><small id="open-tab-total">₱0 · 0 items</small></span>
     </button>
   </div>
+  <dialog id="time-limit-dialog" class="time-limit-dialog" aria-labelledby="time-limit-title"><section class="time-limit-card"><button class="icon-button" id="close-time-limit" type="button" aria-label="Close">&times;</button><p class="eyebrow">YOUR VISIT</p><h2 id="time-limit-title">Service time</h2><strong class="time-limit-value" id="time-limit-value">--:--</strong><p id="time-limit-summary"></p><dl><div><dt>Started</dt><dd id="time-limit-started">—</dd></div><div><dt>Scheduled end</dt><dd id="time-limit-ends">—</dd></div></dl><p class="time-limit-extension hidden" id="time-limit-extension" aria-live="polite"></p></section></dialog>
   <div class="cart-bar hidden" id="cart-bar"><button type="button" id="open-cart"><span><b id="cart-count">0</b> <span id="cart-label">items</span></span><strong>View order · <span id="cart-subtotal">₱0</span></strong></button></div>
   <footer><span>Local development ordering</span><span class="powered-by">Powered by <img src="/assets/brand/qrk-wordmark.png" alt="QRK menu" width="98" height="19"></span><a href="/photo-credits.html">Sample photo credits</a></footer>
 

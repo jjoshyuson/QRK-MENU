@@ -4,6 +4,7 @@ import { getBusinessExperience } from '../data/qrk-businesses.js';
 import { QrkTableSessionService } from '../data/qrk-table-session-service.js?v=3';
 import { menuOptionGroupsForItem, readMenuState, subscribeMenuState } from '../data/qrk-menu-store.js';
 import { deviceScopedKey } from '../data/qrk-device-service.js';
+import { formatTimeRemaining, getTimeLimitGate } from '../data/qrk-time-limit.js';
 
 const businessSlug=new URLSearchParams(location.search).get('business')||'kusina-manila';
 const businessExperience=getBusinessExperience(businessSlug);
@@ -54,6 +55,15 @@ addEventListener('storage',event=>{if(event.key==='qrk_demo_branding_v1')applyPu
 if(tableSessionService?.previewMode){$('#table-waiting-view .demo-note').textContent='Tabs on this browser share preview table availability and join requests. Other devices are not connected.'}
 let pendingTableSession=null;
 let waitingTimer=null;
+let timeLimitTimer=null,timeLimitExpired=false;
+const visitTimeFormat=new Intl.DateTimeFormat('en-PH',{hour:'numeric',minute:'2-digit'});
+function extensionMessage(extension){const status=extension?.status;if(status==='pending'||status==='requested')return['Extension requested. Waiting for staff.','pending'];if(status==='approved')return[`Staff extended your visit${Number(extension.minutes)>0?` by ${Number(extension.minutes)} minutes`:''}.`,'approved'];if(status==='declined')return['Staff could not extend this visit.','declined'];return['','']}
+function renderTimeLimit(session){
+  const first=getTimeLimitGate(serviceProfile.settings,session),control=$('#time-limit-control'),dialog=$('#time-limit-dialog');clearInterval(timeLimitTimer);timeLimitTimer=null;
+  if(!first.enabled||first.state==='incomplete'){control.classList.add('hidden');timeLimitExpired=false;document.body.classList.remove('time-limit-expired');return}
+  const update=()=>{const gate=getTimeLimitGate(serviceProfile.settings,session),remaining=formatTimeRemaining(gate.remainingMs),expired=gate.state==='expired';timeLimitExpired=expired;control.className=`time-limit-control ${gate.state}`;$('#time-limit-control-label').textContent=expired?'Time ended':gate.state==='urgent'?'Ending soon':'Time left';$('#time-limit-control-value').textContent=remaining;$('#time-limit-value').textContent=remaining;$('#time-limit-summary').textContent=expired?'Ordering for this visit has ended. Ask staff if you need help.':gate.state==='urgent'?'Finish any order you want to send now.':gate.state==='warning'?'Your service time is ending soon.':'Your menu stays open until the scheduled end of this visit.';$('#time-limit-started').textContent=visitTimeFormat.format(new Date(gate.startedAt));$('#time-limit-ends').textContent=visitTimeFormat.format(new Date(gate.endsAt));const [message,status]=extensionMessage(gate.extension),extension=$('#time-limit-extension');extension.textContent=message;extension.className=`time-limit-extension ${status}${message?'':' hidden'}`;document.body.classList.toggle('time-limit-expired',expired);$('#submit-order').disabled=expired||!storeOpen();if(expired&&!dialog.open)dialog.showModal();if(expired&&timeLimitTimer){clearInterval(timeLimitTimer);timeLimitTimer=null}};
+  update();if(!timeLimitExpired)timeLimitTimer=setInterval(update,1000)
+}
 function savedCustomerName(){try{return String(localStorage.getItem(CUSTOMER_NAME_KEY)||'').trim().slice(0,40)}catch{return''}}
 function rememberCustomerName(name,enabled){try{if(enabled&&name)localStorage.setItem(CUSTOMER_NAME_KEY,name);else if(!enabled)localStorage.removeItem(CUSTOMER_NAME_KEY)}catch{}}
 function presetCustomerName(name=''){const value=String(name||savedCustomerName()).trim().slice(0,40);if(value&&!$('#entry-name').value)$('#entry-name').value=value;if(value&&!$('#customer-label').value)$('#customer-label').value=value}
@@ -208,3 +218,11 @@ tableSessionService?.subscribe(()=>{const session=tableSessionService.current();
 if(dataService.mode==='demo')subscribeMenuState(businessSlug,state=>{applyStudioMenu(state);categories=state.categories.filter(category=>menu.some(item=>item.category===category&&item.available&&!item.hidden));renderMenu($('#menu-search').value)});
 renderMenu();renderHistory();renderCart();initializeTableEntry();initializeQuickServiceChoice();if(dataLoadError){const notice=$('#store-notice');notice.innerHTML=`<h2>Menu connection unavailable</h2><p>${escapeText(dataLoadError)}</p>`;notice.classList.remove('hidden')}else if(!storeOpen())showStoreNotice();
 refreshTabOrders();addEventListener('qrk:demo-orders-changed',refreshTabOrders);addEventListener('storage',event=>{if(openTabEnabled&&event.key?.includes('qrk_demo_orders_v2'))refreshTabOrders()});setInterval(refreshTabOrders,dataService.mode==='demo'?4000:15000);
+let timeLimitSignature='';
+function syncTimeLimitGate(){const session=tableSessionService?.current(),signature=session?JSON.stringify([session.id,session.status,session.serviceStartedAt,session.startedAt,session.createdAt,session.serviceEndsAt,session.timeLimitEndsAt,session.timeLimitExtension,session.serviceTimeExtension]):'';if(signature===timeLimitSignature)return;timeLimitSignature=signature;if(session&&['active','bill_requested'].includes(session.status))renderTimeLimit(session);else renderTimeLimit(null)}
+$('#time-limit-control').addEventListener('click',()=>$('#time-limit-dialog').showModal());
+$('#close-time-limit').addEventListener('click',()=>$('#time-limit-dialog').close());
+$('#time-limit-dialog').addEventListener('cancel',event=>{if(timeLimitExpired)event.preventDefault()});
+document.addEventListener('click',event=>{if(!timeLimitExpired||!event.target.closest('.dish-hit'))return;event.preventDefault();event.stopImmediatePropagation();if(!$('#time-limit-dialog').open)$('#time-limit-dialog').showModal()},true);
+$('#submit-order').addEventListener('click',event=>{if(!timeLimitExpired)return;event.preventDefault();event.stopImmediatePropagation();const error=$('#checkout-error');error.textContent='Ordering time for this visit has ended. Your cart is still saved.';error.classList.remove('hidden')},true);
+syncTimeLimitGate();setInterval(syncTimeLimitGate,2000);
