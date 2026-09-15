@@ -18,8 +18,9 @@
     ['.order-queue-card,.service-order-card', 'Order queue card'],
     ['.verification-card', 'Verification card'], ['.history-order,.history-order-card', 'Order history row'],
     ['.table-card', 'Table operations card'], ['.table-choice', 'Customer table choice'],
-    ['.table-join-request', 'Table join request'], ['.settings-group', 'Settings list'],
+    ['.table-join-request', 'Table join request'], ['.settings-group,.qrk-settings-list', 'Settings list'],
     ['.settings-row', 'Settings row'], ['.theme-preset', 'Theme preset'],
+    ['.qrk-sheet', 'Material sheet'], ['.qrk-choice-popover', 'Choice popover'],
     ['.restaurant', 'Restaurant identity'], ['.dish', 'Customer dish card'],
     ['.active-order', 'Active order notice'], ['.desktop-order-card', 'Desktop order summary'],
     ['.cart-bar', 'Floating cart'], ['.open-tab-control', 'Open tab control'],
@@ -69,4 +70,50 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once: true });
   else start();
+})();
+
+/* Shared accessible material-sheet controller. Product routes own draft data;
+   this controller owns presentation, dismissal, focus containment and restore. */
+(() => {
+  const focusable = (root) => [...root.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter(element => !element.hidden && element.getClientRects().length);
+  const create = ({sheet, backdrop, onDismiss = () => {}}) => {
+    let trigger = null;
+    let timer = null;
+    const open = ({source = document.activeElement} = {}) => {
+      clearTimeout(timer);
+      if (sheet.hidden) trigger = source instanceof HTMLElement ? source : null;
+      sheet.hidden = false;
+      backdrop.hidden = false;
+      requestAnimationFrame(() => {
+        sheet.classList.add('open');
+        backdrop.classList.add('open');
+        (focusable(sheet)[0] || sheet).focus({preventScroll:true});
+      });
+    };
+    const close = ({commit = false, restoreFocus = true} = {}) => {
+      sheet.classList.remove('open');
+      backdrop.classList.remove('open');
+      onDismiss({commit});
+      timer = setTimeout(() => {
+        sheet.hidden = true;
+        backdrop.hidden = true;
+        if (restoreFocus) trigger?.focus({preventScroll:true});
+      }, matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 340);
+    };
+    sheet.addEventListener('keydown', event => {
+      if (event.key === 'Escape') { event.preventDefault(); close(); return; }
+      if (event.key !== 'Tab') return;
+      const items = focusable(sheet);
+      if (!items.length) { event.preventDefault(); return; }
+      const first = items[0], last = items.at(-1);
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && !sheet.hidden) { event.preventDefault(); close(); }
+    }, true);
+    backdrop.addEventListener('click', () => close());
+    return {open, close, get isOpen(){return !sheet.hidden}};
+  };
+  window.QrkSheet = {create};
 })();
