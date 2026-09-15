@@ -184,8 +184,10 @@ dialog.focused-sheet::backdrop{background:color-mix(in srgb,#111827 68%,transpar
 .focused-sheet-header h2{margin:0;font:700 21px/1.2 var(--font-interface)}
 .item-sheet-header{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;text-align:center}
 .item-sheet-header .icon-button{background:color-mix(in srgb,var(--ink) 9%,var(--surface))}
+.item-sheet-header #add-item{display:grid;width:44px;place-items:center;justify-content:center}
 .item-sheet-header .icon-button svg{display:block;width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .item-sheet-header .confirm-icon-button{background:color-mix(in srgb,var(--brand-500) 16%,var(--surface));color:var(--brand-600)}
+.item-sheet-header .confirm-icon-button svg{transform:translateY(-1px)}
 .focused-sheet-actions{display:grid;grid-template-columns:minmax(108px,.38fr) minmax(0,1fr);gap:10px;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
 .focused-sheet-actions>button{width:100%;min-width:0}
 .item-overview{display:grid;grid-template-columns:58px minmax(0,1fr) auto;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line)}
