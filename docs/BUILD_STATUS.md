@@ -29,6 +29,13 @@
 - The public menu reads `serviceProfile.settings.entryPayment` as the expected DA contract and tolerates `capabilities.entryPayment`/`entryPayment` during integration. Query-only preview parameters provide isolated state testing without adding example-business configuration or hardcoding business names.
 - Validation: `npm run check`, `npm run test:entry-payment`, and `git diff --check` pass. Live checks on port 45219 covered hidden/none, pending, satisfied, incomplete, expired, and error states; phone 390×844, tablet 768×1024, and desktop 1280×800 had no entry-gate horizontal overflow. Deposit credit appeared correctly in Review Order. No payment provider or production payment execution was added.
 
+## September 15, 2026 — Public-menu time-limit gate
+
+- Added a capability-gated customer visit timer that stays absent unless `timeLimitEnabled` is explicitly true. It reads `timeLimitMinutes` plus authoritative session start/end timestamps and does not change existing business defaults.
+- Active visits show one compact time control; 15-minute and 5-minute thresholds add progressively clearer warnings. The detail dialog shows start/end times and pending, approved, or declined staff-extension state without keeping an alarm-heavy banner in the menu.
+- Expired visits retain browsing, cart, and order history, but block new item selection and order submission while directing the customer to staff. Incomplete timing data fails closed by hiding the timer rather than presenting a false countdown.
+- `node tests/time-limit-gate.mjs` and `npm run check` pass. Desktop browser review at `http://127.0.0.1:4317/menu/?business=salamat` confirmed the unchanged disabled state and no console errors. Enabled/warning/incomplete/expired/extension state logic is covered by the focused test; final live visual verification awaits the DA-owned client contract and example business on `origin/main`.
+
 ## September 15, 2026 — Public menu card content simplification
 
 - Removed browsing-card descriptions and the visible `Add` label while preserving every stored description, description-based search, and the full description in the item detail/order sheet.
