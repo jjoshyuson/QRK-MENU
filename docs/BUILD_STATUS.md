@@ -1020,3 +1020,12 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - The top-right `Open Tab` control opens its own submitted-round history panel with submitted totals and statuses.
 - Table-mode order review no longer repeats the already-established table assignment.
 - Validation: `npm run check` passes, including the updated Open Tab contract. Local browser inspection confirmed the draft-only cart and separate Open Tab empty/submitted-history surface; a hosted-mode test submission from the local origin was correctly rejected because that preview device was not a member of the hosted table session.
+
+## September 15, 2026 — Five-business staging menu expansion
+
+- Expanded every development business to 10 business-specific categories with five products each: 50 products per business and 250 total.
+- Added one canonical catalog for local fallback, admin/menu previews, generated hosted SQL, and public-menu image fallback. Published category/product content remains Supabase-authoritative in staging.
+- Published revision 2 for all five businesses in one transaction per generated catalog run. Earlier published revisions were archived rather than deleted, preserving historical order data.
+- Added 22 reachable, category-matched Unsplash development placeholders with lightweight URL transforms. These must be reviewed or replaced with business-owned/licensed photography before production.
+- Validation passed: all 22 image URLs returned HTTP 200; `npm run check` passed; and live Supabase verification returned 10 published categories and 50 published products for each of the five business slugs.
+- GitHub Pages deployment `34990445807` succeeded. A rendered live Tambay Café check showed all 10 category controls, all 50 orderable items, and the matching coffee imagery loaded from the deployed catalog.

@@ -38,7 +38,7 @@ function applyStudioMenu(state){
 if(dataService.mode==='demo')applyStudioMenu(readMenuState(businessSlug));
 let dataLoadError='';
 if(dataService.mode==='supabase'){
-  try{const remote=await dataService.getPublicMenu();const remoteItems=remote?.menu?.categories?.flatMap(category=>(category.items||[]).map(item=>({id:item.id,category:category.name,name:item.name,description:item.description,price:item.priceMinor,photo:item.photo?.url||'/photos/adobo.jpg',available:item.available,options:(item.optionGroups||[]).map(group=>({name:group.name,required:group.required,multiple:group.maxSelections>1,choices:(group.options||[]).map(option=>[option.name,option.priceDeltaMinor,option.id])}))})))||[];if(remoteItems.length)menu=remoteItems}catch(error){dataLoadError=error.message||'The published menu could not be loaded.'}
+  try{const remote=await dataService.getPublicMenu();const photoByName=new Map((businessExperience.menu||[]).map(([,name,,,photo])=>[name,photo]));const remoteItems=remote?.menu?.categories?.flatMap(category=>(category.items||[]).map(item=>({id:item.id,category:category.name,name:item.name,description:item.description,price:item.priceMinor,photo:item.photo?.url||photoByName.get(item.name)||'/photos/adobo.jpg',available:item.available,options:(item.optionGroups||[]).map(group=>({name:group.name,required:group.required,multiple:group.maxSelections>1,choices:(group.options||[]).map(option=>[option.name,option.priceDeltaMinor,option.id])}))})))||[];if(remoteItems.length)menu=remoteItems}catch(error){dataLoadError=error.message||'The published menu could not be loaded.'}
 }
 let categories=[...new Set(menu.map(item=>item.category))];
 const $=selector=>document.querySelector(selector);
