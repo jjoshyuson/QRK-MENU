@@ -6,18 +6,18 @@ This is the concise routing inventory for the staged CO-wide grouped-settings an
 
 | Surface | Current interaction | Target classification | Status |
 | --- | --- | --- | --- |
-| Business Profile overview | Compact profile rows | Grouped settings entry | Ready to adopt shared list primitive |
-| Business details | Multi-field dialog | Decision-heavy sheet | Waiting for shared sheet primitive |
-| Business logo | Upload/remove dialog | Decision-heavy sheet | Waiting for shared sheet primitive |
-| Customer menu background | Upload, veil, remove dialog | Decision-heavy sheet | Waiting for shared sheet primitive |
-| Menu link | QR/link actions | Short modal | Keep focused; adopt shared shell only if appropriate |
-| Table QR codes | Adaptive table grid and QR detail | Decision-heavy sheet with nested Back | Waiting for shared sheet primitive |
-| Settings overview | Account, Orders, Availability, Security rows | Grouped settings entry | Ready to adopt shared list primitive |
-| Account details/password | Nested edit dialogs | Decision-heavy sheet with nested Back | Waiting for shared sheet primitive |
-| Order numbering/prep time | Nested edit dialogs | Decision-heavy sheet with nested Back | Waiting for shared sheet primitive |
-| Store availability/order sound | Immediate toggle rows | Focused settings sheet | Preserve immediate business behavior unless draft behavior is explicitly approved |
+| Business Profile overview | Compact profile rows | Grouped settings entry | Migrated to shared list primitive |
+| Business details | Multi-field dialog | Decision-heavy sheet | Migrated with draft/Done behavior |
+| Business logo | Upload/remove dialog | Decision-heavy sheet | Migrated with draft/Done behavior |
+| Customer menu background | Upload, veil, remove dialog | Decision-heavy sheet | Migrated with draft/Done behavior |
+| Menu link | QR/link actions | Short modal | Migrated to focused read-only sheet |
+| Table QR codes | Adaptive table grid and QR detail | Decision-heavy sheet with nested Back | Migrated; table grid and detail remain in one sheet |
+| Settings overview | Account, Orders, Availability, Security rows | Grouped settings entry | Migrated to shared list primitive |
+| Account details/password | Nested edit dialogs | Decision-heavy sheet with nested Back | Migrated with Back navigation |
+| Order numbering/prep time | Nested edit dialogs | Decision-heavy sheet with nested Back | Migrated with Back navigation |
+| Store availability/order sound | Immediate toggle rows | Focused settings sheet | Availability now drafts until Done; existing order behavior is preserved |
 | Order-data clearing | Typed destructive flow | Short modal plus destructive confirmation | Keep separate from general settings sheet |
-| Security/session actions | Review and logout actions | Focused settings sheet; confirmations remain modal | Waiting for shared sheet primitive |
+| Security/session actions | Review and logout actions | Focused settings sheet; confirmations remain modal | Migrated; destructive confirmation remains separate |
 
 ## Batch 2 — Staff and Menu Studio
 

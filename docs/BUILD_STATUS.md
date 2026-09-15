@@ -5,7 +5,8 @@
 - Replaced the dense mixed Business Profile form with one compact overview for business details, logo, customer-menu background, and menu access. The general Menu link and mode-specific Table QR codes are separate destinations instead of sharing one dialog.
 - Table businesses show a compact adaptive table grid: six tables use three columns by two rows, larger sets expand into calendar-like four-, five-, or six-column layouts, and phones retain a three-column grid. Selecting a table opens its focused QR, exact table URL, download, and copy actions with an accessible return to the grid.
 - Kept global appearance ownership and the existing service preset/data contracts unchanged; no service-gate model or provider adapter was added or duplicated.
-- Validation: `npm run check` and `git diff --check` passed. Live Salamat browser checks on port 4197 confirmed a 20-table grid at 390×844 and 768×1024, three/five responsive columns, the Table 12 QR and exact `?table=12` link, semantic buttons and return focus, no horizontal overflow, and a clear browser console. The earlier 1280×800 profile check also remains valid.
+- Migrated Business Profile and Settings to the shared grouped-list and material-sheet primitives. Editable sheets keep changes as drafts until Done; Close, outside click, and Escape discard; nested settings use Back; destructive order clearing remains a separate confirmation.
+- Validation: focused contracts, `npm run check`, and `git diff --check` passed. Live Salamat browser checks used a fresh preview on port 4198 and confirmed the 20-table phone grid, five-column 1280×800 grid, Table 7 QR and exact `?table=7` link, Escape discard with focus restoration, and nested Settings Back navigation.
 
 ## September 15, 2026 — Public menu card content simplification
 

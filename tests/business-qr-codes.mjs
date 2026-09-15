@@ -25,4 +25,7 @@ assert.doesNotMatch(markup,/id="table-qr-number"/);
 assert.match(app,/count<=6\?3:count<=12\?4:count<=30\?5:6/);
 assert.match(app,/data-table-qr=/);
 assert.match(app,/Table \$\{selectedTableQr\} QR code/);
+assert.match(app,/window\.QrkSheet\.create/);
+assert.match(app,/materializeSheet\(\$\('#table-qr-dialog'\),\{readOnly:true\}\)/);
+assert.match(app,/\.classList\.add\('qrk-settings-list'\)/);
 console.log('Five profile-specific menu links and adaptive table QR destinations passed.');
