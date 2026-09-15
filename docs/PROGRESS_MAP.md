@@ -22,7 +22,7 @@ The disposable hosted project `qrk-menu-development` contains all six migrations
 
 Menu Studio and the matching Customer Menu now share a business-scoped browser snapshot in demo mode, so Kusina and the other preview tenants no longer render independently authored menus. This closes same-browser preview parity only; durable publication to other devices remains Stage 2 work.
 
-All five development businesses now provide responsive-density test menus. Kusina has eight categories and 24 products; Salamat, Salo Table, Tambay Café, and Ihaw Buffet each have seven business-specific categories and 21 products. Every category contains three products, and automated coverage confirms browser-menu state remains isolated by business slug.
+All five development businesses now provide hosted and fallback density-test menus with 10 business-specific categories and 50 products each. Every category contains five products, automated coverage confirms browser-menu state remains isolated by business slug, and live Supabase counts confirm the same published shape.
 
 Desktop Menu Studio rows now reflect the same saved item photos used by responsive Menu Studio and Customer Menu cards, while retaining initials only for items without photos.
 

@@ -1006,3 +1006,11 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Traced the reported Tambay phone order to hosted Supabase as `TC-0103`, received for Table 2 with a registered device. The order was not lost.
 - Fixed staging authentication so an old browser-preview session is discarded instead of silently selecting the local-storage data adapter. Hosted staging now requires a real Supabase account before showing a staff workspace.
 - Added a regression contract for rejecting preview sessions in staging. After deployment, existing dashboard browsers must reload and sign in as the appropriate hosted admin or staff user.
+
+## September 15, 2026 — Five-business staging menu expansion
+
+- Expanded every development business to 10 business-specific categories with five products each: 50 products per business and 250 total.
+- Added one canonical catalog for local fallback, admin/menu previews, generated hosted SQL, and public-menu image fallback. Published category/product content remains Supabase-authoritative in staging.
+- Published revision 2 for all five businesses in one transaction per generated catalog run. Earlier published revisions were archived rather than deleted, preserving historical order data.
+- Added 22 reachable, category-matched Unsplash development placeholders with lightweight URL transforms. These must be reviewed or replaced with business-owned/licensed photography before production.
+- Validation passed: all 22 image URLs returned HTTP 200; `npm run check` passed; and live Supabase verification returned 10 published categories and 50 published products for each of the five business slugs.

@@ -1,10 +1,9 @@
 # Progress memory
 
-As of September 14, 2026:
+As of September 15, 2026:
 
-- Kusina Manila's responsive test seed now contains 24 products across eight categories, with exactly three products in each category and only the existing lightweight local food photos. The shared Menu Studio/customer seed and development-client preset carry the same category/product coverage.
+- All five hosted development businesses now publish 50 products across 10 business-specific categories, exactly five products per category. A canonical catalog drives browser fallback and generated Supabase revision-2 SQL; live database counts pass for all five slugs. Category-level Unsplash images are development placeholders and require production provenance review or replacement.
 
-- Salamat, Salo Table, Tambay Café, and Ihaw Buffet now each contain 21 products across seven cuisine- and service-specific categories, with three products per category. Their shared Menu Studio/customer defaults retain business-slug isolation; representative phone, tablet, and desktop rendering passes without horizontal overflow.
 
 - Customer-menu performance remediation includes the main page and all customer popups: dish photos lazy-decode, costly page scroll effects are removed, every dialog uses static dimming instead of live backdrop blur, and Menu Studio optimizes new and existing browser-local uploads while retaining originals in IndexedDB.
 

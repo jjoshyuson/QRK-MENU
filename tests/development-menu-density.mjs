@@ -9,27 +9,24 @@ globalThis.localStorage={
 const {readMenuState}=await import('../dist/data/qrk-menu-store.js');
 const {DEVELOPMENT_CLIENTS}=await import('../dist/data/qrk-service-presets.js');
 
-const expected={
-  salamat:['Appetizers','Soups','Grilled','Mains','Rice & Noodles','Desserts','Drinks'],
-  'salo-table':['Pulutan','Shared plates','Soups','Rice & Noodles','Vegetables','Desserts','Drinks'],
-  'tambay-tab':['Espresso','Iced Coffee','Non-Coffee','Breakfast','Sandwiches','Snacks','Pastries'],
-  'ihaw-buffet':['Packages','Pork Grill','Chicken Grill','Seafood Grill','Vegetables','Rice & Noodles','Extras']
-};
+const expected=Object.fromEntries(DEVELOPMENT_CLIENTS.map(client=>[client.slug,[...new Set(client.menu.map(([category])=>category))]]));
 
 for(const [slug,categories] of Object.entries(expected)){
   const state=readMenuState(slug);
   const preset=DEVELOPMENT_CLIENTS.find(client=>client.slug===slug);
   assert.deepEqual(state.categories,categories,`${slug} should keep its business-specific category order`);
-  assert.equal(state.items.length,21,`${slug} should seed 21 products`);
-  assert.equal(preset.menu.length,21,`${slug} preset should seed 21 products`);
+  assert.equal(categories.length,10,`${slug} should seed 10 categories`);
+  assert.equal(state.items.length,50,`${slug} should seed 50 products`);
+  assert.equal(preset.menu.length,50,`${slug} preset should seed 50 products`);
   for(const category of categories){
-    assert.equal(state.items.filter(item=>item.category===category).length,3,`${slug}/${category} should have three products`);
-    assert.equal(preset.menu.filter(item=>item[0]===category).length,3,`${slug}/${category} preset should have three products`);
+    assert.equal(state.items.filter(item=>item.category===category).length,5,`${slug}/${category} should have five products`);
+    assert.equal(preset.menu.filter(item=>item[0]===category).length,5,`${slug}/${category} preset should have five products`);
   }
   for(const item of state.items){
     assert.ok(item.name);
     assert.ok(item.description);
     assert.ok(Number.isFinite(item.price)&&item.price>=0);
+    assert.match(item.photo,/^https:\/\/images\.unsplash\.com\/photo-/,`${slug}/${item.name} should use a curated online development image`);
     assert.equal(item.available,true);
     assert.equal(item.hidden,false);
   }
