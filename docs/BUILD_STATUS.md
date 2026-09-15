@@ -1,5 +1,13 @@
 # Build status
 
+## September 15, 2026 — PM / Table Session Entry candidate
+
+- Added a customer-facing Table entry gate that treats the permanent `?table=` QR as table identification only. It does not grant ordering access by itself.
+- Added one-time staff-opened entry exchange for the local preview. The opaque `entry` value is POSTed to the server, consumed once, bound to the browser device, and removed from the visible URL with `history.replaceState` before the menu opens.
+- Added capability-driven unavailable messaging (`tableEntryEnabled` or `acceptingTableSessions`), malformed Table QR handling, explicit host/guest membership copy, ended-session recovery, and a two-hour inactivity warning with a configurable grace period and `Keep open` action.
+- The public UI expects future DA/provider contracts named `exchange_table_session_entry` and `touch_table_session`; these RPCs are not on `origin/main`, so hosted token exchange and activity renewal remain integration assumptions rather than claimed hosted behavior. Existing Table preset fields remain the fallback.
+- `npm run check` passes. Local browser checks on port 43187 covered a valid permanent Table QR, malformed QR, staff-opened host recognition, URL sanitization, one-time token reuse rejection, and 390/768/1280 CSS-pixel reflow without horizontal overflow. Nothing was deployed.
+
 ## September 15, 2026 — Public menu card content simplification
 
 - Removed browsing-card descriptions and the visible `Add` label while preserving every stored description, description-based search, and the full description in the item detail/order sheet.
