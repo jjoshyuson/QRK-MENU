@@ -12,7 +12,7 @@ const [html, menu, css, style, handoff] = await Promise.all([
 assert.match(html, /id="item-dialog" class="sheet focused-sheet item-sheet"/);
 assert.match(html, /id="fulfillment-dialog" class="sheet focused-sheet fulfillment-sheet"/);
 assert.match(html, /id="payment-dialog" class="sheet focused-sheet payment-sheet"/);
-assert.match(html, /item-sheet-header[^>]*>.*id="cancel-item"[^>]*>×<\/button>.*id="add-item"[^>]*>✓<\/button>/s);
+assert.match(html, /item-sheet-header[^>]*>.*id="cancel-item"[^>]*>.*<svg.*<\/button>.*id="add-item"[^>]*>.*<svg.*<\/button>/s);
 assert.match(html, /class="sheet-action item-price-footer".*id="item-total"/s);
 assert.match(html, /id="special-request-trigger".*aria-controls="special-request-field"/s);
 assert.match(html, /<details class="checkout-details" id="checkout-details"><summary><span>Add name or order notes<\/span>/);
@@ -20,6 +20,8 @@ assert.doesNotMatch(html, /focused-sheet[^>]*Add name or order notes/);
 
 assert.doesNotMatch(menu, /itemOptionStep|renderItemStep/);
 assert.match(menu, /function renderItemOptions\(\)/);
+assert.match(menu, /option-group-heading/);
+assert.doesNotMatch(menu, /renderItemOptions[\s\S]*requestAnimationFrame\(\(\)=>\(\$\('#item-options input/s);
 assert.match(menu, /itemOptionDraft=\(selectedItem\?\.options\|\|\[\]\)\.map/);
 assert.match(menu, /const options=itemOptionDraft\.flat\(\)/);
 assert.match(menu, /itemDialogInvoker=invoker/);
@@ -30,6 +32,7 @@ assert.match(css, /--component-focused-sheet-max-height:90dvh/);
 assert.match(css, /dialog\.focused-sheet\s*\{[^}]*margin:auto auto 0/s);
 assert.match(css, /focused-sheet-card\s*\{[^}]*safe-area-inset-top/s);
 assert.match(css, /item-price-footer\{[^}]*safe-area-inset-bottom/s);
+assert.match(css, /special-request-trigger\[aria-expanded="true"\]/);
 assert.match(css, /@media\(prefers-reduced-motion:reduce\)[\s\S]*focused-sheet-card\{animation:none!important\}/);
 assert.match(style, /Focused public-menu sheets/);
 assert.match(handoff, /Item option state is drafted in memory/);

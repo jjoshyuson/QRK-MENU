@@ -3,9 +3,10 @@
 ## September 15, 2026 — Consolidated item and post-review fulfillment sheets
 
 - Replaced the item-option wizard with one consolidated configuration sheet: persistent option/add-on lists, top-corner cancel and confirm controls, an informational bottom total, and an optional special-request field revealed on demand.
+- Follow-up polish gives every option list a complete rounded border below its heading, uses optically centered SVG corner icons, connects the special-request disclosure and text area as one drawer, and removes automatic pointer-triggered focus from option and request fields while retaining keyboard `:focus-visible` treatment.
 - Review Order now always exposes its subtotal and proceeds to a separate fulfillment sheet. Pickup advances directly to payment; Serve at table opens the table picker and then advances to payment, while payment Back returns to fulfillment choices.
 - Preserved cart drafts, option pricing, table-session validation, Escape cancellation, invoking-control focus restoration, safe-area handling, reduced motion, and the inline order-name/order-notes disclosure.
-- Validation: `npm run check` and `git diff --check` passed. Live browser checks at 390×844 and 1440×900 confirmed one consolidated item sheet, optional special-request reveal, live add-on total, no horizontal overflow, an always-visible Review Order subtotal, Pickup-to-payment, payment Back-to-fulfillment, and Serve-at-table-to-table-picker transitions with no console warnings or errors.
+- Validation: `npm run check` and `git diff --check` passed. Live browser checks at 390×844, 768×900, and 1440×900 confirmed complete option borders, centered SVG controls, a connected request drawer with no automatic textarea focus ring, live add-on totals, zero horizontal overflow, an always-visible Review Order subtotal, Pickup-to-payment, payment Back-to-fulfillment, and Serve-at-table-to-table-picker transitions with no console warnings or errors.
 
 ## September 15, 2026 — Public menu card content simplification
 
