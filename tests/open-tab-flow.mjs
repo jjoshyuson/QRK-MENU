@@ -17,10 +17,16 @@ assert.doesNotMatch(menu,/if\(openTabEnabled\)\{\$\('#cart-bar'\)\.classList\.ad
 assert.match(html,/id="open-tab-dialog"/);
 assert.doesNotMatch(html,/class="sheet-content cart-content">\s*<section class="tab-summary/);
 assert.match(menu,/\$\('#open-tab-control'\)\.addEventListener\('click',openTab\)/);
-assert.match(menu,/\$\('\.fulfillment'\)\.classList\.add\('hidden'\);\$\('#review-table-field'\)\.classList\.add\('hidden'\)/);
+assert.match(menu,/\$\('\.fulfillment'\)\.classList\.add\('hidden'\);\$\('#choose-fulfillment'\)\.classList\.add\('hidden'\)/);
 assert.match(menu,/\$\('#cart-empty'\)\.classList\.toggle\('hidden',cart\.length>0\)/);
 assert.match(menu,/class="cart-item-controls"/);
 assert.match(menu,/tabOrders\.length\?'Send another order':'Send order'/);
+assert.match(menu,/if\(quantity<=0\)cart\.splice\(index,1\)/);
+assert.match(menu,/\$\('#checkout-details'\)\.open=false/);
+assert.match(html,/id="choose-fulfillment"[^>]*aria-haspopup="dialog"/);
+assert.match(html,/id="checkout-details"/);
+assert.match(html,/id="fulfillment-dialog"/);
+assert.doesNotMatch(html,/id="checkout-data-note"/);
 assert.match(cartStyles,/#cart-dialog \.cart-item \{ display: grid; grid-template-columns: minmax\(0, 1fr\) auto;/);
 assert.match(cartStyles,/#cart-dialog \.remove-item \{ min-width: 44px; min-height: 44px;/);
 assert.match(cartStyles,/#cart-dialog #submit-order \{ min-height: 44px;[^}]*border-radius: 999px;/);
