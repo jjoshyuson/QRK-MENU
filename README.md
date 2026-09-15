@@ -47,6 +47,7 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 | `docs/TECHNICAL_HANDOFF.md` | Current structure, limitations, adapter and provider-ready backend architecture |
 | `docs/BUILD_STATUS.md` | Completed work, next milestone, and verification checklist |
 | `docs/PROGRESS_MAP.md` | Milestone sequence, dependencies, status and exit criteria |
+| `docs/ORCHESTRATION.md` | Planner, domain build, QA and Release chat ownership, handoffs and token-saving gates |
 | `docs/QUICK_TABLE_MASTER_PLAN.md` | Shared QRK Quick/Table architecture, team ownership, branch gates and deployment plan |
 | `docs/DATABASE_SYNC_AND_PORTABILITY_PLAN.md` | Supabase staging sync, reversible order clearing, device identity, and future VPS migration |
 | `docs/DEVELOPMENT_MENU_CATALOG.md` | Five-business dummy catalog, publishing/recovery behavior, and image provenance notes |

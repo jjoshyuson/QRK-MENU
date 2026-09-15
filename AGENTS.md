@@ -1,66 +1,46 @@
-# Working instructions
+# QRK MENU working instructions
 
-## Before starting work
+Keep this file short. It contains rules that apply to every task. Use `memory/README.md` to find current context and `docs/ORCHESTRATION.md` for the full workflow.
 
-- For every new build or change request, reply first with one concise discovery question and wait for the user's answer before editing files or implementing anything.
-- If a prompt is vague, ambiguous, or could reasonably lead to different outcomes, do not spend time or tokens guessing. Ask the smallest number of focused questions needed to reduce uncertainty.
-- After the answer, read `memory/README.md` and only the topic files relevant to the request. Consult the longer handoff documents when the memory index points to them or when detailed evidence is required.
-- Before every UI, UX, layout, styling, branding, or responsive change, read and follow `AGENT/STYLE.md` as the project’s visual source of truth.
-- For backend, data, order, Auth, Realtime, Storage, migration, or recovery work, also read `supabase/README.md` before changing schema or adapter code.
-- Keep `memory/` concise and current after material decisions or milestone changes so a new chat can orient itself without scanning the whole project.
+## Start efficiently
 
-## Preserve the direction
+- Ask one concise question only when the answer could materially change scope or implementation. Do not require a question for routine, well-specified work.
+- Read `memory/README.md`, then only the memory topic and authoritative document routed for the task.
+- Inspect Git status, branch, and relevant files before editing. Do not scan the entire repository by default.
+- Work in a dedicated branch/worktree. Never edit directly on `main` unless this is the designated Release chat performing an approved integration.
+- Preserve unrelated work and never stage, revert, merge, or clean it.
 
-- This is QRK MENU, a lightweight digital menu and future ordering product for small businesses, initially restaurants in the Philippines.
-- Build on the existing UI. `dist/` currently contains authored source, not disposable build output.
-- Desktop stays a management workspace with a customer preview.
-- Mobile/tablet opens to the responsive Dashboard. Menu Studio is a separate view that keeps the customer-shaped, two-column photo menu with owner editing controls. Its compact table mode is only for fast availability changes, not a replacement customer layout. The user explicitly rejected a shrunken desktop table and an ornate restaurant-style mobile page.
-- Keep the same site/domain. No separate mobile website or device redirect is required.
-- Preserve DM Sans / Manrope and the existing QRK orange unless the user requests a new visual direction.
-- Customer preview must hide owner controls. It is not an authorization boundary.
-- Do not remove existing item, category, availability, or photo editing flows while polishing.
-- Keep interface structure compact and operational. Avoid redundant page headings, padded decorative cards, nested wrappers, and repeated explanatory copy; use progressive disclosure and whole-card actions as defined in `AGENT/STYLE.md`.
+## Product guardrails
 
-## Scope and implementation
+- QRK MENU is a lightweight digital-menu and future-ordering product for small businesses, initially Philippine restaurants.
+- Preserve the existing HTML, CSS, and vanilla JavaScript stack while practical. `dist/` contains authored source.
+- Keep one responsive product and domain. Desktop is the management workspace; mobile/tablet opens Dashboard; Menu Studio remains a separate customer-shaped editor.
+- Preserve existing item, category, photo, availability, ordering, and preview flows unless the task explicitly changes them.
+- Preserve the established QRK brand and follow `AGENT/STYLE.md` for UI work. Use `ui-ux-pro-max` when the task is materially visual.
+- Customer preview hides owner controls but is not an authorization boundary.
+- Keep provider calls behind existing adapters. For backend/data work read `supabase/README.md`; for provider migration read `docs/DATABASE_SYNC_AND_PORTABILITY_PLAN.md`.
+- Do not claim persistence, authentication, offline use, QR publishing, payments, or cross-device behavior until verified.
+- Never commit credentials or secrets. Preserve image provenance.
 
-### Temporary Supabase provider and future VPS migration
+## Role boundaries
 
-- Supabase is the temporary development and initial staging provider; PostgreSQL and the application service contracts are the durable architecture.
-- Keep Supabase-specific Auth, REST, Realtime, and Storage code behind the existing adapters. Do not place provider calls throughout UI code.
-- When the user mentions upgrading, migrating, self-hosting, or moving away from Supabase to a VPS, read `docs/DATABASE_SYNC_AND_PORTABILITY_PLAN.md` before planning or changing code.
-- Preserve portable tenant keys, constraints, integer-money fields, idempotency, lifecycle guards, immutable order snapshots, and migration history during a provider move.
-- Realtime events are hints only. PostgreSQL reads remain authoritative under both Supabase and any future VPS implementation.
+- **Planner chat:** owns approved scope, sequencing, architecture decisions, and `docs/PROGRESS_MAP.md`. It does not routinely implement or deploy.
+- **Domain build chats:** own one bounded product area and branch. They implement, run proportionate checks, and prepare a concise handoff. They do not merge or deploy.
+- **QA chat:** reviews a release candidate, runs risk-based functional, responsive, accessibility, performance, and regression checks, and records pass/fail evidence. It does not silently fix or deploy.
+- **Release chat:** is the only normal path for integrating approved branches, resolving release conflicts, updating release records, pushing `main`, and verifying GitHub Pages.
 
-- Read the handoff docs before changes. Treat confirmed requirements and proposed future work differently.
-- Workstream 3 is a provider-ready Supabase/PostgreSQL foundation, not an operational backend. Until a hosted development project, Auth flow, migrations, SQL tests and two-device checks are connected and verified, preserve the automatic local/demo fallback and do not claim cross-device behavior.
-- Do not implement all roadmap features at once. Keep stages reviewable and usable.
-- Do not claim persistence, authentication, offline operation, QR publishing, or ordering exists until actually implemented and verified.
-- Use practical, plain language in the UI. Keep developer notes outside customer-facing production flows.
-- No payment provider, database service, framework migration, AI provider, or paid subscription has been chosen by the user.
-- Do not add real credentials to files, commits, browser code, or examples.
-- Preserve image provenance. Use owned/licensed photos for a public launch.
-- `deployment/original-hosting.json` is reference metadata, not a request to deploy. Work locally unless the user authorizes publishing in the new environment.
-- The website's primary technical goal is to remain very lightweight, especially for customers on mobile devices and slow connections.
-- Use the minimum code and dependencies needed for the requested result. Prefer the existing HTML, CSS and vanilla JavaScript approach while it remains practical; do not add a framework, package or abstraction without a concrete benefit.
-- Keep customer payloads and runtime work small. Avoid duplicated implementations, oversized assets and decorative features that do not improve the core menu experience.
+Detailed ownership and handoff formats are in `docs/ORCHESTRATION.md`.
 
-## Working habits
+## Validation and documentation
 
-- Start with `npm start` and `npm run check`.
-- In this repository, **cloud development** means the GitHub-hosted development stage: the `main` branch on `origin` and its GitHub Pages deployment at `https://jjoshyuson.github.io/QRK-MENU/`. It does not mean the Sites-hosted prototype or a production environment.
-- After each completed and validated change, commit the intended files and push `main` to `origin`; this branch deploys the GitHub Pages development site at `https://jjoshyuson.github.io/QRK-MENU/`. Do not include unrelated working-tree changes in the commit, and do not describe a change as deployed until the Pages workflow succeeds.
-- For layout work in this next Codex session, use available browser tools to verify representative phone, tablet and desktop sizes; do not rely only on syntax checks.
-- Test meaningful flows and specific risks; avoid redundant tests that just mirror the source.
-- Keep the latest working UI intact during changes.
-- Update `docs/BUILD_STATUS.md` after each milestone and state what remains incomplete.
-- Update `docs/PROGRESS_MAP.md` when milestone status, ordering, dependencies or exit criteria change.
-- Ask only for decisions that materially change scope, privacy, external costs or access; proceed with routine reversible work.
+- Match validation to risk. Documentation-only work needs link, consistency, diff, and Git checks; it does not require the full product test suite unless it changes commands or executable examples.
+- UI work requires representative phone, tablet, and desktop checks plus relevant keyboard, focus, contrast, reflow, state, and reduced-motion checks.
+- Run `npm run check` for code changes that affect shared behavior or before a release candidate. Run narrower tests for small isolated changes when available.
+- Update only documentation whose truth changed. Do not append the same milestone to `BUILD_STATUS`, `PROGRESS_MAP`, and multiple memory files.
+- `docs/BUILD_STATUS.md` is detailed release evidence, maintained by QA/Release. `docs/PROGRESS_MAP.md` is current direction, maintained by Planner. Memory is a concise routing/current-state layer.
 
-## Component inventory maintenance
+## Git and release
 
-- Treat `dist/ui-components.css` as the source of truth for reusable component variables and visual rules across owner tools, Client Admin, Client Staff, QRK Admin, the customer menu and the unlinked `/components/` reference. Keep page composition and responsive placement in route stylesheets. Landing-page components are intentionally excluded.
-- Use the stable inspect-element labels generated by `dist/ui-components.js`: every registered component exposes `data-component`, `data-variant` and `data-component-source`. Keep names human-readable and stable when markup changes.
-- Before creating a reusable component, check `/components/` and the shared source named on its specimen so an existing pattern is reused when practical.
-- Whenever a reusable component, shared variable or meaningful variant/state is added or materially changed, update `dist/ui-components.css`, its registry entry, and its matching `/components/` specimen in the same milestone.
-- Keep the inventory dependency-free. It renders the production component layer for visibility, copy and reference; it is not a second implementation, automated test harness or product-navigation destination.
-- Organize specimens by role and component family, and show representative default, selected, disabled, empty, loading, warning, success and destructive states where those states exist.
+- Feature work ends with a focused commit on its owned branch and a handoff to QA or Release. Pushing the feature branch is allowed when needed for review; it is not deployment.
+- Only Release merges approved work into `main` and pushes `main`. A successful GitHub Pages workflow is required before describing development as deployed.
+- Never merge production, force-push shared history, delete work-bearing branches, or change production resources without explicit approval.

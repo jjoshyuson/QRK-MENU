@@ -1,5 +1,13 @@
 # Build status
 
+## September 15, 2026 — Lean orchestration workflow
+
+- Replaced the per-chat merge/deploy ceremony with a role-based fleet: Planner, three domain build areas, QA, and Release.
+- Feature chats now stop at a validated branch handoff. Release alone merges and pushes `main`; QA and Release own detailed verification and deployment evidence.
+- Reduced default context loading and documentation duplication. Validation is proportional to risk, with the full suite reserved for shared changes and release gates.
+- Added `docs/ORCHESTRATION.md` and synchronized `AGENTS.md`, memory routing, and the progress map.
+- Baseline validation before this documentation change: local startup succeeded and `npm run check` passed.
+
 ## September 15, 2026 — Open Tab history, remembered name, and cart recovery
 
 - Fixed Table cleanup so every active order for that table is completed into Order History before the table session is marked available. If any order cannot be archived, the table remains occupied and staff receive an error instead of losing the session context.

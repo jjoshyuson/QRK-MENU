@@ -16,17 +16,17 @@ Use this folder as the fast entry point for a new chat. Read this file first, th
 | Supabase staging and future VPS migration | `memory/architecture.md`, `memory/orders.md` | `docs/DATABASE_SYNC_AND_PORTABILITY_PLAN.md` |
 | Current progress and next milestone | `memory/progress.md` | `docs/PROGRESS_MAP.md`, `docs/BUILD_STATUS.md` |
 | Confirmed decisions and unresolved choices | `memory/decisions.md` | `docs/PRODUCT_PLAN.md` |
-| Local commands and verification | `memory/workflow.md` | `README.md`, `docs/BUILD_STATUS.md` |
+| Chat roles, Git ownership, handoffs and local commands | `memory/workflow.md` | `docs/ORCHESTRATION.md`, `README.md` |
 
 ## Reading rule
 
-For a routine UI change, read `AGENT/STYLE.md`, `ui.md`, `architecture.md`, `progress.md` and `workflow.md`. For product or roadmap work, read `product.md`, `progress.md` and `decisions.md`; consult `inbox.md` only when reviewing newly captured ideas. For backend/data work, read `architecture.md`, `orders.md`, `progress.md`, `workflow.md`, then the full `supabase/README.md`. Read the full authoritative document when implementation depends on nuance or verification evidence.
+For a routine UI change, read `workflow.md`, `AGENT/STYLE.md`, and the one or two feature topics involved. For product or roadmap work, read `product.md`, `progress.md`, and `decisions.md`. For backend/data work, read `workflow.md`, `architecture.md`, the relevant data topic, then `supabase/README.md`. Read longer authoritative documents only when implementation depends on their detail.
 
 ## Maintenance rule
 
 - Record only stable facts, current state, decisions and useful file routes.
 - Put unprocessed thoughts in `inbox.md`; clearly label them as notes or proposals rather than requirements.
 - Do not paste long logs or duplicate detailed evidence.
-- Update the matching topic file after a material decision or milestone change.
+- Update one matching topic file after a material decision or milestone change. Avoid recording the same update in several memory files.
 - Date facts that can become stale and distinguish confirmed decisions from proposals.
 - Last refreshed: September 9, 2026.

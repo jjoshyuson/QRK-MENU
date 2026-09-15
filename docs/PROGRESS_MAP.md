@@ -2,6 +2,10 @@
 
 This file is the high-level route from the current prototype to a production QR menu. It shows sequence, dependencies and exit criteria. `docs/BUILD_STATUS.md` remains the detailed evidence log.
 
+## Development operating model
+
+Approved on September 15, 2026: planning, domain implementation, QA, and release are separate chat responsibilities. Feature branches no longer deploy themselves. The Release chat alone integrates approved, QA-passed work into `main` and verifies GitHub Pages. See `docs/ORCHESTRATION.md`.
+
 ## Current position
 
 The owner, client/admin and customer surfaces now share a locally implemented PWA shell. They can use standalone install metadata and app-like touch behavior, including double-tap suppression without disabling pinch zoom. An unlinked `/components/` route now inventories their reusable UI and representative states for development reference. The approved operational typography is also centralized there: Inter drives interface content and Source Serif 4 is limited to customer-facing brand/menu headings. Publication and physical-device install/offline verification remain pending.

@@ -2,6 +2,8 @@
 
 ## Confirmed
 
+- QRK uses a role-based chat fleet: Planner controls scope, domain chats implement on owned branches, QA validates release candidates, and Release alone merges and deploys `main`.
+- Feature chats do not push `main` or repeat release/status updates. They hand off a focused commit plus validation evidence.
 - QRK Quick and QRK Table are two operating modes of one shared platform, not separate products, dashboards, databases or brands.
 - Use service-mode defaults plus capability flags; keep the model extensible and location-ready.
 - QRK Table requires a persistent table/session and service-request workflow rather than a copy of Quick with one request button.
