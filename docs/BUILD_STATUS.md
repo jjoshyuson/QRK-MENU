@@ -1,5 +1,13 @@
 # Build status
 
+## September 15, 2026 — Open Tab history, remembered name, and cart recovery
+
+- Fixed Table cleanup so every active order for that table is completed into Order History before the table session is marked available. If any order cannot be archived, the table remains occupied and staff receive an error instead of losing the session context.
+- Order History now shows the customer name for table orders plus item count, completion timestamp, and total. It does not expose phone data or payment status.
+- Added a default-on `Save name on this device` checkbox to table entry and checkout. A saved name—or the current table participant name—prefills the next order; opting out removes the browser-local saved name.
+- Restored the floating `View order` cart for Open Tab drafts while retaining the separate top-right Open Tab running-total control.
+- Validation: `npm run check` and `git diff --check` passed, including the new regression contract for archive-before-clean ordering. Browser verification at 390×844 confirmed the separate top Open Tab and bottom floating cart, visible default-on save-name controls, `Josh` prefill, and staff receipt as `Table 1 · Josh`; completing that order produced a history row with name, item count, timestamp, Served state, and total. Desktop history was also visually checked with no visible regression.
+
 ## September 14, 2026 — Supabase order sync and reversible clearing
 
 - Added browser-installation identity, device-attached order creation, database foundations for table/open-tab activity, and server-side operational clear batches.

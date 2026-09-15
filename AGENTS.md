@@ -47,6 +47,7 @@
 ## Working habits
 
 - Start with `npm start` and `npm run check`.
+- In this repository, **cloud development** means the GitHub-hosted development stage: the `main` branch on `origin` and its GitHub Pages deployment at `https://jjoshyuson.github.io/QRK-MENU/`. It does not mean the Sites-hosted prototype or a production environment.
 - After each completed and validated change, commit the intended files and push `main` to `origin`; this branch deploys the GitHub Pages development site at `https://jjoshyuson.github.io/QRK-MENU/`. Do not include unrelated working-tree changes in the commit, and do not describe a change as deployed until the Pages workflow succeeds.
 - For layout work in this next Codex session, use available browser tools to verify representative phone, tablet and desktop sizes; do not rely only on syntax checks.
 - Test meaningful flows and specific risks; avoid redundant tests that just mirror the source.

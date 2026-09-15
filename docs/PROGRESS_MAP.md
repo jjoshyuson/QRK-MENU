@@ -8,7 +8,7 @@ The owner, client/admin and customer surfaces now share a locally implemented PW
 
 Menu Studio now turns the customer route's previously hard-coded choices into browser-persisted option sets. Owners can define whole-business upsells, category defaults and item-specific choices with price and selection rules. The immediate backend path is still to connect authoring to the existing provider option-group schema and verify cross-device publication before making durability claims.
 
-Tambay Café's approved Open Tab customer slice now has a browser-local whole-tab view: after the first item is added, customers can reopen a prominent running-total control and see all submitted order rounds separated by Accepted, Preparing, and Prepared status. This is local preview evidence, not tab settlement or hosted persistence.
+Tambay Café's approved Open Tab customer slice now has a browser-local whole-tab view: after the first item is added, customers retain the floating draft-cart action and can separately reopen the top-right running-total control to see submitted order rounds. Names can be remembered on-device with a default-on opt-out control. Staff table cleanup archives active table orders before releasing the table, and History shows the customer name, item count, timestamp, and total. This is local preview evidence, not tab settlement or hosted persistence.
 
 The approved product direction is now one shared QRK platform with QRK Quick and QRK Table operating modes. The implementation and delegation contract is `docs/QUICK_TABLE_MASTER_PLAN.md`. Parallel UI, UX, and backend work must converge through its contract, integration, hosted-development, and explicit publish gates.
 

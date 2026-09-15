@@ -22,4 +22,5 @@
 - Update `docs/BUILD_STATUS.md` with evidence, limitations and exact next action.
 - Update `docs/PROGRESS_MAP.md` only if milestone structure or status changed.
 - Update relevant `memory/` topics when stable facts or decisions changed.
+- “Cloud development” means `origin/main` and its GitHub Pages development deployment at `https://jjoshyuson.github.io/QRK-MENU/`; it excludes the Sites prototype and production.
 - After a validated change, commit only the intended files and push `main` to `origin`. The push triggers the GitHub Pages development deployment at `https://jjoshyuson.github.io/QRK-MENU/`; verify the workflow before calling it deployed.
