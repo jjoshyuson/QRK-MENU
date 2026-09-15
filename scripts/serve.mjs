@@ -38,7 +38,13 @@ async function tableApi(req,res,pathname){
   }
   if(action==='request'){
     let session=sessions.find(item=>item.table===String(input.table)&&['pending','active','bill_requested'].includes(item.status));
-    if(session){if(!session.participants.some(person=>person.deviceId===input.deviceId)&&!session.joinRequests.some(item=>item.deviceId===input.deviceId&&item.status==='pending'))session.joinRequests.push({id:crypto.randomUUID(),deviceId:input.deviceId,name:input.name||'Guest',status:'pending',requestedAt:now,expiresAt:new Date(Date.now()+(Number(input.acceptanceTimeoutSeconds)||90)*1000).toISOString(),approvalBy:input.joinPolicy||'host'});}
+    if(session){
+      if(input.additionalDevices===false||input.joinPolicy==='disabled'){sendJson(res,409,{error:'This table does not allow additional devices. Ask the host or staff to order for you.'});return}
+      if(!session.participants.some(person=>person.deviceId===input.deviceId)&&!session.joinRequests.some(item=>item.deviceId===input.deviceId&&item.status==='pending')){
+        if(['automatic','direct'].includes(input.joinPolicy))session.participants.push({id:crypto.randomUUID(),deviceId:input.deviceId,name:input.name||'Guest',role:'guest',permission:input.guestOrderPolicy||'direct',joinedAt:now,approvedBy:'automatic'});
+        else session.joinRequests.push({id:crypto.randomUUID(),deviceId:input.deviceId,name:input.name||'Guest',status:'pending',requestedAt:now,expiresAt:new Date(Date.now()+(Number(input.acceptanceTimeoutSeconds)||90)*1000).toISOString(),approvalBy:input.joinPolicy||'host'});
+      }
+    }
     else{session={id:crypto.randomUUID(),table:String(input.table),status:input.staffAcceptance?'pending':'active',guestCount:Number(input.guestCount)||1,packageId:input.packageId||null,createdAt:now,updatedAt:now,expiresAt:input.staffAcceptance?new Date(Date.now()+(Number(input.acceptanceTimeoutSeconds)||90)*1000).toISOString():null,participants:[{id:crypto.randomUUID(),deviceId:input.deviceId,name:input.name||'Guest',role:'host',permission:'approve',joinedAt:now}],joinRequests:[],events:[{type:'session_requested',at:now}]};sessions.push(session)}
     tableSessions.set(slug,sessions);sendJson(res,200,session);return;
   }

@@ -1,5 +1,7 @@
 # Order operations memory
 
+- September 15 Host and Guest Access candidate: the customer Table gate now treats the first accepted device as host, respects `additionalDevices`, routes `joinPolicy` through disabled, automatic, host or staff states, and derives guest checkout from `guestOrderPolicy`. Direct guests may submit; `host_approval`, `shared_cart` and `view_only` remain host-checkout-only in this slice. Local preview exposes a clearly labeled staff override. Hosted Supabase parity still depends on the DA contract/backend accepting the same capability fields.
+
 - Order operations use the shared data-service adapter. Without runtime provider configuration they remain a same-origin/browser demo; hosted staging now has safe GitHub Pages runtime variables and Supabase-backed menus, device registration, customer submission, staff reads, status operations, clear/restore, and Table-session RPCs. Hosted API smoke tests pass for all five tenants; deployed-browser and physical-device evidence remain.
 - Hosted staging rejects legacy browser-preview sessions. This prevents an old preview login from silently reading a local order queue while customer orders are reaching Supabase; users must sign in with the hosted tenant account.
 - The September 14 order-sync migration adds random browser-installation identity, device-attached order creation, server-side operational clear batches, and restoration of either of the two newest clears. Clearing preserves restaurant, account, staff, menu, product, photo, branding, and destination data.
