@@ -287,6 +287,15 @@ footer {
 .tab-summary-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px; border-radius: 8px; background: var(--brand-soft); }
 .tab-summary-head strong { font-size: 26px; line-height: 1.1; }
 .tab-summary-head > span { color: var(--brand-600); font-size: 13px; font-weight: 750; }
+.bill-status { display: flex; flex-direction: column; gap: 2px; margin: 12px 0 0; padding: 12px 14px; border-radius: 8px; background: var(--surface-muted); }
+.bill-status strong { font-size: 14px; }
+.bill-status span { color: var(--muted); font-size: 12px; }
+.bill-actions { display: flex; justify-content: flex-end; padding: 12px 18px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: var(--surface); }
+.bill-actions .primary-button { width: 100%; }
+.session-ended-content { text-align: center; }
+.session-ended-content h2 { margin: 0 0 8px; font-size: 24px; }
+.session-ended-content > p:not(.eyebrow) { margin: 0 auto 22px; max-width: 440px; color: var(--muted); }
+.session-ended-content .primary-button { width: 100%; }
 .tab-rounds > h3 { margin: 22px 0 10px; font-size: 15px; }
 .tab-round { padding: 14px 0; border-top: 1px solid var(--line); }
 .tab-round:first-of-type { border-top: 0; }
