@@ -14,7 +14,7 @@ assert.match(html, /id="quick-service-dialog".*aria-label="Choose dine in or tak
 assert.match(html, /data-fulfillment-choice="table"><span aria-hidden="true">🍽️<\/span><b>Dine in<\/b>/s);
 assert.match(html, /data-fulfillment-choice="pickup"><span aria-hidden="true">🛍️<\/span><b>Takeout<\/b>/s);
 assert.doesNotMatch(html, /quick-service-title|Choose your food, then enter your table|Order ahead and collect it at the counter/);
-assert.doesNotMatch(html, /How would you like to pay\?|payment-title/);
+assert.doesNotMatch(html, /How would you like to pay\?|id="payment-title"/);
 assert.match(html, /class="payment-card" id="pay-at-counter"/);
 assert.match(html, /class="payment-card disabled-choice" type="button" disabled/);
 assert.match(html, /<span class="payment-emoji" aria-hidden="true">💵<\/span><b>Pay at the counter<\/b>/);

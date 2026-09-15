@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="/menu/payment-first.css?v=1">
   <link rel="stylesheet" href="/menu/order-confirmation.css?v=1">
   <link rel="stylesheet" href="/menu/quick-service.css?v=1">
+  <link rel="stylesheet" href="/menu/entry-payment.css?v=1">
   <link rel="stylesheet" href="/ui-components.css?v=4">
   <script src="/global-theme.js"></script>
   <script src="/pwa.js" defer></script>
@@ -33,6 +34,17 @@
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
+  <dialog id="entry-payment-dialog" class="entry-payment-dialog" aria-labelledby="entry-payment-title">
+    <section class="entry-payment-card">
+      <p class="eyebrow" id="entry-payment-eyebrow">ENTRY REQUIREMENT</p>
+      <h1 id="entry-payment-title">Complete entry payment</h1>
+      <p id="entry-payment-copy"></p>
+      <div class="entry-payment-amount" id="entry-payment-amount"></div>
+      <p class="entry-payment-state" id="entry-payment-state" role="status"></p>
+      <button class="primary-button hidden" id="accept-entry-commitment" type="button">Agree and view menu</button>
+      <button class="secondary-button hidden" id="refresh-entry-payment" type="button">Refresh payment status</button>
+    </section>
+  </dialog>
   <dialog id="quick-service-dialog" class="quick-service-dialog" aria-label="Choose dine in or takeout">
     <section class="quick-service-card" id="quick-service-choices">
       <button type="button" data-fulfillment-choice="table"><span aria-hidden="true">🍽️</span><b>Dine in</b></button>
@@ -126,6 +138,7 @@
           <input id="table-number" type="hidden">
           <details class="checkout-details" id="checkout-details"><summary><span>Add name or order notes</span><small>Optional</small></summary><div class="checkout-details-fields"><label class="field-label" for="customer-label">Name for the order</label><input id="customer-label" type="text" maxlength="40" autocomplete="name" placeholder="Example: Mia"><label class="remember-name"><input id="save-customer-name" type="checkbox" checked><span>Save name on this device</span></label><label class="field-label" for="order-notes">Order notes</label><textarea id="order-notes" rows="2" maxlength="180" placeholder="Anything the staff should know?"></textarea></div></details>
           <p class="form-error hidden" id="checkout-error" role="alert"></p>
+          <section class="entry-payment-summary hidden" id="entry-payment-summary" aria-live="polite"></section>
         </section>
       </div>
       <div class="sheet-action cart-total hidden" id="cart-action"><div><span>Subtotal</span><strong id="checkout-subtotal">₱0</strong></div><button class="primary-button" id="submit-order" value="default">Submit demo order</button></div>
