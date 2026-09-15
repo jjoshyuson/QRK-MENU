@@ -19,6 +19,7 @@ export class QrkTableSessionService{
     if(path==='/accept'){if(session.status!=='pending')throw new Error('This request is no longer waiting');session.status='active';session.expiresAt=null;session.updatedAt=now;session.events.push({type:'session_accepted',at:now})}
     else if(path==='/cancel'){const join=session.joinRequests.find(item=>item.deviceId===input.deviceId&&item.status==='pending');if(join){join.status='cancelled';join.resolvedAt=now}else if(session.status==='pending'&&session.participants.some(person=>person.deviceId===input.deviceId)){session.status='cancelled';session.updatedAt=now;session.events.push({type:'session_cancelled',at:now})}else throw new Error('This request can no longer be cancelled')}
     else if(path==='/clean'){session.status='cleaned';session.updatedAt=now;session.events.push({type:'table_cleaned',at:now})}
+    else if(path==='/paid'){session.status='paid';session.updatedAt=now;session.events.push({type:'customer_paid',at:now})}
     else if(path==='/approve-join'){const join=session.joinRequests.find(item=>item.id===input.requestId&&item.status==='pending');if(!join)throw new Error('Join request not found');join.status='approved';join.resolvedAt=now;session.participants.push({id:makeId(),deviceId:join.deviceId,name:join.name,role:'guest',permission:input.permission||'direct',joinedAt:now})}
     else throw new Error('Unknown table action');
     this.savePreviewSessions(sessions);return structuredClone(session);
@@ -32,6 +33,7 @@ export class QrkTableSessionService{
   async open({table,name,guestCount,packageId}){const session=await this.request('/request',{table,name,guestCount,packageId,deviceId:this.deviceId,staffAcceptance:this.profile.settings.staffAcceptance,acceptanceTimeoutSeconds:this.profile.settings.acceptanceTimeoutSeconds||90,joinPolicy:this.profile.settings.joinPolicy});await this.refresh();return session}
   async accept(sessionId){const session=await this.request('/accept',{sessionId});await this.refresh();return session}
   async clean(sessionId){const session=await this.request('/clean',{sessionId});await this.refresh();return session}
+  async markPaid(sessionId){const session=await this.request('/paid',{sessionId});await this.refresh();return session}
   async cancel(sessionId){const session=await this.request('/cancel',{sessionId,deviceId:this.deviceId});await this.refresh();return session}
   async approveJoin(sessionId,requestId){const session=await this.request('/approve-join',{sessionId,requestId,permission:this.profile.settings.guestOrderPolicy});await this.refresh();return session}
   subscribe(callback){let signature='';const poll=async()=>{try{await this.refresh();const nextSignature=JSON.stringify(this.sessions);if(nextSignature===signature)return;signature=nextSignature;callback?.(this.pending())}catch{}};poll();this.timer=setInterval(poll,2000);return()=>clearInterval(this.timer)}

@@ -39,6 +39,12 @@ await host.clean(pending.id);
 assert.equal(host.find('1'),null);
 
 globalThis.sessionStorage=storage();
+const openTab=new QrkTableSessionService({businessSlug:'tambay-tab',profile:{settings:{staffAcceptance:false,acceptanceTimeoutSeconds:90,joinPolicy:'host',guestOrderPolicy:'direct'}}});
+const openTabSession=await openTab.open({table:'1',name:'Mia',guestCount:'1'});
+await openTab.markPaid(openTabSession.id);
+assert.equal(openTab.sessions.find(session=>session.id===openTabSession.id).status,'paid');
+
+globalThis.sessionStorage=storage();
 const cancelling=new QrkTableSessionService({businessSlug:'salo-table',profile});
 const cancelled=await cancelling.open({table:'2',name:'Lia',guestCount:'2'});
 await cancelling.cancel(cancelled.id);

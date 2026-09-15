@@ -92,3 +92,8 @@ Update this map only when stage status, order, dependencies or exit criteria cha
 **Exit evidence:** Automated checks pass; local browser verification covers both paths, Table/buffet isolation, focus behavior, and phone/tablet/desktop reflow.
 
 **Immediate path forward:** User review of the Quick dialog and checkout sequence, followed by a separately approved business-settings control if required.
+### Completed — Open Tab settlement correction (September 14, 2026)
+
+- Tambay Café retains multiple order requests in one table visit and archives one combined device-history entry only after staff confirms `Customer paid`.
+- Existing non-Open-Tab table workflows continue to use `Table cleaned`.
+- Exit evidence: automated checks and a live customer session verified submit → persistent Open Tab → staff-paid session → combined history.

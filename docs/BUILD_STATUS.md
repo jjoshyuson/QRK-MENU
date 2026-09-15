@@ -958,3 +958,9 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 
 - Profiled every customer dialog and found full-viewport live backdrop blur on entry, table, item, cart, payment, and confirmation popups. Item details also applied a 24px live blur to its fixed action.
 - Replaced those compositor-heavy effects with static dimming and solid/translucent surfaces, and removed modal-wide transitions. Popup structure, focus behavior, touch targets, and ordering flows remain unchanged.
+## Open Tab settlement correction — September 14, 2026
+
+- Tambay Café now keeps repeated customer requests inside one table-scoped Open Tab instead of adding every request to device Order history immediately.
+- The staff Tables action reads `Customer paid` for the Open Tab preset. Confirming it closes the session, completes the table's active order rounds, and moves one combined tab snapshot into the customer's device history.
+- Customer confirmations identify the table rather than exposing each internal round number. Other Table presets retain `Table cleaned`.
+- Validation: `npm run check`, `git diff --check`, and a live Tambay browser flow passed. The live flow confirmed history stayed at 0 after submission, Open Tab remained active, and payment changed the customer state to one history entry with no active tab.
