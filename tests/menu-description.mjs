@@ -33,6 +33,8 @@ assert.match(customerCss, /#menu-search\s*\{[^}]*height:\s*var\(--component-menu
 assert.match(customerCss, /\.menu-tools \.categories a\s*\{[^}]*height:\s*var\(--component-menu-category-height\)[^}]*min-height:\s*0/s);
 assert.match(customerCss, /\.cart-bar button\s*\{[^}]*height:\s*var\(--component-menu-floating-order-height\)[^}]*min-height:\s*0/s);
 assert.match(customerCss, /\.cart-bar button,[\s\S]*?#add-item\s*\{[^}]*border:\s*0[^}]*backdrop-filter:/s);
+assert.match(customerCss, /#cart-dialog > \.sheet-card\s*\{[^}]*animation:\s*none !important[^}]*transition:\s*transform 220ms/s);
+assert.match(customerCss, /#cart-dialog\.is-visible::backdrop\s*\{[^}]*background:\s*#11182780/s);
 assert.match(customerHtml, /<svg viewBox="0 0 24 24" fill="none">/);
 assert.doesNotMatch(customerJs, /card\.querySelector\('p'\)\.textContent=item\.description/);
 assert.match(customerJs, /\$\('#item-description'\)\.textContent=item\.description/);

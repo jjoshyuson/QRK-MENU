@@ -5,6 +5,7 @@
 - Removed the one-frame dismissal flash by closing each dialog before clearing its closing-animation state. Public sheets now use transform-only, GPU-backed entrance and exit motion without opacity flicker or the previous cart-opening jerk.
 - Editing from Review Order now opens the item sheet above the still-open cart. Updating or cancelling returns to the same Review Order, refreshes its line and subtotal in place, and restores focus to the corresponding refreshed Edit control.
 - Aligned the public-menu sheets with the shared QRK borderless-at-rest primitive: focused sheet surfaces, option groups, fulfillment choices, the special-request field, and floating order controls now rely on tonal fill, blur, ambient shadow, and a single quiet peer divider. Keyboard focus outlines remain explicit.
+- Review Order now uses one explicit visible-state transition for both its centered card and modal backdrop. Opening, closing, proceeding to fulfillment, and returning from later steps no longer depend on separate native-dialog animation frames.
 
 ## September 15, 2026 — Floating View order height refinement
 
