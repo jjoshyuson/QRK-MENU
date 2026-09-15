@@ -14,6 +14,14 @@
 - Centered Review Order in the usable viewport across phone, tablet, and desktop layouts while preserving native dialog focus and Escape behavior, safe-area height limits, dark/light tokens, narrow-phone reflow, and zero horizontal overflow.
 - Validation: `npm run check`, `git diff --check`, and focused payment-first, Open Tab, and table-picker contracts passed. Live browser checks passed at 390×844, 768×1024, and 1280×800 for unselected, Pickup, table selection, Escape recovery, and established Open Tab behavior.
 
+## September 15, 2026 — Table settlement and published-menu order reconciliation
+
+- Added the missing `settled` value to the durable `table_sessions` lifecycle constraint, aligning the schema with the existing staff `paid` action instead of failing during settlement.
+- Provider-backed customer checkout now refreshes the published menu immediately before submission. A cart retained across a catalog publication is reconciled to the unique current item and option names, current IDs, and current prices; sold-out, removed, or ambiguous choices still stop safely for customer review.
+- Added pgTAP coverage for the staff paid-to-settled transition and a JavaScript regression covering stale Americano, Flat white, pricing, option-ID, and sold-out cases.
+- Validation: `npm run check`, all 42 local pgTAP tests, and local database lint passed. Browser verification on port 4187 opened Salamat Table 1 and completed Tambay Café Americano first order followed by Flat white through the visible `Send another order` action and second confirmation.
+- The migration was applied only to the local development database. Hosted development still needs the reviewed migration and code deployment after QA, local user review, and explicit approval; production was not touched.
+
 ## September 15, 2026 — Open Tab history, remembered name, and cart recovery
 
 - Fixed Table cleanup so every active order for that table is completed into Order History before the table session is marked available. If any order cannot be archived, the table remains occupied and staff receive an error instead of losing the session context.

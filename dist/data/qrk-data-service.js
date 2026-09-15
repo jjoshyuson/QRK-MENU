@@ -7,6 +7,25 @@ const safeParse=(value,fallback)=>{try{return value?JSON.parse(value):fallback}c
 const validOrders=value=>Array.isArray(value)?value.filter(order=>order&&order.id!=null&&order.orderNumber!=null&&allowedStatuses.includes(order.status)&&Array.isArray(order.items)):[];
 const makeId=()=>globalThis.crypto?.randomUUID?.()||`demo-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 const makeToken=()=>{const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',bytes=new Uint8Array(6);crypto.getRandomValues(bytes);return[...bytes].map(byte=>chars[byte%chars.length]).join('')};
+const normalizedName=value=>String(value||'').trim().toLocaleLowerCase('en');
+
+export function reconcilePublishedOrderItems(items,publicMenu){
+  const published=(publicMenu?.menu?.categories||[]).flatMap(category=>category.items||[]);
+  return items.map(line=>{
+    const exact=published.find(item=>String(item.id)===String(line.itemId));
+    const named=published.filter(item=>normalizedName(item.name)===normalizedName(line.name));
+    const current=exact||(named.length===1?named[0]:null);
+    if(!current?.available)throw new Error(`${line.name||'This item'} is no longer available. Refresh the menu and update your order.`);
+    const selectedOptions=(line.selectedOptions||[]).map(selected=>{
+      const group=(current.optionGroups||[]).find(candidate=>normalizedName(candidate.name)===normalizedName(selected.group));
+      const option=(group?.options||[]).find(candidate=>normalizedName(candidate.name)===normalizedName(selected.name));
+      if(!option)throw new Error(`${selected.name||'An option'} for ${current.name} is no longer available. Refresh the menu and update your order.`);
+      return{...selected,id:option.id,group:group.name,name:option.name,priceMinor:option.priceDeltaMinor};
+    });
+    const unitPriceMinor=Number(current.priceMinor)+selectedOptions.reduce((sum,option)=>sum+Number(option.priceMinor||0),0);
+    return{...line,itemId:current.id,name:current.name,unitPriceMinor,selectedOptions,lineTotalMinor:unitPriceMinor*Number(line.quantity)};
+  });
+}
 
 function emit(name,detail){window.dispatchEvent(new CustomEvent(name,{detail}))}
 
@@ -61,7 +80,9 @@ class SupabaseDataService{
   }
   async createOrder(input){
     await this.registerDevice();
-    return this.rpc('create_device_order',{p_destination_slug:this.destinationSlug,p_request_id:input.idempotencyKey,p_fulfillment:input.fulfillmentType,p_table_number:input.tableNumber||null,p_customer_label:input.customerLabel||null,p_order_notes:input.notes||'',p_line_items:input.items.map(item=>({itemId:item.itemId,quantity:item.quantity,optionIds:(item.selectedOptions||[]).map(option=>option.id).filter(Boolean),notes:item.notes||''})),p_device_id:this.device.id,p_device_secret:this.device.secret,p_table_session_id:input.tableSessionId||null,p_open_tab_id:input.openTabId||null});
+    const publicMenu=await this.rpc('get_public_menu',{p_destination_slug:this.destinationSlug});
+    const items=reconcilePublishedOrderItems(input.items,publicMenu);
+    return this.rpc('create_device_order',{p_destination_slug:this.destinationSlug,p_request_id:input.idempotencyKey,p_fulfillment:input.fulfillmentType,p_table_number:input.tableNumber||null,p_customer_label:input.customerLabel||null,p_order_notes:input.notes||'',p_line_items:items.map(item=>({itemId:item.itemId,quantity:item.quantity,optionIds:(item.selectedOptions||[]).map(option=>option.id).filter(Boolean),notes:item.notes||''})),p_device_id:this.device.id,p_device_secret:this.device.secret,p_table_session_id:input.tableSessionId||null,p_open_tab_id:input.openTabId||null});
   }
   getActiveOrder(){const tracking=safeParse(localStorage.getItem(this.activeKey),null);return tracking?this.getOrderStatus(tracking):null}
   getOrderStatus(tracking){return this.rpc('get_public_order_status',{p_destination_slug:this.destinationSlug,p_order_number:tracking.orderNumber,p_tracking_token:tracking.trackingToken})}

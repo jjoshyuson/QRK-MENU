@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(12);
+select plan(14);
 
 set local role anon;
 select lives_ok($$select public.register_customer_device('kusina-manila','40000000-0000-4000-8000-000000000001','40000000-0000-4000-8000-000000000001-secret-value','Test phone','{}')$$,'anonymous customer registers a random device identity');
@@ -25,6 +25,14 @@ select set_config('request.jwt.claims','{"sub":"21000000-0000-4000-8000-00000000
 select throws_ok($$select public.clear_order_activity('10000000-0000-4000-8000-000000000001')$$,'P0002','business not found','tenant B cannot clear tenant A');
 select is(jsonb_array_length(public.list_order_clear_batches('10000000-0000-4000-8000-000000000001')),0,'tenant B cannot list tenant A clear history');
 reset role;
+
+insert into public.table_sessions(id,business_id,table_number,status,guest_count)
+values('40000000-0000-4000-8000-000000000201','21000000-0000-4000-8000-000000000001','999','active',1);
+set local role authenticated;
+select set_config('request.jwt.claims','{"sub":"21000000-0000-4000-8000-000000000101","role":"authenticated"}',true);
+select lives_ok($$select public.change_table_session('salamat','40000000-0000-4000-8000-000000000201','paid',null,null,null,'direct')$$,'staff can settle a Table session after payment');
+reset role;
+select is((select status from public.table_sessions where id='40000000-0000-4000-8000-000000000201'),'settled','paid Table session persists the settled lifecycle state');
 
 select * from finish();
 rollback;
