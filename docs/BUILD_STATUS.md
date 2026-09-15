@@ -1,5 +1,14 @@
 # Build status
 
+## September 15, 2026 — PM / Gates integration
+
+- Consolidated the eight approved public-menu candidates on `codex/pm-gates` into one ordered capability-driven journey: Table entry and membership first; required bundle selection before bundle entitlements/refills; entry payment after Table acceptance and before ordering; lightweight time and quantity enforcement during ordering; host/guest checkout permissions; and Bill/Closure as the terminal visit state.
+- Preserved the DA-owned service-profile fields and compatibility seams rather than adding another persisted schema. Invalid or incomplete entry-payment and bundle requirements fail closed. Disabled gates remain absent, and QRK Quick retains its established service-choice flow.
+- Reconciled shared Table-session behavior across one-time entry tokens, inactivity renewal, host/staff join approval, bill requests, closure states, and LAN/browser preview adapters. The Table dialog now closes before a post-acceptance payment gate opens, preventing stacked modal state.
+- PM / Cards remains the owner of the public-menu visual language and reusable bottom-sheet direction. This integration reuses the existing menu dialogs, sheets, buttons, and shared tokens; it adds no competing component system. A later Cards integration may restyle these seams without changing gate sequencing or data contracts.
+- Validation: all focused gate tests and the full `npm run check` suite pass. Live review on port 4187 covered QRK Quick with gates disabled, Salamat direct Table entry, Ihaw required bundle → staff acceptance → blocked deposit, and 390×844, 768×1024, and 1280×800 layouts with no horizontal overflow, a single open modal, and no browser warnings or errors.
+- Known limits: hosted Supabase does not yet implement the candidate entry-token, activity-touch, or customer bill actions; refill requests remain an in-page event; payment is state/UI only; and durable cross-device Table behavior still requires the DA-owned hosted contract.
+
 ## September 15, 2026 — PM / Table Session Entry candidate
 
 - Added a customer-facing Table entry gate that treats the permanent `?table=` QR as table identification only. It does not grant ordering access by itself.
