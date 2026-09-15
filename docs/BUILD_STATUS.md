@@ -993,3 +993,9 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Validation passed: clean local database rebuild, 40 pgTAP tests, local and hosted database lint, `npm run check`, `git diff --check`, and a Pages-shaped staging build with only safe public configuration.
 - GitHub Pages deployment `34911305544` succeeded. The live public configuration returned `environment: staging`, referenced the intended development project, contained no service-role/secret key, and all five QR routes returned HTTP 200. A rendered-browser reload of Kusina showed its hosted three-item available catalog rather than the former browser-local 24-item preview.
 - Remaining exit evidence: perform the same flows through two physical browsers/networks, exercise both clear restore slots through the UI, and verify private Realtime/Storage behavior. Production was not connected or changed.
+
+## September 14, 2026 — Stale preview-session cloud queue fix
+
+- Traced the reported Tambay phone order to hosted Supabase as `TC-0103`, received for Table 2 with a registered device. The order was not lost.
+- Fixed staging authentication so an old browser-preview session is discarded instead of silently selecting the local-storage data adapter. Hosted staging now requires a real Supabase account before showing a staff workspace.
+- Added a regression contract for rejecting preview sessions in staging. After deployment, existing dashboard browsers must reload and sign in as the appropriate hosted admin or staff user.

@@ -1,6 +1,7 @@
 # Order operations memory
 
 - Order operations use the shared data-service adapter. Without runtime provider configuration they remain a same-origin/browser demo; hosted staging now has safe GitHub Pages runtime variables and Supabase-backed menus, device registration, customer submission, staff reads, status operations, clear/restore, and Table-session RPCs. Hosted API smoke tests pass for all five tenants; deployed-browser and physical-device evidence remain.
+- Hosted staging rejects legacy browser-preview sessions. This prevents an old preview login from silently reading a local order queue while customer orders are reaching Supabase; users must sign in with the hosted tenant account.
 - The September 14 order-sync migration adds random browser-installation identity, device-attached order creation, server-side operational clear batches, and restoration of either of the two newest clears. Clearing preserves restaurant, account, staff, menu, product, photo, branding, and destination data.
 - Demo orders use a business-scoped localStorage key. Provider-backed orders use the public order RPC and authenticated tenant-scoped staff reads; integer minor-unit money values and unknown order/item fields must remain intact.
 - The persisted contract still supports `received`, `preparing`, `ready`, `completed`, and `cancelled`, but staff see every live state under Received. Preparing and Ready are internal compatibility transitions only. Completed and cancelled orders appear in History.
