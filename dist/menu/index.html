@@ -45,6 +45,7 @@
       <form class="hidden" id="table-entry-form">
         <button class="table-choice-back" id="table-choice-back" type="button">← Choose another table</button><p class="eyebrow" id="selected-table-label">TABLE 1</p><h1 id="table-details-title">Start this table</h1><p id="table-details-intro">Tell the table host who is joining.</p>
         <label class="field-label" for="entry-name">Your name</label><input id="entry-name" name="name" type="text" maxlength="40" required autocomplete="name" placeholder="Example: Mia">
+        <label class="remember-name"><input id="entry-save-name" name="saveName" type="checkbox" checked><span>Save name on this device</span></label>
         <input id="entry-table" name="table" type="hidden" required>
         <label class="field-label" id="entry-guests-label" for="entry-guests">Number of guests</label><input id="entry-guests" name="guestCount" type="number" min="1" max="40" value="1" required>
         <label class="field-label hidden" id="entry-package-label" for="entry-package">Package</label><select class="entry-select hidden" id="entry-package" name="package"><option value="classic">Classic buffet · ₱599 per guest</option><option value="premium">Premium buffet · ₱799 per guest</option></select>
@@ -117,7 +118,8 @@
         <section id="checkout-fields">
           <fieldset class="fulfillment"><legend>Pickup or serve at table?</legend><label><input type="radio" name="fulfillment" value="table" checked><span><b>Serve at table</b><small>Choose your table below</small></span></label><label><input type="radio" name="fulfillment" value="pickup"><span><b>Pickup</b><small>Collect at the counter</small></span></label></fieldset>
           <div class="review-table-field" id="review-table-field"><span class="field-label" id="table-label">Choose your table</span><input id="table-number" type="hidden"><div class="table-number-panel" id="review-table-panel"><div class="table-number-grid" id="review-table-grid" role="radiogroup" aria-labelledby="table-label"></div><p id="selected-review-table" aria-live="polite">Select a table number</p></div></div>
-          <label class="field-label" for="customer-label">Name for the order <span>Optional</span></label><input id="customer-label" type="text" maxlength="40" placeholder="Example: Mia">
+          <label class="field-label" for="customer-label">Name for the order <span>Optional</span></label><input id="customer-label" type="text" maxlength="40" autocomplete="name" placeholder="Example: Mia">
+          <label class="remember-name"><input id="save-customer-name" type="checkbox" checked><span>Save name on this device</span></label>
           <label class="field-label" for="order-notes">Order notes <span>Optional</span></label><textarea id="order-notes" rows="2" maxlength="180" placeholder="Anything the staff should know?"></textarea>
           <p class="form-error hidden" id="checkout-error" role="alert"></p>
           <p class="demo-note" id="checkout-data-note">This demo saves only in this browser. It does not send an order to a real kitchen or take payment.</p>

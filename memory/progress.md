@@ -1,6 +1,8 @@
 # Progress memory
 
-As of September 14, 2026:
+As of September 15, 2026:
+
+- September 15 Open Tab recovery is implemented locally: Table cleanup archives active table orders before releasing the table; history includes customer name, item count, timestamp, and total; customer names can be remembered per business with a default-on opt-out control; and the floating draft cart is restored alongside the separate Open Tab running-total control.
 
 - Kusina Manila's responsive test seed now contains 24 products across eight categories, with exactly three products in each category and only the existing lightweight local food photos. The shared Menu Studio/customer seed and development-client preset carry the same category/product coverage.
 
