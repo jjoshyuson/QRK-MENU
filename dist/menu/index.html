@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="/theme.css?v=1">
   <link rel="stylesheet" href="/pwa.css?v=1">
   <link rel="stylesheet" href="/menu/menu.css?v=4">
+  <link rel="stylesheet" href="/menu/quantity-allowance.css?v=1">
   <link rel="stylesheet" href="/menu/brand.css?v=2">
   <link rel="stylesheet" href="/menu/table-session.css?v=2">
   <link rel="stylesheet" href="/reference-theme.css?v=2">
@@ -86,6 +87,7 @@
     </section>
     <section class="notice hidden" id="store-notice" aria-live="polite"></section>
     <section class="notice request-status hidden" id="request-status" aria-live="polite"></section>
+    <p class="quantity-allowance-note quantity-allowance-summary hidden" id="menu-quantity-allowance" aria-live="polite"></p>
     <section class="menu" aria-label="Menu">
       <div class="menu-tools">
         <div class="search-wrap"><label class="sr-only" for="menu-search">Search the menu</label><input id="menu-search" type="search" placeholder="Search dishes and drinks" autocomplete="off"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7"></circle><path d="m16.2 16.2 4.3 4.3"></path></svg></span></div>
@@ -122,6 +124,7 @@
       <div class="sheet-content">
         <div class="item-title-row"><div><h2 id="item-name"></h2><p id="item-description"></p></div><strong id="item-price"></strong></div>
         <p class="item-entitlement hidden" id="item-entitlement"></p>
+        <p class="quantity-allowance-note hidden" id="item-quantity-allowance" aria-live="polite"></p>
         <div id="item-options"></div>
         <label class="field-label" for="item-notes">Special request <span>Optional</span></label><textarea id="item-notes" rows="2" maxlength="140" placeholder="Example: sauce on the side"></textarea>
         <div class="quantity-row"><span>Quantity</span><div class="stepper"><button type="button" id="item-minus" aria-label="Decrease quantity">−</button><output id="item-quantity" aria-live="polite">1</output><button type="button" id="item-plus" aria-label="Increase quantity">+</button></div></div>
@@ -134,6 +137,7 @@
     <form method="dialog" class="sheet-card" id="cart-form">
       <header class="sheet-header"><div><p class="eyebrow">YOUR ORDER</p><h2 id="cart-title">Review order</h2></div><button class="icon-button" value="cancel" aria-label="Close cart">×</button></header>
       <div class="sheet-content cart-content">
+        <p class="quantity-allowance-note hidden" id="cart-quantity-allowance" aria-live="polite"></p>
         <div id="cart-items"></div>
         <section class="cart-empty hidden" id="cart-empty"><div aria-hidden="true">○</div><h3>Your order is empty</h3><p>Add a favorite from the menu to get started.</p><button class="secondary-button" value="cancel">Browse menu</button></section>
         <section id="checkout-fields">
