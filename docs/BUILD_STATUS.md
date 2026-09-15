@@ -1,5 +1,12 @@
 # Build status
 
+## Public menu entitlement and refill gate — September 15, 2026
+
+- Added a public-menu compatibility gate for the DA-owned `entitlementMode`, `refillPolicy`, and `paymentTiming` service settings plus the active table session `packageId`.
+- Active bundled menus distinguish included refills, chargeable extras, counter-only extras, package mismatches, missing packages, inactive sessions, and expired sessions. Each item exposes one non-contradictory action; unavailable and counter-only items cannot enter the cart.
+- Refill actions emit `qrk:refill-requested` with item, session, and package identifiers and show an in-page acknowledgement. Durable request persistence remains outside this UI task and must be connected through the future request adapter.
+- `npm run check` passes, including `tests/entitlement-gate.mjs`. Local browser verification on `/menu/?business=ihaw-buffet` used a temporary capability fixture and confirmed active-package `Included` / `Request refill` and upfront-extra `Order at counter` states. The temporary fixture was removed after testing.
+
 ## September 15, 2026 — Public menu card content simplification
 
 - Removed browsing-card descriptions and the visible `Add` label while preserving every stored description, description-based search, and the full description in the item detail/order sheet.
