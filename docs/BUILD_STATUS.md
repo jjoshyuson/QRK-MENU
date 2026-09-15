@@ -1,5 +1,13 @@
 # Build status
 
+## September 15, 2026 — Public-menu Host and Guest Access candidate
+
+- The first accepted Table device is the order host. Additional devices now follow the reusable `additionalDevices`, `joinPolicy` and `guestOrderPolicy` capability fields instead of business-specific logic.
+- Join behavior covers disabled, automatic, host-approved and staff-approved states. Pending guests remain behind the gate after refresh; local preview provides a labeled staff-override action for recovery testing.
+- Direct guests can check out. Host-approval, shared-cart and view-only guests can browse and build locally, but checkout stays disabled and clearly identifies the host-only boundary.
+- `npm run check` passes, including the new Host and Guest Access contract and expanded Table-session lifecycle. Browser checks passed at 390×844, 768×1024 and 1280×800 with no page-level overflow; Salo host acceptance, a second-device join, staff override and host-only checkout were exercised on port 4217.
+- This candidate is local only. The staff operations UI, hosted Supabase RPC parity, durable cross-device verification, and per-order host approval remain outside this public-menu slice. Nothing was deployed.
+
 ## September 15, 2026 — Public menu card content simplification
 
 - Removed browsing-card descriptions and the visible `Add` label while preserving every stored description, description-based search, and the full description in the item detail/order sheet.

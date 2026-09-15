@@ -13,7 +13,13 @@ export class QrkTableSessionService{
     const now=new Date().toISOString();
     if(path==='/request'){
       let session=sessions.find(item=>item.table===String(input.table)&&['pending','active','bill_requested'].includes(item.status));
-      if(session){if(!session.participants.some(person=>person.deviceId===input.deviceId)&&!session.joinRequests.some(item=>item.deviceId===input.deviceId&&item.status==='pending'))session.joinRequests.push({id:makeId(),deviceId:input.deviceId,name:input.name||'Guest',status:'pending',requestedAt:now,expiresAt:new Date(Date.now()+(Number(input.acceptanceTimeoutSeconds)||90)*1000).toISOString(),approvalBy:input.joinPolicy||'host'});}
+      if(session){
+        if(input.additionalDevices===false||input.joinPolicy==='disabled')throw new Error('This table does not allow additional devices. Ask the host or staff to order for you.');
+        if(!session.participants.some(person=>person.deviceId===input.deviceId)&&!session.joinRequests.some(item=>item.deviceId===input.deviceId&&item.status==='pending')){
+          if(['automatic','direct'].includes(input.joinPolicy))session.participants.push({id:makeId(),deviceId:input.deviceId,name:input.name||'Guest',role:'guest',permission:input.guestOrderPolicy||'direct',joinedAt:now,approvedBy:'automatic'});
+          else session.joinRequests.push({id:makeId(),deviceId:input.deviceId,name:input.name||'Guest',status:'pending',requestedAt:now,expiresAt:new Date(Date.now()+(Number(input.acceptanceTimeoutSeconds)||90)*1000).toISOString(),approvalBy:input.joinPolicy||'host'});
+        }
+      }
       else{session={id:makeId(),table:String(input.table),status:input.staffAcceptance?'pending':'active',guestCount:Number(input.guestCount)||1,packageId:input.packageId||null,createdAt:now,updatedAt:now,expiresAt:input.staffAcceptance?new Date(Date.now()+(Number(input.acceptanceTimeoutSeconds)||90)*1000).toISOString():null,participants:[{id:makeId(),deviceId:input.deviceId,name:input.name||'Guest',role:'host',permission:'approve',joinedAt:now}],joinRequests:[],events:[{type:'session_requested',at:now}]};sessions.push(session)}
       this.savePreviewSessions(sessions);return structuredClone(session);
     }
@@ -34,11 +40,11 @@ export class QrkTableSessionService{
   find(table){return this.sessions.find(session=>session.table===String(table)&&['pending','active','bill_requested'].includes(session.status))||null}
   current(){return this.sessions.find(session=>(['pending','active','bill_requested'].includes(session.status)&&(session.participants||[]).some(person=>person.deviceId===this.deviceId))||(session.joinRequests||[]).some(person=>person.deviceId===this.deviceId&&person.status==='pending'))||null}
   pending(){return this.sessions.filter(session=>session.status==='pending'||(session.joinRequests||[]).some(request=>request.status==='pending'))}
-  async open({table,name,guestCount,packageId}){const session=await this.request('/request',{table,name,guestCount,packageId,deviceId:this.deviceId,staffAcceptance:this.profile.settings.staffAcceptance,acceptanceTimeoutSeconds:this.profile.settings.acceptanceTimeoutSeconds||90,joinPolicy:this.profile.settings.joinPolicy});await this.refresh();return session}
+  async open({table,name,guestCount,packageId}){const session=await this.request('/request',{table,name,guestCount,packageId,deviceId:this.deviceId,staffAcceptance:this.profile.settings.staffAcceptance,acceptanceTimeoutSeconds:this.profile.settings.acceptanceTimeoutSeconds||90,additionalDevices:this.profile.settings.additionalDevices!==false,joinPolicy:this.profile.settings.joinPolicy,guestOrderPolicy:this.profile.settings.guestOrderPolicy});await this.refresh();return session}
   async accept(sessionId){const session=await this.request('/accept',{sessionId});await this.refresh();return session}
   async clean(sessionId){const session=await this.request('/clean',{sessionId});await this.refresh();return session}
   async markPaid(sessionId){const session=await this.request('/paid',{sessionId});await this.refresh();return session}
   async cancel(sessionId){const session=await this.request('/cancel',{sessionId,deviceId:this.deviceId});await this.refresh();return session}
-  async approveJoin(sessionId,requestId){const session=await this.request('/approve-join',{sessionId,requestId,permission:this.profile.settings.guestOrderPolicy});await this.refresh();return session}
+  async approveJoin(sessionId,requestId,{staffOverride=false}={}){const session=await this.request('/approve-join',{sessionId,requestId,permission:this.profile.settings.guestOrderPolicy,staffOverride});await this.refresh();return session}
   subscribe(callback){let signature='';const poll=async()=>{try{await this.refresh();const nextSignature=JSON.stringify(this.sessions);if(nextSignature===signature)return;signature=nextSignature;callback?.(this.pending())}catch{}};poll();this.timer=setInterval(poll,2000);return()=>clearInterval(this.timer)}
 }

@@ -34,6 +34,8 @@ await host.refresh();
 await host.approveJoin(pending.id,host.current().joinRequests[0].id);
 await guest.refresh();
 assert.equal(guest.current().participants.some(person=>person.name==='Josh'),true);
+assert.equal(guest.current().participants.find(person=>person.name==='Josh').role,'guest');
+assert.equal(guest.current().participants.find(person=>person.name==='Josh').permission,'direct');
 
 await host.clean(pending.id);
 assert.equal(host.find('1'),null);
@@ -57,5 +59,21 @@ const expiring=new QrkTableSessionService({businessSlug:'salo-table',profile:exp
 await expiring.open({table:'3',name:'Noel',guestCount:'1'});
 await expiring.refresh();
 assert.equal(expiring.current(),null);
+
+globalThis.sessionStorage=storage();
+const automaticGuest=new QrkTableSessionService({businessSlug:'automatic-join',profile:{settings:{staffAcceptance:false,acceptanceTimeoutSeconds:90,additionalDevices:true,joinPolicy:'automatic',guestOrderPolicy:'host_approval'}}});
+await automaticGuest.open({table:'4',name:'Host',guestCount:'2'});
+globalThis.sessionStorage=storage();
+const automaticJoiner=new QrkTableSessionService({businessSlug:'automatic-join',profile:automaticGuest.profile});
+const autoJoined=await automaticJoiner.open({table:'4',name:'Guest',guestCount:'1'});
+assert.equal(autoJoined.joinRequests.length,0);
+assert.equal(autoJoined.participants.find(person=>person.name==='Guest').permission,'host_approval');
+
+globalThis.sessionStorage=storage();
+const closedHost=new QrkTableSessionService({businessSlug:'closed-join',profile:{settings:{staffAcceptance:false,acceptanceTimeoutSeconds:90,additionalDevices:false,joinPolicy:'disabled',guestOrderPolicy:'view_only'}}});
+await closedHost.open({table:'5',name:'Host',guestCount:'2'});
+globalThis.sessionStorage=storage();
+const blockedGuest=new QrkTableSessionService({businessSlug:'closed-join',profile:closedHost.profile});
+await assert.rejects(()=>blockedGuest.open({table:'5',name:'Guest',guestCount:'1'}),/does not allow additional devices/);
 
 console.log('Browser-local Table session lifecycle passed.');
