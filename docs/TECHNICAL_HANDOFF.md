@@ -76,6 +76,8 @@ Supabase is now the confirmed initial backend target, not a connected service. K
 
 The browser preview now models business-, category-, and item-scoped variations/add-ons explicitly. The provider schema and public-menu RPC already expose item option groups, but Menu Studio does not yet write these changes to Supabase; provider-backed authoring, validation and publication remain part of the hosted milestone.
 
+Public-menu selection flows share the `.focused-sheet` dialog contract. Item option state is drafted step-by-step in memory and is committed to the cart only from the final item step; cancelling leaves the cart unchanged and restores focus to the invoking control.
+
 ## Production boundaries
 
 - Tenant authorization must be enforced on every private backend request, including image endpoints.

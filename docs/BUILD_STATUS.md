@@ -1063,3 +1063,9 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Kept the whole-card ordering button, content hierarchy, two-column phone layout, three-column tablet/desktop layouts, sold-out behavior and existing ordering flows unchanged.
 - Added an opaque reduced-transparency fallback and synchronized the `/components/` dish-card specimen and component contract test.
 - Verified `npm run check` and live layouts at 390×844, 820×900 and 1440×900; each breakpoint had the expected grid and zero horizontal overflow.
+# PM / Cards / Focused Bottom Sheets — September 15, 2026
+
+- Added one reusable `.focused-sheet` public-menu primitive with native modal semantics, bottom anchoring, 90dvh maximum height, safe-area padding, reduced-motion support, grouped checkmarked rows, and paired Cancel/Confirm actions.
+- Item ordering now presents each option group as its own focused step, followed by a separate quantity/special-request review step; cancelling leaves the cart unchanged and returns focus to the invoking menu card.
+- Table and payment selections share the focused-sheet surface. Alerts, order history, confirmation, and the inline “Add name or order notes” disclosure remain unchanged.
+- Compared against the current GitHub Pages menu before implementation. Verified the full `npm run check` suite plus live item/add-on nesting, totals, confirmation, Escape cancellation, focus restoration, and zero horizontal overflow at 390×844, 430×932, and 1440×900.

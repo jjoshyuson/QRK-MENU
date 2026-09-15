@@ -34,6 +34,13 @@ This is the project’s visual source of truth. Read it before every UI, UX, lay
 - Prevent horizontal page scrolling. Let grids reflow deliberately when labels or touch targets would become cramped.
 - Validate representative phone, tablet, and desktop widths, keyboard access, text reflow, and both light and dark modes when applicable.
 
+## Focused public-menu sheets
+
+- Use the shared focused bottom-sheet pattern for one customer selection or configuration decision at a time, such as item options, add-ons, table choice, or payment choice. Keep roughly the top 10% of the previous menu context visible behind the sheet.
+- Present choices as one grouped rounded list with explicit checkmarks and clear Cancel/Confirm actions. If another decision is required, advance to a subsequent focused sheet step instead of growing one long inline form.
+- Keep alerts, errors, confirmations, order history, and the optional “Add name or order notes” review section in their established patterns unless a separate product decision changes them.
+- Preserve native dialog semantics, trapped focus, Escape dismissal where cancellation is allowed, focus restoration, safe-area padding, reduced-motion behavior, and zero horizontal overflow.
+
 ## Implementation discipline
 
 - Preserve the existing HTML, CSS, and vanilla JavaScript stack. Prefer a small markup or stylesheet change over a new component system or dependency.

@@ -1,5 +1,7 @@
 # UI memory
 
+- September 15 focused public-menu sheets: item options and add-ons advance through one compact decision per step in a reusable bottom sheet, then finish on a separate quantity/special-request review step. Table and payment choices share the same bottom-anchored primitive. Sheets preserve menu context, restore focus on cancel/close, honor reduced motion and safe areas, and leave “Add name or order notes” as the existing inline disclosure.
+
 - September 15 public-menu card refresh: customer dish cards use a restrained translucent standard material with an 84% surface fill, 16px backdrop blur, a thin adaptive rim, a one-pixel top highlight and quiet shadow. The shared component layer owns the treatment so production and `/components/` stay aligned; reduced-transparency mode restores an opaque surface.
 
 - September 15 Quick Review Order refinement: when both fulfillment capabilities are enabled, `Pickup` and `Serve at table` are immediate semantic cards, neither is preselected, and the primary action stays absent until selection. Active Table/Open Tab sessions omit this choice and use the established table; Review Order is centered in the usable viewport.

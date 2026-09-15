@@ -50,6 +50,8 @@
   --component-menu-card-bg:color-mix(in srgb,var(--surface) 84%,transparent);
   --component-menu-card-border:color-mix(in srgb,var(--surface) 72%,var(--line) 28%);
   --component-menu-card-shadow:inset 0 1px 0 color-mix(in srgb,var(--surface) 88%,transparent),0 10px 30px color-mix(in srgb,var(--ink) 13%,transparent);
+  --component-focused-sheet-width:620px;
+  --component-focused-sheet-max-height:90dvh;
 }
 
 /* Category navigation shares the same pill silhouette on owner and customer surfaces. */
@@ -154,6 +156,51 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--brand-500)}
   pointer-events:none;
 }
 .dish>*,.customer-dish-card>*{position:relative;z-index:2}
+
+/* Focused bottom sheets handle one public-menu decision at a time. Native
+   dialog supplies modal semantics and focus trapping; the material stays
+   compact enough to preserve a visible strip of the previous menu context. */
+dialog.focused-sheet{
+  width:min(100%,var(--component-focused-sheet-width));
+  max-width:none;
+  max-height:100dvh;
+  margin:auto auto 0;
+  overflow:visible;
+}
+dialog.focused-sheet::backdrop{background:color-mix(in srgb,#111827 68%,transparent)}
+.focused-sheet .focused-sheet-card{
+  width:100%;
+  max-height:min(var(--component-focused-sheet-max-height),calc(100dvh - env(safe-area-inset-top)));
+  margin:0;
+  overflow:hidden;
+  border:1px solid color-mix(in srgb,var(--surface) 76%,var(--line) 24%);
+  border-bottom:0;
+  border-radius:24px 24px 0 0;
+  background:var(--surface);
+  box-shadow:0 -14px 48px color-mix(in srgb,var(--ink) 22%,transparent);
+  animation:focused-sheet-in 180ms cubic-bezier(.2,.8,.2,1) both!important;
+}
+.focused-sheet-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:18px 18px 12px;border-bottom:1px solid var(--line)}
+.focused-sheet-header h2{margin:0;font:700 21px/1.2 var(--font-interface)}
+.focused-sheet-actions{display:grid;grid-template-columns:minmax(108px,.38fr) minmax(0,1fr);gap:10px;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
+.focused-sheet-actions>button{width:100%;min-width:0}
+.item-overview{display:grid;grid-template-columns:58px minmax(0,1fr) auto;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.item-overview img{display:block;width:58px!important;height:58px!important;min-height:0;object-fit:cover;border-radius:12px;background:var(--surface-muted)}
+.item-overview h3{margin:0;font:700 15px/1.25 var(--font-menu-display)}
+.item-overview p{display:-webkit-box;margin:3px 0 0;overflow:hidden;color:var(--muted);font-size:12px;line-height:1.35;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+.item-overview>strong{white-space:nowrap;font-size:14px}
+.focused-choice-list{margin:0;padding:0;border:1px solid var(--line)!important;border-radius:14px!important;overflow:hidden;background:var(--surface)}
+.focused-choice-list label{display:flex;min-height:54px;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;border:0!important;border-bottom:1px solid var(--line)!important;background:transparent;cursor:pointer}
+.focused-choice-list label:last-child{border-bottom:0!important}
+.focused-choice-list label:has(input:checked){background:var(--brand-soft)}
+.focused-choice-list label:has(input:focus-visible){outline:var(--component-focus);outline-offset:-3px}
+.focused-choice-list label>span{display:flex;min-width:0;align-items:center;gap:10px}
+.focused-choice-list input{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+.focused-choice-list i{display:grid;width:22px;height:22px;flex:0 0 22px;place-items:center;border:1px solid var(--gray-300);border-radius:50%;color:transparent;font-size:13px;font-style:normal}
+.focused-choice-list input:checked+i{border-color:var(--brand-500);background:var(--brand-500);color:var(--brand-foreground)}
+.focused-choice-list b{overflow-wrap:anywhere;font-size:14px}
+.focused-choice-list small{color:var(--muted);font-size:12px;white-space:nowrap}
+@keyframes focused-sheet-in{from{transform:translateY(28px);opacity:.82}to{transform:none;opacity:1}}
 .badge,.section-chip,.order-state,.table-card-status,.demo-pill{
   border-radius:var(--component-radius-pill);
 }
@@ -181,6 +228,7 @@ input:focus-visible,select:focus-visible,textarea:focus-visible,[role="tab"]:foc
 @media(prefers-reduced-motion:reduce){
   .button,.ui-button,.primary-button,.secondary-button,.customer-button,.text-button,.text-action,.icon-button,.mobile-icon-control,
   .settings-row,.theme-preset,.payment-card,.table-choice,.table-card-action{transition:none!important}
+  .focused-sheet .focused-sheet-card{animation:none!important}
 }
 
 @media(prefers-reduced-transparency:reduce){

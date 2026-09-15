@@ -24,12 +24,12 @@
   <link rel="stylesheet" href="/menu/payment-first.css?v=1">
   <link rel="stylesheet" href="/menu/order-confirmation.css?v=1">
   <link rel="stylesheet" href="/menu/quick-service.css?v=1">
-  <link rel="stylesheet" href="/ui-components.css?v=5">
+  <link rel="stylesheet" href="/ui-components.css?v=6">
   <script src="/global-theme.js"></script>
   <script src="/pwa.js" defer></script>
   <script src="/ui-components.js?v=2" defer></script>
   <script src="/data/qrk-config.local.js"></script>
-  <script type="module" src="/menu/menu.js?v=14"></script>
+  <script type="module" src="/menu/menu.js?v=15"></script>
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
@@ -96,17 +96,15 @@
   <div class="cart-bar hidden" id="cart-bar"><button type="button" id="open-cart"><span><b id="cart-count">0</b> <span id="cart-label">items</span></span><strong>View order · <span id="cart-subtotal">₱0</span></strong></button></div>
   <footer><span>Local development ordering</span><span class="powered-by">Powered by <img src="/assets/brand/qrk-wordmark.png" alt="QRK menu" width="98" height="19"></span><a href="/photo-credits.html">Sample photo credits</a></footer>
 
-  <dialog id="item-dialog" class="sheet item-sheet" aria-labelledby="item-name">
-    <form method="dialog" class="sheet-card" id="item-form">
-      <button class="icon-button close-button" value="cancel" aria-label="Close item details">×</button>
-      <img id="item-photo" alt="" width="640" height="480">
+  <dialog id="item-dialog" class="sheet focused-sheet item-sheet" aria-labelledby="item-step-title">
+    <form method="dialog" class="sheet-card focused-sheet-card" id="item-form">
+      <header class="focused-sheet-header"><div><p class="eyebrow" id="item-step-eyebrow">CUSTOMIZE</p><h2 id="item-step-title">Choose an option</h2></div></header>
       <div class="sheet-content">
-        <div class="item-title-row"><div><h2 id="item-name"></h2><p id="item-description"></p></div><strong id="item-price"></strong></div>
+        <div class="item-overview"><img id="item-photo" alt="" width="640" height="480"><div><h3 id="item-name"></h3><p id="item-description"></p></div><strong id="item-price"></strong></div>
         <div id="item-options"></div>
-        <label class="field-label" for="item-notes">Special request <span>Optional</span></label><textarea id="item-notes" rows="2" maxlength="140" placeholder="Example: sauce on the side"></textarea>
-        <div class="quantity-row"><span>Quantity</span><div class="stepper"><button type="button" id="item-minus" aria-label="Decrease quantity">−</button><output id="item-quantity" aria-live="polite">1</output><button type="button" id="item-plus" aria-label="Increase quantity">+</button></div></div>
+        <div id="item-final-fields"><label class="field-label" for="item-notes">Special request <span>Optional</span></label><textarea id="item-notes" rows="2" maxlength="140" placeholder="Example: sauce on the side"></textarea><div class="quantity-row"><span>Quantity</span><div class="stepper"><button type="button" id="item-minus" aria-label="Decrease quantity">−</button><output id="item-quantity" aria-live="polite">1</output><button type="button" id="item-plus" aria-label="Increase quantity">+</button></div></div></div>
       </div>
-      <div class="sheet-action"><button class="primary-button" id="add-item" value="default"><span>Add to order</span><strong id="item-total"></strong></button></div>
+      <div class="sheet-action focused-sheet-actions"><button class="secondary-button" id="cancel-item" value="cancel">Cancel</button><button class="primary-button" id="add-item" value="default"><span>Confirm</span><strong id="item-total"></strong></button></div>
     </form>
   </dialog>
 
@@ -127,8 +125,8 @@
     </form>
   </dialog>
 
-  <dialog id="fulfillment-dialog" class="sheet fulfillment-sheet" aria-labelledby="fulfillment-title">
-    <div class="sheet-card">
+  <dialog id="fulfillment-dialog" class="sheet focused-sheet fulfillment-sheet" aria-labelledby="fulfillment-title">
+    <div class="sheet-card focused-sheet-card">
       <header class="sheet-header"><div><p class="eyebrow">TABLE SERVICE</p><h2 id="fulfillment-title">Choose your table</h2></div><button class="icon-button" id="close-fulfillment" type="button" aria-label="Close table selection">×</button></header>
       <div class="sheet-content">
         <div class="review-table-field" id="review-table-field"><span class="sr-only" id="table-label">Choose your table</span><div class="table-number-panel" id="review-table-panel"><div class="table-number-grid" id="review-table-grid" role="radiogroup" aria-labelledby="table-label"></div><p id="selected-review-table" aria-live="polite">Select a table number</p></div></div>
@@ -143,8 +141,8 @@
     </div>
   </dialog>
 
-  <dialog id="payment-dialog" class="sheet payment-sheet" aria-label="Choose payment method">
-    <div class="sheet-card">
+  <dialog id="payment-dialog" class="sheet focused-sheet payment-sheet" aria-label="Choose payment method">
+    <div class="sheet-card focused-sheet-card">
       <header class="payment-header"><button class="payment-back" id="close-payment" type="button"><span aria-hidden="true">←</span> Back to order</button></header>
       <div class="sheet-content payment-content">
         <div class="payment-cards">
