@@ -100,5 +100,5 @@ After verified deployment and user acceptance, archive the completed specialist 
 ## Component inventory maintenance
 
 - `dist/ui-components.css` is the shared component source for owner tools, Client Admin, Client Staff, QRK Admin, customer menu, and `/components/`; landing-page components are separate.
-- Reuse existing components when practical. When a shared component or meaningful state changes, update its registry and `/components/` specimen in the same project.
+- Reuse existing components when practical. Whenever a reusable component, shared variable or meaningful variant/state is added or materially changed, update its registry and `/components/` specimen in the same project.
 - Keep the inventory dependency-free and preserve stable `data-component`, `data-variant`, and `data-component-source` labels.
