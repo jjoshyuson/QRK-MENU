@@ -2,8 +2,8 @@
 
 ## Start
 
-1. Ask one concise discovery question before every new build/change request and wait for the answer.
-2. Read `AGENTS.md` and `memory/README.md`.
+1. Read `AGENTS.md` and `memory/README.md`.
+2. Proceed on routine, reversible details using the approved packet, existing patterns and documented product intent. Domain owners may answer and record routine assumptions; ask the user only when unresolved ambiguity materially changes behavior or scope, architecture, access or privacy, destructive data handling, cost, or release authorization.
 3. Before UI or visual work, read and follow `AGENT/STYLE.md`; then read only the relevant memory topics and linked authoritative docs.
 4. Run `npm start` and `npm run check`. The local URL is `http://127.0.0.1:4173`.
 5. For backend work, read `supabase/README.md`, keep Docker Desktop running, and use the project-local CLI as `npx.cmd supabase ...` on Windows. Before any hosted operation, pass the explicit target flag and verify the linked project ref.
