@@ -1,5 +1,12 @@
 # Build status
 
+## September 15, 2026 — Public-menu Entry Payment gate
+
+- Added a capability-driven customer entry gate for `none`, deposit, minimum-spend commitment, and full-prepayment modes. `none` adds no UI; incomplete, pending, expired, and verification-error states remain modal and cannot fall through to the existing Quick/Table entry flows.
+- Deposit and prepayment states show the required amount, received payment, remaining shortfall, and order credit. Review Order applies available credit without making the order total negative and shows unused credit; minimum-spend commitments show the remaining spend until the commitment is met.
+- The public menu reads `serviceProfile.settings.entryPayment` as the expected DA contract and tolerates `capabilities.entryPayment`/`entryPayment` during integration. Query-only preview parameters provide isolated state testing without adding example-business configuration or hardcoding business names.
+- Validation: `npm run check`, `npm run test:entry-payment`, and `git diff --check` pass. Live checks on port 45219 covered hidden/none, pending, satisfied, incomplete, expired, and error states; phone 390×844, tablet 768×1024, and desktop 1280×800 had no entry-gate horizontal overflow. Deposit credit appeared correctly in Review Order. No payment provider or production payment execution was added.
+
 ## September 15, 2026 — Public menu card content simplification
 
 - Removed browsing-card descriptions and the visible `Add` label while preserving every stored description, description-based search, and the full description in the item detail/order sheet.

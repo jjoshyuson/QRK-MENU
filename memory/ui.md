@@ -1,5 +1,7 @@
 # UI memory
 
+- September 15 Entry Payment gate: the public menu consumes the configured entry-payment capability before Quick/Table entry. None stays invisible; deposit and full prepayment require verified satisfaction and become order credit; minimum spend requires explicit commitment and reports checkout shortfall; incomplete, expired, and verification-error states stay locked. Payment execution remains external to this UI slice.
+
 - September 15 Quick Review Order refinement: when both fulfillment capabilities are enabled, `Pickup` and `Serve at table` are immediate semantic cards, neither is preselected, and the primary action stays absent until selection. Active Table/Open Tab sessions omit this choice and use the established table; Review Order is centered in the usable viewport.
 
 - Desktop is a management workspace with a customer preview.
