@@ -15,6 +15,7 @@
 - For layout work, verify representative phone, tablet and desktop sizes with browser tools.
 - Test meaningful flows and risks, not only syntax.
 - Do not deploy or activate archived hosting metadata without explicit authorization.
+- For concurrent work, follow `docs/ORCHESTRATION.md`: Orchestrator dispatches bounded candidates and yields; users collaborate directly with build tasks; every candidate passes QA and returns to Orchestrator for local review and explicit release approval.
 
 ## Finish
 
@@ -23,4 +24,5 @@
 - Update `docs/PROGRESS_MAP.md` only if milestone structure or status changed.
 - Update relevant `memory/` topics when stable facts or decisions changed.
 - “Cloud development” means `origin/main` and its GitHub Pages development deployment at `https://jjoshyuson.github.io/QRK-MENU/`; it excludes the Sites prototype and production.
-- After a validated change, commit only the intended files and push `main` to `origin`. The push triggers the GitHub Pages development deployment at `https://jjoshyuson.github.io/QRK-MENU/`; verify the workflow before calling it deployed.
+- Build tasks commit only owned changes and hand candidates to QA. QA PASS returns to Orchestrator; after user local review and explicit approval, only Release integrates, runs the release gate, pushes `main`, and verifies development deployment.
+- After verified deployment and user acceptance, Orchestrator alone may dispatch Cleaner to archive completed ephemeral tasks and remove only verified-clean managed worktrees and fully merged temporary branches. Durable roles and unique/unmerged work are preserved.
