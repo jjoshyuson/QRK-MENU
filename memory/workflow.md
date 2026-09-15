@@ -16,6 +16,7 @@
 - Test meaningful flows and risks, not only syntax.
 - Do not deploy or activate archived hosting metadata without explicit authorization.
 - For concurrent work, follow `docs/ORCHESTRATION.md`: Planner routes dependency-aware packets through the durable domain owners; users collaborate directly in the relevant domain or implementation task; every immutable candidate passes independent QA and local user review.
+- Lead every work packet, implementation task, QA report, review request and release request with one stable human-readable project name and a plain-language outcome; keep branches and commit hashes as secondary verification details.
 
 ## Finish
 
@@ -24,5 +25,5 @@
 - Update `docs/PROGRESS_MAP.md` only if milestone structure or status changed.
 - Update relevant `memory/` topics when stable facts or decisions changed.
 - “Cloud development” means `origin/main` and its GitHub Pages development deployment at `https://jjoshyuson.github.io/QRK-MENU/`; it excludes the Sites prototype and production.
-- Build tasks commit only owned changes and hand exact commits to QA. After QA PASS, local user review and explicit approval, only Deployment integrates, pushes `main`, and verifies GitHub Pages under `docs/DEPLOYMENT.md`.
+- Build tasks commit only owned changes and hand exact commits to QA. After QA PASS, Orchestrator names the exact implementation task where the user should run and test the project locally. Only explicit approval using the human-readable project name authorizes Deployment; revisions return the same named project through implementation and QA. Documentation-only work may be summarized directly but still requires named-project approval.
 - Git worktrees do not isolate database state. Isolate schema-changing or destructive data work. Cleanup starts only after verified deployment and user acceptance and preserves durable roles and unique/unmerged work.

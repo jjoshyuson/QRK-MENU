@@ -13,41 +13,50 @@ This document is the authoritative contract for coordinating concurrent Codex ta
 
 Orchestrator, Planner, the three domain owners, QA and Deployment are durable roles. Implementation tasks are ephemeral.
 
+## Project identity
+
+- Every user-visible application or software change has one stable human-readable project name. Work packets, implementation task prompts, QA reports, local-review requests and release requests lead with that name.
+- Reports explain what the project changes in plain language before branch names, commit hashes or other technical references. Branches and commits remain required verification details, not the user's primary project identity.
+- The project name remains unchanged through implementation, revisions, repeat QA, local review, approval and deployment.
+
 ## Candidate lifecycle
 
 1. **Intake:** Orchestrator captures the request, identifies decisions that materially affect scope, sends the organized request to Planner and returns control promptly.
 2. **Plan and route:** Planner creates a dependency-aware to-do list and sends each bounded work packet to QRK Client & Operations, QRK Customer Menu or QRK Platform Data. Cross-domain dependencies are explicit before implementation starts.
-3. **Domain dispatch:** The owning domain creates the smallest useful set of ephemeral implementation tasks. Each receives its scope, authoritative references, approved `origin/main` baseline, branch/worktree ownership, acceptance criteria, validation expectations and explicit non-goals.
+3. **Domain dispatch:** The owning domain creates the smallest useful set of ephemeral implementation tasks. Each receives the stable human-readable project name first, followed by its scope, authoritative references, approved `origin/main` baseline, branch/worktree ownership, acceptance criteria, validation expectations and explicit non-goals.
 4. **Direct collaboration and delegated judgment:** The user may talk directly with the owning domain or implementation task. Domain owners and implementation tasks resolve routine, reversible details from the approved packet, existing patterns and documented product intent; domain owners may answer and record routine assumptions. Ask the user only when unresolved ambiguity would materially change product behavior or scope, architecture, access or privacy, destructive data handling, cost, or release authorization and cannot be responsibly inferred.
-5. **Build candidate:** The task edits only owned files, runs proportionate checks and commits its intended changes. Its handoff includes the branch/worktree, exact commit, outcome, checks, limitations and QA focus. It does not merge, push `main` or deploy.
-6. **QA gate:** Every completed candidate goes to QA as an immutable commit. A FAIL returns through the domain owner for correction and another QA pass. A PASS returns to Orchestrator, never directly to Deployment.
-7. **Local review gate:** Orchestrator identifies the QA-passed candidate and asks the user to open and test it locally. QA PASS is evidence, not deployment authorization.
-8. **Approval gate:** After local review, the user explicitly approves or rejects the candidate. Rejected work returns to its domain owner. Silence or a QA PASS never counts as approval.
-9. **Deployment gate:** Orchestrator sends the approved commit and evidence to Deployment. Deployment verifies scope and approvals, integrates intentionally, runs the release gate once, pushes `main`, verifies GitHub Pages and reports the exact result.
+5. **Build candidate:** The task edits only owned files, runs proportionate checks and commits its intended changes. Its handoff leads with the human-readable project name and plain-language outcome, then gives the branch/worktree, exact commit, checks, limitations and QA focus. It does not merge, push `main` or deploy.
+6. **QA gate:** Every completed candidate goes to QA under its human-readable project name as an immutable commit. A FAIL returns the same named project through the domain owner for correction and another QA pass. A PASS returns to Orchestrator, never directly to Deployment.
+7. **Local review gate:** For user-visible application or software changes, Orchestrator identifies the QA-passed project, gives the exact ephemeral implementation task title to open, and clearly tells the user to run and test that project locally there. Documentation-only changes may instead be summarized directly when there is nothing meaningful to inspect visually. QA PASS is evidence, not deployment authorization.
+8. **Approval gate:** After local review, the user explicitly approves or rejects the human-readable project name. A revision request returns that same named project to implementation and QA before Orchestrator asks for review again. Silence, a commit reference or QA PASS never counts as approval.
+9. **Deployment gate:** Orchestrator sends Deployment a release request led by the explicitly approved human-readable project name, followed by its plain-language outcome, exact commit and evidence. Deployment verifies scope and approval, integrates intentionally, runs the release gate once, pushes `main`, verifies GitHub Pages and reports the exact result.
 10. **Acceptance and cleanup:** After verified deployment and user acceptance, completed ephemeral tasks may be archived and only verified-clean managed worktrees and fully merged temporary branches may be removed. Durable roles, Git history and unique work remain.
 
 ## Handoff contracts
 
 ### Build task to QA
 
-- Candidate name and owning task
+- Human-readable project name and owning implementation task title
+- Plain-language outcome and acceptance criteria
 - Branch/worktree and exact commit
 - Intended file set and inherited changes excluded from ownership
-- User-visible outcome and acceptance criteria
 - Checks run and results
 - Known limitations, risks and focused QA requests
 
 ### QA to Orchestrator
 
-- Candidate and exact commit tested
+- Human-readable project name and plain-language outcome
 - PASS or FAIL
+- Exact implementation task title for local review
+- Branch/worktree and exact commit tested
 - Evidence for each acceptance criterion
 - Regressions, unresolved risks and environment limitations
 - Exact retest target when failed
 
 ### Orchestrator to Deployment
 
-- User-approved candidate and exact commit
+- Human-readable project name explicitly approved by the user
+- Plain-language outcome and exact commit
 - QA PASS evidence
 - Scope approved during local review
 - Integration order or dependency notes
