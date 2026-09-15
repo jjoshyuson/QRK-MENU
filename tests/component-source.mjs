@@ -10,7 +10,7 @@ const routeFiles = [
 
 for (const route of routeFiles) {
   const html = await readFile(new URL(route, import.meta.url), 'utf8');
-  assert.match(html, /href="\/ui-components\.css\?v=4"/, `${route} must load the shared visual source`);
+  assert.match(html, /href="\/ui-components\.css\?v=5"/, `${route} must load the shared visual source`);
   assert.match(html, /src="\/ui-components\.js\?v=2"/, `${route} must load stable inspector labels`);
 }
 
@@ -21,6 +21,7 @@ for (const variable of [
   '--component-focus', '--component-disabled-opacity', '--component-card-bg',
   '--component-primary-bg', '--component-danger-bg', '--component-button-radius',
   '--component-button-padding-inline', '--component-button-subtle-bg', '--component-button-disabled-bg',
+  '--component-menu-card-bg', '--component-menu-card-border', '--component-menu-card-shadow',
 ]) {
   assert.ok(css.includes(variable), `missing shared component variable: ${variable}`);
 }

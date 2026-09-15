@@ -103,8 +103,6 @@
   overflow: visible;
   border: 0;
   border-radius: var(--component-radius-xl, 16px);
-  background: color-mix(in srgb, var(--surface, #fff) 94%, transparent);
-  box-shadow: 0 8px 24px #1118270d;
 }
 
 .dish .photo { overflow: hidden; border-radius: 12px; }

@@ -1,5 +1,7 @@
 # UI memory
 
+- September 15 public-menu card refresh: customer dish cards use a restrained translucent standard material with an 84% surface fill, 16px backdrop blur, a thin adaptive rim, a one-pixel top highlight and quiet shadow. The shared component layer owns the treatment so production and `/components/` stay aligned; reduced-transparency mode restores an opaque surface.
+
 - September 15 Quick Review Order refinement: when both fulfillment capabilities are enabled, `Pickup` and `Serve at table` are immediate semantic cards, neither is preselected, and the primary action stays absent until selection. Active Table/Open Tab sessions omit this choice and use the established table; Review Order is centered in the usable viewport.
 
 - Desktop is a management workspace with a customer preview.
