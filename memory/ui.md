@@ -72,6 +72,6 @@
 See `docs/UI_AND_FLOWS.md` for detailed behavior and test cases.
 ## QRK Quick entry and checkout — September 13, 2026
 
-- QRK Quick businesses that enable both fulfillment modes show a blocking 80vw × 80vh popup before menu browsing. It contains only two large stacked cards: `Dine in 🍽️` and `Takeout 🛍️`; no heading, helper copy, arrows, or subtitles.
-- The initial choice seeds the checkout selection. Order review labels the choices Pickup and Serve at table, shows a table-number field only for table service, leads with subtotal, and continues through Confirm payment to payment method.
+- QRK Quick customers browse first. Review Order always shows its subtotal; proceeding opens the fulfillment sheet, where Pickup advances directly to payment and Serve at table advances through the table picker to payment.
+- Item configuration consolidates persistent options and add-ons in one focused sheet. Top-left X cancels, top-right check commits, the calculated price stays informational at the bottom, and optional special-request text is collapsed until requested.
 - Table and buffet presets retain their dedicated table-entry flow and do not receive the Quick service-choice dialog.

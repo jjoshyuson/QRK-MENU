@@ -180,8 +180,11 @@ dialog.focused-sheet::backdrop{background:color-mix(in srgb,#111827 68%,transpar
   box-shadow:0 -14px 48px color-mix(in srgb,var(--ink) 22%,transparent);
   animation:focused-sheet-in 180ms cubic-bezier(.2,.8,.2,1) both!important;
 }
-.focused-sheet-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:18px 18px 12px;border-bottom:1px solid var(--line)}
+.focused-sheet-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 18px;border-bottom:1px solid var(--line)}
 .focused-sheet-header h2{margin:0;font:700 21px/1.2 var(--font-interface)}
+.item-sheet-header{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;text-align:center}
+.item-sheet-header .icon-button{background:color-mix(in srgb,var(--ink) 9%,var(--surface));font-size:24px}
+.item-sheet-header .confirm-icon-button{background:color-mix(in srgb,var(--brand-500) 16%,var(--surface));color:var(--brand-600);font-size:20px;font-weight:800}
 .focused-sheet-actions{display:grid;grid-template-columns:minmax(108px,.38fr) minmax(0,1fr);gap:10px;padding-bottom:calc(12px + env(safe-area-inset-bottom))}
 .focused-sheet-actions>button{width:100%;min-width:0}
 .item-overview{display:grid;grid-template-columns:58px minmax(0,1fr) auto;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line)}
@@ -189,7 +192,9 @@ dialog.focused-sheet::backdrop{background:color-mix(in srgb,#111827 68%,transpar
 .item-overview h3{margin:0;font:700 15px/1.25 var(--font-menu-display)}
 .item-overview p{display:-webkit-box;margin:3px 0 0;overflow:hidden;color:var(--muted);font-size:12px;line-height:1.35;-webkit-box-orient:vertical;-webkit-line-clamp:2}
 .item-overview>strong{white-space:nowrap;font-size:14px}
-.focused-choice-list{margin:0;padding:0;border:1px solid var(--line)!important;border-radius:14px!important;overflow:hidden;background:var(--surface)}
+.focused-choice-list{margin:16px 0 0;padding:0;border:1px solid var(--line)!important;border-radius:14px!important;overflow:hidden;background:var(--surface)}
+.focused-choice-list legend{width:100%;margin:0;padding:0 2px 8px;border:0;font-size:14px;font-weight:750}
+.focused-choice-list legend span{float:right;color:var(--muted);font-size:12px;font-weight:500}
 .focused-choice-list label{display:flex;min-height:54px;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;border:0!important;border-bottom:1px solid var(--line)!important;background:transparent;cursor:pointer}
 .focused-choice-list label:last-child{border-bottom:0!important}
 .focused-choice-list label:has(input:checked){background:var(--brand-soft)}
@@ -200,6 +205,11 @@ dialog.focused-sheet::backdrop{background:color-mix(in srgb,#111827 68%,transpar
 .focused-choice-list input:checked+i{border-color:var(--brand-500);background:var(--brand-500);color:var(--brand-foreground)}
 .focused-choice-list b{overflow-wrap:anywhere;font-size:14px}
 .focused-choice-list small{color:var(--muted);font-size:12px;white-space:nowrap}
+.special-request-trigger,.fulfillment-choice-list button{display:flex;width:100%;align-items:center;justify-content:space-between;gap:16px;border:1px solid var(--line);background:var(--surface);text-align:left;cursor:pointer}
+.special-request-trigger{min-height:58px;margin-top:16px;padding:10px 12px;border-radius:14px}
+.special-request-trigger>span:first-child{display:flex;flex-direction:column}.special-request-trigger small{color:var(--muted);font-weight:500}.special-request-field{margin-top:8px}.special-request-field textarea{min-height:78px}
+.item-price-footer{display:flex;align-items:center;justify-content:space-between;padding-bottom:calc(14px + env(safe-area-inset-bottom))}.item-price-footer span{color:var(--muted);font-size:13px}.item-price-footer strong{font-size:21px}
+.fulfillment-choice-list{display:grid;gap:10px}.fulfillment-choice-list button{min-height:72px;padding:12px 14px;border-radius:14px}.fulfillment-choice-list button>span:first-child{display:flex;flex-direction:column}.fulfillment-choice-list b{font-size:15px}.fulfillment-choice-list small{margin-top:2px;color:var(--muted)}.fulfillment-choice-list button>span:last-child{font-size:28px}.fulfillment-sheet .sheet-header{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;text-align:center}.fulfillment-sheet .sheet-header h2{font-size:20px}.fulfillment-sheet .sheet-header .eyebrow{margin-bottom:3px}
 @keyframes focused-sheet-in{from{transform:translateY(28px);opacity:.82}to{transform:none;opacity:1}}
 .badge,.section-chip,.order-state,.table-card-status,.demo-pill{
   border-radius:var(--component-radius-pill);

@@ -33,12 +33,6 @@
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
-  <dialog id="quick-service-dialog" class="quick-service-dialog" aria-label="Choose dine in or takeout">
-    <section class="quick-service-card" id="quick-service-choices">
-      <button type="button" data-fulfillment-choice="table"><span aria-hidden="true">🍽️</span><b>Dine in</b></button>
-      <button type="button" data-fulfillment-choice="pickup"><span aria-hidden="true">🛍️</span><b>Takeout</b></button>
-    </section>
-  </dialog>
   <dialog id="table-session-dialog" class="table-entry" aria-labelledby="table-entry-title">
     <section class="table-entry-card" id="table-entry-form-view">
       <div id="table-choice-view"><p class="eyebrow">QRK TABLE</p><h1 id="table-entry-title">Choose your table</h1><p id="table-entry-intro">Select the table where you are seated.</p><div class="table-choice-grid" id="table-choice-grid" role="list"></div><p class="table-choice-help"><span></span> Available <span></span> Open — request to join</p></div>
@@ -98,13 +92,13 @@
 
   <dialog id="item-dialog" class="sheet focused-sheet item-sheet" aria-labelledby="item-step-title">
     <form method="dialog" class="sheet-card focused-sheet-card" id="item-form">
-      <header class="focused-sheet-header"><div><p class="eyebrow" id="item-step-eyebrow">CUSTOMIZE</p><h2 id="item-step-title">Choose an option</h2></div></header>
+      <header class="focused-sheet-header item-sheet-header"><button class="icon-button" id="cancel-item" value="cancel" aria-label="Cancel item changes">×</button><h2 id="item-step-title">Customize item</h2><button class="icon-button confirm-icon-button" id="add-item" value="default" aria-label="Add item to order">✓</button></header>
       <div class="sheet-content">
         <div class="item-overview"><img id="item-photo" alt="" width="640" height="480"><div><h3 id="item-name"></h3><p id="item-description"></p></div><strong id="item-price"></strong></div>
         <div id="item-options"></div>
-        <div id="item-final-fields"><label class="field-label" for="item-notes">Special request <span>Optional</span></label><textarea id="item-notes" rows="2" maxlength="140" placeholder="Example: sauce on the side"></textarea><div class="quantity-row"><span>Quantity</span><div class="stepper"><button type="button" id="item-minus" aria-label="Decrease quantity">−</button><output id="item-quantity" aria-live="polite">1</output><button type="button" id="item-plus" aria-label="Increase quantity">+</button></div></div></div>
+        <div id="item-final-fields"><button class="special-request-trigger" id="special-request-trigger" type="button" aria-expanded="false" aria-controls="special-request-field"><span><b>Special request</b><small>Optional</small></span><span aria-hidden="true">＋</span></button><div class="special-request-field hidden" id="special-request-field"><label class="sr-only" for="item-notes">Special request</label><textarea id="item-notes" rows="2" maxlength="140" placeholder="Example: sauce on the side"></textarea></div><div class="quantity-row"><span>Quantity</span><div class="stepper"><button type="button" id="item-minus" aria-label="Decrease quantity">−</button><output id="item-quantity" aria-live="polite">1</output><button type="button" id="item-plus" aria-label="Increase quantity">+</button></div></div></div>
       </div>
-      <div class="sheet-action focused-sheet-actions"><button class="secondary-button" id="cancel-item" value="cancel">Cancel</button><button class="primary-button" id="add-item" value="default"><span>Confirm</span><strong id="item-total"></strong></button></div>
+      <div class="sheet-action item-price-footer"><span>Total</span><strong id="item-total"></strong></div>
     </form>
   </dialog>
 
@@ -115,21 +109,22 @@
         <div id="cart-items"></div>
         <section class="cart-empty hidden" id="cart-empty"><div aria-hidden="true">○</div><h3>Your order is empty</h3><p>Add a favorite from the menu to get started.</p><button class="secondary-button" value="cancel">Browse menu</button></section>
         <section id="checkout-fields">
-          <fieldset class="fulfillment review-fulfillment"><legend class="sr-only">Pickup or serve at table</legend><label><input type="radio" name="fulfillment" value="pickup"><span><b>Pickup</b><small>Collect at the counter</small></span></label><label><input type="radio" name="fulfillment" value="table"><span><b>Serve at table</b><small>Choose your table</small></span></label></fieldset>
+          <fieldset class="fulfillment review-fulfillment hidden"><legend class="sr-only">Pickup or serve at table</legend><label><input type="radio" name="fulfillment" value="pickup"><span><b>Pickup</b><small>Collect at the counter</small></span></label><label><input type="radio" name="fulfillment" value="table"><span><b>Serve at table</b><small>Choose your table</small></span></label></fieldset>
           <input id="table-number" type="hidden">
           <details class="checkout-details" id="checkout-details"><summary><span>Add name or order notes</span><small>Optional</small></summary><div class="checkout-details-fields"><label class="field-label" for="customer-label">Name for the order</label><input id="customer-label" type="text" maxlength="40" autocomplete="name" placeholder="Example: Mia"><label class="remember-name"><input id="save-customer-name" type="checkbox" checked><span>Save name on this device</span></label><label class="field-label" for="order-notes">Order notes</label><textarea id="order-notes" rows="2" maxlength="180" placeholder="Anything the staff should know?"></textarea></div></details>
           <p class="form-error hidden" id="checkout-error" role="alert"></p>
         </section>
       </div>
-      <div class="sheet-action cart-total hidden" id="cart-action"><div><span>Subtotal</span><strong id="checkout-subtotal">₱0</strong></div><button class="primary-button" id="submit-order" value="default">Submit demo order</button></div>
+      <div class="sheet-action cart-total hidden" id="cart-action"><div><span>Subtotal</span><strong id="checkout-subtotal">₱0</strong></div><button class="primary-button" id="submit-order" value="default">Proceed with order</button></div>
     </form>
   </dialog>
 
   <dialog id="fulfillment-dialog" class="sheet focused-sheet fulfillment-sheet" aria-labelledby="fulfillment-title">
     <div class="sheet-card focused-sheet-card">
-      <header class="sheet-header"><div><p class="eyebrow">TABLE SERVICE</p><h2 id="fulfillment-title">Choose your table</h2></div><button class="icon-button" id="close-fulfillment" type="button" aria-label="Close table selection">×</button></header>
+      <header class="sheet-header"><button class="icon-button" id="fulfillment-back" type="button" aria-label="Back to fulfillment choices">←</button><div><p class="eyebrow">ORDER METHOD</p><h2 id="fulfillment-title">How would you like it?</h2></div><button class="icon-button" id="close-fulfillment" type="button" aria-label="Close order method">×</button></header>
       <div class="sheet-content">
-        <div class="review-table-field" id="review-table-field"><span class="sr-only" id="table-label">Choose your table</span><div class="table-number-panel" id="review-table-panel"><div class="table-number-grid" id="review-table-grid" role="radiogroup" aria-labelledby="table-label"></div><p id="selected-review-table" aria-live="polite">Select a table number</p></div></div>
+        <div class="fulfillment-choice-list" id="fulfillment-choice-list"><button type="button" data-fulfillment-choice="pickup"><span><b>Pickup</b><small>Collect at the counter</small></span><span aria-hidden="true">›</span></button><button type="button" data-fulfillment-choice="table"><span><b>Serve at table</b><small>Choose your table</small></span><span aria-hidden="true">›</span></button></div>
+        <div class="review-table-field hidden" id="review-table-field"><span class="sr-only" id="table-label">Choose your table</span><div class="table-number-panel" id="review-table-panel"><div class="table-number-grid" id="review-table-grid" role="radiogroup" aria-labelledby="table-label"></div><p id="selected-review-table" aria-live="polite">Select a table number</p></div></div>
       </div>
     </div>
   </dialog>
@@ -143,7 +138,7 @@
 
   <dialog id="payment-dialog" class="sheet focused-sheet payment-sheet" aria-label="Choose payment method">
     <div class="sheet-card focused-sheet-card">
-      <header class="payment-header"><button class="payment-back" id="close-payment" type="button"><span aria-hidden="true">←</span> Back to order</button></header>
+      <header class="payment-header"><button class="payment-back" id="close-payment" type="button"><span aria-hidden="true">←</span> Back to order method</button></header>
       <div class="sheet-content payment-content">
         <div class="payment-cards">
           <button class="payment-card" id="pay-at-counter" type="button"><span class="payment-emoji" aria-hidden="true">💵</span><b>Pay at the counter</b></button>

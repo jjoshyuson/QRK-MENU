@@ -1,5 +1,12 @@
 # Build status
 
+## September 15, 2026 — Consolidated item and post-review fulfillment sheets
+
+- Replaced the item-option wizard with one consolidated configuration sheet: persistent option/add-on lists, top-corner cancel and confirm controls, an informational bottom total, and an optional special-request field revealed on demand.
+- Review Order now always exposes its subtotal and proceeds to a separate fulfillment sheet. Pickup advances directly to payment; Serve at table opens the table picker and then advances to payment, while payment Back returns to fulfillment choices.
+- Preserved cart drafts, option pricing, table-session validation, Escape cancellation, invoking-control focus restoration, safe-area handling, reduced motion, and the inline order-name/order-notes disclosure.
+- Validation: `npm run check` and `git diff --check` passed. Live browser checks at 390×844 and 1440×900 confirmed one consolidated item sheet, optional special-request reveal, live add-on total, no horizontal overflow, an always-visible Review Order subtotal, Pickup-to-payment, payment Back-to-fulfillment, and Serve-at-table-to-table-picker transitions with no console warnings or errors.
+
 ## September 15, 2026 — Public menu card content simplification
 
 - Removed browsing-card descriptions and the visible `Add` label while preserving every stored description, description-based search, and the full description in the item detail/order sheet.
