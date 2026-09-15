@@ -10,7 +10,7 @@ const routeFiles = [
 
 for (const route of routeFiles) {
   const html = await readFile(new URL(route, import.meta.url), 'utf8');
-  assert.match(html, /href="\/ui-components\.css\?v=6"/, `${route} must load the shared visual source`);
+  assert.match(html, /href="\/ui-components\.css\?v=7"/, `${route} must load the shared visual source`);
   assert.match(html, /src="\/ui-components\.js\?v=3"/, `${route} must load stable inspector labels`);
 }
 
@@ -40,6 +40,8 @@ assert.match(registry, /classList\.contains\('primary-button'\)/);
 assert.match(registry, /attributeFilter:\s*\['class', 'disabled'\]/);
 assert.match(registry, /window\.QrkSheet\s*=\s*\{create\}/);
 assert.match(registry, /event\.key === 'Escape'/);
+assert.match(css, /height:min\(90dvh,calc\(100dvh - 20px\)\)/);
+assert.match(css, /min-width:60px/);
 
 const serviceWorker = await readFile(new URL('../dist/sw.js', import.meta.url), 'utf8');
 assert.match(serviceWorker, /'\.\/ui-components\.css'/);

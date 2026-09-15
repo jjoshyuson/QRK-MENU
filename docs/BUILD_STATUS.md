@@ -7,6 +7,7 @@
 - Kept global appearance ownership and the existing service preset/data contracts unchanged; no service-gate model or provider adapter was added or duplicated.
 - Migrated Business Profile and Settings to the shared grouped-list and material-sheet primitives. Editable sheets keep changes as drafts until Done; Close, outside click, and Escape discard; nested settings use Back; destructive order clearing remains a separate confirmation.
 - Applied the corrected sheet hierarchy: nested controls, grouped sections, table tiles, and choice popovers are borderless at rest, with tonal fill and a single faint divider between peer rows; keyboard focus retains its visible outline.
+- Matched the current iOS-style presentation more closely: all shared sheets use a 90% viewport detent, a darker system-charcoal material, a correctly sized Done pill, and a non-clipping title column. Restored the intended icon/label/chevron grid after the shared-list selector had overridden the Business Profile and Settings rows.
 - Validation: focused contracts, `npm run check`, and `git diff --check` passed. Live Salamat browser checks used a fresh preview on port 4198 and confirmed the 20-table phone grid, five-column 1280×800 grid, Table 7 QR and exact `?table=7` link, Escape discard with focus restoration, and nested Settings Back navigation.
 
 ## September 15, 2026 — Public menu card content simplification
