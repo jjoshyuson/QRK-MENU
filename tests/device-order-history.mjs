@@ -11,10 +11,11 @@ assert.match(html, /id="order-history-control"[^>]*aria-controls="history-dialog
 assert.match(html, /id="clear-history"/);
 assert.match(html, /id="history-clear-confirm"/);
 assert.match(js, /HISTORY_LIMIT=25,HISTORY_RETENTION_MS=30\*24\*60\*60\*1000/);
-assert.match(js, /TAB_SESSION_KEY=`qrk_open_tab_session_v2/);
 assert.match(js, /if\(!openTabEnabled\)rememberHistory\(order\)/);
-assert.match(js, /session\?\.status==='paid'/);
+assert.match(js, /\['paid','settled'\]\.includes\(session\?\.status\)/);
 assert.match(js, /rememberPaidTab\(session,tabOrders\)/);
+assert.match(js, /TAB_SESSION_KEY=deviceScopedKey\(businessSlug,`open-tab-session:\$\{dataService\.mode\}`\)/);
+assert.match(js, /HISTORY_KEY=deviceScopedKey\(businessSlug,`order-history:\$\{dataService\.mode\}`\)/);
 assert.match(js, /\['cleaned','cancelled','expired'\]\.includes\(session\.status\)/);
 assert.match(js, /localStorage\.removeItem\(TAB_ORDER_KEY\)/);
 assert.match(js, /localStorage\.removeItem\(HISTORY_KEY\)/);

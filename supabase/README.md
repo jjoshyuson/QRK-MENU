@@ -1,6 +1,14 @@
 # QRK MENU backend foundation
 
-This folder is the canonical, version-controlled database source of truth. It is provider-ready, but no hosted Supabase project is created, linked, configured, or verified yet.
+> Supabase is the temporary development and initial staging provider. PostgreSQL and the adapter contracts are authoritative. Read `docs/DATABASE_SYNC_AND_PORTABILITY_PLAN.md` before replacing Supabase or moving to a VPS.
+
+## Order synchronization and recovery
+
+Migration `202609140001_order_sync_and_recovery.sql` adds registered browser installations, device-attached order creation, table/open-tab storage foundations, and tenant-scoped clear batches. `clear_order_activity` archives operational data while preserving restaurant, account, staff, menu, product, photo, branding, and destination records. Either of the two newest non-restored clear batches can be restored atomically.
+
+The customer stores a random device UUID and secret. Only the secret digest reaches durable storage. This identifies a browser installation and prevents accidental namespace overlap; it is not a hardware identifier.
+
+This folder is the canonical, version-controlled database source of truth. The disposable hosted development project `qrk-menu-development` was linked and rebuilt from all five migrations plus `seed.sql` on September 14, 2026. Hosted development now has one Client Admin and one Client Staff Auth identity for each of the five preview businesses, with active tenant memberships and forced first-login password changes. Temporary credentials live only in a gitignored local file. Browser runtime configuration, two-device synchronization, Storage checks, and recovery drills remain unverified; production is separate and was not touched.
 
 ## Structure
 
@@ -10,9 +18,11 @@ This folder is the canonical, version-controlled database source of truth. It is
 | `supabase/migrations/202609090001_initial_schema.sql` | Portable application tables, constraints, indexes, snapshots, and lifecycle guards |
 | `supabase/migrations/202609090002_supabase_security.sql` | Supabase Auth/RLS, narrow RPCs, Realtime Broadcast, and Storage policies |
 | `supabase/seed.sql` | Development-only Kusina Manila sample data; never production data |
+| `supabase/development_catalog.sql` | Generated development-only published catalogs for Salo, Tambay, and Ihaw |
 | `supabase/tests/001_security_and_orders.sql` | pgTAP coverage for public boundaries, tenant isolation, idempotency, and ordered staff transitions |
 | `supabase/migrations/202609120001_local_auth_and_permissions.sql` | Global usernames, tenant access context and granular staff permission enforcement |
 | `supabase/migrations/202609120002_service_mode_context.sql` | Quick/Table service mode in the tenant access context |
+| `supabase/migrations/202609140002_hosted_table_sessions.sql` | Device-authenticated Table requests, joins, staff acceptance, cleanup, and reconciliation |
 | `supabase/tests/002_auth_and_permissions.sql` | Username and staff-permission coverage |
 
 The application schema uses UUIDs, PHP integer minor units, tenant foreign keys, immutable order snapshots, and append-only status events. Supabase-specific behavior is deliberately isolated in the second migration so a VPS move can retain the first migration and replace Auth claims, RPC exposure, Realtime, and Storage integration.
@@ -44,7 +54,7 @@ Repeatable local-only logins after `supabase db reset --local`:
 | Salamat business admin | `salamat-admin` | internal synthetic email | `QRK-local-salamat-admin-2026!` |
 | Salamat order staff | `salamat-staff` | internal synthetic email | `QRK-local-salamat-staff-2026!` |
 
-Kusina Manila is the QRK Quick tenant; Salamat is the QRK Table tenant. These credentials exist only in the disposable development seed. Username sign-in maps to an internal `@accounts.qrkmenu.invalid` Auth address. Production recovery and staff invitation/activation remain a hosted milestone.
+Kusina Manila is the QRK Quick tenant; Salamat is the QRK Table tenant. The repeatable repository seed contains those two tenants and four local identities. The hosted development project additionally has tenant/account shells for Salo Table, Tambay Café, and Ihaw Buffet, for ten identities total. Username sign-in maps to an internal `@accounts.qrkmenu.invalid` Auth address. The hosted temporary passwords are not committed and must be reprovisioned after a remote reset; production recovery and staff invitation/activation remain future milestones.
 
 ## Environments
 

@@ -13,6 +13,7 @@ Use this folder as the fast entry point for a new chat. Read this file first, th
 | Device-local customer/staff order demo | `memory/orders.md` | `dist/app.js`, `docs/TECHNICAL_HANDOFF.md` |
 | Tambay Open Tab customer workflow | `memory/open-tab.md`, `memory/orders.md` | `dist/menu/menu.js`, `docs/BUILD_STATUS.md` |
 | Provider-ready database, RLS, RPC, Realtime, Storage and recovery | `memory/architecture.md`, `memory/orders.md` | `supabase/README.md`, `supabase/migrations/` |
+| Supabase staging and future VPS migration | `memory/architecture.md`, `memory/orders.md` | `docs/DATABASE_SYNC_AND_PORTABILITY_PLAN.md` |
 | Current progress and next milestone | `memory/progress.md` | `docs/PROGRESS_MAP.md`, `docs/BUILD_STATUS.md` |
 | Confirmed decisions and unresolved choices | `memory/decisions.md` | `docs/PRODUCT_PLAN.md` |
 | Local commands and verification | `memory/workflow.md` | `README.md`, `docs/BUILD_STATUS.md` |

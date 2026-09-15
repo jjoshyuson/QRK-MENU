@@ -8,9 +8,10 @@ if(migrations.length<2)throw new Error('Expected portable and Supabase-specific 
 const sql=(await Promise.all(migrations.map(name=>readFile(resolve(migrationDir,name),'utf8')))).join('\n');
 const tests=await readFile(resolve(root,'supabase','tests','001_security_and_orders.sql'),'utf8');
 const authTests=await readFile(resolve(root,'supabase','tests','002_auth_and_permissions.sql'),'utf8');
+const syncTests=await readFile(resolve(root,'supabase','tests','003_order_sync_and_recovery.sql'),'utf8');
 const seed=await readFile(resolve(root,'supabase','seed.sql'),'utf8');
-const requiredTables=['businesses','business_members','business_profiles','menus','menu_revisions','categories','menu_items','item_option_groups','item_options','orders','order_items','order_item_options','order_status_events','public_destinations','photo_assets'];
-const requiredFunctions=['get_public_menu','create_public_order','get_public_order_status','transition_order_status','set_business_ordering_open'];
+const requiredTables=['businesses','business_members','business_profiles','menus','menu_revisions','categories','menu_items','item_option_groups','item_options','orders','order_items','order_item_options','order_status_events','public_destinations','photo_assets','customer_devices','data_clear_batches','table_sessions','table_session_participants','table_join_requests','open_tabs'];
+const requiredFunctions=['get_public_menu','create_public_order','create_device_order','register_customer_device','get_public_order_status','transition_order_status','set_business_ordering_open','clear_order_activity','restore_order_activity'];
 const requiredSecurity=['enable row level security','revoke all on all tables','qrk_staff_receive_order_broadcasts','realtime.send','qrk_public_read_published_menu_photos'];
 for(const name of requiredTables)if(!new RegExp(`create table public\\.${name}\\b`,'i').test(sql))throw new Error(`Missing table ${name}`);
 for(const name of requiredFunctions)if(!new RegExp(`create function public\\.${name}\\b`,'i').test(sql))throw new Error(`Missing function ${name}`);
@@ -18,6 +19,7 @@ for(const marker of requiredSecurity)if(!sql.toLowerCase().includes(marker.toLow
 for(const marker of ['tenant B cannot read tenant A','idempotency created exactly one order','public RPC hides hidden items','permitted staff can advance'])if(!tests.includes(marker))throw new Error(`Missing SQL test: ${marker}`);
 for(const marker of ['salamat-admin','salamat-staff','{"serviceMode":"quick"}','{"serviceMode":"table"}'])if(!seed.includes(marker))throw new Error(`Missing two-tenant seed marker: ${marker}`);
 for(const marker of ['Salamat admin resolves to the second tenant','Salamat resolves to QRK Table mode'])if(!authTests.includes(marker))throw new Error(`Missing Auth test: ${marker}`);
+for(const marker of ['wrong device secret cannot create an order','cleared orders disappear from staff reads','tenant B cannot clear tenant A'])if(!syncTests.includes(marker))throw new Error(`Missing sync/recovery test: ${marker}`);
 
 const files=['.env.example','dist/data/qrk-config.js','dist/data/qrk-config.example.js',...migrations.map(name=>`supabase/migrations/${name}`),'supabase/seed.sql'];
 const secretPatterns=[/sb_secret_[A-Za-z0-9_-]{10,}/,/service_role\s*[:=]\s*['"][A-Za-z0-9._-]{20,}/i,/eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}/];

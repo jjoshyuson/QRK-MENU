@@ -42,7 +42,7 @@ globalThis.sessionStorage=storage();
 const openTab=new QrkTableSessionService({businessSlug:'tambay-tab',profile:{settings:{staffAcceptance:false,acceptanceTimeoutSeconds:90,joinPolicy:'host',guestOrderPolicy:'direct'}}});
 const openTabSession=await openTab.open({table:'1',name:'Mia',guestCount:'1'});
 await openTab.markPaid(openTabSession.id);
-assert.equal(openTab.sessions.find(session=>session.id===openTabSession.id).status,'paid');
+assert.equal(openTab.sessions.find(session=>session.id===openTabSession.id).status,'settled');
 
 globalThis.sessionStorage=storage();
 const cancelling=new QrkTableSessionService({businessSlug:'salo-table',profile});

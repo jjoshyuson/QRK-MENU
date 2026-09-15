@@ -72,11 +72,13 @@ await rm(outputDir, { recursive: true, force: true });
 await mkdir(outputDir, { recursive: true });
 await cp(sourceDir, outputDir, { recursive: true });
 
-await writeFile(
-  path.join(outputDir, 'data', 'qrk-config.local.js'),
-  "globalThis.QRK_CONFIG=Object.freeze({environment:'preview',authEnabled:true});\n",
-  'utf8'
-);
+const stagingUrl=String(process.env.QRK_SUPABASE_URL||'').trim();
+const stagingKey=String(process.env.QRK_SUPABASE_PUBLISHABLE_KEY||'').trim();
+const stagingConfigured=/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(stagingUrl)&&/^(sb_publishable_|eyJ)/i.test(stagingKey);
+const publicConfig=stagingConfigured
+  ?{environment:'staging',authEnabled:true,supabaseUrl:stagingUrl,supabasePublishableKey:stagingKey,reconciliationIntervalMs:15000}
+  :{environment:'preview',authEnabled:true};
+await writeFile(path.join(outputDir,'data','qrk-config.local.js'),`globalThis.QRK_CONFIG=Object.freeze(${JSON.stringify(publicConfig)});\n`,'utf8');
 
 for (const file of await collectFiles(outputDir)) {
   const extension = path.extname(file).toLowerCase();
@@ -92,4 +94,4 @@ await writeFile(path.join(outputDir, '.nojekyll'), '', 'utf8');
 console.log(`Built GitHub Pages artifact at ${outputDir}`);
 console.log(`Base path: ${basePath}`);
 console.log(`Code asset version: ${buildVersion}`);
-console.log('Published with browser-local preview sessions; no hosted backend credentials are injected.');
+console.log(stagingConfigured?'Published with the hosted Supabase staging adapter.':'Published with browser-local preview sessions; hosted configuration was not supplied.');

@@ -31,6 +31,9 @@ jobs:
 
       - name: Build Pages artifact
         run: node scripts/build-pages.mjs
+        env:
+          QRK_SUPABASE_URL: ${{ vars.QRK_SUPABASE_URL }}
+          QRK_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.QRK_SUPABASE_PUBLISHABLE_KEY }}
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5

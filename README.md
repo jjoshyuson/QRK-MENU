@@ -48,6 +48,7 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 | `docs/BUILD_STATUS.md` | Completed work, next milestone, and verification checklist |
 | `docs/PROGRESS_MAP.md` | Milestone sequence, dependencies, status and exit criteria |
 | `docs/QUICK_TABLE_MASTER_PLAN.md` | Shared QRK Quick/Table architecture, team ownership, branch gates and deployment plan |
+| `docs/DATABASE_SYNC_AND_PORTABILITY_PLAN.md` | Supabase staging sync, reversible order clearing, device identity, and future VPS migration |
 | `docs/PHOTO_SOURCES.json` | Asset provenance |
 | `deployment/original-hosting.json` | Archived identity of the original Sites project |
 | `MANIFEST.sha256` | Checksums of the included files |

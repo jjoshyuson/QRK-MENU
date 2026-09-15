@@ -1,5 +1,13 @@
 # Build status
 
+## September 14, 2026 — Supabase order sync and reversible clearing
+
+- Added browser-installation identity, device-attached order creation, database foundations for table/open-tab activity, and server-side operational clear batches.
+- Added Settings → Order data with typed confirmation and restoration of either of the newest two non-restored clears.
+- Added the authoritative database/VPS portability plan and an `AGENTS.md` trigger for future Supabase replacement work.
+- Added optional GitHub build-time staging configuration using only the Supabase URL and publishable key.
+- Local database execution is currently blocked because Docker Desktop is not running. Hosted linking and deployment are blocked because the Supabase CLI has no access token and no project is linked.
+
 ## September 14, 2026 — Development-business menu density
 
 - Applied the Kusina responsive-test rule to Salamat, Salo Table, Tambay Café, and Ihaw Buffet: every business now has seven cuisine- and service-specific categories with exactly three products per category (21 products each).
@@ -964,3 +972,36 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - The staff Tables action reads `Customer paid` for the Open Tab preset. Confirming it closes the session, completes the table's active order rounds, and moves one combined tab snapshot into the customer's device history.
 - Customer confirmations identify the table rather than exposing each internal round number. Other Table presets retain `Table cleaned`.
 - Validation: `npm run check`, `git diff --check`, and a live Tambay browser flow passed. The live flow confirmed history stayed at 0 after submission, Open Tab remained active, and payment changed the customer state to one history entry with no active tab.
+
+## September 14, 2026 — Hosted development schema deployment
+
+- Linked this checkout only to the disposable Supabase project `qrk-menu-development` (`agxlgxjbanxkwxifhjil`). Production was not connected or changed.
+- Replaced three incompatible dashboard-created migration records and their legacy development schema through the explicitly approved remote development reset. All five canonical repository migrations and `supabase/seed.sql` now rebuild the hosted database.
+- Fixed `202609140001_order_sync_and_recovery.sql` by adding composite uniqueness for `open_tabs(id, business_id)`, matching its tenant-safe foreign key from `orders`.
+- Hosted migration history now matches all five local versions. Hosted and local database lint report no schema errors; the local rebuild succeeds; all 40 pgTAP tests pass after correcting the recovery test's required seeded option; and `npm run check` passes with 21 tables, 9 RPCs and 5 migrations.
+- At this schema-deployment checkpoint, hosted Auth users and the remaining runtime exit checks were incomplete; the following milestone records the subsequent account provisioning. Do not call the hosted backend operational until all remaining exit checks pass.
+
+## September 14, 2026 — Five-business hosted development accounts
+
+- Provisioned ten hosted development Auth identities: one Client Admin and one Client Staff account for Kusina Manila, Salamat, Salo Table, Tambay Café, and Ihaw Buffet.
+- Added active tenant memberships and service-mode tenant shells for Salo, Tambay, and Ihaw. The original Kusina and Salamat passwords were rotated away from the repeatable local seed values.
+- All ten accounts have unique temporary password hashes and `must_change_password: true`; the plaintext handoff values exist only in a gitignored local environment file and were not added to Git or browser code.
+- Local and hosted database verification both report 5 businesses, 10 Auth users, 10 active memberships, 5 owners, and 5 order staff. All ten Auth records have password hashes and the first-login flag.
+- Full hosted menus for Salo, Tambay, and Ihaw, safe browser runtime configuration, real login checks, recovery/clear drills, private Realtime, Storage, and physical two-device synchronization remain incomplete. Production was not connected or changed.
+
+## September 14, 2026 — Hosted staging runtime and five-tenant synchronization
+
+- Configured the existing GitHub Pages workflow with the disposable development project URL and publishable browser key. No service-role or database secret is shipped to the browser.
+- Removed the browser-only override for Salo, Tambay, and Ihaw and published 21-item development catalogs for each. The catalog generator and generated SQL keep clean development resets reproducible.
+- Added device-authenticated, tenant-scoped Supabase Table RPCs and a staging browser transport for requests, joins, staff acceptance, customer reconciliation, cancellation, and cleanup. Local preview/LAN transports remain available.
+- Fixed authenticated Realtime setup to consume the restored user session token; interval, focus, online, and manual reconciliation remain authoritative fallbacks.
+- Hosted smoke evidence passed for all five businesses: public menu read, device registration, order creation, real admin login, correct tenant context, and authenticated order visibility. Salo additionally passed customer request → staff acceptance → customer reconciliation → cleanup.
+- Validation passed: clean local database rebuild, 40 pgTAP tests, local and hosted database lint, `npm run check`, `git diff --check`, and a Pages-shaped staging build with only safe public configuration.
+- GitHub Pages deployment `34911305544` succeeded. The live public configuration returned `environment: staging`, referenced the intended development project, contained no service-role/secret key, and all five QR routes returned HTTP 200. A rendered-browser reload of Kusina showed its hosted three-item available catalog rather than the former browser-local 24-item preview.
+- Remaining exit evidence: perform the same flows through two physical browsers/networks, exercise both clear restore slots through the UI, and verify private Realtime/Storage behavior. Production was not connected or changed.
+
+## September 14, 2026 — Stale preview-session cloud queue fix
+
+- Traced the reported Tambay phone order to hosted Supabase as `TC-0103`, received for Table 2 with a registered device. The order was not lost.
+- Fixed staging authentication so an old browser-preview session is discarded instead of silently selecting the local-storage data adapter. Hosted staging now requires a real Supabase account before showing a staff workspace.
+- Added a regression contract for rejecting preview sessions in staging. After deployment, existing dashboard browsers must reload and sign in as the appropriate hosted admin or staff user.
