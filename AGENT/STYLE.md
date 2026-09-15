@@ -36,6 +36,7 @@ This is the project’s visual source of truth. Read it before every UI, UX, lay
 
 ## Focused public-menu sheets
 
+- Keep public-menu sheet controls borderless at rest. Use tonal fill, spacing, blur, ambient shadow, and one quiet divider between peer rows; reserve visible outlines for keyboard focus or states that cannot be communicated by fill and text alone.
 - Use the shared focused bottom-sheet pattern for customer configuration, fulfillment, table choice, and payment choice. Keep roughly the top 10% of the previous menu context visible behind the sheet.
 - Consolidate an item's persistent options and add-ons in one scannable sheet. Lead with a large dish photo and an overlaid close control, keep Special request visible as a labeled text area, and use one bottom pill action that pairs Add to order or Update item with the calculated price.
 - Keep Review Order focused on items, optional order details, and a subtotal that is always visible. Ask quick-service customers to choose Pickup or Serve at table only after they proceed; a fulfillment tap advances directly to table choice when required, then payment.

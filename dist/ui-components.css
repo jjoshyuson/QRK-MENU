@@ -173,7 +173,7 @@ dialog.focused-sheet::backdrop{background:color-mix(in srgb,#111827 68%,transpar
   max-height:min(var(--component-focused-sheet-max-height),calc(100dvh - env(safe-area-inset-top)));
   margin:0;
   overflow:hidden;
-  border:1px solid color-mix(in srgb,var(--surface) 76%,var(--line) 24%);
+  border:0;
   border-bottom:0;
   border-radius:24px 24px 0 0;
   background:var(--surface);
@@ -192,8 +192,8 @@ dialog.focused-sheet::backdrop{background:color-mix(in srgb,#111827 68%,transpar
 .item-overview>strong{white-space:nowrap;font-size:14px}
 .option-group{margin:16px 0 0!important;padding:0!important;border:0!important}
 .option-group-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;padding:0 2px;font-size:14px}.option-group-heading span{color:var(--muted);font-size:12px;font-weight:500}
-.focused-choice-list{margin:0;padding:0;border:1px solid var(--line)!important;border-radius:14px!important;overflow:hidden;background:var(--surface)}
-.focused-choice-list label{display:flex;min-height:54px;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;border:0!important;border-bottom:1px solid var(--line)!important;background:transparent;cursor:pointer}
+.focused-choice-list{margin:0;padding:0;border:0!important;border-radius:14px!important;overflow:hidden;background:color-mix(in srgb,var(--surface) 62%,var(--surface-muted));box-shadow:0 8px 24px color-mix(in srgb,var(--ink) 7%,transparent)}
+.focused-choice-list label{display:flex;min-height:54px;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;border:0!important;border-bottom:1px solid color-mix(in srgb,var(--line) 72%,transparent)!important;background:transparent;cursor:pointer}
 .focused-choice-list label:last-child{border-bottom:0!important}
 .focused-choice-list label:has(input:checked){background:var(--brand-soft)}
 .focused-choice-list label:has(input:focus-visible){outline:var(--component-focus);outline-offset:-3px}
@@ -203,7 +203,7 @@ dialog.focused-sheet::backdrop{background:color-mix(in srgb,#111827 68%,transpar
 .focused-choice-list input:checked+i{border-color:var(--brand-500);background:var(--brand-500);color:var(--brand-foreground)}
 .focused-choice-list b{overflow-wrap:anywhere;font-size:14px}
 .focused-choice-list small{color:var(--muted);font-size:12px;white-space:nowrap}
-.fulfillment-choice-list button{display:flex;width:100%;align-items:center;justify-content:space-between;gap:16px;border:1px solid var(--line);background:var(--surface);text-align:left;cursor:pointer}
+.fulfillment-choice-list button{display:flex;width:100%;align-items:center;justify-content:space-between;gap:16px;border:0;background:var(--surface-muted);box-shadow:0 8px 24px color-mix(in srgb,var(--ink) 7%,transparent);text-align:left;cursor:pointer}
 .fulfillment-choice-list{display:grid;gap:10px}.fulfillment-choice-list button{min-height:72px;padding:12px 14px;border-radius:14px}.fulfillment-choice-list button>span:first-child{display:flex;flex-direction:column}.fulfillment-choice-list b{font-size:15px}.fulfillment-choice-list small{margin-top:2px;color:var(--muted)}.fulfillment-choice-list button>span:last-child{font-size:28px}.fulfillment-sheet .sheet-header{display:grid;grid-template-columns:44px minmax(0,1fr) 44px;text-align:center}.fulfillment-sheet .sheet-header h2{font-size:20px}.fulfillment-sheet .sheet-header .eyebrow{margin-bottom:3px}
 @keyframes focused-sheet-in{from{transform:translate3d(0,18px,0)}to{transform:translate3d(0,0,0)}}
 .badge,.section-chip,.order-state,.table-card-status,.demo-pill{

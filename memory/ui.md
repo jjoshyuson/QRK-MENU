@@ -75,4 +75,5 @@ See `docs/UI_AND_FLOWS.md` for detailed behavior and test cases.
 - QRK Quick customers browse first. Review Order always shows its subtotal; proceeding opens the fulfillment sheet, where Pickup advances directly to payment and Serve at table advances through the table picker to payment.
 - Item configuration consolidates persistent options and add-ons in one focused sheet. A large dish photo leads the sheet with an overlaid close control; Special request stays visible; the bottom pill pairs Add to order or Update item with the calculated price.
 - Item editing layers the item sheet over Review Order; update or cancel returns to the same cart and refreshed Edit control. Public sheets use transform-only mirrored entrance/exit motion, and close the dialog before clearing exit state to prevent a one-frame flash.
+- Public-menu sheet controls are borderless at rest: tonal fills, spacing, ambient shadow, and one quiet divider between peer rows provide grouping; visible outlines are reserved for keyboard focus or otherwise ambiguous states.
 - Table and buffet presets retain their dedicated table-entry flow and do not receive the Quick service-choice dialog.
