@@ -5,3 +5,22 @@
 @keyframes menu-sheet-in{from{transform:translateY(28px);opacity:.82}to{transform:none;opacity:1}}
 @keyframes menu-sheet-out{from{transform:none;opacity:1}to{transform:translateY(28px);opacity:0}}
 @media(prefers-reduced-motion:reduce){.sheet[open]>.sheet-card,.sheet.is-closing>.sheet-card{animation:none!important}}
+
+/* Public item detail keeps the established option cards while using a photo-led
+   layout and a single bottom add action. */
+.item-sheet .item-hero{position:relative;flex:0 0 auto;overflow:hidden;background:var(--surface-muted)}
+.item-sheet .item-hero>#item-photo{display:block;width:100%;height:clamp(220px,34dvh,320px);max-height:none;object-fit:cover;border-radius:0}
+.item-sheet .item-hero>#item-photo[hidden]{display:none}
+.item-sheet .item-hero:has(#item-photo[hidden]){min-height:72px}
+.item-sheet .item-hero>#cancel-item{position:absolute;z-index:2;top:14px;right:14px;background:color-mix(in srgb,var(--surface) 94%,transparent);box-shadow:0 4px 16px #11182724}
+.item-sheet .item-hero>#cancel-item svg{display:block;width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.item-sheet .item-overview{grid-template-columns:minmax(0,1fr) auto;align-items:start;margin-bottom:0;padding-bottom:14px}
+.item-sheet .item-overview h2{margin:0;font:700 24px/1.2 var(--font-menu-display)}
+.item-sheet .item-overview p{display:block;margin-top:6px;font-size:14px;-webkit-line-clamp:unset}
+.item-sheet .item-overview>strong{font-size:18px}
+.item-sheet .special-request-field{margin-top:16px;padding:0;border:0;border-radius:0}
+.item-sheet .special-request-field .field-label{margin:0 0 7px}
+.item-sheet .special-request-field textarea{min-height:78px}
+.item-add-footer{padding:12px 18px calc(12px + env(safe-area-inset-bottom))}
+.item-add-footer>#add-item{display:flex;width:100%;min-height:50px;align-items:center;justify-content:space-between;padding:10px 20px;border:1px solid color-mix(in srgb,var(--brand-500) 24%,var(--line));border-radius:999px;background:color-mix(in srgb,var(--surface) 78%,var(--brand-soft));color:var(--ink);font-weight:750;cursor:pointer}
+.item-add-footer>#add-item strong{font-size:16px}

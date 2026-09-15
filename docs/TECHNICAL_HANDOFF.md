@@ -76,7 +76,7 @@ Supabase is now the confirmed initial backend target, not a connected service. K
 
 The browser preview now models business-, category-, and item-scoped variations/add-ons explicitly. The provider schema and public-menu RPC already expose item option groups, but Menu Studio does not yet write these changes to Supabase; provider-backed authoring, validation and publication remain part of the hosted milestone.
 
-Public-menu selection flows share the `.focused-sheet` dialog contract. Item option state is drafted in memory in one consolidated sheet and is committed to the cart only through the top-right check control; cancelling leaves the cart unchanged and restores focus to the invoking control. Review Order presents the subtotal before fulfillment; quick-service fulfillment is chosen afterward and advances directly to payment.
+Public-menu selection flows share the `.focused-sheet` dialog contract. Item option state is drafted in memory in one consolidated, photo-led sheet and is committed to the cart only through its bottom Add to order or Update item action; cancelling leaves the cart unchanged and restores focus to the invoking control. Review Order presents the subtotal before fulfillment; quick-service fulfillment is chosen afterward and advances directly to payment.
 
 ## Production boundaries
 

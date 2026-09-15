@@ -73,5 +73,5 @@ See `docs/UI_AND_FLOWS.md` for detailed behavior and test cases.
 ## QRK Quick entry and checkout — September 13, 2026
 
 - QRK Quick customers browse first. Review Order always shows its subtotal; proceeding opens the fulfillment sheet, where Pickup advances directly to payment and Serve at table advances through the table picker to payment.
-- Item configuration consolidates persistent options and add-ons in one focused sheet. Top-left X cancels, top-right check commits, the calculated price stays informational at the bottom, and optional special-request text is collapsed until requested.
+- Item configuration consolidates persistent options and add-ons in one focused sheet. A large dish photo leads the sheet with an overlaid close control; Special request stays visible; the bottom pill pairs Add to order or Update item with the calculated price.
 - Table and buffet presets retain their dedicated table-entry flow and do not receive the Quick service-choice dialog.

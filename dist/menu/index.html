@@ -15,7 +15,7 @@
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/theme.css?v=1">
   <link rel="stylesheet" href="/pwa.css?v=1">
-  <link rel="stylesheet" href="/menu/menu.css?v=6">
+  <link rel="stylesheet" href="/menu/menu.css?v=7">
   <link rel="stylesheet" href="/menu/brand.css?v=2">
   <link rel="stylesheet" href="/menu/table-session.css?v=1">
   <link rel="stylesheet" href="/reference-theme.css?v=2">
@@ -24,12 +24,12 @@
   <link rel="stylesheet" href="/menu/payment-first.css?v=1">
   <link rel="stylesheet" href="/menu/order-confirmation.css?v=1">
   <link rel="stylesheet" href="/menu/quick-service.css?v=1">
-  <link rel="stylesheet" href="/ui-components.css?v=8">
+  <link rel="stylesheet" href="/ui-components.css?v=9">
   <script src="/global-theme.js"></script>
   <script src="/pwa.js" defer></script>
   <script src="/ui-components.js?v=2" defer></script>
   <script src="/data/qrk-config.local.js"></script>
-  <script type="module" src="/menu/menu.js?v=16"></script>
+  <script type="module" src="/menu/menu.js?v=17"></script>
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
@@ -90,15 +90,15 @@
   <div class="cart-bar hidden" id="cart-bar"><button type="button" id="open-cart"><span><b id="cart-count">0</b> <span id="cart-label">items</span></span><strong>View order · <span id="cart-subtotal">₱0</span></strong></button></div>
   <footer><span>Local development ordering</span><span class="powered-by">Powered by <img src="/assets/brand/qrk-wordmark.png" alt="QRK menu" width="98" height="19"></span><a href="/photo-credits.html">Sample photo credits</a></footer>
 
-  <dialog id="item-dialog" class="sheet focused-sheet item-sheet" aria-labelledby="item-step-title">
+  <dialog id="item-dialog" class="sheet focused-sheet item-sheet" aria-labelledby="item-name">
     <form method="dialog" class="sheet-card focused-sheet-card" id="item-form">
-      <header class="focused-sheet-header item-sheet-header"><button class="icon-button" id="cancel-item" type="button" aria-label="Cancel item changes"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"></path></svg></button><h2 id="item-step-title">Customize item</h2><button class="icon-button confirm-icon-button" id="add-item" value="default" aria-label="Add item to order"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 12.5 4 4 8-9"></path></svg></button></header>
+      <div class="item-hero"><img id="item-photo" alt="" width="640" height="480"><button class="icon-button" id="cancel-item" type="button" aria-label="Cancel item changes"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"></path></svg></button></div>
       <div class="sheet-content">
-        <div class="item-overview"><img id="item-photo" alt="" width="640" height="480"><div><h3 id="item-name"></h3><p id="item-description"></p></div><strong id="item-price"></strong></div>
+        <div class="item-overview"><div><h2 id="item-name"></h2><p id="item-description"></p></div><strong id="item-price"></strong></div>
         <div id="item-options"></div>
-        <div id="item-final-fields"><div class="special-request-drawer"><button class="special-request-trigger" id="special-request-trigger" type="button" aria-expanded="false" aria-controls="special-request-field"><span><b>Special request</b><small>Optional</small></span><span aria-hidden="true">＋</span></button><div class="special-request-field hidden" id="special-request-field"><label class="sr-only" for="item-notes">Special request</label><textarea id="item-notes" rows="2" maxlength="140" placeholder="Example: sauce on the side"></textarea></div></div><div class="quantity-row"><span>Quantity</span><div class="stepper"><button type="button" id="item-minus" aria-label="Decrease quantity">−</button><output id="item-quantity" aria-live="polite">1</output><button type="button" id="item-plus" aria-label="Increase quantity">+</button></div></div></div>
+        <div id="item-final-fields"><div class="special-request-field"><label class="field-label" for="item-notes">Special request <span>Optional</span></label><textarea id="item-notes" rows="2" maxlength="140" placeholder="Example: sauce on the side"></textarea></div><div class="quantity-row"><span>Quantity</span><div class="stepper"><button type="button" id="item-minus" aria-label="Decrease quantity">−</button><output id="item-quantity" aria-live="polite">1</output><button type="button" id="item-plus" aria-label="Increase quantity">+</button></div></div></div>
       </div>
-      <div class="sheet-action item-price-footer"><span>Total</span><strong id="item-total"></strong></div>
+      <div class="sheet-action item-add-footer"><button id="add-item" value="default"><span id="item-action-label">Add to order</span><strong id="item-total"></strong></button></div>
     </form>
   </dialog>
 

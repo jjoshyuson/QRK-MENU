@@ -12,11 +12,12 @@ const [html, menu, css, style, handoff] = await Promise.all([
 assert.match(html, /id="item-dialog" class="sheet focused-sheet item-sheet"/);
 assert.match(html, /id="fulfillment-dialog" class="sheet focused-sheet fulfillment-sheet"/);
 assert.match(html, /id="payment-dialog" class="sheet focused-sheet payment-sheet"/);
-assert.match(html, /item-sheet-header[^>]*>.*id="cancel-item"[^>]*>.*<svg.*<\/button>.*id="add-item"[^>]*>.*<svg.*<\/button>/s);
+assert.match(html, /class="item-hero".*id="item-photo".*id="cancel-item"/s);
 assert.match(html, /id="fulfillment-back"[^>]*aria-label="Back to review order"/);
 assert.doesNotMatch(html, /id="close-fulfillment"/);
-assert.match(html, /class="sheet-action item-price-footer".*id="item-total"/s);
-assert.match(html, /id="special-request-trigger".*aria-controls="special-request-field"/s);
+assert.match(html, /class="special-request-field".*id="item-notes"/s);
+assert.match(html, /class="sheet-action item-add-footer".*id="add-item".*id="item-total"/s);
+assert.doesNotMatch(html, /Customize item|special-request-trigger|confirm-icon-button/);
 assert.match(html, /<details class="checkout-details" id="checkout-details"><summary><span>Add name or order notes<\/span>/);
 assert.doesNotMatch(html, /focused-sheet[^>]*Add name or order notes/);
 
@@ -35,9 +36,7 @@ assert.match(menu, /focused-choice-list/);
 assert.match(css, /--component-focused-sheet-max-height:90dvh/);
 assert.match(css, /dialog\.focused-sheet\s*\{[^}]*margin:auto auto 0/s);
 assert.match(css, /focused-sheet-card\s*\{[^}]*safe-area-inset-top/s);
-assert.match(css, /item-price-footer\{[^}]*safe-area-inset-bottom/s);
-assert.match(css, /special-request-trigger\[aria-expanded="true"\]/);
-assert.match(css, /item-sheet-header #add-item\{[^}]*justify-content:center/);
+assert.match(menu, /item-action-label/);
 assert.match(css, /@media\(prefers-reduced-motion:reduce\)[\s\S]*focused-sheet-card\{animation:none!important\}/);
 assert.match(style, /Focused public-menu sheets/);
 assert.match(handoff, /Item option state is drafted in memory/);
