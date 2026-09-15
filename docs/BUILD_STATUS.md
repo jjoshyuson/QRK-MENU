@@ -972,6 +972,7 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - The staff Tables action reads `Customer paid` for the Open Tab preset. Confirming it closes the session, completes the table's active order rounds, and moves one combined tab snapshot into the customer's device history.
 - Customer confirmations identify the table rather than exposing each internal round number. Other Table presets retain `Table cleaned`.
 - Validation: `npm run check`, `git diff --check`, and a live Tambay browser flow passed. The live flow confirmed history stayed at 0 after submission, Open Tab remained active, and payment changed the customer state to one history entry with no active tab.
+- Follow-up hosted fix: customer refresh now uses a device-authenticated order-list RPC instead of the staff-only order query, and each new round records its table-session ID. This addresses the physical-phone regression where Open Tab disappeared immediately after `Send first order`.
 
 ## September 14, 2026 — Hosted development schema deployment
 

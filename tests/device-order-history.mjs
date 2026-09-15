@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-const [html, js, staff] = await Promise.all([
+const [html, js, staff, data] = await Promise.all([
   readFile(new URL('../dist/menu/index.html', import.meta.url), 'utf8'),
   readFile(new URL('../dist/menu/menu.js', import.meta.url), 'utf8'),
-  readFile(new URL('../dist/app.js', import.meta.url), 'utf8')
+  readFile(new URL('../dist/app.js', import.meta.url), 'utf8'),
+  readFile(new URL('../dist/data/qrk-data-service.js', import.meta.url), 'utf8')
 ]);
 
 assert.match(html, /id="order-history-control"[^>]*aria-controls="history-dialog"/);
@@ -22,5 +23,7 @@ assert.match(js, /localStorage\.removeItem\(HISTORY_KEY\)/);
 assert.match(js, /openTabEnabled\?'ADDED TO':'ORDER NUMBER'/);
 assert.match(staff, /openTab\?'Customer paid':'Table cleaned'/);
 assert.match(staff, /tableSessionService\.markPaid/);
+assert.match(data, /list_device_orders/);
+assert.match(js, /tableSessionId:session\?\.id\|\|null/);
 
 console.log('Device order history and Open Tab cleanup contract passed.');
