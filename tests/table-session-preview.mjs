@@ -24,6 +24,10 @@ assert.equal(host.current().participants[0].name,'Ana');
 await host.accept(pending.id);
 assert.equal(host.current().status,'active');
 
+await host.requestBill(pending.id);
+assert.equal(host.current().status,'bill_requested');
+await assert.rejects(()=>host.requestBill(pending.id),/no longer be requested/);
+
 globalThis.sessionStorage=storage();
 const guest=new QrkTableSessionService({businessSlug:'salo-table',profile});
 await guest.refresh();

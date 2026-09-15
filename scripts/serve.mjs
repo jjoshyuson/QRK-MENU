@@ -54,6 +54,7 @@ async function tableApi(req,res,pathname){
   if(['clean','cleaned','release','reopen'].includes(action)){session.status='cleaned';session.updatedAt=now;session.events.push({type:'table_cleaned',at:now});sendJson(res,200,session);return}
   if(action==='paid'){session.status='settled';session.updatedAt=now;session.events.push({type:'customer_paid',at:now});sendJson(res,200,session);return}
   if(action==='touch'){if(!session.participants.some(person=>person.deviceId===input.deviceId)){sendJson(res,403,{error:'This device is not part of the table session.'});return}session.lastActivityAt=now;session.updatedAt=now;delete session.inactivityWarningAt;delete session.inactivityExpiresAt;session.events.push({type:'session_activity',at:now});sendJson(res,200,session);return}
+  if(action==='bill'){if(session.status!=='active'){sendJson(res,409,{error:'The bill can no longer be requested'});return}session.status='bill_requested';session.updatedAt=now;session.events.push({type:'bill_requested',at:now});sendJson(res,200,session);return}
   if(action==='approve-join'){const join=session.joinRequests.find(item=>item.id===input.requestId&&item.status==='pending');if(!join){sendJson(res,404,{error:'Join request not found'});return}join.status='approved';join.resolvedAt=now;session.participants.push({id:crypto.randomUUID(),deviceId:join.deviceId,name:join.name,role:'guest',permission:input.permission||'direct',joinedAt:now});sendJson(res,200,session);return}
   sendJson(res,404,{error:'Unknown table action'});
 }

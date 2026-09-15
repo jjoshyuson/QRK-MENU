@@ -44,6 +44,14 @@
 - `npm run check` passes, including the new Host and Guest Access contract and expanded Table-session lifecycle. Browser checks passed at 390×844, 768×1024 and 1280×800 with no page-level overflow; Salo host acceptance, a second-device join, staff override and host-only checkout were exercised on port 4217.
 - This candidate is local only. The staff operations UI, hosted Supabase RPC parity, durable cross-device verification, and per-order host approval remain outside this public-menu slice. Nothing was deployed.
 
+## September 15, 2026 — PM / Bill and Closure candidate
+
+- Customer menus now derive the end-of-visit bill gate from `serviceProfile.layers.tabPayment` and the ordering lock from `serviceProfile.settings.billLocksOrdering`; no business-name checks were added.
+- The gate shows a running submitted total, keeps bill requests unavailable before the first submitted order, changes to a waiting state after a request, and blocks new ordering only when the saved profile requires it.
+- Customer closure messaging distinguishes confirmed payment (`settled`) from staff-cleared, cancelled, expired, or missing sessions. A paid visit is archived as one combined table snapshot; an unconfirmed closure never claims payment succeeded.
+- Browser-local and LAN preview adapters support the existing `bill_requested` session status. Hosted Supabase currently rejects the new customer `bill` action until the DA-owned `change_table_session` contract adds and authorizes it; the customer UI preserves the running bill and shows the RPC error instead of claiming success.
+- `npm run check` passes, including the new bill/closure contract and the existing table-session and Open Tab regressions. Local browser verification on port 4287 covered no-order disabled request, a submitted running bill, the bill-requested lock, confirmed-payment messaging, and absence of the gate in QRK Quick.
+
 ## September 15, 2026 — Public menu card content simplification
 
 - Removed browsing-card descriptions and the visible `Add` label while preserving every stored description, description-based search, and the full description in the item detail/order sheet.
