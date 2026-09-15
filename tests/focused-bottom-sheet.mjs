@@ -24,13 +24,15 @@ assert.doesNotMatch(html, /focused-sheet[^>]*Add name or order notes/);
 assert.doesNotMatch(menu, /itemOptionStep|renderItemStep/);
 assert.match(menu, /function renderItemOptions\(\)/);
 assert.match(menu, /function closeSheet\(dialog,after\)/);
+assert.match(menu, /dialog\.close\(\);dialog\.classList\.remove\('is-closing'\)/);
+assert.doesNotMatch(menu, /data-action==='edit'[^}]*cart-dialog'\)\.close/s);
 assert.match(menu, /cancel-item'\)\.addEventListener\('click',\(\)=>closeSheet/);
 assert.match(menu, /option-group-heading/);
 assert.doesNotMatch(menu, /renderItemOptions[\s\S]*requestAnimationFrame\(\(\)=>\(\$\('#item-options input/s);
 assert.match(menu, /itemOptionDraft=\(selectedItem\?\.options\|\|\[\]\)\.map/);
 assert.match(menu, /const options=itemOptionDraft\.flat\(\)/);
 assert.match(menu, /itemDialogInvoker=invoker/);
-assert.match(menu, /item-dialog'\)\.addEventListener\('close'.*invoker\.focus\(\)/s);
+assert.match(menu, /item-dialog'\)\.addEventListener\('close'.*fallback=.*data-action=.*edit.*target\.focus\(\)/s);
 assert.match(menu, /focused-choice-list/);
 
 assert.match(css, /--component-focused-sheet-max-height:90dvh/);

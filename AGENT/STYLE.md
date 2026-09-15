@@ -39,6 +39,7 @@ This is the project’s visual source of truth. Read it before every UI, UX, lay
 - Use the shared focused bottom-sheet pattern for customer configuration, fulfillment, table choice, and payment choice. Keep roughly the top 10% of the previous menu context visible behind the sheet.
 - Consolidate an item's persistent options and add-ons in one scannable sheet. Lead with a large dish photo and an overlaid close control, keep Special request visible as a labeled text area, and use one bottom pill action that pairs Add to order or Update item with the calculated price.
 - Keep Review Order focused on items, optional order details, and a subtotal that is always visible. Ask quick-service customers to choose Pickup or Serve at table only after they proceed; a fulfillment tap advances directly to table choice when required, then payment.
+- When an item is edited from Review Order, layer the item sheet above the still-open cart. Updating or cancelling must reveal the same Review Order state underneath and restore focus to that item's refreshed Edit control.
 - Keep alerts, errors, confirmations, order history, and the optional “Add name or order notes” review section in their established patterns unless a separate product decision changes them.
 - Preserve native dialog semantics, trapped focus, Escape dismissal where cancellation is allowed, focus restoration, safe-area padding, reduced-motion behavior, and zero horizontal overflow.
 

@@ -1,5 +1,10 @@
 # Build status
 
+## September 15, 2026 — Public sheet motion and cart edit continuity
+
+- Removed the one-frame dismissal flash by closing each dialog before clearing its closing-animation state. Public sheets now use transform-only, GPU-backed entrance and exit motion without opacity flicker or the previous cart-opening jerk.
+- Editing from Review Order now opens the item sheet above the still-open cart. Updating or cancelling returns to the same Review Order, refreshes its line and subtotal in place, and restores focus to the corresponding refreshed Edit control.
+
 ## September 15, 2026 — Floating View order height refinement
 
 - Increased only the public-menu floating View order control height by approximately 10%, from `2.3625rem` to `2.6rem`, while preserving its width, glass styling, typography, measured content clearance, and footer avoidance behavior.
