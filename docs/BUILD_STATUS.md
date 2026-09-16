@@ -1110,3 +1110,4 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - The menu accent overrides the customer menu only. Global Appearance remains authoritative for admin and Client Operations surfaces, with `#1683ff` as the default menu accent.
 - Applied migration `202609150003_business_cosmetics.sql` to the linked development project only. Production was not connected or changed.
 - Validation: `npm run check` passes, including the tenant-owned business cosmetics contract.
+- Refined the editor into one live miniature public-menu preview with the cover above an overlapping profile logo and a contextual menu surface. Controls now use the plain names Logo, Cover photo, Menu background, and Menu color instead of separate, ambiguous image preview blocks.

@@ -1,5 +1,7 @@
 # UI memory
 
+- Business cosmetics uses one miniature public-menu preview as its visual source of context: a 3:1 cover banner sits above an overlapping circular logo/profile, business identity, search/category treatment, and menu-item surface. Logo, Cover photo, Menu background, and Menu color are plain grouped controls below that preview; avoid separate per-setting preview cards and implementation terms such as “browsing surface image.”
+
 - September 15 focused public-menu sheets: item options and add-ons advance through one compact decision per step in a reusable bottom sheet, then finish on a separate quantity/special-request review step. Table and payment choices share the same bottom-anchored primitive. Sheets preserve menu context, restore focus on cancel/close, honor reduced motion and safe areas, and leave “Add name or order notes” as the existing inline disclosure.
 - Public-menu sheets translate from and to `100dvh`, fully below the viewport, rather than using a small pixel nudge. They use 600ms CSS entrance and 120ms exit travel; Review Order uses an explicit 540ms entrance and 107ms exit transform with a 9ms closing backdrop fade. Order History is document-anchored at the menu top so it scrolls away before the sticky search toolbar, while Open Tab remains viewport-fixed.
 - Review Order uses a consistent 90dvh card. Its content region flexes to fill available height and scrolls internally, leaving deliberate blank space for short orders while the header and bottom action remain at the card edges.

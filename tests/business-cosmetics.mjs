@@ -11,6 +11,10 @@ const [app,menu,data,brand,migration]=await Promise.all([
 
 assert.match(app,/Business cosmetics/);
 assert.match(app,/backgroundEntry\.hidden=true/);
+assert.match(app,/cosmetics-menu-preview/);
+assert.match(app,/cosmetics-preview-cover/);
+assert.match(app,/cosmetics-preview-logo/);
+assert.doesNotMatch(app,/Browsing surface image/);
 assert.match(app,/coverPhotoUrl/);
 assert.match(app,/saveBusinessCosmetics/);
 assert.match(menu,/getBusinessCosmetics/);
