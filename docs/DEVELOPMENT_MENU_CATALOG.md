@@ -1,10 +1,10 @@
 # Development menu catalog
 
-The staging catalog contains five fictional business menus. Each business has 10 categories and five products per category (50 products each; 250 total). `dist/data/qrk-development-menus.js` is the compact authored catalog used by browser fallback data and by `scripts/generate-hosted-development-catalog.mjs` to produce the hosted Supabase SQL.
+The staging catalog contains ten fictional development businesses. Each business has 10 categories and five products per category (50 products each; 500 total). Five authored menu catalogs in `dist/data/qrk-development-menus.js` are reused by service-configuration variants where appropriate; `DEVELOPMENT_CLIENTS` in `dist/data/qrk-service-presets.js` is the canonical business/profile/gate inventory consumed by browser fallback data and `scripts/generate-hosted-development-catalog.mjs`.
 
 ## Publishing and recovery
 
-- `supabase/development_catalog.sql` creates revision 2 as a draft, upserts its categories and items, archives the prior published revision, then publishes revision 2 in one database transaction.
+- `supabase/development_catalog.sql` upserts all ten business records, profiles, ordered service-gate configurations, revision-2 menus, categories and items, then publishes each revision in one database transaction.
 - Existing revisions and order-linked item snapshots are not deleted. Re-running the generated SQL is idempotent.
 - Supabase remains the source of truth for published category, product, description, price, and availability data in staging.
 

@@ -22,12 +22,20 @@ for (const variable of [
   '--component-primary-bg', '--component-danger-bg', '--component-button-radius',
   '--component-button-padding-inline', '--component-button-subtle-bg', '--component-button-disabled-bg',
   '--component-menu-card-bg', '--component-menu-card-border', '--component-menu-card-shadow',
+  '--component-sheet-bg', '--component-sheet-accent',
 ]) {
   assert.ok(css.includes(variable), `missing shared component variable: ${variable}`);
 }
-for (const family of ['.button', '.metric-card', '.item-row', '.staff-row', '.table-card', '.settings-row', '.dish', '.cart-item', '.platform-client-row']) {
+for (const family of ['.button', '.metric-card', '.item-row', '.staff-row', '.table-card', '.settings-row', '.qrk-sheet', '.qrk-sheet-field-list', '.qrk-choice-popover', '.dish', '.cart-item', '.platform-client-row']) {
   assert.ok(css.includes(family), `missing shared component rule: ${family}`);
 }
+assert.match(css,/\.qrk-choice-trigger\{[^}]*border:0/);
+assert.match(css,/\.qrk-choice-popover\{[^}]*border:0/);
+assert.match(css,/\.qrk-sheet-field-row input[^}]*background:transparent!important/);
+assert.match(css,/\.qrk-sheet-field-row input[^}]*border:0!important/);
+assert.match(css,/\.qrk-sheet-field-row:focus-within/);
+assert.match(css,/grid-template-columns:minmax\(0,1fr\) minmax\(0,1fr\)/);
+assert.match(css,/\.qrk-sheet-field-row \.qrk-choice-trigger\{[^}]*grid-template-columns:minmax\(0,1fr\) 18px/);
 
 const registry = await readFile(new URL('../dist/ui-components.js', import.meta.url), 'utf8');
 assert.match(registry, /dataset\.component\s*=/);
@@ -36,6 +44,8 @@ assert.match(registry, /dataset\.componentSource\s*=\s*['"]\/ui-components\.css/
 assert.match(registry, /MutationObserver/);
 assert.match(registry, /classList\.contains\('primary-button'\)/);
 assert.match(registry, /attributeFilter:\s*\['class', 'disabled'\]/);
+assert.match(registry, /window\.QrkSheet\s*=\s*\{create\}/);
+assert.match(registry, /event\.key === 'Escape'/);
 
 const serviceWorker = await readFile(new URL('../dist/sw.js', import.meta.url), 'utf8');
 assert.match(serviceWorker, /'\.\/ui-components\.css'/);

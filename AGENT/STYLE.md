@@ -18,6 +18,17 @@ This is the project’s visual source of truth. Read it before every UI, UX, lay
 - Avoid nested cards. Use dividers, alignment, type weight, and spacing to organize detail views.
 - Settings overview pages use one compact rounded list container. Each setting is a full-width row with a clean outline icon, a short left-aligned label, and a right-aligned chevron; separate outlined cards are not the QRK Settings pattern.
 
+## Material sheets and form editing
+
+- Decision-heavy forms open from a compact settings row into the shared QRK material sheet. Do not expose an entire multi-step form on the overview or stack dialogs and cards.
+- Desktop and tablet use an inset floating sheet with continuous rounded corners; phone attaches the same sheet to the bottom edge with rounded top corners. Preserve the underlying page behind a separate dimmed backdrop.
+- Use the standard sheet header: Close or Back on the left, a centered title, and Done on the right. Nested decisions replace the sheet body and return with Back; they never open a second sheet above the first.
+- Treat sheet edits as drafts. Done commits them to the parent workflow; Close, backdrop click, or Escape discards them and restores the prior values and focus.
+- Use shared grouped rows, checkbox choices, choice popovers, focused value editors, and ordered lists. Do not use browser-native select, date, or time popups when the shared QRK control exists.
+- Keep the charcoal material restrained: translucent dark surface, soft blur and ambient shadow, faint light separators, white primary text, muted secondary text, and one accent color. Avoid opaque gray slabs and decorative nesting.
+- Sheet controls and choice popovers are borderless at rest. Separate related values with one low-contrast internal divider and use tonal fill, spacing and blur for grouping; do not outline the trigger, popup, grouped section, every ordered row and its surrounding container at the same time. A visible outline is reserved for keyboard focus or a state that cannot be communicated by fill and text alone.
+- Editable sheet values live inside the same dark tonal grouped surface as their labels. Prefer a compact approximately 50/50 label-left/value-right grid with both columns left-aligned and one subtle divider between peers. Inputs, textareas and selects must merge into the row: never use a white fill, default browser bevel, independent rim or nested field card inside a material sheet. Preserve a visible caret and selection, keep compact multiline values within the row, and show an outline only for keyboard focus or validation/error state. Custom choice triggers pin a clearly sized chevron to the far-right of the value column; do not fall back to a native dropdown.
+
 ## Navigation and control grouping
 
 - Keep peer navigation choices on one line when three compact labels fit. In Orders, `Received`, `Preparing`, and `Tables` are exactly three equal columns in one uninterrupted row.

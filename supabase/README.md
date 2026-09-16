@@ -8,7 +8,7 @@ Migration `202609140001_order_sync_and_recovery.sql` adds registered browser ins
 
 The customer stores a random device UUID and secret. Only the secret digest reaches durable storage. This identifies a browser installation and prevents accidental namespace overlap; it is not a hardware identifier.
 
-This folder is the canonical, version-controlled database source of truth. The disposable hosted development project `qrk-menu-development` was linked and rebuilt from all five migrations plus `seed.sql` on September 14, 2026. Hosted development now has one Client Admin and one Client Staff Auth identity for each of the five preview businesses, with active tenant memberships and forced first-login password changes. Temporary credentials live only in a gitignored local file. Browser runtime configuration, two-device synchronization, Storage checks, and recovery drills remain unverified; production is separate and was not touched.
+This folder is the canonical, version-controlled database source of truth. The disposable hosted development project `qrk-menu-development` is synchronized through all ten repository migrations and the generated ten-client development catalog. Five of those clients have one Client Admin and one Client Staff Auth identity, active tenant memberships, and forced first-login password changes; the other five are catalog/service-profile fixtures without hosted login accounts. Temporary credentials live only in a gitignored local file. Physical two-device verification, Storage checks, and recovery drills remain incomplete; production is separate and was not touched.
 
 ## Structure
 
@@ -18,7 +18,7 @@ This folder is the canonical, version-controlled database source of truth. The d
 | `supabase/migrations/202609090001_initial_schema.sql` | Portable application tables, constraints, indexes, snapshots, and lifecycle guards |
 | `supabase/migrations/202609090002_supabase_security.sql` | Supabase Auth/RLS, narrow RPCs, Realtime Broadcast, and Storage policies |
 | `supabase/seed.sql` | Development-only Kusina Manila sample data; never production data |
-| `supabase/development_catalog.sql` | Generated development-only published catalogs for Salo, Tambay, and Ihaw |
+| `supabase/development_catalog.sql` | Generated development-only records, service gates, and published menus for all ten canonical clients |
 | `supabase/tests/001_security_and_orders.sql` | pgTAP coverage for public boundaries, tenant isolation, idempotency, and ordered staff transitions |
 | `supabase/migrations/202609120001_local_auth_and_permissions.sql` | Global usernames, tenant access context and granular staff permission enforcement |
 | `supabase/migrations/202609120002_service_mode_context.sql` | Quick/Table service mode in the tenant access context |
