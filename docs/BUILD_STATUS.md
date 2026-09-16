@@ -14,6 +14,12 @@
 - Replaced the heavy dark modal dimmer with a lightly tinted 12px background blur so the menu remains visible without flashing dark during sheet dismissal. The public-menu override now loads after the shared component layer and explicitly covers focused sheets, Quick Service, table entry, and Review Order, preventing their more-specific dark backdrop rules from winning. Strengthened the item-sheet action cascade so Add to order always uses the default blue `--brand-500` CTA and its matching foreground token.
 - Validation: focused motion and order-history contracts, `npm run check`, and `git diff --check` passed.
 
+## September 15, 2026 — Capability-aware Business Profile QR entries
+
+- Renamed the existing Menu link entry and drawer to Quick Menu QR without changing its customer-menu URL, download, copy, or internal preview behavior.
+- Business Profile now reads the current client's normalized saved `serviceModes`: Quick shows Quick Menu QR, Table shows Table QR codes, and combined clients show both. No business name or preset is special-cased, and the existing table-specific QR destinations remain unchanged.
+- Local review covered Kusina Nanay Mila's (Quick only), Salamat (Table only), and the browser-local Quick Table Review client (Quick + Table). The complete project check passed; this candidate remains local pending user review.
+
 ## September 15, 2026 — Consolidated Business Profile
 
 - Replaced the dense mixed Business Profile form with one compact overview for business details, logo, customer-menu background, and menu access. The general Menu link and mode-specific Table QR codes are separate destinations instead of sharing one dialog.
