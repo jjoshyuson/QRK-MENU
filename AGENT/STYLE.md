@@ -28,6 +28,7 @@ This is the project’s visual source of truth. Read it before every UI, UX, lay
 - Keep the charcoal material restrained: translucent dark surface, soft blur and ambient shadow, faint light separators, white primary text, muted secondary text, and one accent color. Avoid opaque gray slabs and decorative nesting.
 - Sheet controls and choice popovers are borderless at rest. Separate related values with one low-contrast internal divider and use tonal fill, spacing and blur for grouping; do not outline the trigger, popup, grouped section, every ordered row and its surrounding container at the same time. A visible outline is reserved for keyboard focus or a state that cannot be communicated by fill and text alone.
 - Sheet forms use one dark tonal grouped-field surface. Place compact labels on the left and editable values on the right, separate peer rows with one faint divider, and let the native input visually merge into the row. Never restore white/default-browser input rectangles inside a material sheet; stack a label and value only when long content genuinely needs the width.
+- Keep both halves of grouped-field rows left-aligned and approximately equal width, including compact multiline values. Use the shared scroll-snap number wheel for bounded counts instead of exposing desktop spinner arrows inside a material sheet.
 
 ## Navigation and control grouping
 

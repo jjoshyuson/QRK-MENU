@@ -10,8 +10,8 @@ const routeFiles = [
 
 for (const route of routeFiles) {
   const html = await readFile(new URL(route, import.meta.url), 'utf8');
-  assert.match(html, /href="\/ui-components\.css\?v=9"/, `${route} must load the shared visual source`);
-  assert.match(html, /src="\/ui-components\.js\?v=4"/, `${route} must load stable inspector labels`);
+  assert.match(html, /href="\/ui-components\.css\?v=10"/, `${route} must load the shared visual source`);
+  assert.match(html, /src="\/ui-components\.js\?v=6"/, `${route} must load stable inspector labels`);
 }
 
 const css = await readFile(new URL('../dist/ui-components.css', import.meta.url), 'utf8');
@@ -42,6 +42,9 @@ assert.match(registry, /window\.QrkSheet\s*=\s*\{create\}/);
 assert.match(registry, /event\.key === 'Escape'/);
 assert.match(registry, /window\.QrkChoice\s*=\s*\{enhance, sync, close\}/);
 assert.match(registry, /role="listbox"/);
+assert.match(registry, /window\.QrkNumberWheel\s*=\s*\{enhance, sync, close\}/);
+assert.match(registry, /qrk-number-wheel/);
+assert.match(css, /scroll-snap-type:y mandatory/);
 assert.match(css, /height:min\(90dvh,calc\(100dvh - 20px\)\)/);
 assert.match(css, /min-width:60px/);
 assert.match(css, /background:transparent!important;color:var\(--component-sheet-text\)!important/);
