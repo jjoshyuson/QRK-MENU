@@ -103,6 +103,9 @@
   overflow: visible;
   border: 0;
   border-radius: var(--component-radius-xl, 16px);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface) 88%, transparent), 0 6px 16px color-mix(in srgb, var(--ink) 10%, transparent);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .dish .photo { overflow: hidden; border-radius: 12px; }
@@ -390,9 +393,9 @@ dialog #add-item {
 #cart-dialog .cart-recommendations header { margin-bottom: 12px; }
 #cart-dialog .cart-recommendations h3 { margin: 0; font-size: 17px; }
 #cart-dialog .cart-recommendations header p { margin: 2px 0 0; color: var(--muted); font-size: 12px; }
-#cart-dialog .cart-recommendation-list { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(126px, 38%); gap: 10px; overflow-x: auto; padding: 2px 2px 8px; scroll-snap-type: inline proximity; scrollbar-width: none; }
+#cart-dialog .cart-recommendation-list { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(126px, 38%); gap: 10px; overflow-x: auto; overscroll-behavior-inline: none; padding: 2px 2px 8px; scroll-padding-inline: 2px; scroll-snap-type: inline mandatory; scrollbar-width: none; }
 #cart-dialog .cart-recommendation-list::-webkit-scrollbar { display: none; }
-#cart-dialog .cart-recommendation { min-width: 0; scroll-snap-align: start; }
+#cart-dialog .cart-recommendation { min-width: 0; scroll-snap-align: start; scroll-snap-stop: always; }
 #cart-dialog .cart-recommendation-photo { position: relative; overflow: visible; }
 #cart-dialog .cart-recommendation-photo img, #cart-dialog .cart-recommendation-photo > span { display: grid; width: 100%; aspect-ratio: 4 / 3; place-items: center; border-radius: 12px; object-fit: cover; background: var(--surface-muted); }
 #cart-dialog .cart-recommendation-photo button { position: absolute; right: 7px; bottom: 7px; display: grid; width: 28px; height: 28px; place-items: center; border: 0; border-radius: 50%; background: #fff; color: var(--brand-600); box-shadow: 0 3px 10px #1118272b; font-size: 20px; line-height: 1; cursor: pointer; }
