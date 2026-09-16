@@ -20,7 +20,7 @@
     ['.table-card', 'Table operations card'], ['.table-choice', 'Customer table choice'],
     ['.table-join-request', 'Table join request'], ['.settings-group,.qrk-settings-list', 'Settings list'],
     ['.settings-row', 'Settings row'], ['.theme-preset', 'Theme preset'],
-    ['.qrk-sheet', 'Material sheet'], ['.qrk-choice-popover', 'Choice popover'],
+    ['.qrk-sheet', 'Material sheet'], ['.qrk-sheet-field-list', 'Material field list'], ['.qrk-choice-popover', 'Choice popover'],
     ['.restaurant', 'Restaurant identity'], ['.dish', 'Customer dish card'],
     ['.active-order', 'Active order notice'], ['.desktop-order-card', 'Desktop order summary'],
     ['.cart-bar', 'Floating cart'], ['.open-tab-control', 'Open tab control'],
