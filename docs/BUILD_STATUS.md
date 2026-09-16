@@ -4,6 +4,7 @@
 
 - Doubled the public-menu sheet travel time so opening and closing movement reads clearly, while shortening the Review Order backdrop fade so it no longer lingers after the card begins moving.
 - Anchored Order History to the top of the menu document instead of the viewport so it scrolls away before the sticky search toolbar; the separate Open Tab control retains its fixed operational position.
+- Matched the item-sheet Add to order action to the shared primary CTA color. Touch and pen interaction suppress the browser's automatic dialog focus ring, while pressing Tab restores the visible keyboard focus indicator.
 - Validation: focused motion and order-history contracts, `npm run check`, and `git diff --check` passed.
 
 ## September 15, 2026 — Consolidated Business Profile

@@ -348,7 +348,8 @@ dialog .table-entry-card {
 }
 
 dialog #add-item {
-  background: color-mix(in srgb, var(--surface) 88%, var(--brand-500));
+  background: var(--component-primary-bg, var(--brand-500));
+  color: var(--component-primary-fg, var(--brand-foreground));
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }

@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-const [html, menu, css, style, handoff] = await Promise.all([
+const [html, menu, css, customerCss, style, handoff] = await Promise.all([
   readFile(new URL('../dist/menu/index.html', import.meta.url), 'utf8'),
   readFile(new URL('../dist/menu/menu.js', import.meta.url), 'utf8'),
   readFile(new URL('../dist/ui-components.css', import.meta.url), 'utf8'),
+  readFile(new URL('../dist/menu/cart-dock.css', import.meta.url), 'utf8'),
   readFile(new URL('../AGENT/STYLE.md', import.meta.url), 'utf8'),
   readFile(new URL('../docs/TECHNICAL_HANDOFF.md', import.meta.url), 'utf8'),
 ]);
@@ -39,6 +40,9 @@ assert.match(menu, /const options=itemOptionDraft\.flat\(\)/);
 assert.match(menu, /itemDialogInvoker=invoker/);
 assert.match(menu, /item-dialog'\)\.addEventListener\('close'.*fallback=.*data-action=.*edit.*target\.focus\(\)/s);
 assert.match(menu, /focused-choice-list/);
+assert.match(menu, /pointerType==='touch'\|\|event\.pointerType==='pen'/);
+assert.match(menu, /event\.key==='Tab'.*delete document\.body\.dataset\.inputModality/);
+assert.match(customerCss, /dialog #add-item\s*\{[^}]*background:\s*var\(--component-primary-bg, var\(--brand-500\)\)[^}]*color:\s*var\(--component-primary-fg, var\(--brand-foreground\)\)/s);
 
 assert.match(css, /--component-focused-sheet-max-height:90dvh/);
 assert.match(css, /dialog\.focused-sheet\s*\{[^}]*margin:auto auto 0/s);

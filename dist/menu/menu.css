@@ -5,6 +5,7 @@
 @keyframes menu-sheet-in{from{transform:translate3d(0,18px,0)}to{transform:translate3d(0,0,0)}}
 @keyframes menu-sheet-out{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,18px,0)}}
 @media(prefers-reduced-motion:reduce){.sheet[open]>.sheet-card,.sheet.is-closing>.sheet-card{animation:none!important}}
+body[data-input-modality="touch"] dialog :focus-visible{outline:0!important}
 
 /* Public item detail keeps the established option cards while using a photo-led
    layout and a single bottom add action. */

@@ -2,6 +2,7 @@
 
 - September 15 focused public-menu sheets: item options and add-ons advance through one compact decision per step in a reusable bottom sheet, then finish on a separate quantity/special-request review step. Table and payment choices share the same bottom-anchored primitive. Sheets preserve menu context, restore focus on cancel/close, honor reduced motion and safe areas, and leave “Add name or order notes” as the existing inline disclosure.
 - Public-menu sheets use 400ms CSS entrance and 360ms exit travel; Review Order uses matching explicit 360ms entrance and 320ms exit transforms with an 80ms backdrop fade. Order History is document-anchored at the menu top so it scrolls away before the sticky search toolbar, while Open Tab remains viewport-fixed.
+- Public-menu dialogs suppress automatic focus outlines only during touch or pen interaction; Tab immediately restores the keyboard-visible focus state. The item-sheet Add to order action uses the shared primary CTA background and foreground variables.
 
 - September 15 public-menu card refresh: customer dish cards use a restrained translucent standard material with an 84% surface fill, 16px backdrop blur, a thin adaptive rim, a one-pixel top highlight and quiet shadow. The shared component layer owns the treatment so production and `/components/` stay aligned; reduced-transparency mode restores an opaque surface.
 

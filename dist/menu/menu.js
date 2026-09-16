@@ -5,6 +5,9 @@ import { QrkTableSessionService } from '../data/qrk-table-session-service.js?v=3
 import { menuOptionGroupsForItem, readMenuState, subscribeMenuState } from '../data/qrk-menu-store.js';
 import { deviceScopedKey } from '../data/qrk-device-service.js';
 
+addEventListener('pointerdown',event=>{if(event.pointerType==='touch'||event.pointerType==='pen')document.body.dataset.inputModality='touch'},{passive:true});
+addEventListener('keydown',event=>{if(event.key==='Tab')delete document.body.dataset.inputModality});
+
 const businessSlug=new URLSearchParams(location.search).get('business')||'kusina-manila';
 const businessExperience=getBusinessExperience(businessSlug);
 const requestedService=new URLSearchParams(location.search).get('service');
