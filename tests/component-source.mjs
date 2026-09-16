@@ -10,8 +10,8 @@ const routeFiles = [
 
 for (const route of routeFiles) {
   const html = await readFile(new URL(route, import.meta.url), 'utf8');
-  assert.match(html, /href="\/ui-components\.css\?v=12"/, `${route} must load the shared visual source`);
-  assert.match(html, /src="\/ui-components\.js\?v=2"/, `${route} must load stable inspector labels`);
+  assert.match(html, /href="\/ui-components\.css\?v=14"/, `${route} must load the shared visual source`);
+  assert.match(html, /src="\/ui-components\.js\?v=10"/, `${route} must load stable inspector labels`);
 }
 
 const css = await readFile(new URL('../dist/ui-components.css', import.meta.url), 'utf8');
@@ -32,10 +32,7 @@ for (const family of ['.button', '.metric-card', '.item-row', '.staff-row', '.ta
 assert.match(css,/\.qrk-choice-trigger\{[^}]*border:0/);
 assert.match(css,/\.qrk-choice-popover\{[^}]*border:0/);
 assert.match(css,/\.qrk-sheet-field-row input[^}]*background:transparent!important/);
-assert.match(css,/\.qrk-sheet-field-row input[^}]*border:0!important/);
 assert.match(css,/\.qrk-sheet-field-row:focus-within/);
-assert.match(css,/grid-template-columns:minmax\(0,1fr\) minmax\(0,1fr\)/);
-assert.match(css,/\.qrk-sheet-field-row \.qrk-choice-trigger\{[^}]*grid-template-columns:minmax\(0,1fr\) 18px/);
 
 const registry = await readFile(new URL('../dist/ui-components.js', import.meta.url), 'utf8');
 assert.match(registry, /dataset\.component\s*=/);
@@ -46,6 +43,19 @@ assert.match(registry, /classList\.contains\('primary-button'\)/);
 assert.match(registry, /attributeFilter:\s*\['class', 'disabled'\]/);
 assert.match(registry, /window\.QrkSheet\s*=\s*\{create\}/);
 assert.match(registry, /event\.key === 'Escape'/);
+assert.match(registry, /window\.QrkChoice\s*=\s*\{enhance, sync, close\}/);
+assert.match(registry, /role="listbox"/);
+assert.match(registry, /window\.QrkNumberWheel\s*=\s*\{enhance, sync, close\}/);
+assert.match(registry, /active\.digits/);
+assert.match(css, /scroll-snap-type:y mandatory/);
+assert.match(registry, /navigator\.vibrate\(7\)/);
+assert.match(registry, /rotateX/);
+assert.match(css, /qrk-number-wheel-selection[^}]*border-top/);
+assert.doesNotMatch(css, /qrk-number-option\[aria-selected="true"\][^}]*font-size:48px/);
+assert.match(css, /height:min\(90dvh,calc\(100dvh - 20px\)\)/);
+assert.match(css, /min-width:60px/);
+assert.match(css, /background:transparent!important;color:var\(--component-sheet-text\)!important/);
+assert.match(css, /settings-form>label:focus-within/);
 
 const serviceWorker = await readFile(new URL('../dist/sw.js', import.meta.url), 'utf8');
 assert.match(serviceWorker, /'\.\/ui-components\.css'/);

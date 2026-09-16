@@ -117,3 +117,114 @@
   };
   window.QrkSheet = {create};
 })();
+
+/* Shared material choice popover. Native selects retain form values while the
+   visible control owns the accessible, theme-consistent interaction. */
+(() => {
+  let active = null;
+  const labelFor = select => select.getAttribute('aria-label') || select.closest('label')?.childNodes[0]?.textContent?.trim() || 'option';
+  const sync = (scope = document) => scope.querySelectorAll('select[data-qrk-choice]').forEach(select => {
+    const trigger = select.nextElementSibling;
+    if (trigger?.matches('[data-qrk-choice-trigger]')) trigger.querySelector('span').textContent = select.options[select.selectedIndex]?.text || 'Choose';
+  });
+  const close = ({restoreFocus = true} = {}) => {
+    if (!active) return;
+    const {layer, trigger} = active;
+    clearTimeout(active.scrollTimer);
+    cancelAnimationFrame(active.paintFrame);
+    layer.remove(); active = null;
+    if (restoreFocus) trigger.focus({preventScroll:true});
+  };
+  const open = (select, trigger) => {
+    close({restoreFocus:false});
+    const rect = trigger.getBoundingClientRect(), width = Math.min(360, Math.max(256, innerWidth * .72), innerWidth - 32), left = Math.max(16, Math.min(rect.right - width, innerWidth - width - 16)), estimated = Math.min(innerHeight * .48, select.options.length * 48 + 20), below = rect.bottom + 8, top = below + estimated <= innerHeight - 16 ? below : Math.max(16, rect.top - estimated - 8), layer = document.createElement('div');
+    layer.className = 'qrk-choice-layer';
+    layer.innerHTML = `<button class="qrk-choice-backdrop" type="button" aria-label="Close ${labelFor(select)} choices"></button><div class="qrk-choice-positioner" style="--choice-left:${left}px;--choice-top:${top}px"><div class="qrk-choice-popover" role="listbox" aria-label="Choose ${labelFor(select)}">${[...select.options].map(option => `<button type="button" role="option" aria-selected="${option.value === select.value}" data-qrk-choice-option="${option.index}"><i>${option.value === select.value ? '✓' : ''}</i><span>${option.text}</span></button>`).join('')}</div></div>`;
+    document.body.append(layer); active = {layer, select, trigger};
+    layer.querySelector('.qrk-choice-backdrop').onclick = () => close();
+    layer.querySelectorAll('[data-qrk-choice-option]').forEach(button => button.onclick = () => {
+      select.selectedIndex = Number(button.dataset.qrkChoiceOption);
+      select.dispatchEvent(new Event('change', {bubbles:true})); sync(select.parentElement || document); close();
+    });
+    layer.addEventListener('keydown', event => {
+      const choices = [...layer.querySelectorAll('[data-qrk-choice-option]')], at = choices.indexOf(document.activeElement);
+      if (event.key === 'Escape') { event.preventDefault(); close(); }
+      else if (event.key === 'ArrowDown') { event.preventDefault(); choices[(at + 1 + choices.length) % choices.length]?.focus(); }
+      else if (event.key === 'ArrowUp') { event.preventDefault(); choices[(at - 1 + choices.length) % choices.length]?.focus(); }
+    });
+    requestAnimationFrame(() => { layer.classList.add('open'); (layer.querySelector('[aria-selected="true"]') || layer.querySelector('[data-qrk-choice-option]'))?.focus(); });
+  };
+  const enhance = (scope = document) => scope.querySelectorAll('select:not([data-qrk-choice])').forEach(select => {
+    select.dataset.qrkChoice = ''; select.classList.add('qrk-native-select'); select.tabIndex = -1; select.setAttribute('aria-hidden', 'true');
+    const trigger = document.createElement('button');
+    trigger.type = 'button'; trigger.className = 'qrk-choice-trigger'; trigger.dataset.qrkChoiceTrigger = ''; trigger.setAttribute('aria-haspopup', 'listbox'); trigger.setAttribute('aria-label', `Choose ${labelFor(select)}`); trigger.innerHTML = '<span></span><i aria-hidden="true">⌄</i>';
+    trigger.onclick = event => { event.preventDefault(); event.stopPropagation(); open(select, trigger); };
+    trigger.onkeydown = event => { if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); open(select, trigger); } };
+    select.insertAdjacentElement('afterend', trigger);
+  });
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && active) { event.preventDefault(); event.stopImmediatePropagation(); close(); } }, true);
+  window.QrkChoice = {enhance, sync, close};
+})();
+
+/* Shared scroll-snap number wheel for bounded numeric sheet fields. */
+(() => {
+  let active = null;
+  const sync = (scope = document) => scope.querySelectorAll('input[data-qrk-number-ready]').forEach(input => {
+    const trigger = input.nextElementSibling;
+    if (trigger?.matches('[data-qrk-number-trigger]')) trigger.textContent = input.value;
+  });
+  const close = ({restoreFocus = true} = {}) => {
+    if (!active) return;
+    const {layer, trigger} = active;
+    clearTimeout(active.scrollTimer);
+    layer.remove(); active = null;
+    if (restoreFocus) trigger.focus({preventScroll:true});
+  };
+  const selectValue = (input, wheel, value, feedback = false) => {
+    const changed = Number(input.value) !== value;
+    input.value = String(value); input.dispatchEvent(new Event('input', {bubbles:true}));
+    wheel.querySelectorAll('.qrk-number-option').forEach(option => option.setAttribute('aria-selected', String(Number(option.dataset.value) === value)));
+    sync(input.parentElement || document);
+    if (changed && feedback && navigator.vibrate) navigator.vibrate(7);
+  };
+  const open = (input, trigger) => {
+    close({restoreFocus:false});
+    const min = Number(input.min || 0), max = Number(input.max || Math.max(min + 100, Number(input.value) + 50)), layer = document.createElement('div');
+    layer.className = 'qrk-number-layer';
+    layer.innerHTML = `<button class="qrk-number-backdrop" type="button" aria-label="Close number picker"></button><div class="qrk-number-wheel" role="listbox" aria-label="${input.closest('label')?.childNodes[0]?.textContent?.trim() || 'Choose number'}" tabindex="0">${Array.from({length:max-min+1}, (_, index) => min + index).map(value => `<button class="qrk-number-option" type="button" role="option" aria-selected="${value === Number(input.value)}" data-value="${value}">${value}</button>`).join('')}</div><div class="qrk-number-wheel-selection" aria-hidden="true"></div>`;
+    document.body.append(layer);
+    const wheel = layer.querySelector('.qrk-number-wheel'); active = {layer, input, trigger, wheel, scrollTimer:null, digits:'', digitTimer:null, ready:false};
+    const paint = (feedback = false) => {
+      const options = [...wheel.querySelectorAll('.qrk-number-option')], center = wheel.clientHeight / 2;
+      let nearest = options[0], nearestDistance = Infinity;
+      options.forEach(option => {
+        const distance = (option.offsetTop - wheel.scrollTop + option.offsetHeight / 2 - center) / option.offsetHeight, absolute = Math.abs(distance), angle = Math.max(-68, Math.min(68, distance * -22)), scale = Math.max(.76, 1 - absolute * .075);
+        option.style.transform = `rotateX(${angle}deg) scale(${scale})`;
+        option.style.opacity = String(Math.max(.18, 1 - absolute * .18));
+        if (absolute < nearestDistance) { nearest = option; nearestDistance = absolute; }
+      });
+      if (active?.ready) selectValue(input, wheel, Number(nearest.dataset.value), feedback);
+    };
+    const moveTo = (value, focus = false) => {
+      const bounded = Math.max(min, Math.min(max, value)), option = wheel.querySelector(`[data-value="${bounded}"]`);
+      selectValue(input, wheel, bounded, active?.ready); option?.scrollIntoView({block:'center',behavior:'smooth'}); if (focus) option?.focus({preventScroll:true}); requestAnimationFrame(() => paint());
+    };
+    wheel.addEventListener('scroll', () => { if (!active || active.layer !== layer || !active.ready) return; if (!active.paintFrame) active.paintFrame = requestAnimationFrame(() => { if (active?.layer === layer) { active.paintFrame = null; paint(true); } }); clearTimeout(active.scrollTimer); active.scrollTimer = setTimeout(() => { if (layer.isConnected) paint(); }, 90); }, {passive:true});
+    wheel.querySelectorAll('.qrk-number-option').forEach(option => option.onclick = () => { moveTo(Number(option.dataset.value)); close(); });
+    layer.querySelector('.qrk-number-backdrop').onclick = () => close();
+    layer.addEventListener('keydown', event => {
+      const value = Number(input.value), next = event.key === 'ArrowDown' ? value + 1 : event.key === 'ArrowUp' ? value - 1 : null;
+      if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); close(); }
+      else if (next !== null) { event.preventDefault(); moveTo(next, true); }
+      else if (/^\d$/.test(event.key)) { event.preventDefault(); clearTimeout(active.digitTimer); active.digits = `${active.digits}${event.key}`.replace(/^0+/, '') || '0'; const typed = Number(active.digits); if (typed >= min && typed <= max) moveTo(typed, true); active.digitTimer = setTimeout(() => { if (active) active.digits = ''; }, 700); }
+      else if (event.key === 'Enter') { event.preventDefault(); close(); }
+    });
+    requestAnimationFrame(() => { const selected = wheel.querySelector('[aria-selected="true"]'); wheel.style.scrollBehavior = 'auto'; selected?.scrollIntoView({block:'center'}); selected?.focus({preventScroll:true}); paint(); requestAnimationFrame(() => { if (active?.layer === layer) { wheel.style.scrollBehavior = ''; active.ready = true; paint(); } }); });
+  };
+  const enhance = (scope = document) => scope.querySelectorAll('#business-table-count:not([data-qrk-number-ready])').forEach(input => {
+    input.dataset.qrkNumberReady = ''; input.classList.add('qrk-number-native'); input.tabIndex = -1; input.setAttribute('aria-hidden', 'true');
+    const trigger = document.createElement('button'); trigger.type = 'button'; trigger.className = 'qrk-number-trigger'; trigger.dataset.qrkNumberTrigger = ''; trigger.setAttribute('aria-haspopup', 'listbox'); trigger.setAttribute('aria-label', 'Choose number of tables'); trigger.onclick = event => { event.preventDefault(); open(input, trigger); }; input.insertAdjacentElement('afterend', trigger);
+  });
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && active) { event.preventDefault(); event.stopImmediatePropagation(); close(); } }, true);
+  window.QrkNumberWheel = {enhance, sync, close};
+})();
