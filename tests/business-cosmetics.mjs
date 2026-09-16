@@ -1,12 +1,13 @@
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 
-const [app,menu,data,brand,migration]=await Promise.all([
+const [app,menu,data,brand,migration,styles]=await Promise.all([
   readFile(new URL('../dist/app.js',import.meta.url),'utf8'),
   readFile(new URL('../dist/menu/menu.js',import.meta.url),'utf8'),
   readFile(new URL('../dist/data/qrk-data-service.js',import.meta.url),'utf8'),
   readFile(new URL('../dist/data/qrk-brand-service.js',import.meta.url),'utf8'),
-  readFile(new URL('../supabase/migrations/202609150003_business_cosmetics.sql',import.meta.url),'utf8')
+  readFile(new URL('../supabase/migrations/202609150003_business_cosmetics.sql',import.meta.url),'utf8'),
+  readFile(new URL('../dist/dashboard.css',import.meta.url),'utf8')
 ]);
 
 assert.match(app,/Business cosmetics/);
@@ -15,6 +16,7 @@ assert.match(app,/cosmetics-menu-preview/);
 assert.match(app,/cosmetics-preview-cover/);
 assert.match(app,/cosmetics-preview-logo/);
 assert.doesNotMatch(app,/Browsing surface image/);
+assert.match(styles,/\.qrk-sheet \.cosmetics-color-row input\[type=color\]\{[^}]*width:44px;[^}]*height:44px;/);
 assert.match(app,/coverPhotoUrl/);
 assert.match(app,/saveBusinessCosmetics/);
 assert.match(menu,/getBusinessCosmetics/);
