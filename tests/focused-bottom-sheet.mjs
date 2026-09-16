@@ -44,7 +44,7 @@ assert.match(menu, /focused-choice-list/);
 assert.match(menu, /pointerType==='touch'\|\|event\.pointerType==='pen'/);
 assert.match(menu, /event\.key==='Tab'.*delete document\.body\.dataset\.inputModality/);
 assert.match(customerCss, /dialog #add-item\s*\{[^}]*background:\s*var\(--brand-500\) !important[^}]*color:\s*var\(--brand-foreground\) !important/s);
-assert.match(html, /ui-components\.css\?v=14[\s\S]*cart-dock\.css\?v=27/);
+assert.match(html, /ui-components\.css\?v=14[\s\S]*cart-dock\.css\?v=28/);
 assert.match(customerCss, /dialog\.focused-sheet::backdrop,[\s\S]*dialog\.quick-service-dialog::backdrop,[\s\S]*dialog\.table-entry::backdrop\s*\{[^}]*background:\s*rgba\(248, 250, 252, \.16\)[^}]*backdrop-filter:\s*blur\(6px\) saturate\(\.92\)/s);
 assert.match(customerCss, /dialog\.is-closing::backdrop\s*\{[^}]*backdrop-filter:\s*blur\(0\) saturate\(1\)/s);
 assert.match(customerCss, /#cart-dialog \.sheet-card\s*\{[^}]*height:\s*min\(90dvh,[^}]*max-height:\s*min\(90dvh,/s);
@@ -53,8 +53,13 @@ assert.match(html, /id="cart-recommendations"[^>]*aria-labelledby="cart-recommen
 assert.match(menu, /data-recommendation-id/);
 assert.match(menu, /String\(entry\.id\)===button\.dataset\.recommendationId/);
 assert.match(menu, /class="cart-item-photo"/);
+assert.match(menu, /class="cart-item-edit"[^>]*data-action="edit"/);
+assert.match(menu, /class="cart-item-remove"[^>]*data-action="remove"/);
+assert.match(menu, /cartSwipe=.*startX:event\.clientX/);
 assert.match(customerCss, /#cart-dialog\s*\{[^}]*width:\s*min\(900px, 100%\)[^}]*margin:\s*auto auto 0/s);
-assert.match(customerCss, /#cart-dialog \.cart-item\s*\{[^}]*grid-template-columns:\s*56px minmax\(0, 1fr\)[^}]*border-bottom:\s*1px solid var\(--line\)[^}]*border-radius:\s*0/s);
+assert.match(customerCss, /#cart-dialog \.cart-item-main\s*\{[^}]*grid-template-columns:\s*56px minmax\(0, 1fr\)[^}]*touch-action:\s*pan-y/s);
+assert.match(customerCss, /#cart-dialog \.cart-item \.stepper\s*\{[^}]*height:\s*30px/s);
+assert.match(customerCss, /#cart-dialog \.cart-recommendation-photo button\s*\{[^}]*width:\s*28px[^}]*background:\s*#fff[^}]*color:\s*var\(--brand-600\)/s);
 assert.match(customerCss, /#cart-dialog #submit-order\s*\{[^}]*min-height:\s*56px/s);
 
 assert.match(css, /--component-focused-sheet-max-height:90dvh/);
