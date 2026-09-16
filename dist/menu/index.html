@@ -24,12 +24,12 @@
   <link rel="stylesheet" href="/menu/order-confirmation.css?v=1">
   <link rel="stylesheet" href="/menu/quick-service.css?v=1">
   <link rel="stylesheet" href="/ui-components.css?v=14">
-  <link rel="stylesheet" href="/menu/cart-dock.css?v=26">
+  <link rel="stylesheet" href="/menu/cart-dock.css?v=27">
   <script src="/global-theme.js"></script>
   <script src="/pwa.js" defer></script>
   <script src="/ui-components.js?v=10" defer></script>
   <script src="/data/qrk-config.local.js"></script>
-  <script type="module" src="/menu/menu.js?v=27"></script>
+  <script type="module" src="/menu/menu.js?v=28"></script>
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
@@ -110,6 +110,7 @@
       <div class="sheet-content cart-content">
         <div id="cart-items"></div>
         <section class="cart-empty hidden" id="cart-empty"><div aria-hidden="true">○</div><h3>Your order is empty</h3><p>Add a favorite from the menu to get started.</p><button class="secondary-button" value="cancel">Browse menu</button></section>
+        <section class="cart-recommendations hidden" id="cart-recommendations" aria-labelledby="cart-recommendations-title"><header><h3 id="cart-recommendations-title">Popular with your order</h3><p>More favorites you might enjoy</p></header><div class="cart-recommendation-list" id="cart-recommendation-list"></div></section>
         <section id="checkout-fields">
           <fieldset class="fulfillment review-fulfillment hidden"><legend class="sr-only">Pickup or serve at table</legend><label><input type="radio" name="fulfillment" value="pickup"><span><b>Pickup</b><small>Collect at the counter</small></span></label><label><input type="radio" name="fulfillment" value="table"><span><b>Serve at table</b><small>Choose your table</small></span></label></fieldset>
           <input id="table-number" type="hidden">
