@@ -376,6 +376,7 @@ dialog #add-item {
 #cart-dialog .cart-item:first-child { padding-top: 0; }
 #cart-dialog .cart-item-main { position: relative; z-index: 1; display: grid; grid-template-columns: 56px minmax(0, 1fr); align-items: center; gap: 6px 12px; margin-top: 0; padding: 14px 0; background: var(--surface); touch-action: pan-y; user-select: none; transform: translateX(var(--swipe-offset, 0)); transition: transform 180ms ease; }
 #cart-dialog .cart-item.is-swiping .cart-item-main { transition: none; will-change: transform; }
+#cart-dialog .cart-item.is-rebounding .cart-item-main { transition: transform 220ms cubic-bezier(.2, .9, .25, 1.2); }
 #cart-dialog .cart-item.is-swiping-away .cart-item-main { transition-timing-function: cubic-bezier(.4, 0, .8, .2); }
 #cart-dialog .cart-item-edit { grid-row: 1 / span 2; align-self: start; width: 56px; height: 56px; padding: 0; border: 0; border-radius: 10px; background: transparent; cursor: pointer; }
 #cart-dialog .cart-item-photo { display: grid; width: 56px; height: 56px; place-items: center; border-radius: 10px; object-fit: cover; background: var(--surface-muted); color: var(--muted); font-weight: 800; }
