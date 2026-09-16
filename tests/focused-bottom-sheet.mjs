@@ -28,7 +28,7 @@ assert.match(menu, /function closeSheet\(dialog,after\)/);
 assert.match(menu, /dialog\.close\(\);dialog\.classList\.remove\('is-visible','is-closing'\)/);
 assert.match(menu, /function showCartDialog\(\)/);
 assert.match(menu, /card\?\.animate\(\[\{transform:'translate3d\(0,14px,0\)'\},\{transform:'translate3d\(0,0,0\)'\}\]/);
-assert.match(menu, /duration:360,easing:'cubic-bezier\(\.2,\.8,\.2,1\)'/);
+assert.match(menu, /duration:1080,easing:'cubic-bezier\(\.2,\.8,\.2,1\)'/);
 assert.match(menu, /duration:320,easing:'cubic-bezier\(\.4,0,\.8,\.2\)'/);
 assert.doesNotMatch(menu, /cart-dialog'\)\.showModal\(\)/);
 assert.doesNotMatch(menu, /data-action==='edit'[^}]*cart-dialog'\)\.close/s);
