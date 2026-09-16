@@ -331,12 +331,11 @@ footer {
   }
 }
 
-/* Dialogs cover an image-heavy menu. Static dimming avoids full-viewport live
-   blur/recompositing on low-end phones while preserving modal separation. */
+/* Keep the menu visibly present behind sheets without a heavy dark flash. */
 dialog::backdrop {
-  background: rgba(17, 24, 39, .72);
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  background: rgba(248, 250, 252, .16);
+  backdrop-filter: blur(12px) saturate(.85);
+  -webkit-backdrop-filter: blur(12px) saturate(.85);
 }
 
 dialog,
@@ -348,8 +347,8 @@ dialog .table-entry-card {
 }
 
 dialog #add-item {
-  background: var(--component-primary-bg, var(--brand-500));
-  color: var(--component-primary-fg, var(--brand-foreground));
+  background: var(--brand-500) !important;
+  color: var(--brand-foreground) !important;
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
@@ -383,7 +382,7 @@ dialog #add-item {
   will-change: transform;
 }
 #cart-dialog::backdrop { background: transparent; transition: background-color 9ms ease; }
-#cart-dialog.is-visible::backdrop { background: #11182780; }
+#cart-dialog.is-visible::backdrop { background: rgba(248, 250, 252, .16); }
 #cart-dialog.is-closing::backdrop { background: transparent; }
 #cart-dialog .review-fulfillment { display: grid; margin-top: 10px; }
 #cart-dialog .review-fulfillment label { min-width: 0; min-height: 78px; background: var(--surface, #fff); }
@@ -407,5 +406,5 @@ dialog #add-item {
 
 @media (prefers-reduced-motion: reduce) {
   #cart-dialog > .sheet-card { transform: none; }
-  #cart-dialog::backdrop { background: #11182780; transition: none; }
+  #cart-dialog::backdrop { background: rgba(248, 250, 252, .16); transition: none; }
 }

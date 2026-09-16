@@ -43,7 +43,7 @@ assert.match(menu, /item-dialog'\)\.addEventListener\('close'.*fallback=.*data-a
 assert.match(menu, /focused-choice-list/);
 assert.match(menu, /pointerType==='touch'\|\|event\.pointerType==='pen'/);
 assert.match(menu, /event\.key==='Tab'.*delete document\.body\.dataset\.inputModality/);
-assert.match(customerCss, /dialog #add-item\s*\{[^}]*background:\s*var\(--component-primary-bg, var\(--brand-500\)\)[^}]*color:\s*var\(--component-primary-fg, var\(--brand-foreground\)\)/s);
+assert.match(customerCss, /dialog #add-item\s*\{[^}]*background:\s*var\(--brand-500\) !important[^}]*color:\s*var\(--brand-foreground\) !important/s);
 
 assert.match(css, /--component-focused-sheet-max-height:90dvh/);
 assert.match(css, /dialog\.focused-sheet\s*\{[^}]*margin:auto auto 0/s);

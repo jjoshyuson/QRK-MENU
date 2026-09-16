@@ -36,7 +36,7 @@ assert.match(customerCss, /\.cart-bar button,[\s\S]*?#add-item\s*\{[^}]*border:\
 assert.match(customerCss, /#cart-dialog > \.sheet-card\s*\{[^}]*animation:\s*none !important[^}]*will-change:\s*transform/s);
 assert.doesNotMatch(customerCss, /#cart-dialog > \.sheet-card\s*\{[^}]*transition:\s*transform/s);
 assert.match(customerCss, /#cart-dialog\s*\{[^}]*overflow:\s*visible/s);
-assert.match(customerCss, /#cart-dialog\.is-visible::backdrop\s*\{[^}]*background:\s*#11182780/s);
+assert.match(customerCss, /#cart-dialog\.is-visible::backdrop\s*\{[^}]*background:\s*rgba\(248, 250, 252, \.16\)/s);
 assert.match(customerHtml, /<svg viewBox="0 0 24 24" fill="none">/);
 assert.doesNotMatch(customerJs, /card\.querySelector\('p'\)\.textContent=item\.description/);
 assert.match(customerJs, /\$\('#item-description'\)\.textContent=item\.description/);
