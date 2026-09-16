@@ -2,7 +2,7 @@
 
 ## September 15, 2026 — Public menu sheet motion refinement
 
-- Lengthened public-menu sheet entrance travel to three times the prior timing so the opening movement reads clearly, while reducing the Review Order closing backdrop fade to one-third of its prior duration so dismissal no longer lingers.
+- Public-menu sheets now travel from fully below the viewport instead of moving only 14–18 pixels, making both entrance and exit read as genuine bottom-sheet motion. Entrance timing remains deliberately slow for review, while the Review Order closing backdrop fade remains nearly immediate.
 - Anchored Order History to the top of the menu document instead of the viewport so it scrolls away before the sticky search toolbar; the separate Open Tab control retains its fixed operational position.
 - Matched the item-sheet Add to order action to the shared primary CTA color. Touch and pen interaction suppress the browser's automatic dialog focus ring, while pressing Tab restores the visible keyboard focus indicator.
 - Validation: focused motion and order-history contracts, `npm run check`, and `git diff --check` passed.

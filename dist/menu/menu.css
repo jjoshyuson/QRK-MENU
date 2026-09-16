@@ -2,8 +2,8 @@
 /* Public-menu sheets share a short vertical entrance and mirrored exit. */
 .sheet[open]>.sheet-card{will-change:transform;animation:menu-sheet-in 1200ms cubic-bezier(.2,.8,.2,1) both!important}
 .sheet.is-closing>.sheet-card{animation:menu-sheet-out 360ms cubic-bezier(.4,0,.8,.2) both!important}
-@keyframes menu-sheet-in{from{transform:translate3d(0,18px,0)}to{transform:translate3d(0,0,0)}}
-@keyframes menu-sheet-out{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,18px,0)}}
+@keyframes menu-sheet-in{from{transform:translate3d(0,100dvh,0)}to{transform:translate3d(0,0,0)}}
+@keyframes menu-sheet-out{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,100dvh,0)}}
 @media(prefers-reduced-motion:reduce){.sheet[open]>.sheet-card,.sheet.is-closing>.sheet-card{animation:none!important}}
 body[data-input-modality="touch"] dialog :focus-visible{outline:0!important}
 
