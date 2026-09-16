@@ -15,7 +15,7 @@ assert.match(imageService,/MAX_EDGE=960/);
 assert.match(imageService,/TARGET_BYTES=160\*1024/);
 assert.match(imageService,/indexedDB\.open/);
 assert.match(app,/optimizeLegacyMenuPhotos\(items\)/);
-assert.match(styles,/dialog::backdrop\s*\{[^}]*background:\s*rgba\(248, 250, 252, \.16\)[^}]*backdrop-filter:\s*blur\(12px\) saturate\(\.85\)/s);
+assert.match(styles,/dialog::backdrop\s*\{[^}]*background:\s*rgba\(248, 250, 252, \.16\)[^}]*backdrop-filter:\s*blur\(6px\) saturate\(\.92\)[^}]*backdrop-filter 90ms ease-out/s);
 assert.match(styles,/dialog #add-item\s*\{[^}]*backdrop-filter:\s*none/s);
 assert.match(styles,/dialog \.quick-service-card[\s\S]*transition-property:\s*none !important/);
 console.log('Customer menu performance contract passed.');
