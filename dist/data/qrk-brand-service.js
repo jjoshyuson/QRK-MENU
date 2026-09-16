@@ -3,6 +3,7 @@ const HEX=/^#[0-9a-f]{6}$/i;
 const DEFAULTS={businessName:"Kusina Nanay Mila's",businessSlug:'kusina-manila',primary:'#1683ff',nav:'#0b0c0e',logoDataUrl:'',coverPhotoUrl:'',tableCount:6};
 const DEFAULT_MENU_BACKGROUND=Object.freeze({image:'',surfaceOpacity:.72});
 const KUSINA_MENU_BACKGROUND='/assets/businesses/kusina-manila-menu-background.jpg';
+export const BUSINESS_IMAGE_BUDGETS=Object.freeze({logo:100*1024,cover:200*1024,background:200*1024});
 
 const clamp=value=>Math.max(0,Math.min(255,Math.round(value)));
 const hexToRgb=hex=>{const value=HEX.test(hex)?hex:DEFAULTS.primary;return[1,3,5].map(index=>parseInt(value.slice(index,index+2),16))};
@@ -31,6 +32,18 @@ export function applyBusinessBrand(brand,root=document.documentElement){
   const theme=themeValues(brand);root.style.setProperty('--brand-400',theme.primary);root.style.setProperty('--brand-500',theme.primary);root.style.setProperty('--brand-600',theme.primaryStrong);root.style.setProperty('--brand-soft',theme.primarySoft);root.style.setProperty('--brand-ring',theme.primaryRing);root.style.setProperty('--brand-foreground',theme.primaryForeground);root.style.setProperty('--nav',theme.nav);return theme
 }
 
+const blobToDataUrl=blob=>new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error('The optimized image could not be prepared.'));reader.readAsDataURL(blob)});
+const canvasBlob=(canvas,quality)=>new Promise(resolve=>canvas.toBlob(resolve,'image/webp',quality));
+async function encodeUnderBudget(source,maxBytes,minDimension){
+  let canvas=source;
+  while(true){
+    for(let quality=.9;quality>=.4;quality-=.08){const blob=await canvasBlob(canvas,quality);if(blob&&blob.size<=maxBytes)return blobToDataUrl(blob)}
+    const longest=Math.max(canvas.width,canvas.height);if(longest<=minDimension)break;
+    const scale=Math.max(minDimension/longest,.82),next=document.createElement('canvas');next.width=Math.max(1,Math.round(canvas.width*scale));next.height=Math.max(1,Math.round(canvas.height*scale));next.getContext('2d').drawImage(canvas,0,0,next.width,next.height);canvas=next;
+  }
+  throw new Error(`This image could not be optimized below ${Math.round(maxBytes/1024)} KB without becoming unclear. Try a simpler or smaller image.`);
+}
+
 export async function prepareBusinessLogo(file){
   if(!file||!/^image\/(png|jpeg|webp)$/i.test(file.type))throw new Error('Choose a PNG, JPG, or WebP logo.');
   if(file.size>2*1024*1024)throw new Error('Choose a logo smaller than 2 MB.');
@@ -39,7 +52,7 @@ export async function prepareBusinessLogo(file){
   const sample=document.createElement('canvas');sample.width=48;sample.height=48;const sampleContext=sample.getContext('2d',{willReadFrequently:true});sampleContext.drawImage(canvas,0,0,48,48);const pixels=sampleContext.getImageData(0,0,48,48).data,buckets=new Map();
   for(let index=0;index<pixels.length;index+=4){const r=pixels[index],g=pixels[index+1],b=pixels[index+2],a=pixels[index+3];if(a<100)continue;const max=Math.max(r,g,b),min=Math.min(r,g,b),saturation=max?((max-min)/max):0,brightness=(r+g+b)/3;if(saturation<.22||brightness<35||brightness>235)continue;const key=[r,g,b].map(value=>Math.round(value/32)*32).join(',');buckets.set(key,(buckets.get(key)||0)+1+saturation)}
   const winner=[...buckets.entries()].sort((a,b)=>b[1]-a[1])[0]?.[0],primary=winner?rgbToHex(winner.split(',').map(Number)):DEFAULTS.primary;
-  return{logoDataUrl:canvas.toDataURL('image/webp',.88),primary,nav:safeNav(mix(primary,[0,0,0],.72))};
+  return{logoDataUrl:await encodeUnderBudget(canvas,BUSINESS_IMAGE_BUDGETS.logo,160),primary,nav:safeNav(mix(primary,[0,0,0],.72))};
 }
 
 export async function prepareBusinessMenuBackground(file){
@@ -47,7 +60,7 @@ export async function prepareBusinessMenuBackground(file){
   if(file.size>6*1024*1024)throw new Error('Choose a background smaller than 6 MB.');
   const bitmap=await createImageBitmap(file),scale=Math.min(1,1800/Math.max(bitmap.width,bitmap.height)),canvas=document.createElement('canvas');
   canvas.width=Math.max(1,Math.round(bitmap.width*scale));canvas.height=Math.max(1,Math.round(bitmap.height*scale));const context=canvas.getContext('2d');context.drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close?.();
-  return canvas.toDataURL('image/webp',.82);
+  return encodeUnderBudget(canvas,BUSINESS_IMAGE_BUDGETS.background,480);
 }
 
 export const QRK_BRAND_STORAGE_KEY=STORAGE_KEY;

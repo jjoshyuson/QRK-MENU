@@ -1111,3 +1111,4 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Applied migration `202609150003_business_cosmetics.sql` to the linked development project only. Production was not connected or changed.
 - Validation: `npm run check` passes, including the tenant-owned business cosmetics contract.
 - Refined the editor into one live miniature public-menu preview with the cover above an overlapping profile logo and a contextual menu surface. Controls now use the plain names Logo, Cover photo, Menu background, and Menu color instead of separate, ambiguous image preview blocks.
+- Business image preparation now enforces hard optimized-upload budgets: 100 KB for logos and 200 KB for cover/background images. WebP quality is reduced first, dimensions are stepped down only when necessary, and an asset is rejected with guidance if it cannot meet the cap without crossing the clarity floor.
