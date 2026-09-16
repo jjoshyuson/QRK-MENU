@@ -10,8 +10,8 @@ const routeFiles = [
 
 for (const route of routeFiles) {
   const html = await readFile(new URL(route, import.meta.url), 'utf8');
-  assert.match(html, /href="\/ui-components\.css\?v=12"/, `${route} must load the shared visual source`);
-  assert.match(html, /src="\/ui-components\.js\?v=9"/, `${route} must load stable inspector labels`);
+  assert.match(html, /href="\/ui-components\.css\?v=14"/, `${route} must load the shared visual source`);
+  assert.match(html, /src="\/ui-components\.js\?v=10"/, `${route} must load stable inspector labels`);
 }
 
 const css = await readFile(new URL('../dist/ui-components.css', import.meta.url), 'utf8');
@@ -21,15 +21,18 @@ for (const variable of [
   '--component-focus', '--component-disabled-opacity', '--component-card-bg',
   '--component-primary-bg', '--component-danger-bg', '--component-button-radius',
   '--component-button-padding-inline', '--component-button-subtle-bg', '--component-button-disabled-bg',
+  '--component-menu-card-bg', '--component-menu-card-border', '--component-menu-card-shadow',
   '--component-sheet-bg', '--component-sheet-accent',
 ]) {
   assert.ok(css.includes(variable), `missing shared component variable: ${variable}`);
 }
-for (const family of ['.button', '.metric-card', '.item-row', '.staff-row', '.table-card', '.settings-row', '.qrk-sheet', '.qrk-choice-popover', '.dish', '.cart-item', '.platform-client-row']) {
+for (const family of ['.button', '.metric-card', '.item-row', '.staff-row', '.table-card', '.settings-row', '.qrk-sheet', '.qrk-sheet-field-list', '.qrk-choice-popover', '.dish', '.cart-item', '.platform-client-row']) {
   assert.ok(css.includes(family), `missing shared component rule: ${family}`);
 }
 assert.match(css,/\.qrk-choice-trigger\{[^}]*border:0/);
 assert.match(css,/\.qrk-choice-popover\{[^}]*border:0/);
+assert.match(css,/\.qrk-sheet-field-row input[^}]*background:transparent!important/);
+assert.match(css,/\.qrk-sheet-field-row:focus-within/);
 
 const registry = await readFile(new URL('../dist/ui-components.js', import.meta.url), 'utf8');
 assert.match(registry, /dataset\.component\s*=/);
@@ -45,6 +48,10 @@ assert.match(registry, /role="listbox"/);
 assert.match(registry, /window\.QrkNumberWheel\s*=\s*\{enhance, sync, close\}/);
 assert.match(registry, /active\.digits/);
 assert.match(css, /scroll-snap-type:y mandatory/);
+assert.match(registry, /navigator\.vibrate\(7\)/);
+assert.match(registry, /rotateX/);
+assert.match(css, /qrk-number-wheel-selection[^}]*border-top/);
+assert.doesNotMatch(css, /qrk-number-option\[aria-selected="true"\][^}]*font-size:48px/);
 assert.match(css, /height:min\(90dvh,calc\(100dvh - 20px\)\)/);
 assert.match(css, /min-width:60px/);
 assert.match(css, /background:transparent!important;color:var\(--component-sheet-text\)!important/);

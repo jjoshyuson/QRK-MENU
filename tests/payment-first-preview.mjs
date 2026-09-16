@@ -10,9 +10,7 @@ const [html, menu, staff, presets, businesses] = await Promise.all([
 ]);
 
 assert.match(html, /id="payment-dialog".*aria-label="Choose payment method"/);
-assert.match(html, /id="quick-service-dialog".*aria-label="Choose dine in or takeout"/s);
-assert.match(html, /data-fulfillment-choice="table"><span aria-hidden="true">🍽️<\/span><b>Dine in<\/b>/s);
-assert.match(html, /data-fulfillment-choice="pickup"><span aria-hidden="true">🛍️<\/span><b>Takeout<\/b>/s);
+assert.doesNotMatch(html, /id="quick-service-dialog"|Dine in 🍽️|Takeout 🛍️/s);
 assert.doesNotMatch(html, /quick-service-title|Choose your food, then enter your table|Order ahead and collect it at the counter/);
 assert.doesNotMatch(html, /How would you like to pay\?|payment-title/);
 assert.match(html, /class="payment-card" id="pay-at-counter"/);
@@ -21,20 +19,17 @@ assert.match(html, /<span class="payment-emoji" aria-hidden="true">💵<\/span><
 assert.match(html, /<span class="payment-badge">Soon<\/span><span class="payment-emoji" aria-hidden="true">💳<\/span><b>Cashless<\/b>/);
 assert.doesNotMatch(html, /Choose a payment method to continue your order|No payment is taken in this pilot|payment-total/);
 assert.match(menu, /paymentTiming==='upfront'&&serviceProfile\.settings\.packageMode==='none'/);
-assert.match(menu, /initializeQuickServiceChoice\(\)/);
-assert.match(menu, /businessExperience\.serviceMode!==['"]quick['"]\)return/);
-assert.match(menu, /quick-service-dialog'\)\.addEventListener\('cancel',event=>event\.preventDefault\(\)\)/);
+assert.doesNotMatch(menu, /initializeQuickServiceChoice|quick-service-dialog/);
 assert.match(menu, /paymentStatus:paymentMethod==='counter'\?'due_at_counter'/);
-assert.match(menu, /if\(paymentFirst\)\$\('#submit-order'\)\.textContent='Confirm payment'/);
 assert.match(menu, /paymentFirst\?openPaymentStep\(\):createOrder\(\)/);
-assert.match(html, /class="fulfillment review-fulfillment".*value="pickup".*<b>Pickup<\/b>.*value="table".*<b>Serve at table<\/b>/s);
+assert.match(html, /class="fulfillment review-fulfillment hidden".*value="pickup".*<b>Pickup<\/b>.*value="table".*<b>Serve at table<\/b>/s);
 assert.doesNotMatch(html, /id="choose-fulfillment"|id="fulfillment-summary"|id="fulfillment-popup-choices"|data-review-fulfillment/);
 assert.match(html, /class="sheet-action cart-total hidden" id="cart-action"/);
 assert.match(menu, /if\(reviewChoiceRequired\)\{document\.querySelectorAll\('input\[name="fulfillment"\]'\)\.forEach\(input=>input\.checked=false\)/);
-assert.match(menu, /function updateCheckoutActionVisibility\(\).*reviewChoiceRequired&&!hasChoice/s);
-assert.match(menu, /\.review-fulfillment'\)\.addEventListener\('change'.*input\.value==='table'.*fulfillment-dialog/s);
-assert.match(menu, /\.review-fulfillment'\)\.addEventListener\('click'.*input\?\.value==='table'.*!selectedReviewTable/s);
-assert.match(menu, /function closeTableSelection\(\).*tableChoice\.checked=false.*updateCheckoutActionVisibility/s);
+assert.match(menu, /function updateCheckoutActionVisibility\(\).*cart-action.*!cart\.length/s);
+assert.match(menu, /function showFulfillmentChoices\(\)/);
+assert.match(menu, /fulfillment-choice-list'\)\.addEventListener\('click'/);
+assert.match(menu, /function closeTableSelection\(\).*cart-dialog.*showModal/s);
 assert.match(menu, /fulfillment-dialog'\)\.addEventListener\('cancel',event=>\{event\.preventDefault\(\);closeTableSelection\(\)\}\)/);
 assert.match(menu, /function openTableMenu\(session\).*setFulfillmentChoice\('table'\)/);
 assert.match(menu, /\$\('#pay-at-counter'\)\.addEventListener\('click',\(\)=>createOrder\('counter'\)\)/);

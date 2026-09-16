@@ -5,7 +5,7 @@ const syntheticEmail=username=>`${username.trim().toLowerCase()}@accounts.qrkmen
 export class QrkAuthService{
   constructor(config){this.config=config;this.session=this.readSession()}
   get backendEnabled(){return Boolean(this.config.supabaseUrl&&this.config.supabasePublishableKey)}
-  get enabled(){return Boolean(this.config.authEnabled&&(this.backendEnabled||this.config.environment==='preview'))}
+  get enabled(){return Boolean(this.session?.preview||(this.config.authEnabled&&(this.backendEnabled||this.config.environment==='preview')))}
   readSession(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch{return null}}
   saveSession(session){this.session=session;if(session)localStorage.setItem(SESSION_KEY,JSON.stringify(session));else localStorage.removeItem(SESSION_KEY)}
   headers(token=this.session?.access_token){return{'content-type':'application/json','apikey':this.config.supabasePublishableKey,...(token?{authorization:`Bearer ${token}`}:{})}}

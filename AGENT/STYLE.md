@@ -27,8 +27,8 @@ This is the project’s visual source of truth. Read it before every UI, UX, lay
 - Use shared grouped rows, checkbox choices, choice popovers, focused value editors, and ordered lists. Do not use browser-native select, date, or time popups when the shared QRK control exists.
 - Keep the charcoal material restrained: translucent dark surface, soft blur and ambient shadow, faint light separators, white primary text, muted secondary text, and one accent color. Avoid opaque gray slabs and decorative nesting.
 - Sheet controls and choice popovers are borderless at rest. Separate related values with one low-contrast internal divider and use tonal fill, spacing and blur for grouping; do not outline the trigger, popup, grouped section, every ordered row and its surrounding container at the same time. A visible outline is reserved for keyboard focus or a state that cannot be communicated by fill and text alone.
-- Sheet forms use one dark tonal grouped-field surface. Place compact labels on the left and editable values on the right, separate peer rows with one faint divider, and let the native input visually merge into the row. Never restore white/default-browser input rectangles inside a material sheet; stack a label and value only when long content genuinely needs the width.
-- Keep both halves of grouped-field rows left-aligned and approximately equal width, including compact multiline values. Bounded counts use the shared scroll-snap number wheel with touch scrolling, option tapping, arrow keys, and buffered digit entry; keep min/max validation on the hidden source field.
+- Editable sheet values live inside the same dark tonal grouped surface as their labels. Prefer a compact approximately 50/50 label-left/value-right grid with both columns left-aligned and one subtle divider between peers. Inputs, textareas and selects merge into the row without a native bevel, independent rim, or nested field card. Keep both halves left-aligned, pin custom-choice chevrons to the value column's far-right edge, and preserve visible focus and validation states.
+- Bounded counts use the shared cylindrical scroll-snap number wheel with a fixed center selection band, uniform type size, touch scrolling, option tapping, arrow keys, buffered digit entry, and subtle supported-device haptics as values cross center. Keep min/max validation on the hidden source field.
 
 ## Navigation and control grouping
 
@@ -45,6 +45,16 @@ This is the project’s visual source of truth. Read it before every UI, UX, lay
 - Maintain readable contrast in both global theme modes and honor reduced-motion and reduced-transparency preferences.
 - Prevent horizontal page scrolling. Let grids reflow deliberately when labels or touch targets would become cramped.
 - Validate representative phone, tablet, and desktop widths, keyboard access, text reflow, and both light and dark modes when applicable.
+
+## Focused public-menu sheets
+
+- Keep public-menu sheet controls borderless at rest. Use tonal fill, spacing, blur, ambient shadow, and one quiet divider between peer rows; reserve visible outlines for keyboard focus or states that cannot be communicated by fill and text alone.
+- Use the shared focused bottom-sheet pattern for customer configuration, fulfillment, table choice, and payment choice. Keep roughly the top 10% of the previous menu context visible behind the sheet.
+- Consolidate an item's persistent options and add-ons in one scannable sheet. Lead with a large dish photo and an overlaid close control, keep Special request visible as a labeled text area, and use one bottom pill action that pairs Add to order or Update item with the calculated price.
+- Keep Review Order focused on items, optional order details, and a subtotal that is always visible. Ask quick-service customers to choose Pickup or Serve at table only after they proceed; a fulfillment tap advances directly to table choice when required, then payment.
+- When an item is edited from Review Order, layer the item sheet above the still-open cart. Updating or cancelling must reveal the same Review Order state underneath and restore focus to that item's refreshed Edit control.
+- Keep alerts, errors, confirmations, order history, and the optional “Add name or order notes” review section in their established patterns unless a separate product decision changes them.
+- Preserve native dialog semantics, trapped focus, Escape dismissal where cancellation is allowed, focus restoration, safe-area padding, reduced-motion behavior, and zero horizontal overflow.
 
 ## Implementation discipline
 

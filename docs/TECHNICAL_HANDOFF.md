@@ -4,6 +4,8 @@
 
 `dist/ui-components.css` owns `.qrk-settings-list`, `.qrk-sheet`, `.qrk-sheet-backdrop`, grouped sheet sections, and QRK choice-popover styling. `dist/ui-components.js` exposes `window.QrkSheet.create({sheet, backdrop, onDismiss})`, which owns presentation, backdrop/Escape dismissal, focus containment, focus restoration, motion timing, and reduced-motion behavior. Product routes continue to own field rendering, validation, and draft data; they pass the commit result through `onDismiss` and must restore their snapshot when `commit` is false. Nested editors replace the current sheet body and use Back navigation rather than constructing another modal layer.
 
+Material-sheet text fields use `.qrk-sheet-field-list` and `.qrk-sheet-field-row`. Labels and values share one tonal surface in an approximately 50/50, left-aligned grid; peer rows use one faint divider, and native inputs remain transparent and borderless at rest—including autofill—while focus and invalid state stay visible. Shared choice triggers pin their chevron to the value column's far-right edge.
+
 ## Current implementation
 
 The app remains static HTML, CSS and vanilla JavaScript with no third-party JavaScript dependencies. Node is used by the local preview and validation scripts. A canonical Supabase/PostgreSQL foundation is now versioned under `supabase/`, but no hosted API or database is connected.
@@ -79,6 +81,8 @@ Supabase is now the confirmed initial backend target, not a connected service. K
 | Order line (later) | Item/variation references plus immutable ordered name/price/options snapshot |
 
 The browser preview now models business-, category-, and item-scoped variations/add-ons explicitly. The provider schema and public-menu RPC already expose item option groups, but Menu Studio does not yet write these changes to Supabase; provider-backed authoring, validation and publication remain part of the hosted milestone.
+
+Public-menu selection flows share the `.focused-sheet` dialog contract. Item option state is drafted in memory in one consolidated, photo-led sheet and is committed to the cart only through its bottom Add to order or Update item action; cancelling leaves the cart unchanged and restores focus to the invoking control. Review Order presents the subtotal before fulfillment; quick-service fulfillment is chosen afterward and advances directly to payment.
 
 ## Production boundaries
 

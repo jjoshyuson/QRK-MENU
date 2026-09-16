@@ -20,7 +20,7 @@
     ['.table-card', 'Table operations card'], ['.table-choice', 'Customer table choice'],
     ['.table-join-request', 'Table join request'], ['.settings-group,.qrk-settings-list', 'Settings list'],
     ['.settings-row', 'Settings row'], ['.theme-preset', 'Theme preset'],
-    ['.qrk-sheet', 'Material sheet'], ['.qrk-choice-popover', 'Choice popover'],
+    ['.qrk-sheet', 'Material sheet'], ['.qrk-sheet-field-list', 'Material field list'], ['.qrk-choice-popover', 'Choice popover'],
     ['.restaurant', 'Restaurant identity'], ['.dish', 'Customer dish card'],
     ['.active-order', 'Active order notice'], ['.desktop-order-card', 'Desktop order summary'],
     ['.cart-bar', 'Floating cart'], ['.open-tab-control', 'Open tab control'],
@@ -131,6 +131,7 @@
     if (!active) return;
     const {layer, trigger} = active;
     clearTimeout(active.scrollTimer);
+    cancelAnimationFrame(active.paintFrame);
     layer.remove(); active = null;
     if (restoreFocus) trigger.focus({preventScroll:true});
   };
@@ -179,27 +180,36 @@
     layer.remove(); active = null;
     if (restoreFocus) trigger.focus({preventScroll:true});
   };
-  const selectValue = (input, wheel, value) => {
+  const selectValue = (input, wheel, value, feedback = false) => {
+    const changed = Number(input.value) !== value;
     input.value = String(value); input.dispatchEvent(new Event('input', {bubbles:true}));
     wheel.querySelectorAll('.qrk-number-option').forEach(option => option.setAttribute('aria-selected', String(Number(option.dataset.value) === value)));
     sync(input.parentElement || document);
+    if (changed && feedback && navigator.vibrate) navigator.vibrate(7);
   };
   const open = (input, trigger) => {
     close({restoreFocus:false});
     const min = Number(input.min || 0), max = Number(input.max || Math.max(min + 100, Number(input.value) + 50)), layer = document.createElement('div');
     layer.className = 'qrk-number-layer';
-    layer.innerHTML = `<button class="qrk-number-backdrop" type="button" aria-label="Close number picker"></button><div class="qrk-number-wheel-selection" aria-hidden="true"></div><div class="qrk-number-wheel" role="listbox" aria-label="${input.closest('label')?.childNodes[0]?.textContent?.trim() || 'Choose number'}" tabindex="0">${Array.from({length:max-min+1}, (_, index) => min + index).map(value => `<button class="qrk-number-option" type="button" role="option" aria-selected="${value === Number(input.value)}" data-value="${value}">${value}</button>`).join('')}</div>`;
+    layer.innerHTML = `<button class="qrk-number-backdrop" type="button" aria-label="Close number picker"></button><div class="qrk-number-wheel" role="listbox" aria-label="${input.closest('label')?.childNodes[0]?.textContent?.trim() || 'Choose number'}" tabindex="0">${Array.from({length:max-min+1}, (_, index) => min + index).map(value => `<button class="qrk-number-option" type="button" role="option" aria-selected="${value === Number(input.value)}" data-value="${value}">${value}</button>`).join('')}</div><div class="qrk-number-wheel-selection" aria-hidden="true"></div>`;
     document.body.append(layer);
     const wheel = layer.querySelector('.qrk-number-wheel'); active = {layer, input, trigger, wheel, scrollTimer:null, digits:'', digitTimer:null, ready:false};
-    const nearest = () => {
-      const center = wheel.getBoundingClientRect().top + wheel.clientHeight / 2, options = [...wheel.querySelectorAll('.qrk-number-option')], option = options.reduce((best, item) => Math.abs(item.getBoundingClientRect().top + item.offsetHeight / 2 - center) < Math.abs(best.getBoundingClientRect().top + best.offsetHeight / 2 - center) ? item : best);
-      selectValue(input, wheel, Number(option.dataset.value));
+    const paint = (feedback = false) => {
+      const options = [...wheel.querySelectorAll('.qrk-number-option')], center = wheel.clientHeight / 2;
+      let nearest = options[0], nearestDistance = Infinity;
+      options.forEach(option => {
+        const distance = (option.offsetTop - wheel.scrollTop + option.offsetHeight / 2 - center) / option.offsetHeight, absolute = Math.abs(distance), angle = Math.max(-68, Math.min(68, distance * -22)), scale = Math.max(.76, 1 - absolute * .075);
+        option.style.transform = `rotateX(${angle}deg) scale(${scale})`;
+        option.style.opacity = String(Math.max(.18, 1 - absolute * .18));
+        if (absolute < nearestDistance) { nearest = option; nearestDistance = absolute; }
+      });
+      if (active?.ready) selectValue(input, wheel, Number(nearest.dataset.value), feedback);
     };
     const moveTo = (value, focus = false) => {
       const bounded = Math.max(min, Math.min(max, value)), option = wheel.querySelector(`[data-value="${bounded}"]`);
-      selectValue(input, wheel, bounded); option?.scrollIntoView({block:'center'}); if (focus) option?.focus({preventScroll:true});
+      selectValue(input, wheel, bounded, active?.ready); option?.scrollIntoView({block:'center',behavior:'smooth'}); if (focus) option?.focus({preventScroll:true}); requestAnimationFrame(() => paint());
     };
-    wheel.addEventListener('scroll', () => { if (!active || active.layer !== layer || !active.ready) return; clearTimeout(active.scrollTimer); active.scrollTimer = setTimeout(() => { if (layer.isConnected) nearest(); }, 80); }, {passive:true});
+    wheel.addEventListener('scroll', () => { if (!active || active.layer !== layer || !active.ready) return; if (!active.paintFrame) active.paintFrame = requestAnimationFrame(() => { if (active?.layer === layer) { active.paintFrame = null; paint(true); } }); clearTimeout(active.scrollTimer); active.scrollTimer = setTimeout(() => { if (layer.isConnected) paint(); }, 90); }, {passive:true});
     wheel.querySelectorAll('.qrk-number-option').forEach(option => option.onclick = () => { moveTo(Number(option.dataset.value)); close(); });
     layer.querySelector('.qrk-number-backdrop').onclick = () => close();
     layer.addEventListener('keydown', event => {
@@ -209,7 +219,7 @@
       else if (/^\d$/.test(event.key)) { event.preventDefault(); clearTimeout(active.digitTimer); active.digits = `${active.digits}${event.key}`.replace(/^0+/, '') || '0'; const typed = Number(active.digits); if (typed >= min && typed <= max) moveTo(typed, true); active.digitTimer = setTimeout(() => { if (active) active.digits = ''; }, 700); }
       else if (event.key === 'Enter') { event.preventDefault(); close(); }
     });
-    requestAnimationFrame(() => { const selected = wheel.querySelector('[aria-selected="true"]'); selected?.scrollIntoView({block:'center'}); selected?.focus({preventScroll:true}); requestAnimationFrame(() => { if (active?.layer === layer) active.ready = true; }); });
+    requestAnimationFrame(() => { const selected = wheel.querySelector('[aria-selected="true"]'); wheel.style.scrollBehavior = 'auto'; selected?.scrollIntoView({block:'center'}); selected?.focus({preventScroll:true}); paint(); requestAnimationFrame(() => { if (active?.layer === layer) { wheel.style.scrollBehavior = ''; active.ready = true; paint(); } }); });
   };
   const enhance = (scope = document) => scope.querySelectorAll('#business-table-count:not([data-qrk-number-ready])').forEach(input => {
     input.dataset.qrkNumberReady = ''; input.classList.add('qrk-number-native'); input.tabIndex = -1; input.setAttribute('aria-hidden', 'true');

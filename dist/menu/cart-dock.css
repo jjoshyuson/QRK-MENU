@@ -103,8 +103,6 @@
   overflow: visible;
   border: 0;
   border-radius: var(--component-radius-xl, 16px);
-  background: color-mix(in srgb, var(--surface, #fff) 94%, transparent);
-  box-shadow: 0 8px 24px #1118270d;
 }
 
 .dish .photo { overflow: hidden; border-radius: 12px; }
@@ -200,7 +198,7 @@
 #add-item {
   position: relative;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--ink) 16%, var(--surface) 84%);
+  border: 0;
   border-radius: 999px;
   background: color-mix(in srgb, var(--surface) 88%, var(--brand-500));
   background: linear-gradient(
@@ -243,7 +241,7 @@
 }
 
 .cart-bar b {
-  border: 1px solid color-mix(in srgb, var(--brand-500) 40%, var(--line));
+  border: 0;
   background: color-mix(in srgb, var(--brand-500) 16%, var(--surface));
   box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface) 78%, transparent);
 }
@@ -375,8 +373,16 @@ dialog #add-item {
   #cart-dialog .cart-item-controls { grid-template-columns: auto 44px 52px; }
 }
 
-#cart-dialog { width: min(900px, calc(100% - 24px)); margin: auto; }
+#cart-dialog { width: min(900px, calc(100% - 24px)); margin: auto; overflow: visible; }
 #cart-dialog .sheet-card { max-height: min(820px, calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom))); border-radius: 22px; }
+#cart-dialog > .sheet-card {
+  animation: none !important;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+#cart-dialog::backdrop { background: transparent; transition: background-color 160ms ease; }
+#cart-dialog.is-visible::backdrop { background: #11182780; }
+#cart-dialog.is-closing::backdrop { background: transparent; }
 #cart-dialog .review-fulfillment { display: grid; margin-top: 10px; }
 #cart-dialog .review-fulfillment label { min-width: 0; min-height: 78px; background: var(--surface, #fff); }
 #cart-dialog .review-fulfillment label:has(input:focus-visible) { outline: 3px solid color-mix(in srgb, var(--brand-500) 34%, transparent); outline-offset: 2px; }
@@ -395,4 +401,9 @@ dialog #add-item {
 
 @media (max-width: 350px) {
   #cart-dialog .review-fulfillment { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cart-dialog > .sheet-card { transform: none; }
+  #cart-dialog::backdrop { background: #11182780; transition: none; }
 }

@@ -1,5 +1,9 @@
 # UI memory
 
+- September 15 focused public-menu sheets: item options and add-ons advance through one compact decision per step in a reusable bottom sheet, then finish on a separate quantity/special-request review step. Table and payment choices share the same bottom-anchored primitive. Sheets preserve menu context, restore focus on cancel/close, honor reduced motion and safe areas, and leave “Add name or order notes” as the existing inline disclosure.
+
+- September 15 public-menu card refresh: customer dish cards use a restrained translucent standard material with an 84% surface fill, 16px backdrop blur, a thin adaptive rim, a one-pixel top highlight and quiet shadow. The shared component layer owns the treatment so production and `/components/` stay aligned; reduced-transparency mode restores an opaque surface.
+
 - September 15 Quick Review Order refinement: when both fulfillment capabilities are enabled, `Pickup` and `Serve at table` are immediate semantic cards, neither is preselected, and the primary action stays absent until selection. Active Table/Open Tab sessions omit this choice and use the established table; Review Order is centered in the usable viewport.
 
 - Desktop is a management workspace with a customer preview.
@@ -10,6 +14,7 @@
 - Owner tools, client/admin tools and the customer menu share one installable PWA shell. Use `touch-action: manipulation` to prevent accidental double-tap zoom while preserving pinch zoom and editable text selection; validate safe areas in installed mode.
 - `dist/ui-components.css` is the reusable visual source of truth for owner, Client Admin, Client Staff, QRK Admin, customer-menu UI and the unlinked `/components/` catalog. `dist/ui-components.js` adds stable `data-component`, `data-variant` and `data-component-source` labels for Inspect Element, including dynamically rendered elements. Keep shared variables, registry names and catalog states synchronized; landing-page components are excluded.
 - Material-sheet controls and choice popovers are borderless at rest. Use tonal fill, spacing and blur to group content, with one faint internal divider between peers; outlines are for keyboard focus or otherwise ambiguous state, not for every nested layer.
+- Material-sheet text fields share the row's dark tonal surface in an approximately 50/50 grid: label left, editable value left-aligned, transparent input, one peer divider, and no white/default-browser field rectangle. Choice chevrons stay pinned to the value column's far-right edge.
 - Shared standard/customer buttons use a pill silhouette. Primary uses the active global accent/foreground, outline uses a neutral border, subtle uses the quiet surface, danger is red text-only, and disabled is muted; change the `--component-button-*` variables in `dist/ui-components.css` rather than restyling individual routes.
 - The approved operational typography is Inter throughout the interface, with Source Serif 4 reserved for customer-facing restaurant and menu headings. The two roles are tokens in `dist/ui-components.css`; do not reintroduce route-specific DM Sans or Manrope assignments. The approved interface direction is neutral-first: near-black navigation, white surfaces and a restrained gray scale. Teal/cyan is a complementary brand color used for primary actions, active navigation, selection, focus and small live-state accents—not large backgrounds.
 - Shared Webflow-like color variables live in `dist/theme.css`. Change the neutral scale or `--brand-400`/`--brand-500`/`--brand-600` there before adding route-specific color literals.
@@ -69,6 +74,9 @@
 See `docs/UI_AND_FLOWS.md` for detailed behavior and test cases.
 ## QRK Quick entry and checkout — September 13, 2026
 
-- QRK Quick businesses that enable both fulfillment modes show a blocking 80vw × 80vh popup before menu browsing. It contains only two large stacked cards: `Dine in 🍽️` and `Takeout 🛍️`; no heading, helper copy, arrows, or subtitles.
-- The initial choice seeds the checkout selection. Order review labels the choices Pickup and Serve at table, shows a table-number field only for table service, leads with subtotal, and continues through Confirm payment to payment method.
+- QRK Quick customers browse first. Review Order always shows its subtotal; proceeding opens the fulfillment sheet, where Pickup advances directly to payment and Serve at table advances through the table picker to payment.
+- Item configuration consolidates persistent options and add-ons in one focused sheet. A large dish photo leads the sheet with an overlaid close control; Special request stays visible; the bottom pill pairs Add to order or Update item with the calculated price.
+- Item editing layers the item sheet over Review Order; update or cancel returns to the same cart and refreshed Edit control. Public sheets use transform-only mirrored entrance/exit motion, and close the dialog before clearing exit state to prevent a one-frame flash.
+- Review Order uses explicit Web Animations transform keyframes so its card keeps stable geometry while the backdrop fades independently; every entry path must use `showCartDialog()` so native dialog paint timing cannot reintroduce a one-frame kick.
+- Public-menu sheet controls are borderless at rest: tonal fills, spacing, ambient shadow, and one quiet divider between peer rows provide grouping; visible outlines are reserved for keyboard focus or otherwise ambiguous states.
 - Table and buffet presets retain their dedicated table-entry flow and do not receive the Quick service-choice dialog.

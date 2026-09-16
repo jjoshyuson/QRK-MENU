@@ -10,7 +10,7 @@
 - Matched the current iOS-style presentation more closely: all shared sheets use a 90% viewport detent, a darker system-charcoal material, a correctly sized Done pill, and a non-clipping title column. Restored the intended icon/label/chevron grid after the shared-list selector had overridden the Business Profile and Settings rows.
 - Replaced white/default browser fields inside material sheets with shared dark tonal grouped rows: compact labels sit left, editable values sit right, long textareas stack within the same surface, and a faint internal divider plus focus bar provides hierarchy without nested input rims. Removed legacy in-body submit buttons now represented by the sheet header’s Done action.
 - Replaced browser-native select popups inside shared sheets with the reusable dark material choice popover. The native select still owns form values, while the visible trigger provides selected-state checks, arrow-key movement, outside/Escape dismissal, and focus return without exposing a white operating-system menu.
-- Tightened Business Details to equal-width, left-aligned label/value columns, including compact address and description rows, and raised the dining-table guidance contrast. Table count uses the shared 1–200 scroll-snap wheel with touch scrolling, option tapping, arrow-key movement, buffered digit entry, and correct sheet draft rollback.
+- Tightened Business Details to equal-width, left-aligned label/value columns, including compact address and description rows, and raised the dining-table guidance contrast. Table count uses the shared 1–200 cylindrical scroll-snap wheel with a fixed center selection band, uniform type size, depth/fade treatment, touch scrolling, option tapping, arrow-key movement, buffered digit entry, supported-device haptics, and correct sheet draft rollback.
 - Validation: focused contracts, `npm run check`, and `git diff --check` passed. Live Salamat browser checks used a fresh preview on port 4198 and confirmed the 20-table phone grid, five-column 1280×800 grid, Table 7 QR and exact `?table=7` link, Escape discard with focus restoration, and nested Settings Back navigation.
 
 ## September 15, 2026 — Public menu card content simplification
@@ -1070,3 +1070,15 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Added 22 reachable, category-matched Unsplash development placeholders with lightweight URL transforms. These must be reviewed or replaced with business-owned/licensed photography before production.
 - Validation passed: all 22 image URLs returned HTTP 200; `npm run check` passed; and live Supabase verification returned 10 published categories and 50 published products for each of the five business slugs.
 - GitHub Pages deployment `34990445807` succeeded. A rendered live Tambay Café check showed all 10 category controls, all 50 orderable items, and the matching coffee imagery loaded from the deployed catalog.
+# PM / Public Menu / Card Refresh — September 15, 2026
+
+- Replaced the flat opaque customer dish-card surface with a shared restrained translucent material: adaptive 84% surface fill, subtle blur, thin rim, small highlight and quiet depth.
+- Kept the whole-card ordering button, content hierarchy, two-column phone layout, three-column tablet/desktop layouts, sold-out behavior and existing ordering flows unchanged.
+- Added an opaque reduced-transparency fallback and synchronized the `/components/` dish-card specimen and component contract test.
+- Verified `npm run check` and live layouts at 390×844, 820×900 and 1440×900; each breakpoint had the expected grid and zero horizontal overflow.
+# PM / Cards / Focused Bottom Sheets — September 15, 2026
+
+- Added one reusable `.focused-sheet` public-menu primitive with native modal semantics, bottom anchoring, 90dvh maximum height, safe-area padding, reduced-motion support, grouped checkmarked rows, and paired Cancel/Confirm actions.
+- Item ordering now presents each option group as its own focused step, followed by a separate quantity/special-request review step; cancelling leaves the cart unchanged and returns focus to the invoking menu card.
+- Table and payment selections share the focused-sheet surface. Alerts, order history, confirmation, and the inline “Add name or order notes” disclosure remain unchanged.
+- Compared against the current GitHub Pages menu before implementation. Verified the full `npm run check` suite plus live item/add-on nesting, totals, confirmation, Escape cancellation, focus restoration, and zero horizontal overflow at 390×844, 430×932, and 1440×900.

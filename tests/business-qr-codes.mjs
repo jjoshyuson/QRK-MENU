@@ -5,8 +5,8 @@ import {customerMenuUrl,testQrImageUrl} from '../dist/data/qrk-qr-code.js';
 
 const pageUrl='https://jjoshyuson.github.io/QRK-MENU/';
 const menuUrls=DEVELOPMENT_CLIENTS.map(client=>customerMenuUrl(pageUrl,client.slug));
-assert.equal(menuUrls.length,5);
-assert.equal(new Set(menuUrls).size,5);
+assert.equal(menuUrls.length,DEVELOPMENT_CLIENTS.length);
+assert.equal(new Set(menuUrls).size,DEVELOPMENT_CLIENTS.length);
 for(const [index,menuUrl] of menuUrls.entries()){
   assert.equal(menuUrl,`${pageUrl}menu/?business=${DEVELOPMENT_CLIENTS[index].slug}`);
   const qrUrl=new URL(testQrImageUrl(menuUrl));
@@ -28,4 +28,4 @@ assert.match(app,/Table \$\{selectedTableQr\} QR code/);
 assert.match(app,/window\.QrkSheet\.create/);
 assert.match(app,/materializeSheet\(\$\('#table-qr-dialog'\),\{readOnly:true\}\)/);
 assert.match(app,/\.classList\.add\('qrk-settings-list'\)/);
-console.log('Five profile-specific menu links and adaptive table QR destinations passed.');
+console.log(`${DEVELOPMENT_CLIENTS.length} profile-specific menu links and adaptive table QR destinations passed.`);
