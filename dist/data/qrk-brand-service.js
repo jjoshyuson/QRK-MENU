@@ -1,11 +1,11 @@
 const STORAGE_KEY='qrk_demo_branding_v1';
 const HEX=/^#[0-9a-f]{6}$/i;
-const DEFAULTS={businessName:"Kusina Nanay Mila's",businessSlug:'kusina-manila',primary:'#0fb9c0',nav:'#0b0c0e',logoDataUrl:'',tableCount:6};
+const DEFAULTS={businessName:"Kusina Nanay Mila's",businessSlug:'kusina-manila',primary:'#1683ff',nav:'#0b0c0e',logoDataUrl:'',coverPhotoUrl:'',tableCount:6};
 const DEFAULT_MENU_BACKGROUND=Object.freeze({image:'',surfaceOpacity:.72});
 const KUSINA_MENU_BACKGROUND='/assets/businesses/kusina-manila-menu-background.jpg';
 
 const clamp=value=>Math.max(0,Math.min(255,Math.round(value)));
-const hexToRgb=hex=>{const value=HEX.test(hex)?hex:'#0fb9c0';return[1,3,5].map(index=>parseInt(value.slice(index,index+2),16))};
+const hexToRgb=hex=>{const value=HEX.test(hex)?hex:DEFAULTS.primary;return[1,3,5].map(index=>parseInt(value.slice(index,index+2),16))};
 const rgbToHex=rgb=>`#${rgb.map(value=>clamp(value).toString(16).padStart(2,'0')).join('')}`;
 const mix=(hex,target,amount)=>rgbToHex(hexToRgb(hex).map((value,index)=>value+(target[index]-value)*amount));
 const channel=value=>{const normalized=value/255;return normalized<=.04045?normalized/12.92:((normalized+.055)/1.055)**2.4};

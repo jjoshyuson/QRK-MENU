@@ -1102,3 +1102,11 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Item ordering now presents each option group as its own focused step, followed by a separate quantity/special-request review step; cancelling leaves the cart unchanged and returns focus to the invoking menu card.
 - Table and payment selections share the focused-sheet surface. Alerts, order history, confirmation, and the inline “Add name or order notes” disclosure remain unchanged.
 - Compared against the current GitHub Pages menu before implementation. Verified the full `npm run check` suite plus live item/add-on nesting, totals, confirmation, Escape cancellation, focus restoration, and zero horizontal overflow at 390×844, 430×932, and 1440×900.
+
+## September 15, 2026 — Hosted business cosmetics
+
+- Consolidated logo and customer-menu background into one Business cosmetics sheet, adding a public-menu cover photo and a tenant-owned menu accent color.
+- Business cosmetics are stored per business in hosted development. Public images use a dedicated manager-written/public-read bucket, while an anonymous RPC exposes only the public cosmetics fields for cross-device menu rendering.
+- The menu accent overrides the customer menu only. Global Appearance remains authoritative for admin and Client Operations surfaces, with `#1683ff` as the default menu accent.
+- Applied migration `202609150003_business_cosmetics.sql` to the linked development project only. Production was not connected or changed.
+- Validation: `npm run check` passes, including the tenant-owned business cosmetics contract.

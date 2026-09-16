@@ -32,6 +32,8 @@ function emit(name,detail){window.dispatchEvent(new CustomEvent(name,{detail}))}
 class DemoDataService{
   constructor(config){this.mode='demo';this.environment=config.environment||'local';this.destinationSlug=config.destinationSlug||'kusina-manila';const suffix=`_${this.destinationSlug}`;this.orderKey=`qrk_demo_orders_v2${suffix}`;this.activeKey=`qrk_demo_active_order_v2${suffix}`;this.storeKey=`qrk_demo_store_open_v1${suffix}`}
   async getPublicMenu(){return null}
+  async getBusinessCosmetics(){return null}
+  async saveBusinessCosmetics(cosmetics){return cosmetics}
   async listOrders({fallback=[]}={}){const raw=localStorage.getItem(this.orderKey);if(raw!==null)return validOrders(safeParse(raw,[]));const seeded=validOrders(fallback);localStorage.setItem(this.orderKey,JSON.stringify(seeded));return seeded}
   async replaceOrders(orders){localStorage.setItem(this.orderKey,JSON.stringify(validOrders(orders)));emit(ORDER_EVENT,{key:this.orderKey})}
   async createOrder(input){
@@ -71,6 +73,18 @@ class SupabaseDataService{
       if(response.ok)item.photo.url=URL.createObjectURL(await response.blob());else item.photo=null;
     }
     return result;
+  }
+  getBusinessCosmetics(){return this.rpc('get_public_business_cosmetics',{p_destination_slug:this.destinationSlug})}
+  async uploadBusinessCosmetic(kind,value){
+    if(!String(value||'').startsWith('data:image/'))return String(value||'');
+    const blob=await fetch(value).then(response=>response.blob()),path=`${this.config.businessId}/${kind}.webp`,response=await fetch(`${this.config.supabaseUrl}/storage/v1/object/business-cosmetics/${path}`,{method:'POST',headers:{...this.headers(true),'content-type':blob.type||'image/webp','x-upsert':'true'},body:blob});
+    if(!response.ok)throw new Error(`Cosmetic image upload failed (${response.status}): ${(await response.text()).slice(0,180)}`);
+    return`${this.config.supabaseUrl}/storage/v1/object/public/business-cosmetics/${path}?v=${Date.now()}`;
+  }
+  async saveBusinessCosmetics(cosmetics){
+    const [profile]=await this.request(`/rest/v1/business_profiles?business_id=eq.${encodeURIComponent(this.config.businessId)}&select=settings`,{authenticated:true,method:'GET'}),logoUrl=await this.uploadBusinessCosmetic('logo',cosmetics.logoUrl),backgroundUrl=await this.uploadBusinessCosmetic('background',cosmetics.backgroundUrl),coverUrl=await this.uploadBusinessCosmetic('cover',cosmetics.coverUrl),menuCosmetics={logoUrl,backgroundUrl,coverUrl,backgroundOpacity:cosmetics.backgroundOpacity};
+    await this.request(`/rest/v1/business_profiles?business_id=eq.${encodeURIComponent(this.config.businessId)}`,{authenticated:true,method:'PATCH',body:{accent_color:cosmetics.accentColor,settings:{...(profile?.settings||{}),menuCosmetics}}});
+    return{...cosmetics,logoUrl,backgroundUrl,coverUrl};
   }
   async registerDevice(){if(this.deviceRegistered)return;await this.rpc('register_customer_device',{p_destination_slug:this.destinationSlug,p_device_id:this.device.id,p_device_secret:this.device.secret,p_label:'Customer browser',p_metadata:{platform:navigator.platform||'',standalone:matchMedia?.('(display-mode: standalone)')?.matches===true}});this.deviceRegistered=true}
   async listOrders(){
