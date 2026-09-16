@@ -1,14 +1,18 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-const [html, js, staff, data] = await Promise.all([
+const [html, js, staff, data, cartCss] = await Promise.all([
   readFile(new URL('../dist/menu/index.html', import.meta.url), 'utf8'),
   readFile(new URL('../dist/menu/menu.js', import.meta.url), 'utf8'),
   readFile(new URL('../dist/app.js', import.meta.url), 'utf8'),
-  readFile(new URL('../dist/data/qrk-data-service.js', import.meta.url), 'utf8')
+  readFile(new URL('../dist/data/qrk-data-service.js', import.meta.url), 'utf8'),
+  readFile(new URL('../dist/menu/cart-dock.css', import.meta.url), 'utf8')
 ]);
 
 assert.match(html, /id="order-history-control"[^>]*aria-controls="history-dialog"/);
+assert.match(html, /class="customer-history-control">\s*<button class="order-history-control"/);
+assert.match(cartCss, /\.customer-history-control\s*\{[^}]*position:\s*absolute/s);
+assert.match(cartCss, /\.customer-session-controls\s*\{[^}]*position:\s*fixed/s);
 assert.match(html, /id="clear-history"/);
 assert.match(html, /id="history-clear-confirm"/);
 assert.match(js, /HISTORY_LIMIT=25,HISTORY_RETENTION_MS=30\*24\*60\*60\*1000/);

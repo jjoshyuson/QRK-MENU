@@ -1,5 +1,11 @@
 # Build status
 
+## September 15, 2026 — Public menu sheet motion refinement
+
+- Doubled the public-menu sheet travel time so opening and closing movement reads clearly, while shortening the Review Order backdrop fade so it no longer lingers after the card begins moving.
+- Anchored Order History to the top of the menu document instead of the viewport so it scrolls away before the sticky search toolbar; the separate Open Tab control retains its fixed operational position.
+- Validation: focused motion and order-history contracts, `npm run check`, and `git diff --check` passed.
+
 ## September 15, 2026 — Consolidated Business Profile
 
 - Replaced the dense mixed Business Profile form with one compact overview for business details, logo, customer-menu background, and menu access. The general Menu link and mode-specific Table QR codes are separate destinations instead of sharing one dialog.
