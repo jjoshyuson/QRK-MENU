@@ -373,18 +373,14 @@ dialog #add-item {
   #cart-dialog .cart-item-controls { grid-template-columns: auto 44px 52px; }
 }
 
-#cart-dialog { width: min(900px, calc(100% - 24px)); margin: auto; }
+#cart-dialog { width: min(900px, calc(100% - 24px)); margin: auto; overflow: visible; }
 #cart-dialog .sheet-card { max-height: min(820px, calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom))); border-radius: 22px; }
 #cart-dialog > .sheet-card {
-  transform: translate3d(0, 16px, 0);
   animation: none !important;
   backface-visibility: hidden;
-  transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
   will-change: transform;
 }
-#cart-dialog.is-visible > .sheet-card { transform: translate3d(0, 0, 0); }
-#cart-dialog.is-closing > .sheet-card { transform: translate3d(0, 16px, 0); transition-duration: 180ms; transition-timing-function: cubic-bezier(.4, 0, .8, .2); }
-#cart-dialog::backdrop { background: transparent; transition: background-color 200ms ease; }
+#cart-dialog::backdrop { background: transparent; transition: background-color 160ms ease; }
 #cart-dialog.is-visible::backdrop { background: #11182780; }
 #cart-dialog.is-closing::backdrop { background: transparent; }
 #cart-dialog .review-fulfillment { display: grid; margin-top: 10px; }
@@ -408,6 +404,6 @@ dialog #add-item {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #cart-dialog > .sheet-card { transform: none; transition: none; }
+  #cart-dialog > .sheet-card { transform: none; }
   #cart-dialog::backdrop { background: #11182780; transition: none; }
 }
