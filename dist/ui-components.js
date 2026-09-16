@@ -117,3 +117,49 @@
   };
   window.QrkSheet = {create};
 })();
+
+/* Shared material choice popover. Native selects retain form values while the
+   visible control owns the accessible, theme-consistent interaction. */
+(() => {
+  let active = null;
+  const labelFor = select => select.getAttribute('aria-label') || select.closest('label')?.childNodes[0]?.textContent?.trim() || 'option';
+  const sync = (scope = document) => scope.querySelectorAll('select[data-qrk-choice]').forEach(select => {
+    const trigger = select.nextElementSibling;
+    if (trigger?.matches('[data-qrk-choice-trigger]')) trigger.querySelector('span').textContent = select.options[select.selectedIndex]?.text || 'Choose';
+  });
+  const close = ({restoreFocus = true} = {}) => {
+    if (!active) return;
+    const {layer, trigger} = active;
+    layer.remove(); active = null;
+    if (restoreFocus) trigger.focus({preventScroll:true});
+  };
+  const open = (select, trigger) => {
+    close({restoreFocus:false});
+    const rect = trigger.getBoundingClientRect(), width = Math.min(360, Math.max(256, innerWidth * .72), innerWidth - 32), left = Math.max(16, Math.min(rect.right - width, innerWidth - width - 16)), estimated = Math.min(innerHeight * .48, select.options.length * 48 + 20), below = rect.bottom + 8, top = below + estimated <= innerHeight - 16 ? below : Math.max(16, rect.top - estimated - 8), layer = document.createElement('div');
+    layer.className = 'qrk-choice-layer';
+    layer.innerHTML = `<button class="qrk-choice-backdrop" type="button" aria-label="Close ${labelFor(select)} choices"></button><div class="qrk-choice-positioner" style="--choice-left:${left}px;--choice-top:${top}px"><div class="qrk-choice-popover" role="listbox" aria-label="Choose ${labelFor(select)}">${[...select.options].map(option => `<button type="button" role="option" aria-selected="${option.value === select.value}" data-qrk-choice-option="${option.index}"><i>${option.value === select.value ? '✓' : ''}</i><span>${option.text}</span></button>`).join('')}</div></div>`;
+    document.body.append(layer); active = {layer, select, trigger};
+    layer.querySelector('.qrk-choice-backdrop').onclick = () => close();
+    layer.querySelectorAll('[data-qrk-choice-option]').forEach(button => button.onclick = () => {
+      select.selectedIndex = Number(button.dataset.qrkChoiceOption);
+      select.dispatchEvent(new Event('change', {bubbles:true})); sync(select.parentElement || document); close();
+    });
+    layer.addEventListener('keydown', event => {
+      const choices = [...layer.querySelectorAll('[data-qrk-choice-option]')], at = choices.indexOf(document.activeElement);
+      if (event.key === 'Escape') { event.preventDefault(); close(); }
+      else if (event.key === 'ArrowDown') { event.preventDefault(); choices[(at + 1 + choices.length) % choices.length]?.focus(); }
+      else if (event.key === 'ArrowUp') { event.preventDefault(); choices[(at - 1 + choices.length) % choices.length]?.focus(); }
+    });
+    requestAnimationFrame(() => { layer.classList.add('open'); (layer.querySelector('[aria-selected="true"]') || layer.querySelector('[data-qrk-choice-option]'))?.focus(); });
+  };
+  const enhance = (scope = document) => scope.querySelectorAll('select:not([data-qrk-choice])').forEach(select => {
+    select.dataset.qrkChoice = ''; select.classList.add('qrk-native-select'); select.tabIndex = -1; select.setAttribute('aria-hidden', 'true');
+    const trigger = document.createElement('button');
+    trigger.type = 'button'; trigger.className = 'qrk-choice-trigger'; trigger.dataset.qrkChoiceTrigger = ''; trigger.setAttribute('aria-haspopup', 'listbox'); trigger.setAttribute('aria-label', `Choose ${labelFor(select)}`); trigger.innerHTML = '<span></span><i aria-hidden="true">⌄</i>';
+    trigger.onclick = event => { event.preventDefault(); event.stopPropagation(); open(select, trigger); };
+    trigger.onkeydown = event => { if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); open(select, trigger); } };
+    select.insertAdjacentElement('afterend', trigger);
+  });
+  document.addEventListener('keydown', event => { if (event.key === 'Escape' && active) { event.preventDefault(); close(); } }, true);
+  window.QrkChoice = {enhance, sync, close};
+})();
