@@ -20,6 +20,8 @@ const [markup,app]=await Promise.all([
 ]);
 assert.match(markup,/data-profile-dialog="menu-link-dialog"/);
 assert.match(markup,/data-profile-dialog="table-qr-dialog"/);
+assert.match(markup,/id="quick-menu-qr-entry"/);
+assert.match(markup,/>Quick Menu QR</);
 assert.match(markup,/id="table-qr-grid"/);
 assert.doesNotMatch(markup,/id="table-qr-number"/);
 assert.match(app,/count<=6\?3:count<=12\?4:count<=30\?5:6/);
@@ -28,4 +30,9 @@ assert.match(app,/Table \$\{selectedTableQr\} QR code/);
 assert.match(app,/window\.QrkSheet\.create/);
 assert.match(app,/materializeSheet\(\$\('#table-qr-dialog'\),\{readOnly:true\}\)/);
 assert.match(app,/\.classList\.add\('qrk-settings-list'\)/);
+assert.match(app,/serviceProfile\?\.serviceModes/);
+assert.match(app,/hasQuickMenuQr=serviceModes\.has\('quick'\)/);
+assert.match(app,/hasTableQr=serviceModes\.has\('table'\)/);
+assert.match(app,/quickMenuQrEntry\.hidden=!hasQuickMenuQr/);
+assert.match(app,/tableQrEntry\.hidden=!hasTableQr/);
 console.log(`${DEVELOPMENT_CLIENTS.length} profile-specific menu links and adaptive table QR destinations passed.`);
