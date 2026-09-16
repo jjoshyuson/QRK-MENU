@@ -390,7 +390,8 @@ dialog #add-item {
 }
 
 #cart-dialog { width: min(900px, calc(100% - 24px)); margin: auto; overflow: visible; }
-#cart-dialog .sheet-card { max-height: min(820px, calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom))); border-radius: 22px; }
+#cart-dialog .sheet-card { height: min(90dvh, calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom))); max-height: min(90dvh, calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom))); border-radius: 22px; }
+#cart-dialog .cart-content { flex: 1; min-height: 0; }
 #cart-dialog > .sheet-card {
   animation: none !important;
   backface-visibility: hidden;

@@ -44,9 +44,11 @@ assert.match(menu, /focused-choice-list/);
 assert.match(menu, /pointerType==='touch'\|\|event\.pointerType==='pen'/);
 assert.match(menu, /event\.key==='Tab'.*delete document\.body\.dataset\.inputModality/);
 assert.match(customerCss, /dialog #add-item\s*\{[^}]*background:\s*var\(--brand-500\) !important[^}]*color:\s*var\(--brand-foreground\) !important/s);
-assert.match(html, /ui-components\.css\?v=14[\s\S]*cart-dock\.css\?v=25/);
+assert.match(html, /ui-components\.css\?v=14[\s\S]*cart-dock\.css\?v=26/);
 assert.match(customerCss, /dialog\.focused-sheet::backdrop,[\s\S]*dialog\.quick-service-dialog::backdrop,[\s\S]*dialog\.table-entry::backdrop\s*\{[^}]*background:\s*rgba\(248, 250, 252, \.16\)[^}]*backdrop-filter:\s*blur\(6px\) saturate\(\.92\)/s);
 assert.match(customerCss, /dialog\.is-closing::backdrop\s*\{[^}]*backdrop-filter:\s*blur\(0\) saturate\(1\)/s);
+assert.match(customerCss, /#cart-dialog \.sheet-card\s*\{[^}]*height:\s*min\(90dvh,[^}]*max-height:\s*min\(90dvh,/s);
+assert.match(customerCss, /#cart-dialog \.cart-content\s*\{[^}]*flex:\s*1[^}]*min-height:\s*0/s);
 
 assert.match(css, /--component-focused-sheet-max-height:90dvh/);
 assert.match(css, /dialog\.focused-sheet\s*\{[^}]*margin:auto auto 0/s);
