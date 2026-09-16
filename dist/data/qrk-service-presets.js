@@ -33,6 +33,11 @@ export const SERVICE_PRESETS={
   custom:{id:'custom',name:'Custom table service',summary:'Start with safe Table defaults and adjust each rule.',settings:{...tableBase}}
 };
 
+export function deriveGateOrder(settings){
+  if(settings.serviceMode==='quick')return{quick:['consumption','fulfillment','quick_payment',...(settings.locatorMode&&settings.locatorMode!=='none'?['locator']:[])],table:[]};
+  return{quick:[],table:['table_entry',...(settings.guestCountRequired?['party_size']:[]),...(settings.bundleSelection!=='none'?['bundle']:[]),...(settings.entryPayment!=='none'?['entry_payment']:[]),...(settings.entitlementMode!=='none'?['entitlement']:[]),...(settings.timeLimitMinutes?['time_limit']:[]),...(settings.quantityLimit?['quantity_limit']:[]),'payment_timing',...(settings.additionalDevices?['joining','host_permissions']:[]),'bill_closure','inactivity']};
+}
+
 export const DEVELOPMENT_CLIENTS=[
   {id:'kusina-manila',businessName:"Kusina Nanay Mila's",slug:'kusina-manila',prefix:'kusina',description:'Filipino favorites, made with love.',serviceProfile:{preset:'quick',locationName:'Ermita',settings:{paymentTiming:'upfront'}},admin:{name:'Jonathan Yuson',email:'owner@kusinamanila.example',username:'kusina-admin'},menu:[['Mains','Chicken adobo',18000],['Mains','Sinigang na baboy',22000],['Mains','Crispy pork sisig',19500],['Sides','Garlic fried rice',5500],['Sides','Lumpiang shanghai',12000],['Sides','Atchara',4500],['Drinks','Calamansi iced tea',6500],['Drinks','Sago at gulaman',7500],['Drinks','Fresh buko juice',8500],['Breakfast','Tapsilog',17500],['Breakfast','Longsilog',16500],['Breakfast','Champorado',9500],['Desserts','Leche flan',11000],['Desserts','Turon',8000],['Desserts','Ube halaya',10500],['Snacks','Pancit canton',14500],['Snacks','Tokwa’t baboy',13500],['Snacks','Banana cue',6500],['Specials','Kare-kare',28500],['Specials','Bistek Tagalog',24500],['Specials','Laing',15500],['Platters','Barkada boodle',82000],['Platters','Pancit party tray',69000],['Platters','Inihaw sampler',76000]]},
   {id:'salamat',businessName:'Salamat',slug:'salamat',prefix:'salamat',description:'Filipino food and attentive table service.',serviceProfile:{preset:'direct_table',locationName:'Makati'},admin:{name:'Maya Santos',email:'maya@salamat.example',username:'salamat-admin'},menu:[['Appetizers','Lumpiang sariwa',14500],['Appetizers','Kinilaw na tuna',23500],['Appetizers','Ukoy',16500],['Soups','Bulalo',39500],['Soups','Sinigang na hipon',34500],['Soups','Tinolang manok',26500],['Grilled','Chicken inasal',19500],['Grilled','Inihaw na liempo',28500],['Grilled','Grilled pusit',36500],['Mains','Beef caldereta',33500],['Mains','Pork binagoongan',27500],['Mains','Ginataang gulay',22500],['Rice & Noodles','Garlic rice',5500],['Rice & Noodles','Pancit bihon',18500],['Rice & Noodles','Palabok',19500],['Desserts','Halo-halo',16500],['Desserts','Bibingka',12500],['Desserts','Buko pandan',11500],['Drinks','Sago at gulaman',7000],['Drinks','Calamansi juice',7500],['Drinks','Kapeng barako',8500]]},
@@ -56,6 +61,7 @@ export function normalizeServiceProfile(profile={}){
   settings.serviceMode=serviceModes.includes('table')?'table':'quick';
   if(settings.packageMode==='required'&&settings.bundleSelection==='none')settings.bundleSelection='required';
   settings.packageMode=settings.bundleSelection==='required'?'required':'none';
+  settings.gateOrder=profile.settings?.gateOrder||deriveGateOrder(settings);
   return{preset,serviceModes,locationName:String(profile.locationName||'Main location'),inheritsBusinessDefaults:profile.inheritsBusinessDefaults!==false,settings,layers:deriveServiceLayers(settings)};
 }
 export function describeServiceProfile(profile){

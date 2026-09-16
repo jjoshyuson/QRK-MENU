@@ -8,6 +8,7 @@ globalThis.localStorage={
 
 const {readMenuState}=await import('../dist/data/qrk-menu-store.js');
 const {DEVELOPMENT_CLIENTS}=await import('../dist/data/qrk-service-presets.js');
+assert.equal(DEVELOPMENT_CLIENTS.length,10,'development fallback must expose exactly ten clients');
 
 const expected=Object.fromEntries(DEVELOPMENT_CLIENTS.map(client=>[client.slug,[...new Set(client.menu.map(([category])=>category))]]));
 

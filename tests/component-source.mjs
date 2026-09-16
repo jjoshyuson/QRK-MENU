@@ -33,6 +33,8 @@ assert.match(css,/\.qrk-choice-popover\{[^}]*border:0/);
 assert.match(css,/\.qrk-sheet-field-row input[^}]*background:transparent!important/);
 assert.match(css,/\.qrk-sheet-field-row input[^}]*border:0!important/);
 assert.match(css,/\.qrk-sheet-field-row:focus-within/);
+assert.match(css,/grid-template-columns:minmax\(0,1fr\) minmax\(0,1fr\)/);
+assert.match(css,/\.qrk-sheet-field-row \.qrk-choice-trigger\{[^}]*grid-template-columns:minmax\(0,1fr\) 18px/);
 
 const registry = await readFile(new URL('../dist/ui-components.js', import.meta.url), 'utf8');
 assert.match(registry, /dataset\.component\s*=/);

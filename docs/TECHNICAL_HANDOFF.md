@@ -4,7 +4,7 @@
 
 `dist/ui-components.css` owns `.qrk-settings-list`, `.qrk-sheet`, `.qrk-sheet-backdrop`, grouped sheet sections, and QRK choice-popover styling. `dist/ui-components.js` exposes `window.QrkSheet.create({sheet, backdrop, onDismiss})`, which owns presentation, backdrop/Escape dismissal, focus containment, focus restoration, motion timing, and reduced-motion behavior. Product routes continue to own field rendering, validation, and draft data; they pass the commit result through `onDismiss` and must restore their snapshot when `commit` is false. Nested editors replace the current sheet body and use Back navigation rather than constructing another modal layer.
 
-Material-sheet text fields use `.qrk-sheet-field-list` and `.qrk-sheet-field-row`. Labels and values share one tonal surface, peer rows use one faint divider, and native inputs remain transparent and borderless at rest—including autofill—while focus and invalid state stay visible. Route-level form CSS must not restore white input rectangles inside `.qrk-sheet`.
+Material-sheet text fields use `.qrk-sheet-field-list` and `.qrk-sheet-field-row`. Labels and values share one tonal surface in an approximately 50/50, left-aligned grid; peer rows use one faint divider, and native inputs remain transparent and borderless at rest—including autofill—while focus and invalid state stay visible. Shared choice triggers pin their chevron to the value column's far-right edge. Route-level form CSS must not restore white input rectangles or native dropdowns inside `.qrk-sheet`.
 
 ## Current implementation
 
