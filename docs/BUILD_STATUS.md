@@ -4,6 +4,7 @@
 
 - Public-menu sheets now travel from fully below the viewport instead of moving only 14–18 pixels, making both entrance and exit read as genuine bottom-sheet motion. Entrance timing remains deliberately slow for review, while the Review Order closing backdrop fade remains nearly immediate.
 - After phone review, accelerated the full-height entrance by 2× and the exit plus backdrop fade by 1.5× without changing their travel path or easing.
+- Kept the approved entrance unchanged and halved the exit and backdrop durations again so closing clears immediately without a lingering fade.
 - Anchored Order History to the top of the menu document instead of the viewport so it scrolls away before the sticky search toolbar; the separate Open Tab control retains its fixed operational position.
 - Matched the item-sheet Add to order action to the shared primary CTA color. Touch and pen interaction suppress the browser's automatic dialog focus ring, while pressing Tab restores the visible keyboard focus indicator.
 - Validation: focused motion and order-history contracts, `npm run check`, and `git diff --check` passed.

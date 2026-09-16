@@ -382,7 +382,7 @@ dialog #add-item {
   backface-visibility: hidden;
   will-change: transform;
 }
-#cart-dialog::backdrop { background: transparent; transition: background-color 18ms ease; }
+#cart-dialog::backdrop { background: transparent; transition: background-color 9ms ease; }
 #cart-dialog.is-visible::backdrop { background: #11182780; }
 #cart-dialog.is-closing::backdrop { background: transparent; }
 #cart-dialog .review-fulfillment { display: grid; margin-top: 10px; }
