@@ -7,7 +7,7 @@
 - Kept the approved entrance unchanged and halved the exit and backdrop durations again so closing clears immediately without a lingering fade.
 - Anchored Order History to the top of the menu document instead of the viewport so it scrolls away before the sticky search toolbar; the separate Open Tab control retains its fixed operational position.
 - Matched the item-sheet Add to order action to the shared primary CTA color. Touch and pen interaction suppress the browser's automatic dialog focus ring, while pressing Tab restores the visible keyboard focus indicator.
-- Replaced the heavy dark modal dimmer with a lightly tinted 12px background blur so the menu remains visible without flashing dark during sheet dismissal. Strengthened the item-sheet action cascade so Add to order always uses the default blue `--brand-500` CTA and its matching foreground token.
+- Replaced the heavy dark modal dimmer with a lightly tinted 12px background blur so the menu remains visible without flashing dark during sheet dismissal. The public-menu override now loads after the shared component layer and explicitly covers focused sheets, Quick Service, table entry, and Review Order, preventing their more-specific dark backdrop rules from winning. Strengthened the item-sheet action cascade so Add to order always uses the default blue `--brand-500` CTA and its matching foreground token.
 - Validation: focused motion and order-history contracts, `npm run check`, and `git diff --check` passed.
 
 ## September 15, 2026 — Consolidated Business Profile
