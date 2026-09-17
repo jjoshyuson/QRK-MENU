@@ -68,7 +68,18 @@
         <div class="search-wrap"><label class="sr-only" for="menu-search">Search the menu</label><input id="menu-search" type="search" placeholder="Search dishes and drinks" autocomplete="off"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7"></circle><path d="m16.2 16.2 4.3 4.3"></path></svg></span></div>
         <nav class="categories" id="categories" aria-label="Menu categories"></nav>
       </div>
-      <div id="menu-sections"></div>
+      <div id="menu-sections" aria-busy="true" aria-live="polite">
+        <section class="menu-section menu-loading" aria-label="Loading menu">
+          <div class="loading-heading" aria-hidden="true"></div>
+          <div class="dish-grid" aria-hidden="true">
+            <div class="loading-dish"><span></span><i></i><b></b></div>
+            <div class="loading-dish"><span></span><i></i><b></b></div>
+            <div class="loading-dish"><span></span><i></i><b></b></div>
+            <div class="loading-dish"><span></span><i></i><b></b></div>
+          </div>
+          <p class="sr-only">Loading the menu…</p>
+        </section>
+      </div>
       <section class="empty-state hidden" id="menu-empty" aria-live="polite"><div aria-hidden="true">⌕</div><h3>No menu items found</h3><p>Try another search or clear the search to browse everything.</p><button class="text-button" id="clear-search" type="button">Clear search</button></section>
     </section>
   </main>

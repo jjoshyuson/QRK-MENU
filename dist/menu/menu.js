@@ -114,14 +114,15 @@ function renderMenu(filter=''){
   const query=filter.trim().toLowerCase();
   const visible=menu.filter(item=>item.available&&!item.hidden&&`${item.name} ${item.description} ${item.category}`.toLowerCase().includes(query));
   $('#categories').innerHTML=query?'':categories.filter(category=>visible.some(item=>item.category===category)).map((category,index)=>`<a class="${index?'':'active'}" href="#${categoryId(category)}" ${index?'':'aria-current="true"'}>${escapeText(category)}</a>`).join('');
-  $('#menu-sections').innerHTML='';
+  $('#menu-sections').innerHTML='';$('#menu-sections').setAttribute('aria-busy','false');
+  let renderedPhotoIndex=0;
   categories.forEach(category=>{
     const items=visible.filter(item=>item.category===category);if(!items.length)return;
     const section=document.createElement('section');section.className='menu-section';section.id=categoryId(category);section.setAttribute('aria-labelledby',`${section.id}-title`);
     section.innerHTML=`<div class="section-heading"><h3 id="${section.id}-title">${escapeText(category)}</h3></div><div class="dish-grid"></div>`;
     items.forEach(item=>{
       const card=$('#dish-template').content.firstElementChild.cloneNode(true);const cardButton=card.querySelector('.dish-hit');const img=card.querySelector('img');
-      if(item.photo){img.src=item.photoCard||item.photo;img.alt=item.name;img.loading='lazy';img.decoding='async';img.fetchPriority='low'}else{img.remove();const photo=card.querySelector('.photo');photo.classList.add('no-photo');photo.textContent=item.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase()}card.querySelector('h4').textContent=item.name;card.querySelector('strong').textContent=format(item.price);cardButton.setAttribute('aria-label',`Add ${item.name} to order`);
+      if(item.photo){const isPriority=renderedPhotoIndex<2;img.src=item.photoCard||item.photo;img.alt=item.name;img.loading=isPriority?'eager':'lazy';img.decoding='async';img.fetchPriority=isPriority?'high':'low';const reveal=()=>img.classList.add('is-loaded');if(img.complete)reveal();else{img.addEventListener('load',reveal,{once:true});img.addEventListener('error',reveal,{once:true})}renderedPhotoIndex++}else{img.remove();const photo=card.querySelector('.photo');photo.classList.add('no-photo');photo.textContent=item.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase()}card.querySelector('h4').textContent=item.name;card.querySelector('strong').textContent=format(item.price);cardButton.setAttribute('aria-label',`Add ${item.name} to order`);
       if(!item.available){card.classList.add('sold-out');card.querySelector('.sold-label').classList.remove('hidden');cardButton.disabled=true;card.querySelector('.dish-cta').classList.add('hidden');cardButton.setAttribute('aria-label',`${item.name}, sold out`)}else cardButton.addEventListener('click',event=>openItem(item,-1,event.currentTarget));
       section.querySelector('.dish-grid').append(card);
     });$('#menu-sections').append(section);
@@ -227,5 +228,6 @@ $('#browse-pending-table').addEventListener('click',()=>{if(!pendingTableSession
 dataService.subscribe({onStoreChanged:async()=>{orderingOpen=await dataService.getStoreOpen().catch(()=>false);if(!storeOpen())showStoreNotice();else $('#store-notice').classList.add('hidden')}});
 tableSessionService?.subscribe(()=>{const session=tableSessionService.current();refreshTabOrders();if(session&&['active','bill_requested','inactivity_warning'].includes(session.status))openTableMenu(session);else if(pendingTableSession&&!session)resetTableEntry('The request ended. Choose a table to try again.');else if(!session)$('#store-notice').classList.add('hidden')});
 if(dataService.mode==='demo')subscribeMenuState(businessSlug,state=>{applyStudioMenu(state);categories=state.categories.filter(category=>menu.some(item=>item.category===category&&item.available&&!item.hidden));renderMenu($('#menu-search').value)});
-renderMenu();renderHistory();renderCart();initializeTableEntry();if(dataLoadError){const notice=$('#store-notice');notice.innerHTML=`<h2>Menu connection unavailable</h2><p>${escapeText(dataLoadError)}</p>`;notice.classList.remove('hidden')}else if(!storeOpen())showStoreNotice();
+renderMenu();renderHistory();renderCart();initializeTableEntry();if(dataLoadError){const notice=$('#store-notice');notice.innerHTML=`<h2>Menu connection unavailable</h2><p>${escapeText(dataLoadError)}</p><button class="secondary-button" type="button" data-retry-menu>Try again</button>`;notice.classList.remove('hidden')}else if(!storeOpen())showStoreNotice();
+$('#store-notice').addEventListener('click',event=>{if(event.target.closest('[data-retry-menu]'))location.reload()});
 refreshTabOrders();addEventListener('qrk:demo-orders-changed',refreshTabOrders);addEventListener('storage',event=>{if(openTabEnabled&&event.key?.includes('qrk_demo_orders_v2'))refreshTabOrders()});setInterval(refreshTabOrders,dataService.mode==='demo'?4000:15000);

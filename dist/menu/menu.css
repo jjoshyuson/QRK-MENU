@@ -7,6 +7,14 @@
 @media(prefers-reduced-motion:reduce){.sheet[open]>.sheet-card,.sheet.is-closing>.sheet-card{animation:none!important}}
 body[data-input-modality="touch"] dialog :focus-visible{outline:0!important}
 
+/* Keep the public menu visually ready while its first hosted menu request settles. */
+.menu-loading{padding-top:24px}.loading-heading,.loading-dish span,.loading-dish i,.loading-dish b{display:block;background:color-mix(in srgb,var(--surface-muted) 82%,var(--line));overflow:hidden;position:relative}
+.loading-heading{width:104px;height:22px;margin-bottom:13px;border-radius:999px}.loading-dish span{width:100%;aspect-ratio:4/3;border-radius:16px}.loading-dish i{width:72%;height:15px;margin-top:11px;border-radius:999px}.loading-dish b{width:42%;height:13px;margin-top:8px;border-radius:999px}
+.loading-heading::after,.loading-dish>*::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--surface) 72%,transparent),transparent);animation:menu-loading-shimmer 1.25s ease-in-out infinite}
+@keyframes menu-loading-shimmer{to{transform:translateX(100%)}}
+.dish .photo{background:color-mix(in srgb,var(--surface-muted) 82%,var(--line))}.dish .photo img{opacity:0;transition:opacity 180ms ease}.dish .photo img.is-loaded{opacity:1}
+@media(prefers-reduced-motion:reduce){.loading-heading::after,.loading-dish>*::after{animation:none}.dish .photo img{transition:none}}
+
 /* Public item detail keeps the established option cards while using a photo-led
    layout and a single bottom add action. */
 .item-sheet .item-hero{position:relative;flex:0 0 auto;overflow:hidden;background:var(--surface-muted)}

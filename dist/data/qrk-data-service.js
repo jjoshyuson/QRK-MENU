@@ -62,17 +62,21 @@ class DemoDataService{
 }
 
 class SupabaseDataService{
-  constructor(config){this.mode='supabase';this.config=config;this.environment=config.environment;this.destinationSlug=config.destinationSlug;this.device=getDeviceIdentity();this.activeKey=`qrk_active_order_v2_${this.destinationSlug}_${this.device.id}`;this.channel=null;this.timer=null;this.deviceRegistered=false}
+  constructor(config){this.mode='supabase';this.config=config;this.environment=config.environment;this.destinationSlug=config.destinationSlug;this.device=getDeviceIdentity();this.activeKey=`qrk_active_order_v2_${this.destinationSlug}_${this.device.id}`;this.channel=null;this.timer=null;this.deviceRegistered=false;this.publicMenuPromise=null}
   headers(authenticated=false){const token=authenticated&&(this.config.staffAccessToken||globalThis.QRK_ACCESS_TOKEN)?(this.config.staffAccessToken||globalThis.QRK_ACCESS_TOKEN):this.config.supabasePublishableKey;return{'content-type':'application/json','apikey':this.config.supabasePublishableKey,'authorization':`Bearer ${token}`}}
   async request(path,{body,authenticated=false,method='POST'}={}){const response=await fetch(`${this.config.supabaseUrl}${path}`,{method,headers:this.headers(authenticated),body:body===undefined?undefined:JSON.stringify(body)});if(!response.ok){const detail=await response.text();throw new Error(`Backend request failed (${response.status}): ${detail.slice(0,240)}`)}return response.status===204?null:response.json()}
   rpc(name,body,authenticated=false){return this.request(`/rest/v1/rpc/${name}`,{body,authenticated})}
-  async getPublicMenu(){
-    const result=await this.rpc('get_public_menu',{p_destination_slug:this.destinationSlug});
-    for(const category of result?.menu?.categories||[])for(const item of category.items||[])if(item.photo?.path){
-      const response=await fetch(`${this.config.supabaseUrl}/storage/v1/object/authenticated/${encodeURIComponent(item.photo.bucket)}/${item.photo.path.split('/').map(encodeURIComponent).join('/')}`,{headers:this.headers()});
-      if(response.ok)item.photo.url=URL.createObjectURL(await response.blob());else item.photo=null;
-    }
-    return result;
+  getPublicMenu(){
+    if(this.publicMenuPromise)return this.publicMenuPromise;
+    this.publicMenuPromise=this.rpc('get_public_menu',{p_destination_slug:this.destinationSlug}).then(async result=>{
+      const photoItems=(result?.menu?.categories||[]).flatMap(category=>category.items||[]).filter(item=>item.photo?.path);
+      await Promise.all(photoItems.map(async item=>{
+        const response=await fetch(`${this.config.supabaseUrl}/storage/v1/object/authenticated/${encodeURIComponent(item.photo.bucket)}/${item.photo.path.split('/').map(encodeURIComponent).join('/')}`,{headers:this.headers()});
+        if(response.ok)item.photo.url=URL.createObjectURL(await response.blob());else item.photo=null;
+      }));
+      return result;
+    }).then(result=>{setTimeout(()=>{this.publicMenuPromise=null},1500);return result}).catch(error=>{this.publicMenuPromise=null;throw error});
+    return this.publicMenuPromise;
   }
   getBusinessCosmetics(){return this.rpc('get_public_business_cosmetics',{p_destination_slug:this.destinationSlug})}
   async uploadBusinessCosmetic(kind,value){

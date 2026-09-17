@@ -1,14 +1,22 @@
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 
-const [menu,app,imageService,styles]=await Promise.all([
+const [menu,app,imageService,styles,dataService,markup]=await Promise.all([
  readFile(new URL('../dist/menu/menu.js',import.meta.url),'utf8'),
  readFile(new URL('../dist/app.js',import.meta.url),'utf8'),
  readFile(new URL('../dist/data/qrk-image-service.js',import.meta.url),'utf8'),
- readFile(new URL('../dist/menu/cart-dock.css',import.meta.url),'utf8')
+ readFile(new URL('../dist/menu/cart-dock.css',import.meta.url),'utf8'),
+ readFile(new URL('../dist/data/qrk-data-service.js',import.meta.url),'utf8'),
+ readFile(new URL('../dist/menu/index.html',import.meta.url),'utf8')
 ]);
-assert.match(menu,/img\.loading='lazy'/);
+assert.match(menu,/img\.loading=isPriority\?'eager':'lazy'/);
 assert.match(menu,/img\.decoding='async'/);
+assert.match(menu,/img\.fetchPriority=isPriority\?'high':'low'/);
+assert.match(menu,/img\.classList\.add\('is-loaded'\)/);
+assert.match(dataService,/this\.publicMenuPromise/);
+assert.match(dataService,/Promise\.all\(photoItems\.map/);
+assert.match(markup,/class="menu-section menu-loading"/);
+assert.match(markup,/id="menu-sections" aria-busy="true"/);
 assert.doesNotMatch(menu,/header-parallax/);
 assert.doesNotMatch(styles,/background-attachment:\s*scroll,\s*fixed/);
 assert.match(imageService,/MAX_EDGE=960/);
