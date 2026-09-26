@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 /*
  * QRK shared component source of truth.
@@ -9,7 +9,7 @@
  */
 :root{
   --font-interface:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --font-menu-display:"Playfair Display",Georgia,serif;
+  --font-menu-display:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
   --component-control-height:44px;
   --component-customer-control-height:50px;
   --component-radius-xs:6px;

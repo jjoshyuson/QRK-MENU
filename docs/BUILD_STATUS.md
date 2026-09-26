@@ -2,8 +2,7 @@
 
 ## September 27, 2026 — Public menu hero and typography refinement
 
-- Changed the shared customer-facing display face from Source Serif 4 to Playfair Display Bold and refreshed body copy, tabs, prices, search, controls, and operational UI from Inter to the approved Manrope alternative. The stronger role contrast makes the requested typography visibly distinct instead of swapping between two near-identical serif treatments.
-- Kept the compact public-menu dish names and prices in Manrope Bold, matching the supplied card reference; Playfair remains limited to the restaurant identity and section-level hierarchy.
+- Replaced the former mixed serif/sans treatment with Manrope throughout the public menu and shared interface. Restaurant identity, section headers, compact dish names, prices, search, tabs, and controls now follow the supplied sans-serif reference, with weight and scale providing hierarchy.
 - Rebuilt the public-menu identity header as a full-bleed image hero with a restrained bottom gradient, overlaid logo and restaurant details, and a curved white transition directly into the search/category toolbar. Removed the former white profile block below the image and enlarged the public-menu search and category pills to match the approved reference density without changing their behavior.
 - Preserved the no-banner fallback, sticky category tracking, ordering interactions, Order History, responsive menu grids, and keyboard semantics.
 
