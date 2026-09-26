@@ -4,6 +4,7 @@
 
 - Replaced the former mixed serif/sans treatment with Manrope throughout the public menu and shared interface. Restaurant identity, section headers, compact dish names, prices, search, tabs, and controls now follow the supplied sans-serif reference, with weight and scale providing hierarchy.
 - Redesigned public-menu tiles as larger edge-to-edge image cards: removed the visible rim and image inset, clipped the photo to the top corners, and connected it directly to a rounded white text footer. Reduced mobile grid gutters so the cards gain usable width without changing the two-column browsing pattern.
+- Tightened the mobile menu grid to 8px outer gutters and 8px column gaps, with a denser attached text footer.
 - Rebuilt the public-menu identity header as a full-bleed image hero with a restrained bottom gradient, overlaid logo and restaurant details, and a curved white transition directly into the search/category toolbar. Removed the former white profile block below the image and enlarged the public-menu search and category pills to match the approved reference density without changing their behavior.
 - Preserved the no-banner fallback, sticky category tracking, ordering interactions, Order History, responsive menu grids, and keyboard semantics.
 

@@ -129,11 +129,11 @@
 .dish h4,.dish strong { font-size: 14px; }
 .dish-copy { display: grid; flex: 1; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 10px; min-height: 42px; padding: 10px 11px 11px; border-radius: 0 0 var(--component-radius-xl, 16px) var(--component-radius-xl, 16px); background: var(--surface, #fff); }
 @media (max-width: 600px) {
-  .menu-section { padding-inline: 12px; }
-  .dish-grid { gap: 18px 10px; }
+  .menu-section { padding-inline: 8px; }
+  .dish-grid { gap: 12px 8px; }
   .menu-section .dish { border-radius: var(--component-radius-lg, 12px); }
   .dish .photo { border-radius: var(--component-radius-lg, 12px) var(--component-radius-lg, 12px) 0 0; }
-  .dish-copy { gap: 7px; min-height: 38px; padding: 8px 9px 9px; border-radius: 0 0 var(--component-radius-lg, 12px) var(--component-radius-lg, 12px); }
+  .dish-copy { gap: 6px; min-height: 36px; padding: 7px 8px 8px; border-radius: 0 0 var(--component-radius-lg, 12px) var(--component-radius-lg, 12px); }
   .dish h4,.dish strong { font-size: 13px; }
 }
 
