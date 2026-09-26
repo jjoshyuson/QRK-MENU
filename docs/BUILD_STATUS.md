@@ -2,7 +2,7 @@
 
 ## September 27, 2026 — Public menu hero and typography refinement
 
-- Changed the shared customer-facing display face from Source Serif 4 to Playfair Display while retaining Inter for body copy, tabs, prices, search, controls, and operational UI.
+- Changed the shared customer-facing display face from Source Serif 4 to Playfair Display Bold and refreshed body copy, tabs, prices, search, controls, and operational UI from Inter to the approved Manrope alternative. The stronger role contrast makes the requested typography visibly distinct instead of swapping between two near-identical serif treatments.
 - Rebuilt the public-menu identity header as a full-bleed image hero with a restrained bottom gradient, overlaid logo and restaurant details, and a curved white transition directly into the search/category toolbar. Removed the former white profile block below the image and enlarged the public-menu search and category pills to match the approved reference density without changing their behavior.
 - Preserved the no-banner fallback, sticky category tracking, ordering interactions, Order History, responsive menu grids, and keyboard semantics.
 

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700&display=swap');
 
 /*
  * QRK shared component source of truth.
@@ -8,7 +8,7 @@
  * remains responsible only for page composition and responsive placement.
  */
 :root{
-  --font-interface:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-interface:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
   --font-menu-display:"Playfair Display",Georgia,serif;
   --component-control-height:44px;
   --component-customer-control-height:50px;
@@ -87,7 +87,7 @@
 html,body,button,input,select,textarea{font-family:var(--font-interface)!important}
 .restaurant-wordmark,.restaurant h1,.menu-heading h2,.section-heading h3,.dish h4,
 .item-title-row h2,.menu-title h2,.mobile-studio-title h1,.mobile-dish h3,
-.type-stack .menu-display-sample{font-family:var(--font-menu-display)!important}
+.type-stack .menu-display-sample{font-family:var(--font-menu-display)!important;font-weight:700!important}
 
 /* Controls */
 .button,.ui-button,.primary-button,.secondary-button,.customer-button,.text-button,.text-action,.icon-button,.mobile-icon-control,
