@@ -24,7 +24,9 @@ assert.match(customerCss, /\.menu-section \.dish\s*\{[^}]*backdrop-filter:\s*non
 assert.match(componentCss, /@media\(prefers-reduced-transparency:reduce\)\s*\{[^}]*\.dish,\.customer-dish-card\s*\{[^}]*background:var\(--surface\)[^}]*backdrop-filter:none/s);
 assert.match(customerCss, /\.menu-tools \.categories\s*\{[^}]*display:\s*flex[^}]*flex-wrap:\s*nowrap[^}]*overflow-x:\s*auto[^}]*scroll-snap-type:\s*inline proximity/s);
 assert.match(customerCss, /\.menu-tools \.categories\s*\{[^}]*padding-right:\s*max\(18px, calc\(50% - 4\.25rem\)\)/s);
-assert.match(customerCss, /\.menu-tools \.categories a\s*\{[^}]*flex:\s*0 0 clamp\(6\.5rem, 32%, 8\.5rem\)[^}]*scroll-snap-align:\s*center/s);
+assert.match(customerCss, /\.menu-tools \.categories a\s*\{[^}]*flex:\s*0 0 clamp\(4\.75rem, 22%, 6\.25rem\)[^}]*scroll-snap-align:\s*center/s);
+assert.match(customerCss, /\.restaurant-profile\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*24px[^}]*color:\s*#fff/s);
+assert.match(customerCss, /\.restaurant \+ \.notice \+ \.menu\s*\{[^}]*margin-top:\s*-20px[^}]*border-radius:\s*22px 22px 0 0/s);
 assert.match(customerCss, /\.menu-tools \.search-wrap #menu-search\s*\{[^}]*border:\s*0/s);
 assert.match(customerCss, /#menu-search:focus-visible\s*\{[^}]*outline:\s*0[^}]*box-shadow:\s*0 5px 18px/s);
 assert.match(componentCss, /--component-menu-search-height:2\.1rem/);
