@@ -159,17 +159,18 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--brand-500)}
   border-radius:var(--component-radius-lg);
 }
 
-/* Customer dish cards use a restrained standard material: enough transparency
-   to reveal the menu wallpaper, with a crisp rim and quiet depth for legibility. */
+/* Customer dish cards use a restrained standard material. Public-menu tiles
+   omit the rim so their image and rounded text footer read as one surface. */
 .dish,.customer-dish-card{
   position:relative;
-  border:1px solid var(--component-menu-card-border);
   background:var(--component-menu-card-bg);
   box-shadow:var(--component-menu-card-shadow);
   backdrop-filter:saturate(1.08) blur(16px);
   -webkit-backdrop-filter:saturate(1.08) blur(16px);
 }
-.dish::before,.customer-dish-card::before{
+.dish{border:0}
+.customer-dish-card{border:1px solid var(--component-menu-card-border)}
+.customer-dish-card::before{
   content:"";
   position:absolute;
   z-index:1;
