@@ -85,9 +85,10 @@
 /* Typography foundation: one interface face, with serif reserved for customer-facing
    restaurant and menu hierarchy. Route styles may control size and line-height only. */
 html,body,button,input,select,textarea{font-family:var(--font-interface)!important}
-.restaurant-wordmark,.restaurant h1,.menu-heading h2,.section-heading h3,.dish h4,
+.restaurant-wordmark,.restaurant h1,.menu-heading h2,.section-heading h3,
 .item-title-row h2,.menu-title h2,.mobile-studio-title h1,.mobile-dish h3,
 .type-stack .menu-display-sample{font-family:var(--font-menu-display)!important;font-weight:700!important}
+.dish h4,.dish strong{font-family:var(--font-interface)!important;font-weight:700!important;letter-spacing:-.015em}
 
 /* Controls */
 .button,.ui-button,.primary-button,.secondary-button,.customer-button,.text-button,.text-action,.icon-button,.mobile-icon-control,

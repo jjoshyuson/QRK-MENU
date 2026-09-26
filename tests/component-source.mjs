@@ -10,7 +10,7 @@ const routeFiles = [
 
 for (const route of routeFiles) {
   const html = await readFile(new URL(route, import.meta.url), 'utf8');
-  assert.match(html, /href="\/ui-components\.css\?v=16"/, `${route} must load the shared visual source`);
+  assert.match(html, /href="\/ui-components\.css\?v=17"/, `${route} must load the shared visual source`);
   assert.match(html, /src="\/ui-components\.js\?v=10"/, `${route} must load stable inspector labels`);
 }
 
@@ -19,6 +19,7 @@ assert.match(css, /family=Manrope:wght@400;500;600;700;800/);
 assert.match(css, /family=Playfair\+Display:wght@700/);
 assert.match(css, /--font-interface:"Manrope"/);
 assert.match(css, /--font-menu-display:"Playfair Display"/);
+assert.match(css, /\.dish h4,\.dish strong\{font-family:var\(--font-interface\)!important;font-weight:700!important/);
 for (const variable of [
   '--font-interface', '--font-menu-display',
   '--component-control-height', '--component-radius-sm', '--component-border',
