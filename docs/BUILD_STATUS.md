@@ -1,5 +1,11 @@
 # Build status
 
+## September 27, 2026 — Lightweight CSS-only hero parallax
+
+- Replaced the full-depth requestAnimationFrame transform with native CSS sticky layering: the hero stays behind while the opaque menu surface rises over it, preserving the intended full-cover effect without per-scroll JavaScript, layout reads, transform writes, or permanent `will-change` allocation.
+- Restored clipping on the restaurant layer so the banner cannot escape below its frame and create the dark broken-window strip seen on phones.
+- Kept no-banner menus in normal flow and added performance assertions that reject the previous scroll-animation code and transform hints.
+
 ## September 27, 2026 — Full-depth public-menu hero parallax
 
 - Increased the public-menu hero from a short decorative drift to full-depth parallax: its complete banner and restaurant identity now remain visually stationary while the curved menu surface, search, and category toolbar rise across the full hero height.
