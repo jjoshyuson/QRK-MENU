@@ -29,7 +29,7 @@ assert.match(menu, /if\(reviewChoiceRequired\)\{document\.querySelectorAll\('inp
 assert.match(menu, /function updateCheckoutActionVisibility\(\).*cart-action.*!cart\.length/s);
 assert.match(menu, /function showFulfillmentChoices\(\)/);
 assert.match(menu, /fulfillment-choice-list'\)\.addEventListener\('click'/);
-assert.match(menu, /function closeTableSelection\(\).*cart-dialog.*showModal/s);
+assert.match(menu, /function closeTableSelection\(\).*showCartDialog\(\)/s);
 assert.match(menu, /fulfillment-dialog'\)\.addEventListener\('cancel',event=>\{event\.preventDefault\(\);closeTableSelection\(\)\}\)/);
 assert.match(menu, /function openTableMenu\(session\).*setFulfillmentChoice\('table'\)/);
 assert.match(menu, /\$\('#pay-at-counter'\)\.addEventListener\('click',\(\)=>createOrder\('counter'\)\)/);

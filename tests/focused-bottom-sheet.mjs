@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-const [html, menu, css, customerCss, style, handoff] = await Promise.all([
+const [html, menu, css, customerCss, menuCss, style, handoff] = await Promise.all([
   readFile(new URL('../dist/menu/index.html', import.meta.url), 'utf8'),
   readFile(new URL('../dist/menu/menu.js', import.meta.url), 'utf8'),
   readFile(new URL('../dist/ui-components.css', import.meta.url), 'utf8'),
   readFile(new URL('../dist/menu/cart-dock.css', import.meta.url), 'utf8'),
+  readFile(new URL('../dist/menu/menu.css', import.meta.url), 'utf8'),
   readFile(new URL('../AGENT/STYLE.md', import.meta.url), 'utf8'),
   readFile(new URL('../docs/TECHNICAL_HANDOFF.md', import.meta.url), 'utf8'),
 ]);
@@ -43,6 +44,16 @@ assert.match(menu, /item-dialog'\)\.addEventListener\('close'.*fallback=.*data-a
 assert.match(menu, /focused-choice-list/);
 assert.match(menu, /pointerType==='touch'\|\|event\.pointerType==='pen'/);
 assert.match(menu, /event\.key==='Tab'.*delete document\.body\.dataset\.inputModality/);
+assert.match(menu, /function openModal\(dialog\).*syncModalScrollLock\(\)/s);
+assert.match(menu, /document\.querySelector\('dialog\[open\]'\)/);
+assert.match(menu, /item-dialog'\)\.addEventListener\('click',event=>\{if\(event\.target===event\.currentTarget\)closeSheet/);
+assert.match(menu, /item-dialog \.item-hero'\)\.addEventListener\('pointerdown'/);
+assert.match(menu, /function finishItemSheetDrag\(commit\)/);
+assert.match(menu, /drag\.dy>Math\.max\(88,card\.clientHeight\*\.16\)/);
+assert.match(menu, /translate3d\(0,100dvh,0\).*duration:150/s);
+assert.match(menu, /pointercancel'.*finishItemSheetDrag\(false\)/s);
+assert.match(menuCss, /body\.menu-scroll-locked\{[^}]*position:fixed[^}]*overflow:hidden[^}]*overscroll-behavior:none/);
+assert.match(menuCss, /\.item-sheet \.item-hero\{[^}]*touch-action:none[^}]*cursor:grab/);
 assert.match(customerCss, /dialog #add-item\s*\{[^}]*background:\s*var\(--brand-500\) !important[^}]*color:\s*var\(--brand-foreground\) !important/s);
 assert.match(html, /ui-components\.css\?v=19[\s\S]*cart-dock\.css\?v=36/);
 assert.match(customerCss, /dialog\.focused-sheet::backdrop,[\s\S]*dialog\.quick-service-dialog::backdrop,[\s\S]*dialog\.table-entry::backdrop\s*\{[^}]*background:\s*rgba\(248, 250, 252, \.16\)[^}]*backdrop-filter:\s*blur\(6px\) saturate\(\.92\)/s);

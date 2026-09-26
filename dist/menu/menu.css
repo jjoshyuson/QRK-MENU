@@ -6,6 +6,7 @@
 @keyframes menu-sheet-out{from{transform:translate3d(0,0,0)}to{transform:translate3d(0,100dvh,0)}}
 @media(prefers-reduced-motion:reduce){.sheet[open]>.sheet-card,.sheet.is-closing>.sheet-card{animation:none!important}}
 body[data-input-modality="touch"] dialog :focus-visible{outline:0!important}
+body.menu-scroll-locked{position:fixed;right:0;left:0;width:100%;overflow:hidden;overscroll-behavior:none}
 
 /* Keep the public menu visually ready while its first hosted menu request settles. */
 .menu-loading{padding-top:24px}.loading-heading,.loading-dish span,.loading-dish i,.loading-dish b{display:block;background:color-mix(in srgb,var(--surface-muted) 82%,var(--line));overflow:hidden;position:relative}
@@ -17,7 +18,9 @@ body[data-input-modality="touch"] dialog :focus-visible{outline:0!important}
 
 /* Public item detail keeps the established option cards while using a photo-led
    layout and a single bottom add action. */
-.item-sheet .item-hero{position:relative;flex:0 0 auto;overflow:hidden;background:var(--surface-muted)}
+.item-sheet .item-hero{position:relative;flex:0 0 auto;overflow:hidden;background:var(--surface-muted);touch-action:none;cursor:grab}
+.item-sheet.is-dragging .item-hero{cursor:grabbing}
+.item-sheet.is-dragging>.sheet-card{animation:none!important}
 .item-sheet .item-hero>#item-photo{display:block;width:100%;height:clamp(220px,34dvh,320px);max-height:none;object-fit:cover;border-radius:0}
 .item-sheet .item-hero>#item-photo[hidden]{display:none}
 .item-sheet .item-hero:has(#item-photo[hidden]){min-height:72px}
