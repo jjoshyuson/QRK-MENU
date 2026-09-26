@@ -5,6 +5,7 @@
 - Prevented the category observer from overriding a pill selected during its smooth-scroll navigation. The selected category now remains active until the requested scroll settles, after which ordinary viewport tracking resumes.
 - Added an explicit document scroll lock for every modal dialog while preserving each sheet's internal scrolling and restoring the exact menu position on close.
 - Made the visible gap above the item sheet dismiss the sheet and added a downward photo-area drag gesture with axis locking, threshold/velocity dismissal, spring return, and reduced-motion-compatible close behavior.
+- Prevented the item sheet's entrance animation from restarting during close cleanup by giving the exit animation sole ownership until the dialog is closed, then resetting transient drag and transform state.
 - Browser verification reproduced the former Noodles → Mains highlight jump at 120ms, then confirmed stable Noodles/Soups selection, fixed-body background locking, exact scroll restoration, backdrop dismissal, and swipe-down dismissal.
 
 ## September 27, 2026 — Public menu hero and typography refinement
