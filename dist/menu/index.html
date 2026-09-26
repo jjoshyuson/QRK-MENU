@@ -24,12 +24,12 @@
   <link rel="stylesheet" href="/menu/order-confirmation.css?v=1">
   <link rel="stylesheet" href="/menu/quick-service.css?v=1">
   <link rel="stylesheet" href="/ui-components.css?v=19">
-  <link rel="stylesheet" href="/menu/cart-dock.css?v=36">
+  <link rel="stylesheet" href="/menu/cart-dock.css?v=37">
   <script src="/global-theme.js"></script>
   <script src="/pwa.js" defer></script>
   <script src="/ui-components.js?v=10" defer></script>
   <script src="/data/qrk-config.local.js"></script>
-  <script type="module" src="/menu/menu.js?v=39"></script>
+  <script type="module" src="/menu/menu.js?v=40"></script>
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
@@ -64,6 +64,7 @@
     </section>
     <section class="notice hidden" id="store-notice" aria-live="polite"></section>
     <section class="menu" aria-label="Menu">
+      <div class="menu-curve" aria-hidden="true"></div>
       <div class="menu-tools">
         <div class="search-wrap"><label class="sr-only" for="menu-search">Search the menu</label><input id="menu-search" type="search" placeholder="Search dishes and drinks" autocomplete="off"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7"></circle><path d="m16.2 16.2 4.3 4.3"></path></svg></span></div>
         <nav class="categories" id="categories" aria-label="Menu categories"></nav>

@@ -1,5 +1,12 @@
 # Build status
 
+## September 27, 2026 — Solid menu toolbar and banner parallax
+
+- Split the decorative banner transition from the functional sticky toolbar: a static 22px white curve now overlaps the hero in normal flow, while the search/category toolbar becomes a square, fully opaque surface when it sticks.
+- Replaced translucent search and inactive category fills with solid neutral surfaces so menu imagery cannot create visual noise through the controls or expose content through rounded toolbar corners.
+- Added a bounded, requestAnimationFrame-driven parallax offset to the complete restaurant visual layer. The banner and identity move together up to 36px more slowly than the menu, with no fixed-background behavior and a zero-motion reduced-motion fallback.
+- Browser checks at 390px, 768px, and 1280px confirmed a solid square sticky toolbar, no horizontal overflow, bounded parallax, and reduced-motion suppression.
+
 ## September 27, 2026 — Public-menu category line and close restoration repair
 
 - Replaced the broad category intersection band with one concrete activation line four pixels below the sticky menu toolbar. Manual scrolling highlights the ordered section occupying that line, while a tapped pill remains selected until its section reaches the same line.
