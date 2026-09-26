@@ -29,9 +29,9 @@ assert.match(customerCss, /\.menu-tools \.categories\s*\{[^}]*padding-right:\s*m
 assert.match(customerCss, /\.menu-tools \.categories a\s*\{[^}]*flex:\s*0 0 clamp\(4\.75rem, 22%, 6\.25rem\)[^}]*scroll-snap-align:\s*center/s);
 assert.match(customerCss, /\.restaurant-profile\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*24px[^}]*color:\s*#fff/s);
 assert.match(customerHtml, /class="menu-curve" aria-hidden="true"/);
-assert.match(customerCss, /\.restaurant \+ \.notice \+ \.menu\s*\{[^}]*margin-top:\s*-20px[^}]*border-radius:\s*0/s);
-assert.match(customerCss, /\.menu-curve\s*\{[^}]*height:\s*22px[^}]*border-radius:\s*22px 22px 0 0[^}]*background:\s*var\(--surface, #fff\)/s);
-assert.match(customerCss, /\.menu-tools\s*\{[^}]*border-radius:\s*0[^}]*background:\s*var\(--surface, #fff\)[^}]*backdrop-filter:\s*none/s);
+assert.match(customerCss, /\.restaurant \+ \.notice \+ \.menu\s*\{[^}]*margin-top:\s*0[^}]*border-radius:\s*0/s);
+assert.match(customerCss, /\.menu-curve\s*\{[^}]*position:\s*absolute[^}]*top:\s*-22px[^}]*height:\s*22px[^}]*border-radius:\s*22px 22px 0 0[^}]*background:\s*var\(--surface, #fff\)/s);
+assert.match(customerCss, /\.menu-tools\s*\{[^}]*border-radius:\s*0[^}]*border:\s*0[^}]*background:\s*var\(--surface, #fff\)[^}]*backdrop-filter:\s*none[^}]*box-shadow:\s*none/s);
 assert.match(customerCss, /\.menu-tools \.search-wrap #menu-search\s*\{[^}]*background:\s*var\(--surface-soft, #f4f5f7\)/s);
 assert.match(customerCss, /\.menu-tools \.search-wrap #menu-search\s*\{[^}]*border:\s*0/s);
 assert.match(customerCss, /#menu-search:focus-visible\s*\{[^}]*outline:\s*0[^}]*box-shadow:\s*0 5px 18px/s);

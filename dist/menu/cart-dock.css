@@ -28,10 +28,10 @@
   width: 100%;
   padding-top: 14px;
   border-radius: 0;
-  border-block: 1px solid var(--line);
+  border: 0;
   background: var(--surface, #fff);
   backdrop-filter: none;
-  box-shadow: 0 1px 0 color-mix(in srgb, var(--line) 72%, transparent);
+  box-shadow: none;
   transition: box-shadow 160ms ease;
 }
 
@@ -83,8 +83,8 @@
 .restaurant-copy h1 { margin-bottom: 1px; color: #fff; font-size: clamp(22px, 5vw, 30px); line-height: 1.08; letter-spacing: -.35px; }
 .restaurant-copy p:not(.eyebrow) { margin-bottom: 2px; color: rgba(255,255,255,.88); font-size: 12px; }
 .restaurant-copy span { color: rgba(255,255,255,.78); font-size: 10px; }
-.restaurant + .notice + .menu { position: relative; z-index: 3; margin-top: -20px; border-radius: 0; }
-.menu-curve { position: relative; z-index: 1; height: 22px; border-radius: 22px 22px 0 0; background: var(--surface, #fff); pointer-events: none; }
+.restaurant + .notice + .menu { position: relative; z-index: 3; margin-top: 0; border-radius: 0; }
+.menu-curve { position: absolute; top: -22px; right: 0; left: 0; z-index: 1; height: 22px; border-radius: 22px 22px 0 0; background: var(--surface, #fff); pointer-events: none; }
 .restaurant.no-banner { background: var(--surface); }
 .restaurant.no-banner .restaurant-visual { min-height: auto; overflow: visible; }
 .restaurant.no-banner .restaurant-visual::after { display: none; }
