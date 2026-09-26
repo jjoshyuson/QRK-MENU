@@ -1,5 +1,11 @@
 # Build status
 
+## September 27, 2026 — Full-depth public-menu hero parallax
+
+- Increased the public-menu hero from a short decorative drift to full-depth parallax: its complete banner and restaurant identity now remain visually stationary while the curved menu surface, search, and category toolbar rise across the full hero height.
+- Kept the movement bounded to the hero's own measured height so normal document scrolling resumes after the toolbar reaches the viewport top, without a permanently fixed background layer.
+- Preserved the zero-transform reduced-motion fallback and requestAnimationFrame scroll throttling.
+
 ## September 27, 2026 — Solid menu toolbar and banner parallax
 
 - Split the decorative banner transition from the functional sticky toolbar: an absolute 22px white curve now visibly overlays the hero without adding a blank spacer, while the search/category toolbar becomes a square, fully opaque surface when it sticks.

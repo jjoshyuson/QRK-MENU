@@ -72,7 +72,7 @@
 .menu-tools .categories a { flex: 0 0 clamp(4.75rem, 22%, 6.25rem); justify-content: center; min-width: 0; height: var(--component-menu-category-height); min-height: 0; padding: .3em .7em; border-color: var(--component-menu-control-border); background: var(--surface-soft, #f4f5f7); font-size: 12px; text-align: center; scroll-snap-align: center; }
 .menu-tools .categories a.active { border-color: transparent; background: var(--component-menu-active-bg); }
 
-.restaurant { display: block; position: relative; padding: 0; overflow: hidden; border: 0; background: var(--surface-soft, #eef0f3); }
+.restaurant { display: block; position: relative; padding: 0; overflow: visible; border: 0; background: var(--surface-soft, #eef0f3); }
 .restaurant-visual { position: relative; min-height: 148px; overflow: hidden; transform: translate3d(0,var(--restaurant-parallax-y,0px),0); backface-visibility: hidden; will-change: transform; }
 .restaurant-visual::after { content: ""; position: absolute; inset: 24% 0 0; z-index: 1; background: linear-gradient(180deg, transparent, rgba(9, 14, 18, .82)); pointer-events: none; }
 .restaurant-banner { display: block; width: 100%; height: auto; min-height: 148px; aspect-ratio: 3 / 1; object-fit: cover; background: var(--surface-soft, #eef0f3); }
