@@ -59,7 +59,7 @@ function syncModalScrollLock(){
     const scrollbarGap=Math.max(0,innerWidth-document.documentElement.clientWidth);
     document.body.style.top=`-${modalScrollLock.y}px`;document.body.style.paddingRight=scrollbarGap?`${scrollbarGap}px`:'';document.body.classList.add('menu-scroll-locked');
   }else if(!shouldLock&&modalScrollLock){
-    const {y,top,paddingRight}=modalScrollLock;modalScrollLock=null;document.body.classList.remove('menu-scroll-locked');document.body.style.top=top;document.body.style.paddingRight=paddingRight;scrollTo(0,y);
+    const {y,top,paddingRight}=modalScrollLock;modalScrollLock=null;document.body.classList.remove('menu-scroll-locked');document.body.style.top=top;document.body.style.paddingRight=paddingRight;scrollTo({top:y,left:0,behavior:'instant'});
   }
 }
 function openModal(dialog){if(!dialog.open)dialog.showModal();syncModalScrollLock()}
@@ -142,17 +142,18 @@ function renderMenu(filter=''){
   });
   $('#menu-empty').classList.toggle('hidden',visible.length>0);bindCategoryLinks();
 }
-let categoryObserver,categoryNavigationId='',categoryNavigationTimer=0,categoryNavigationIdleTimer=0,categoryNavigationScrollHandler=null;
+let categoryNavigationId='',categoryNavigationTimer=0,categoryNavigationIdleTimer=0,categoryNavigationScrollHandler=null,categoryTrackingScrollHandler=null,categoryTrackingFrame=0;
 function bindCategoryLinks(){
   const links=[...document.querySelectorAll('.categories a')],sections=links.map(link=>document.querySelector(link.hash)).filter(Boolean);
-  const track=$('#categories');let activeId=links.find(link=>link.matches('[aria-current="true"]'))?.hash.slice(1)||'';
+  const track=$('#categories'),toolbar=$('.menu-tools');let activeId=links.find(link=>link.matches('[aria-current="true"]'))?.hash.slice(1)||'';
   const centerIfClipped=link=>{const trackBox=track.getBoundingClientRect(),linkBox=link.getBoundingClientRect();if(linkBox.left>=trackBox.left&&linkBox.right<=trackBox.right)return;track.scrollTo({left:link.offsetLeft-(track.clientWidth-link.offsetWidth)/2,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})};
   const activate=id=>{let activeLink=null;links.forEach(link=>{const on=link.hash===`#${id}`;link.classList.toggle('active',on);if(on){activeLink=link;link.setAttribute('aria-current','true')}else link.removeAttribute('aria-current')});if(activeLink&&id!==activeId){activeId=id;centerIfClipped(activeLink)}};
-  const activateClosest=()=>{const closest=sections.map(section=>({section,distance:Math.abs(section.getBoundingClientRect().top-116)})).sort((a,b)=>a.distance-b.distance)[0];if(closest)activate(closest.section.id)};
-  const finishNavigation=id=>{if(categoryNavigationId!==id)return;categoryNavigationId='';clearTimeout(categoryNavigationTimer);clearTimeout(categoryNavigationIdleTimer);activateClosest()};
+  const activationLine=()=>Math.min(innerHeight-1,Math.max(0,(toolbar?.getBoundingClientRect().bottom||0)+4));
+  const activateAtLine=()=>{if(categoryNavigationId){activate(categoryNavigationId);return}const line=activationLine(),atLine=sections.find(section=>{const box=section.getBoundingClientRect();return box.top<=line&&box.bottom>line}),passed=[...sections].reverse().find(section=>section.getBoundingClientRect().top<=line);activate((atLine||passed||sections[0])?.id)};
+  const finishNavigation=id=>{if(categoryNavigationId!==id)return;categoryNavigationId='';clearTimeout(categoryNavigationTimer);clearTimeout(categoryNavigationIdleTimer);activateAtLine()};
   if(categoryNavigationScrollHandler)removeEventListener('scroll',categoryNavigationScrollHandler);categoryNavigationScrollHandler=()=>{if(!categoryNavigationId)return;const id=categoryNavigationId;clearTimeout(categoryNavigationIdleTimer);categoryNavigationIdleTimer=setTimeout(()=>finishNavigation(id),140)};addEventListener('scroll',categoryNavigationScrollHandler,{passive:true});
-  links.forEach(link=>link.addEventListener('click',event=>{event.preventDefault();const id=link.hash.slice(1),section=document.querySelector(link.hash),reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;categoryNavigationId=id;clearTimeout(categoryNavigationTimer);clearTimeout(categoryNavigationIdleTimer);history.replaceState(null,'',link.hash);activate(id);section?.scrollIntoView({behavior:reducedMotion?'auto':'smooth',block:'start'});if(reducedMotion)requestAnimationFrame(()=>finishNavigation(id));else categoryNavigationTimer=setTimeout(()=>finishNavigation(id),3000)}));
-  categoryObserver?.disconnect();categoryObserver=new IntersectionObserver(entries=>{if(categoryNavigationId){activate(categoryNavigationId);return}const visible=entries.filter(entry=>entry.isIntersecting).sort((a,b)=>Math.abs(a.boundingClientRect.top-116)-Math.abs(b.boundingClientRect.top-116));if(visible[0])activate(visible[0].target.id)},{rootMargin:'-116px 0px -64% 0px',threshold:[0,.01]});sections.forEach(section=>categoryObserver.observe(section));
+  links.forEach(link=>link.addEventListener('click',event=>{event.preventDefault();const id=link.hash.slice(1),section=document.querySelector(link.hash),reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches,targetY=section?scrollY+section.getBoundingClientRect().top-(toolbar?.offsetHeight||0)+1:scrollY;categoryNavigationId=id;clearTimeout(categoryNavigationTimer);clearTimeout(categoryNavigationIdleTimer);history.replaceState(null,'',link.hash);activate(id);scrollTo({top:targetY,behavior:reducedMotion?'auto':'smooth'});if(reducedMotion)requestAnimationFrame(()=>finishNavigation(id));else categoryNavigationTimer=setTimeout(()=>finishNavigation(id),3000)}));
+  if(categoryTrackingScrollHandler)removeEventListener('scroll',categoryTrackingScrollHandler);categoryTrackingScrollHandler=()=>{cancelAnimationFrame(categoryTrackingFrame);categoryTrackingFrame=requestAnimationFrame(activateAtLine)};addEventListener('scroll',categoryTrackingScrollHandler,{passive:true});activateAtLine();
 }
 function optionPrice(){return itemOptionDraft.flat().reduce((sum,option)=>sum+Number(option.priceMinor),0)}
 function updateItemTotal(){if(!selectedItem)return;$('#item-quantity').textContent=itemQuantity;$('#item-minus').disabled=itemQuantity<=1;$('#item-plus').disabled=itemQuantity>=20;$('#item-total').textContent=format((selectedItem.price+optionPrice())*itemQuantity)}

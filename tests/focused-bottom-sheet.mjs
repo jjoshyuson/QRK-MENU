@@ -46,6 +46,7 @@ assert.match(menu, /pointerType==='touch'\|\|event\.pointerType==='pen'/);
 assert.match(menu, /event\.key==='Tab'.*delete document\.body\.dataset\.inputModality/);
 assert.match(menu, /function openModal\(dialog\).*syncModalScrollLock\(\)/s);
 assert.match(menu, /document\.querySelector\('dialog\[open\]'\)/);
+assert.match(menu, /scrollTo\(\{top:y,left:0,behavior:'instant'\}\)/);
 assert.match(menu, /item-dialog'\)\.addEventListener\('click',event=>\{if\(event\.target===event\.currentTarget\)closeSheet/);
 assert.match(menu, /item-dialog \.item-hero'\)\.addEventListener\('pointerdown'/);
 assert.match(menu, /function finishItemSheetDrag\(commit\)/);

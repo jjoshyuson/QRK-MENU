@@ -1,5 +1,11 @@
 # Build status
 
+## September 27, 2026 — Public-menu category line and close restoration repair
+
+- Replaced the broad category intersection band with one concrete activation line four pixels below the sticky menu toolbar. Manual scrolling highlights the ordered section occupying that line, while a tapped pill remains selected until its section reaches the same line.
+- Restored the menu's saved scroll position with an instant scroll after the final dialog closes, preventing the global smooth-scroll rule from visibly replaying the background page from top to bottom.
+- Phone-width browser verification confirmed Noodles remains active throughout pill navigation, manual scrolling activates the section crossing the line, and the Pancit canton open/close sequence restores one exact scroll position without continued movement.
+
 ## September 27, 2026 — Public-menu navigation and sheet interaction repair
 
 - Prevented the category observer from overriding a pill selected during its smooth-scroll navigation. The selected category now remains active until the requested scroll settles, after which ordinary viewport tracking resumes.
