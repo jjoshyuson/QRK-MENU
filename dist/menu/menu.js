@@ -123,7 +123,7 @@ function renderMenu(filter=''){
     items.forEach(item=>{
       const card=$('#dish-template').content.firstElementChild.cloneNode(true);const cardButton=card.querySelector('.dish-hit');const img=card.querySelector('img');
       if(item.photo){const isPriority=renderedPhotoIndex<2;img.src=item.photoCard||item.photo;img.alt=item.name;img.loading=isPriority?'eager':'lazy';img.decoding='async';img.fetchPriority=isPriority?'high':'low';const reveal=()=>img.classList.add('is-loaded');if(img.complete)reveal();else{img.addEventListener('load',reveal,{once:true});img.addEventListener('error',reveal,{once:true})}renderedPhotoIndex++}else{img.remove();const photo=card.querySelector('.photo');photo.classList.add('no-photo');photo.textContent=item.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase()}card.querySelector('h4').textContent=item.name;card.querySelector('strong').textContent=format(item.price);cardButton.setAttribute('aria-label',`Add ${item.name} to order`);
-      if(!item.available){card.classList.add('sold-out');card.querySelector('.sold-label').classList.remove('hidden');cardButton.disabled=true;card.querySelector('.dish-cta').classList.add('hidden');cardButton.setAttribute('aria-label',`${item.name}, sold out`)}else cardButton.addEventListener('click',event=>openItem(item,-1,event.currentTarget));
+      if(!item.available){card.classList.add('sold-out');card.querySelector('.sold-label').classList.remove('hidden');cardButton.disabled=true;cardButton.setAttribute('aria-label',`${item.name}, sold out`)}else cardButton.addEventListener('click',event=>openItem(item,-1,event.currentTarget));
       section.querySelector('.dish-grid').append(card);
     });$('#menu-sections').append(section);
   });

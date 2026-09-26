@@ -1,5 +1,9 @@
 # Build status
 
+## September 27, 2026 — Public menu tile simplification
+
+- Removed the decorative turquoise plus cue from public-menu item tiles. The complete tile remains the semantic ordering button, retaining its item-specific accessible label and whole-card keyboard focus.
+
 ## September 15, 2026 — Public menu sheet motion refinement
 
 - Public-menu sheets now travel from fully below the viewport instead of moving only 14–18 pixels, making both entrance and exit read as genuine bottom-sheet motion. Entrance timing remains deliberately slow for review, while the Review Order closing backdrop fade remains nearly immediate.

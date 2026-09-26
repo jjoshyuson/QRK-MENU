@@ -113,34 +113,11 @@
 .dish-hit { display: flex; height: 100%; flex-direction: column; border-radius: inherit; }
 .dish h4,.dish strong { font-size: 14px; }
 .dish-copy { display: grid; flex: 1; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 10px; padding: 10px 5px 5px; }
-.dish-cta {
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  right: 0;
-  display: grid;
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--brand-400), var(--brand-500));
-  box-shadow: 0 6px 14px color-mix(in srgb, var(--brand-500) 22%, transparent);
-  color: #111827;
-  font-size: 21px;
-  font-weight: 400;
-  line-height: 1;
-  place-items: center;
-  pointer-events: none;
-  transform: translate(50%, -50%);
-}
-
 @media (max-width: 600px) {
   .menu-section .dish { padding: 6px; border-radius: var(--component-radius-lg, 12px); }
   .dish .photo { border-radius: 10px; }
   .dish-copy { gap: 7px; padding: 8px 3px 3px; }
   .dish h4,.dish strong { font-size: 13px; }
-  .dish-cta { width: 28px; height: 28px; font-size: 20px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
