@@ -24,6 +24,8 @@ assert.doesNotMatch(menu,/restaurant-parallax-y|menuChromeFrame|requestAnimation
 assert.match(styles,/\.restaurant\s*\{[^}]*position:\s*sticky[^}]*top:\s*0[^}]*overflow:\s*hidden/s);
 assert.match(styles,/\.restaurant-visual\s*\{[^}]*transform:\s*none/s);
 assert.doesNotMatch(styles,/restaurant-parallax-y/);
+assert.match(styles,/#menu-sections\s*\{[^}]*position:\s*relative[^}]*z-index:\s*1[^}]*isolation:\s*isolate[^}]*background:\s*var\(--surface, #fff\)/s);
+assert.match(styles,/\.menu\.has-menu-background #menu-sections\s*\{[^}]*background-color:\s*var\(--surface, #fff\)[^}]*var\(--menu-background-image\)/s);
 assert.match(imageService,/MAX_EDGE=960/);
 assert.match(imageService,/TARGET_BYTES=160\*1024/);
 assert.match(imageService,/CARD_EDGE=480/);

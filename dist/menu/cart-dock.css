@@ -93,8 +93,13 @@
 .restaurant.no-banner + .notice + .menu { margin-top: 0; }
 .restaurant.no-banner + .notice + .menu .menu-curve { display: none; }
 .menu-tools + #menu-sections .menu-section { scroll-margin-top: 116px; }
+#menu-sections { position: relative; z-index: 1; isolation: isolate; background: var(--surface, #fff); }
 
 .menu.has-menu-background {
+  background: var(--surface, #fff);
+}
+
+.menu.has-menu-background #menu-sections {
   background-color: var(--surface, #fff);
   background-image:
     linear-gradient(

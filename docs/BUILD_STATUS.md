@@ -1,5 +1,10 @@
 # Build status
 
+## September 27, 2026 — Mobile Safari parallax seam repair
+
+- Moved the configured browsing wallpaper onto an isolated, explicitly opaque `#menu-sections` plane above the CSS-sticky hero. This prevents mobile Safari from promoting the hero above the menu container background while still painting section text and cards, which produced the banner-shaped broken window behind the first heading.
+- Kept the zero-JavaScript CSS parallax path and the existing solid search/category toolbar; no scroll listener, transform, blur, or additional animated layer was introduced.
+
 ## September 27, 2026 — Lightweight CSS-only hero parallax
 
 - Replaced the full-depth requestAnimationFrame transform with native CSS sticky layering: the hero stays behind while the opaque menu surface rises over it, preserving the intended full-cover effect without per-scroll JavaScript, layout reads, transform writes, or permanent `will-change` allocation.
