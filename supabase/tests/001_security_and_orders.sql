@@ -64,6 +64,9 @@ select is((select count(*)::integer from public.orders), 1, 'tenant A order staf
 select lives_ok($$select public.transition_order_status(
   (select id from public.orders limit 1), 'received', 'preparing', null
 )$$, 'permitted staff can advance an order');
+select throws_ok($$select public.transition_order_status(
+  (select id from public.orders limit 1), 'received', 'ready', null
+)$$, 'P0001', 'order status changed; refresh and try again', 'stale status is a non-retryable application error');
 select lives_ok($$select public.transition_order_status(
   (select id from public.orders limit 1), 'preparing', 'ready', null
 )$$, 'ordered status transition reaches ready');
