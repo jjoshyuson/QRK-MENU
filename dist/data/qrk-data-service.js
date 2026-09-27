@@ -98,6 +98,7 @@ class SupabaseDataService{
   }
   async createOrder(input){
     await this.registerDevice();
+    if(this.destinationSlug==='rnl'&&this.environment==='staging'){const response=await fetch(`${this.config.supabaseUrl}/functions/v1/rnl-orders`,{method:'POST',headers:this.headers(),body:JSON.stringify({...input,destinationSlug:this.destinationSlug,deviceId:this.device.id,deviceSecret:this.device.secret})}),value=await response.json().catch(()=>({}));if(!response.ok)throw new Error(value.error||'R&L order forwarding failed.');return value}
     const publicMenu=await this.rpc('get_public_menu',{p_destination_slug:this.destinationSlug});
     const items=reconcilePublishedOrderItems(input.items,publicMenu);
     return this.rpc('create_device_order',{p_destination_slug:this.destinationSlug,p_request_id:input.idempotencyKey,p_fulfillment:input.fulfillmentType,p_table_number:input.tableNumber||null,p_customer_label:input.customerLabel||null,p_order_notes:input.notes||'',p_line_items:items.map(item=>({itemId:item.itemId,quantity:item.quantity,optionIds:(item.selectedOptions||[]).map(option=>option.id).filter(Boolean),notes:item.notes||''})),p_device_id:this.device.id,p_device_secret:this.device.secret,p_table_session_id:input.tableSessionId||null,p_open_tab_id:input.openTabId||null});
@@ -140,7 +141,7 @@ class RnlDataService{
 
 export function createQrkDataService(overrides={}){
   const config=resolveQrkConfig(overrides);
-  if(config.destinationSlug==='rnl')return new RnlDataService(config);
+  if(config.destinationSlug==='rnl'&&config.environment!=='staging')return new RnlDataService(config);
   const hosted=/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(config.supabaseUrl||'');
   const local=config.environment==='local'&&/^http:\/\/(127\.0\.0\.1|localhost|(?:\d{1,3}\.){3}\d{1,3}):54321$/i.test(config.supabaseUrl||'');
   const configured=(hosted||local)&&(/^(sb_publishable_|eyJ)/i.test(config.supabasePublishableKey||''));

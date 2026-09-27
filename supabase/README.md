@@ -43,6 +43,8 @@ npm run check
 
 The local browser app needs no backend. Blank values in `dist/data/qrk-config.js` select the existing `localStorage` demo adapter automatically.
 
+Hosted development client provisioning is server-authorized. `platform_admins` is the database allowlist; `platform_clients` stores non-secret business/provider metadata; and the `platform-clients` Edge Function revalidates the caller JWT before using its service role to create or reset Auth identities. Browser code receives only the public key and the signed-in administrator token. R&L is the first persisted provider-bound client, with catalog images copied into QRK Storage and its upstream credential stored only as Edge Function secrets.
+
 For local Auth, copy `dist/data/qrk-config.local.example.js` to the gitignored `dist/data/qrk-config.local.js` and paste the local `PUBLISHABLE_KEY` reported by `npx supabase status -o env`. Never use the secret/service-role key. This checkout is already configured.
 
 Repeatable local-only logins after `supabase db reset --local`:

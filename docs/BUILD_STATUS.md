@@ -1178,3 +1178,11 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Applied migration `202609270001_order_status_conflict_code.sql` to `qrk-menu-development`; the repository and linked migration histories match.
 - Supabase logs show the `40001` flood ending at migration time. Six final `P0001` responses from the already-running request were followed by normal traffic with no continuing transition-error stream.
 - Validation: backend static checks and the full `npm run check` suite pass. Local database reset, pgTAP, and lint could not run because Docker Desktop was stopped; hosted migration dry-run and application succeeded.
+# September 27, 2026 — DA / Permanent Clients and R&L Migration
+
+- Added authenticated hosted QRK Admin persistence through `platform_admins`, `platform_clients`, and the `platform-clients` Edge Function. All mutations re-check the signed-in caller against the server-side platform-admin allowlist; browser code has no service-role or provider secret.
+- Migrated R&L exactly once as business `20000000-0000-4000-8000-000000000001`, username `rnl.rnl`, active provider `rnl`, with a freshly generated temporary credential and forced first-login replacement. One-time handoffs are stored only under gitignored `.qrk-runtime/`.
+- Applied the reviewed R&L snapshot to hosted development: 9 categories, 67 products, and 60 copied Storage images.
+- Deployed `platform-clients` and `rnl-orders` to `qrk-menu-development`. Live verification rejected a wrong password, accepted the fresh temporary password, returned the R&L tenant context, and preserved `must_change_password=true`.
+- Submitted one labeled non-destructive hosted forwarding check: QRK `RNL-0002` reached R&L as `7c4fa1c5-15e2-4c17-8bd5-c82bd2f455cf` / `QRK-QRK-DEVELOPMENT-20260927-0C9236F35E8BDB86BEF4`, workflow `PREPARING`.
+- Rollback: disable the two Edge Functions first; deactivate R&L and its platform-client/admin memberships without deleting orders; restore the prior Pages commit. The additive tables can remain inert. Do not roll back by deleting the R&L business because orders and provider receipts reference it.

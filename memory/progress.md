@@ -1,6 +1,7 @@
 # Progress memory
 
-As of September 15, 2026:
+As of September 27, 2026:
+- Hosted QRK Admin client persistence is live in the development database. R&L is the single persisted provider-bound client (`20000000-0000-4000-8000-000000000001`) with a forced-first-login Client Admin, 9 categories, 67 products, 60 hosted images, and automatic server-side order forwarding to R&L POS.
 - The canonical development inventory contains exactly ten clients and is shared by browser fallback and `supabase/development_catalog.sql`. The generated catalog includes each business/profile, 50-item menu, and ordered service-gate configuration across the ten approved service experiences.
 - Configurable service gates are implemented locally on the Quick/Table foundation. New and existing clients use the shared grouped-settings/material-sheet candidate from `ui-components`: Quick and Table are independent checkboxes and may both be enabled; each service has a focused preset/ordered-gate sheet; and each gate opens a configuration sub-sheet. `QrkSheet` provides responsive geometry, backdrop/Escape dismissal and focus management; DA owns snapshot restore so Done commits while dismissal discards. Viewport-safe glass choice popovers replace visible native menus. Client Operations migration is staged separately and will consume this shared candidate. Hosted migration/deployment remains pending.
 
