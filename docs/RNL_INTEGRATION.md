@@ -14,13 +14,13 @@ Preview the current R&L-to-QRK diff without changing the active projection:
 npm.cmd run rnl:catalog
 ```
 
-The command prints a fingerprint plus added, updated, and removed counts. Apply only that reviewed snapshot:
+The command prints a fingerprint plus added, updated, removed, and image-transfer counts. Apply only that reviewed snapshot:
 
 ```powershell
 npm.cmd run rnl:catalog -- --apply --fingerprint=<previewed-fingerprint>
 ```
 
-Apply re-reads R&L and refuses the change if the catalog fingerprint changed after preview. A browser visit never refreshes the catalog automatically.
+Apply re-reads R&L and refuses the change if the catalog fingerprint changed after preview. Valid product images are copied from the expected R&L `menu-icons/products/` public-storage path into gitignored QRK runtime storage. The applied catalog exposes only stable same-origin QRK asset URLs. A source URL plus product update timestamp identifies an unchanged asset; its content hash deduplicates the stored file. Missing, invalid, oversized, or failed images fall back without aborting the catalog. A browser visit never refreshes the catalog automatically or calls R&L storage.
 
 ## Automatic order path
 
