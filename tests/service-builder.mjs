@@ -30,7 +30,7 @@ assert.match(js,/Reset temporary password/);
 assert.match(js,/Preview as admin/);
 assert.match(js,/enhanceGlassSelects/);
 assert.match(js,/data-glass-option/);
-assert.match(js,/gateOrder/);
+assert.match(js,/serviceBuilder\.experiences/);
 assert.match(css,/\.gate-boards/);
 assert.match(sharedCss,/\.qrk-sheet\.open/);
 assert.match(sharedCss,/\.qrk-choice-popover/);
@@ -46,5 +46,8 @@ assert.doesNotMatch(css,/\.sheet-form-group input[^}]*background:\s*(?:white|#ff
 assert.match(menu,/requestedService/);
 const both=normalizeServiceProfile({preset:'traditional',serviceModes:['quick','table'],settings:{serviceModes:['quick','table'],gateOrder:{quick:['fulfillment'],table:['table_entry']}}});
 assert.deepEqual(both.serviceModes,['quick','table']);
-assert.equal(both.settings.serviceMode,'table');
+assert.equal(both.version,2);
+assert.equal(both.settings.serviceMode,'quick');
+assert.deepEqual(both.experiences.quick.gates,['fulfillment']);
+assert.deepEqual(both.experiences.table.gates,['table_entry']);
 console.log('Progressive client settings and ordered Quick/Table service builder passed.');

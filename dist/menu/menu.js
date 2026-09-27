@@ -4,17 +4,24 @@ import { getBusinessExperience } from '../data/qrk-businesses.js';
 import { QrkTableSessionService } from '../data/qrk-table-session-service.js?v=3';
 import { menuOptionGroupsForItem, readMenuState, subscribeMenuState } from '../data/qrk-menu-store.js';
 import { deviceScopedKey } from '../data/qrk-device-service.js';
+import { selectServiceExperience } from '../data/qrk-service-presets.js';
 
 addEventListener('pointerdown',event=>{if(event.pointerType==='touch'||event.pointerType==='pen')document.body.dataset.inputModality='touch'},{passive:true});
 addEventListener('keydown',event=>{if(event.key==='Tab')delete document.body.dataset.inputModality});
 
 const businessSlug=new URLSearchParams(location.search).get('business')||'kusina-manila';
-const businessExperience=getBusinessExperience(businessSlug);
-const requestedService=new URLSearchParams(location.search).get('service');
-if(businessExperience.serviceProfile.serviceModes?.includes(requestedService))businessExperience.serviceMode=requestedService;
-const serviceProfile=businessExperience.serviceProfile;
-const tableSessionService=businessExperience.serviceMode==='table'?new QrkTableSessionService({businessSlug,profile:serviceProfile}):null;
 const dataService=createQrkDataService({destinationSlug:businessSlug});
+const businessExperience=getBusinessExperience(businessSlug);
+if(dataService.mode!=='demo'){try{const hostedProfile=await dataService.getServiceProfile();if(hostedProfile)businessExperience.serviceProfile=hostedProfile}catch{}}
+const entryParams=new URLSearchParams(location.search),availableServices=businessExperience.serviceProfile.serviceModes||['quick'],serviceChoiceKey=deviceScopedKey(businessSlug,'service-experience');
+let requestedService=entryParams.get('service');
+if(entryParams.has('table')||entryParams.has('token'))requestedService='table';
+if(!availableServices.includes(requestedService))requestedService=availableServices.includes(sessionStorage.getItem(serviceChoiceKey))?sessionStorage.getItem(serviceChoiceKey):null;
+if(!requestedService&&availableServices.length>1)requestedService=await new Promise(resolve=>{const dialog=document.createElement('dialog');dialog.className='sheet-dialog service-experience-dialog';dialog.innerHTML=`<form method="dialog" class="sheet-card"><div class="sheet-header"><div><p class="eyebrow">CHOOSE AN EXPERIENCE</p><h2>How are you ordering?</h2></div></div><div class="focused-choice-list"><button type="button" data-service-choice="quick"><b>Quick order</b><small>Pickup or simple counter service</small></button><button type="button" data-service-choice="table"><b>Table service</b><small>Open or join a table session</small></button></div></form>`;document.body.append(dialog);dialog.addEventListener('cancel',event=>event.preventDefault());dialog.addEventListener('click',event=>{const button=event.target.closest('[data-service-choice]');if(button){dialog.close();dialog.remove();resolve(button.dataset.serviceChoice)}});dialog.showModal()});
+requestedService=requestedService||availableServices[0];sessionStorage.setItem(serviceChoiceKey,requestedService);
+businessExperience.serviceMode=requestedService;
+const serviceProfile=selectServiceExperience(businessExperience.serviceProfile,requestedService);businessExperience.serviceProfile=serviceProfile;
+const tableSessionService=businessExperience.serviceMode==='table'?new QrkTableSessionService({businessSlug,profile:serviceProfile}):null;
 let customerBrand=getBusinessBrand({businessId:`preview:${businessSlug}`,businessSlug,businessName:businessExperience.businessName});
 if(dataService.mode!=='demo'){
   try{const cosmetics=await dataService.getBusinessCosmetics();if(cosmetics)customerBrand={...customerBrand,primary:cosmetics.accentColor||customerBrand.primary,logoDataUrl:cosmetics.logoUrl||'',coverPhotoUrl:cosmetics.coverUrl||'',publicMenuBackground:{image:cosmetics.backgroundUrl||'',surfaceOpacity:Number(cosmetics.backgroundOpacity)||.72}}}catch{}
@@ -223,7 +230,7 @@ async function createOrder(paymentMethod=null){
   const checkout=await validateCheckout();if(!checkout)return;const{fulfillment,table,error,session}=checkout;
   const customerName=$('#customer-label').value.trim();rememberCustomerName(customerName,$('#save-customer-name').checked);
   const now=new Date().toISOString();let idempotencyKey=localStorage.getItem(PENDING_KEY);if(!isUuid(idempotencyKey)){idempotencyKey=makeId();localStorage.setItem(PENDING_KEY,idempotencyKey)}
-  const input={idempotencyKey,createdAt:now,updatedAt:now,fulfillmentType:fulfillment,tableNumber:fulfillment==='table'?table:null,tableSessionId:session?.id||null,customerLabel:customerName||undefined,paymentMethod:paymentMethod||undefined,paymentStatus:paymentMethod==='counter'?'due_at_counter':undefined,items:cart.map(line=>({...line})),subtotalMinor:cartTotals().subtotal,notes:$('#order-notes').value.trim()};
+  const input={idempotencyKey,createdAt:now,updatedAt:now,experience:businessExperience.serviceMode,fulfillmentType:fulfillment,tableNumber:fulfillment==='table'?table:null,tableSessionId:session?.id||null,customerLabel:customerName||undefined,paymentMethod:paymentMethod||undefined,paymentStatus:paymentMethod==='counter'?'due_at_counter':undefined,items:cart.map(line=>({...line})),subtotalMinor:cartTotals().subtotal,notes:$('#order-notes').value.trim()};
   try{const result=await dataService.createOrder(input),order={...input,...result,createdAt:result.createdAt||now,updatedAt:result.updatedAt||now,status:result.status||'received',events:result.events||[{status:'received',at:now,label:'Order received'}]};dataService.rememberActiveOrder?.(order);if(!openTabEnabled)rememberHistory(order);if(openTabEnabled){const ids=safeParse(localStorage.getItem(TAB_ORDER_KEY),[]),session=tableSessionService?.current();localStorage.setItem(TAB_ORDER_KEY,JSON.stringify([...new Set([...ids,String(order.id)])]));localStorage.setItem(TAB_SESSION_KEY,JSON.stringify({sessionId:session?.id||null,updatedAt:now}))}localStorage.removeItem(PENDING_KEY);localStorage.removeItem(CART_KEY);cart=[];await refreshTabOrders();renderCart();if($('#payment-dialog').open)$('#payment-dialog').close();if($('#cart-dialog').open)$('#cart-dialog').close();showConfirmation(order)}catch(cause){error.textContent=cause.message||'We could not submit this order. Your cart is safe—try again.';error.classList.remove('hidden');if($('#payment-dialog').open)$('#payment-dialog').close();showCartDialog()}
 }
 function showConfirmation(order){const dialog=$('#confirmation-dialog');$('#confirmation-title').textContent=openTabEnabled?'ADDED TO':'ORDER NUMBER';$('#confirmation-number').textContent=openTabEnabled?`Table ${order.tableNumber}`:order.orderNumber;if(!dialog.open)openModal(dialog);requestAnimationFrame(()=>dialog.focus())}

@@ -52,18 +52,25 @@ export const DEVELOPMENT_CLIENTS=[
 ].map(client=>({...client,menu:DEVELOPMENT_MENUS[client.menuSource||client.slug]||client.menu||[],status:'active',createdAt:'2026-09-13T00:00:00.000Z',serviceProfile:normalizeServiceProfile(client.serviceProfile),admin:{...client.admin,access:'Development shortcut'}}));
 
 export function presetSettings(id='traditional'){return structuredClone(SERVICE_PRESETS[id]?.settings||SERVICE_PRESETS.traditional.settings)}
+function normalizeExperience(mode,value={},fallbackPreset){
+  const requestedPreset=SERVICE_PRESETS[value.preset]?.settings?.serviceMode===mode?value.preset:fallbackPreset;
+  const settings={...presetSettings(requestedPreset),...(value.settings||{}) ,serviceMode:mode};
+  if(mode==='table'&&settings.packageMode==='required'&&settings.bundleSelection==='none')settings.bundleSelection='required';
+  if(mode==='table')settings.packageMode=settings.bundleSelection==='required'?'required':'none';
+  const gates=Array.isArray(value.gates)?[...value.gates]:deriveGateOrder(settings)[mode];
+  return{preset:requestedPreset,gates,settings:{...settings,gateOrder:{[mode]:gates}}};
+}
 export function normalizeServiceProfile(profile={}){
   const preset=SERVICE_PRESETS[profile.preset]?.id||'traditional';
-  const settings={...presetSettings(preset),...(profile.settings||{})};
-  const serviceModes=[...new Set((profile.serviceModes||settings.serviceModes||[settings.serviceMode]).filter(mode=>['quick','table'].includes(mode)))];
-  if(!serviceModes.length)serviceModes.push(settings.serviceMode==='quick'?'quick':'table');
-  settings.serviceModes=serviceModes;
-  settings.serviceMode=serviceModes.includes('table')?'table':'quick';
-  if(settings.packageMode==='required'&&settings.bundleSelection==='none')settings.bundleSelection='required';
-  settings.packageMode=settings.bundleSelection==='required'?'required':'none';
-  settings.gateOrder=profile.settings?.gateOrder||deriveGateOrder(settings);
-  return{preset,serviceModes,locationName:String(profile.locationName||'Main location'),inheritsBusinessDefaults:profile.inheritsBusinessDefaults!==false,settings,layers:deriveServiceLayers(settings)};
+  const legacySettings={...presetSettings(preset),...(profile.settings||{})};
+  const serviceModes=[...new Set((profile.serviceModes||legacySettings.serviceModes||Object.keys(profile.experiences||{})||[legacySettings.serviceMode]).filter(mode=>['quick','table'].includes(mode)))];
+  if(!serviceModes.length)serviceModes.push(legacySettings.serviceMode==='quick'?'quick':'table');
+  const legacyOrder=profile.settings?.gateOrder||deriveGateOrder(legacySettings),experiences={};
+  for(const mode of serviceModes){const supplied=profile.experiences?.[mode],fallbackPreset=mode==='quick'?'quick':(SERVICE_PRESETS[preset]?.settings.serviceMode==='table'?preset:'traditional');experiences[mode]=normalizeExperience(mode,supplied||{preset:fallbackPreset,settings:{...legacySettings,serviceMode:mode},gates:legacyOrder[mode]},fallbackPreset)}
+  const primary=serviceModes[0],selected=experiences[primary],settings={...selected.settings,serviceModes,serviceMode:primary,gateOrder:{quick:[],table:[],...Object.fromEntries(serviceModes.map(mode=>[mode,[...experiences[mode].gates]]))}};
+  return{version:2,preset:selected.preset,serviceModes,experiences,locationName:String(profile.locationName||'Main location'),inheritsBusinessDefaults:profile.inheritsBusinessDefaults!==false,settings,layers:deriveServiceLayers(settings)};
 }
+export function selectServiceExperience(profile,mode){const normalized=normalizeServiceProfile(profile),selected=normalized.experiences[mode]||normalized.experiences[normalized.serviceModes[0]];return{...normalized,preset:selected.preset,selectedMode:selected.settings.serviceMode,settings:{...selected.settings,serviceModes:normalized.serviceModes,serviceMode:selected.settings.serviceMode,gateOrder:{[selected.settings.serviceMode]:[...selected.gates]}},layers:deriveServiceLayers(selected.settings)}}
 export function describeServiceProfile(profile){
   const value=normalizeServiceProfile(profile),s=value.settings;
   if(s.serviceMode==='quick')return `${value.locationName} uses QRK Quick. Customers order without opening a table session and ${s.paymentTiming==='counter'?'pay at the counter':'follow the configured payment step'}.`;

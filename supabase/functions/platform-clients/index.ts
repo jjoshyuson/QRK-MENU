@@ -36,6 +36,7 @@ Deno.serve(async req=>{
     if(action==='update'){
       const {error:b}=await admin.from('businesses').update({name:record.businessName,public_slug:slug,updated_at:new Date().toISOString()}).eq('id',businessId);if(b)throw b;
       const {error:p}=await admin.from('business_profiles').update({address:record.serviceProfile?.locationName||'',settings:record.serviceProfile?.settings||{}}).eq('business_id',businessId);if(p)throw p;
+      const {error:s}=await admin.from('business_service_configs').upsert({business_id:businessId,foundation:record.serviceProfile?.serviceModes?.[0]||record.serviceProfile?.settings?.serviceMode||'quick',gates:record.serviceProfile||{}},{onConflict:'business_id'});if(s)throw s;
       const {error:c}=await admin.from('platform_clients').update({username_prefix:prefix,location_name:record.serviceProfile?.locationName||'',initial_admin_email:record.admin.email,service_profile:record.serviceProfile,updated_at:new Date().toISOString()}).eq('business_id',businessId);if(c)throw c;
       return json(200,{updated:true});
     }

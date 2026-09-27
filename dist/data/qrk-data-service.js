@@ -32,6 +32,7 @@ function emit(name,detail){window.dispatchEvent(new CustomEvent(name,{detail}))}
 class DemoDataService{
   constructor(config){this.mode='demo';this.environment=config.environment||'local';this.destinationSlug=config.destinationSlug||'kusina-manila';const suffix=`_${this.destinationSlug}`;this.orderKey=`qrk_demo_orders_v2${suffix}`;this.activeKey=`qrk_demo_active_order_v2${suffix}`;this.storeKey=`qrk_demo_store_open_v1${suffix}`}
   async getPublicMenu(){return null}
+  async getServiceProfile(){return null}
   async getBusinessCosmetics(){return null}
   async saveBusinessCosmetics(cosmetics){return cosmetics}
   async listOrders({fallback=[]}={}){const raw=localStorage.getItem(this.orderKey);if(raw!==null)return validOrders(safeParse(raw,[]));const seeded=validOrders(fallback);localStorage.setItem(this.orderKey,JSON.stringify(seeded));return seeded}
@@ -79,6 +80,7 @@ class SupabaseDataService{
     return this.publicMenuPromise;
   }
   getBusinessCosmetics(){return this.rpc('get_public_business_cosmetics',{p_destination_slug:this.destinationSlug})}
+  getServiceProfile(){return this.rpc('get_public_service_profile',{p_destination_slug:this.destinationSlug})}
   async uploadBusinessCosmetic(kind,value){
     if(!String(value||'').startsWith('data:image/'))return String(value||'');
     const blob=await fetch(value).then(response=>response.blob()),path=`${this.config.businessId}/${kind}.webp`,response=await fetch(`${this.config.supabaseUrl}/storage/v1/object/business-cosmetics/${path}`,{method:'POST',headers:{...this.headers(true),'content-type':blob.type||'image/webp','x-upsert':'true'},body:blob});
@@ -101,7 +103,7 @@ class SupabaseDataService{
     if(this.destinationSlug==='rnl'&&this.environment==='staging'){const response=await fetch(`${this.config.supabaseUrl}/functions/v1/rnl-orders`,{method:'POST',headers:this.headers(),body:JSON.stringify({...input,destinationSlug:this.destinationSlug,deviceId:this.device.id,deviceSecret:this.device.secret})}),value=await response.json().catch(()=>({}));if(!response.ok)throw new Error(value.error||'R&L order forwarding failed.');return value}
     const publicMenu=await this.rpc('get_public_menu',{p_destination_slug:this.destinationSlug});
     const items=reconcilePublishedOrderItems(input.items,publicMenu);
-    return this.rpc('create_device_order',{p_destination_slug:this.destinationSlug,p_request_id:input.idempotencyKey,p_fulfillment:input.fulfillmentType,p_table_number:input.tableNumber||null,p_customer_label:input.customerLabel||null,p_order_notes:input.notes||'',p_line_items:items.map(item=>({itemId:item.itemId,quantity:item.quantity,optionIds:(item.selectedOptions||[]).map(option=>option.id).filter(Boolean),notes:item.notes||''})),p_device_id:this.device.id,p_device_secret:this.device.secret,p_table_session_id:input.tableSessionId||null,p_open_tab_id:input.openTabId||null});
+    return this.rpc('create_device_order',{p_destination_slug:this.destinationSlug,p_request_id:input.idempotencyKey,p_fulfillment:input.fulfillmentType,p_table_number:input.tableNumber||null,p_customer_label:input.customerLabel||null,p_order_notes:input.notes||'',p_line_items:items.map(item=>({itemId:item.itemId,quantity:item.quantity,optionIds:(item.selectedOptions||[]).map(option=>option.id).filter(Boolean),notes:item.notes||''})),p_device_id:this.device.id,p_device_secret:this.device.secret,p_table_session_id:input.tableSessionId||null,p_open_tab_id:input.openTabId||null,p_experience:input.experience||'quick'});
   }
   getActiveOrder(){const tracking=safeParse(localStorage.getItem(this.activeKey),null);return tracking?this.getOrderStatus(tracking):null}
   getOrderStatus(tracking){return this.rpc('get_public_order_status',{p_destination_slug:this.destinationSlug,p_order_number:tracking.orderNumber,p_tracking_token:tracking.trackingToken})}
