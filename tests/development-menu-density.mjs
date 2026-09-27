@@ -8,10 +8,15 @@ globalThis.localStorage={
 
 const {readMenuState}=await import('../dist/data/qrk-menu-store.js');
 const {DEVELOPMENT_CLIENTS}=await import('../dist/data/qrk-service-presets.js');
-assert.equal(DEVELOPMENT_CLIENTS.length,11,'development fallback must expose ten fixture clients plus R&L');
+const {getBusinessExperience}=await import('../dist/data/qrk-businesses.js');
+assert.equal(DEVELOPMENT_CLIENTS.length,10,'development fallback must contain only the ten fixture clients');
+assert.equal(DEVELOPMENT_CLIENTS.some(client=>client.slug==='rnl'),false,'R&L must come from the persisted QRK Admin client record');
+localStorage.setItem('qrk_platform_clients_v1',JSON.stringify([{id:'rnl',businessName:'R&L',slug:'rnl',prefix:'rnl',description:'R&L live catalog and POS-connected ordering.',serviceProfile:{preset:'quick',locationName:'R&L'},status:'active'}]));
+const rnl=getBusinessExperience('rnl');
+assert.equal(rnl.businessName,'R&L','the customer route must resolve the persisted R&L client');
+assert.equal(rnl.developmentClient,false,'the persisted R&L client must not be misreported as a static fixture');
 
-const expected=Object.fromEntries(DEVELOPMENT_CLIENTS.filter(client=>client.slug!=='rnl').map(client=>[client.slug,[...new Set(client.menu.map(([category])=>category))]]));
-assert.deepEqual(DEVELOPMENT_CLIENTS.find(client=>client.slug==='rnl').menu,[],'R&L catalog must be operator-imported instead of browser-seeded');
+const expected=Object.fromEntries(DEVELOPMENT_CLIENTS.map(client=>[client.slug,[...new Set(client.menu.map(([category])=>category))]]));
 
 for(const [slug,categories] of Object.entries(expected)){
   const state=readMenuState(slug);

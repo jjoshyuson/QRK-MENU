@@ -1,6 +1,8 @@
 # R&L Client and Live Orders
 
-R&L is registered in the existing QRK Admin development-client registry as `rnl`. Its customer route is `/menu/?business=rnl`. The route uses the trusted same-origin development adapter; it never calls R&L directly and never receives an integration credential.
+R&L is an operator-created QRK Admin client with the persisted local identity `rnl`. It is deliberately not duplicated in the static `DEVELOPMENT_CLIENTS` fixture registry. Its customer route is `/menu/?business=rnl`. The route uses the trusted same-origin development adapter; it never calls R&L directly and never receives an integration credential.
+
+QRK Admin currently stores operator-created clients in browser `localStorage`, scoped to the exact origin. The local development Admin therefore shows R&L as the eleventh client on `http://127.0.0.1:4191`, while a fresh GitHub Pages origin continues to show the ten static fixtures until hosted provisioning replaces browser-local persistence.
 
 ## Server-only configuration
 
