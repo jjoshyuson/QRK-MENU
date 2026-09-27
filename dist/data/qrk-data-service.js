@@ -125,8 +125,22 @@ class SupabaseDataService{
   }
 }
 
+class RnlDataService{
+  constructor(config){this.mode='integration';this.environment=config.environment||'local';this.destinationSlug='rnl';this.orderKey='qrk_rnl_orders_v1';this.activeKey='qrk_rnl_active_order_v1'}
+  async request(path,options={}){const response=await fetch(path,{method:options.method||'GET',headers:options.body?{'content-type':'application/json'}:undefined,body:options.body?JSON.stringify(options.body):undefined}),text=await response.text();if(!response.ok)throw new Error((text&&safeParse(text,{}).error)||`R&L integration request failed (${response.status})`);return text?JSON.parse(text):null}
+  getPublicMenu(){return this.request('/__qrk/integrations/rnl/catalog')}
+  async createOrder(input){const order=await this.request('/__qrk/integrations/rnl/orders',{method:'POST',body:input}),orders=validOrders(safeParse(localStorage.getItem(this.orderKey),[])),existing=orders.findIndex(item=>String(item.id)===String(order.id));if(existing>=0)orders[existing]={...orders[existing],...input,...order};else orders.push({...input,...order});localStorage.setItem(this.orderKey,JSON.stringify(orders));localStorage.setItem(this.activeKey,order.id);emit(ORDER_EVENT,{key:this.orderKey,order});return order}
+  async listOrders(){return validOrders(safeParse(localStorage.getItem(this.orderKey),[]))}
+  async getActiveOrder(){const id=localStorage.getItem(this.activeKey);return(await this.listOrders()).find(order=>String(order.id)===String(id))||null}
+  getOrderStatus(){return this.getActiveOrder()}
+  async getBusinessCosmetics(){return null}
+  async getStoreOpen(){return true}
+  subscribe({onOrdersChanged}={}){const listener=event=>{if(event.key===this.orderKey)onOrdersChanged?.()};addEventListener('storage',listener);addEventListener(ORDER_EVENT,listener);return()=>{removeEventListener('storage',listener);removeEventListener(ORDER_EVENT,listener)}}
+}
+
 export function createQrkDataService(overrides={}){
   const config=resolveQrkConfig(overrides);
+  if(config.destinationSlug==='rnl')return new RnlDataService(config);
   const hosted=/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(config.supabaseUrl||'');
   const local=config.environment==='local'&&/^http:\/\/(127\.0\.0\.1|localhost|(?:\d{1,3}\.){3}\d{1,3}):54321$/i.test(config.supabaseUrl||'');
   const configured=(hosted||local)&&(/^(sb_publishable_|eyJ)/i.test(config.supabasePublishableKey||''));

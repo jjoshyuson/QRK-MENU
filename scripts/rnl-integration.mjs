@@ -1,0 +1,39 @@
+import {createHash,randomUUID} from 'node:crypto';
+import {mkdir,readFile,rename,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+
+const money=value=>Math.round(Number(value||0)*100)/100;
+const fingerprint=value=>{const stable=value&&typeof value==='object'&&!Array.isArray(value)?Object.fromEntries(Object.entries(value).filter(([key])=>key!=='generatedAt')):value;return createHash('sha256').update(JSON.stringify(stable)).digest('hex')};
+const slug=value=>String(value||'category').normalize('NFKD').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-|-$/g,'').toLowerCase()||'category';
+
+export function normalizeRnlCatalog(source){
+  if(source?.provider!=='rnl'||!Array.isArray(source.categories))throw new Error('R&L returned an invalid catalog');
+  return{version:1,provider:'rnl',generatedAt:source.generatedAt||new Date().toISOString(),modifierSupport:source.modifierSupport||'none',business:{name:'R&L',slug:'rnl',currencyCode:'PHP',openForOrders:true},menu:{categories:source.categories.filter(category=>category.active!==false).map((category,categoryIndex)=>({id:category.externalId,name:category.name,slug:slug(category.name),sortOrder:Number(category.sortOrder??categoryIndex),items:(category.items||[]).filter(item=>item.active!==false).map((item,itemIndex)=>({id:item.externalId,externalId:item.externalId,name:item.name,description:'',priceMinor:Math.round(Number(item.price)*100),halfOrderPriceMinor:item.halfOrderPrice==null?null:Math.round(Number(item.halfOrderPrice)*100),available:String(item.availability||'').toLowerCase()==='available',stockCount:item.stockCount,lowStock:item.lowStock===true,imagePath:item.imagePath||null,updatedAt:item.updatedAt||null,sortOrder:itemIndex,optionGroups:[]}))}))}};
+}
+
+export function diffRnlCatalog(current,next){
+  const flatten=value=>new Map((value?.menu?.categories||[]).flatMap(category=>(category.items||[]).map(item=>[String(item.externalId||item.id),item]))),before=flatten(current),after=flatten(next),added=[],updated=[],removed=[];
+  for(const[id,item]of after){const prior=before.get(id);if(!prior)added.push({id,name:item.name});else if(fingerprint(prior)!==fingerprint(item))updated.push({id,name:item.name})}
+  for(const[id,item]of before)if(!after.has(id))removed.push({id,name:item.name});
+  return{categories:(next?.menu?.categories||[]).length,items:after.size,added,updated,removed,changed:added.length+updated.length+removed.length};
+}
+
+export function createRnlIntegration({runtimeDir,baseUrl,apiKey,publishableKey,fetchImpl=fetch}){
+  const catalogFile=path.join(runtimeDir,'rnl-catalog.json'),ordersFile=path.join(runtimeDir,'rnl-orders.json');
+  const configured=()=>Boolean(baseUrl&&apiKey&&publishableKey);
+  async function readJson(file,fallback){try{return JSON.parse(await readFile(file,'utf8'))}catch(error){if(error.code==='ENOENT')return fallback;throw error}}
+  async function saveJson(file,value){await mkdir(runtimeDir,{recursive:true});const temporary=`${file}.${process.pid}.tmp`;await writeFile(temporary,JSON.stringify(value,null,2));await rename(temporary,file)}
+  async function rpc(name,body){if(!configured())throw new Error('R&L integration credential is not configured');const response=await fetchImpl(`${baseUrl.replace(/\/$/,'')}/rest/v1/rpc/${name}`,{method:'POST',headers:{'content-type':'application/json','apikey':publishableKey},body:JSON.stringify(body)}),text=await response.text();if(!response.ok)throw new Error(`R&L ${name} failed (${response.status}): ${text.slice(0,240)}`);return text?JSON.parse(text):null}
+  async function catalog(){const value=await readJson(catalogFile,null);if(!value)throw new Error('R&L catalog has not been imported. Run the operator catalog refresh first.');return value}
+  async function previewCatalog(){const next=normalizeRnlCatalog(await rpc('qrk_read_catalog',{p_api_key:apiKey})),current=await readJson(catalogFile,null);return{catalog:next,diff:diffRnlCatalog(current,next)}}
+  async function applyCatalog(expectedFingerprint){const preview=await previewCatalog(),actual=fingerprint(preview.catalog);if(expectedFingerprint&&expectedFingerprint!==actual)throw new Error('R&L catalog changed after preview; preview again before applying');await saveJson(catalogFile,preview.catalog);return{applied:true,fingerprint:actual,...preview.diff,generatedAt:preview.catalog.generatedAt}}
+  async function createOrder(input){
+    if(!input?.idempotencyKey||!Array.isArray(input.items)||!input.items.length)throw new Error('A valid idempotency key and at least one item are required');
+    const comparable={...input};delete comparable.createdAt;delete comparable.updatedAt;
+    const state=await readJson(ordersFile,{orders:{}}),prior=state.orders[input.idempotencyKey];if(prior){if(prior.inputHash!==fingerprint(comparable))throw new Error('This order key was already used with different order details');if(prior.qrkOrder)return{...prior.qrkOrder,idempotentReplay:true};const ack=await rpc('qrk_ingest_order',{p_api_key:apiKey,p_order:prior.payload}),now=new Date().toISOString(),qrkOrder={id:prior.qrkId,orderNumber:prior.payload.sourceOrderId,trackingToken:prior.trackingToken,verificationToken:'RNLQRK',status:'received',subtotalMinor:Math.round(prior.payload.totals.total*100),createdAt:prior.payload.createdAt,updatedAt:now,rnlOrderId:ack.rnlOrderId,rnlDeviceOrderId:ack.rnlDeviceOrderId,rnlWorkflowStatus:ack.workflowStatus,events:[{status:'received',at:now,label:'Sent to R&L POS'}]};prior.qrkOrder=qrkOrder;await saveJson(ordersFile,state);return{...qrkOrder,idempotentReplay:ack.idempotentReplay===true}}
+    const menu=await catalog(),itemsById=new Map(menu.menu.categories.flatMap(category=>category.items.map(item=>[String(item.id),item]))),resolved=input.items.map(line=>{const item=itemsById.get(String(line.itemId));if(!item?.available)throw new Error(`${line.name||'An item'} is unavailable in the imported R&L catalog`);return{productId:item.externalId,quantity:Number(line.quantity),isHalfOrder:false,serviceMode:input.fulfillmentType==='pickup'?'TAKE OUT':'DINE IN',price:item.priceMinor/100}}),subtotal=money(resolved.reduce((sum,item)=>sum+item.price*item.quantity,0));if(Math.round(Number(input.subtotalMinor))!==Math.round(subtotal*100))throw new Error('Order total no longer matches the imported R&L catalog');
+    const orderNumber=`RNL-${String(Object.keys(state.orders).length+1).padStart(4,'0')}`,createdAt=input.createdAt||new Date().toISOString(),payload={version:1,idempotencyKey:input.idempotencyKey,sourceOrderId:orderNumber,createdAt,customer:{name:input.customerLabel||'Guest',note:input.notes||''},fulfillment:{serviceMode:input.fulfillmentType==='pickup'?'TAKE OUT':'DINE IN',tableNumber:input.tableNumber||null},payment:{method:input.paymentMethod||'counter',status:'UNPAID'},totals:{subtotal,tax:0,total:subtotal},items:resolved.map(({price,...item})=>item)},qrkId=randomUUID(),trackingToken=randomUUID();state.orders[input.idempotencyKey]={inputHash:fingerprint(comparable),payload,qrkId,trackingToken};await saveJson(ordersFile,state);const ack=await rpc('qrk_ingest_order',{p_api_key:apiKey,p_order:payload}),now=new Date().toISOString(),qrkOrder={id:qrkId,orderNumber,trackingToken,verificationToken:'RNLQRK',status:'received',subtotalMinor:Math.round(subtotal*100),createdAt,updatedAt:now,rnlOrderId:ack.rnlOrderId,rnlDeviceOrderId:ack.rnlDeviceOrderId,rnlWorkflowStatus:ack.workflowStatus,events:[{status:'received',at:now,label:'Sent to R&L POS'}]};state.orders[input.idempotencyKey].qrkOrder=qrkOrder;await saveJson(ordersFile,state);return{...qrkOrder,idempotentReplay:ack.idempotentReplay===true}
+  }
+  async function status(rnlOrderId){return rpc('qrk_read_order_status',{p_api_key:apiKey,p_rnl_order_id:rnlOrderId})}
+  return{configured,catalog,previewCatalog,applyCatalog,createOrder,status,fingerprint};
+}

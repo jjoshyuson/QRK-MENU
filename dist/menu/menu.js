@@ -16,7 +16,7 @@ const serviceProfile=businessExperience.serviceProfile;
 const tableSessionService=businessExperience.serviceMode==='table'?new QrkTableSessionService({businessSlug,profile:serviceProfile}):null;
 const dataService=createQrkDataService({destinationSlug:businessSlug});
 let customerBrand=getBusinessBrand({businessId:`preview:${businessSlug}`,businessSlug,businessName:businessExperience.businessName});
-if(dataService.mode==='supabase'){
+if(dataService.mode!=='demo'){
   try{const cosmetics=await dataService.getBusinessCosmetics();if(cosmetics)customerBrand={...customerBrand,primary:cosmetics.accentColor||customerBrand.primary,logoDataUrl:cosmetics.logoUrl||'',coverPhotoUrl:cosmetics.coverUrl||'',publicMenuBackground:{image:cosmetics.backgroundUrl||'',surfaceOpacity:Number(cosmetics.backgroundOpacity)||.72}}}catch{}
 }
 applyBusinessBrand({...customerBrand,colorMode:'custom'});document.querySelector('meta[name="theme-color"]')?.setAttribute('content',getComputedStyle(document.documentElement).getPropertyValue('--nav').trim()||'#0b0c0e');
@@ -46,7 +46,7 @@ function applyStudioMenu(state){
 }
 if(dataService.mode==='demo')applyStudioMenu(readMenuState(businessSlug));
 let dataLoadError='';
-if(dataService.mode==='supabase'){
+if(dataService.mode!=='demo'){
   try{const remote=await dataService.getPublicMenu();const photoByName=new Map((businessExperience.menu||[]).map(([,name,,,photo])=>[name,photo]));const remoteItems=remote?.menu?.categories?.flatMap(category=>(category.items||[]).map(item=>({id:item.id,category:category.name,name:item.name,description:item.description,price:item.priceMinor,photo:item.photo?.url||photoByName.get(item.name)||'/photos/adobo.jpg',photoCard:item.photo?.cardUrl||item.photo?.thumbnailUrl||item.photo?.url,available:item.available,options:(item.optionGroups||[]).map(group=>({name:group.name,required:group.required,multiple:group.maxSelections>1,choices:(group.options||[]).map(option=>[option.name,option.priceDeltaMinor,option.id])}))})))||[];if(remoteItems.length)menu=remoteItems}catch(error){dataLoadError=error.message||'The published menu could not be loaded.'}
 }
 let categories=[...new Set(menu.map(item=>item.category))];

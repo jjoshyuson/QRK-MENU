@@ -4,8 +4,8 @@ import {DEVELOPMENT_CLIENTS,SERVICE_PRESETS,deriveGateOrder,deriveServiceLayers,
 
 const required=['open_tab','buffet_approval','buffet_end','buffet_timed','package_limited','minimum_spend','deposit_required'];
 for(const preset of required)assert.ok(DEVELOPMENT_CLIENTS.some(client=>client.serviceProfile.preset===preset),`${preset} needs a working example client`);
-assert.equal(DEVELOPMENT_CLIENTS.length,10,'the shared development inventory must contain exactly ten clients');
-assert.equal(new Set(DEVELOPMENT_CLIENTS.map(client=>client.slug)).size,10,'development client slugs must be unique');
+assert.equal(DEVELOPMENT_CLIENTS.length,11,'the shared development inventory must contain ten QRK fixtures plus R&L');
+assert.equal(new Set(DEVELOPMENT_CLIENTS.map(client=>client.slug)).size,11,'development client slugs must be unique');
 for(const client of DEVELOPMENT_CLIENTS)assert.deepEqual(client.serviceProfile.settings.gateOrder,deriveGateOrder(client.serviceProfile.settings),`${client.slug} must use the canonical ordered gates`);
 assert.deepEqual(SERVICE_PRESETS.quick.settings.consumptionModes,['dine_in','takeaway']);
 assert.deepEqual(SERVICE_PRESETS.quick.settings.paymentModes,['counter']);
@@ -30,5 +30,6 @@ assert.match(migration,/resolve_table_entry/);
 assert.match(migration,/never releases or marks the physical table clean/);
 assert.equal((catalog.match(/insert into public\.businesses/g)||[]).length,10);
 assert.equal((catalog.match(/insert into public\.business_service_configs/g)||[]).length,10);
-for(const client of DEVELOPMENT_CLIENTS)assert.ok(catalog.includes(`'${client.slug}'`),`${client.slug} must exist in the generated development catalog`);
+for(const client of DEVELOPMENT_CLIENTS.filter(client=>client.slug!=='rnl'))assert.ok(catalog.includes(`'${client.slug}'`),`${client.slug} must exist in the generated development catalog`);
+assert.doesNotMatch(catalog,/'rnl'/,'R&L must not be populated by the static QRK fixture catalog');
 console.log('Reusable Quick and Table service-gate contract passed.');

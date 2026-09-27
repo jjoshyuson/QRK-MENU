@@ -3,6 +3,7 @@ import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHmac, timingSafeEqual } from 'node:crypto';
+import {createRnlIntegration} from './rnl-integration.mjs';
 
 const args = process.argv.slice(2);
 function arg(name, fallback) {
@@ -16,6 +17,8 @@ if (!host || !Number.isInteger(port) || port < 0 || port > 65535) {
   process.exit(1);
 }
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
+const projectRoot=fileURLToPath(new URL('../',import.meta.url));
+const rnlIntegration=createRnlIntegration({runtimeDir:path.join(projectRoot,'.qrk-runtime'),baseUrl:process.env.QRK_RNL_SUPABASE_URL,apiKey:process.env.QRK_RNL_API_KEY,publishableKey:process.env.QRK_RNL_PUBLISHABLE_KEY});
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.avif': 'image/avif', '.svg': 'image/svg+xml', '.json': 'application/json; charset=utf-8', '.webmanifest': 'application/manifest+json; charset=utf-8' };
 const tableSessions = new Map();
 const tableEntrySecret=process.env.QRK_TABLE_ENTRY_SECRET||'local-preview-table-entry-secret';
@@ -46,6 +49,9 @@ async function tableApi(req,res,pathname){
 const server = http.createServer(async (req, res) => {
   try {
     const pathname = decodeURIComponent(new URL(req.url, 'http://local.invalid').pathname);
+    if(pathname==='/__qrk/integrations/rnl/catalog'&&req.method==='GET'){sendJson(res,200,await rnlIntegration.catalog());return}
+    if(pathname==='/__qrk/integrations/rnl/orders'&&req.method==='POST'){sendJson(res,201,await rnlIntegration.createOrder(await readJson(req)));return}
+    if(pathname.startsWith('/__qrk/integrations/rnl/orders/')&&req.method==='GET'){const id=pathname.split('/').pop();sendJson(res,200,await rnlIntegration.status(id));return}
     if(pathname.startsWith('/__qrk/table-entry/')){const parts=pathname.split('/').filter(Boolean),slug=parts[2]||'',value=parts[3]||'';if(req.method==='GET'&&/^\d{1,3}$/.test(value)){sendJson(res,200,{table:value,token:makeEntryToken(slug,value)});return}if(req.method==='POST'&&value==='resolve'){const input=await readJson(req),table=resolveEntryToken(slug,input.token);if(!table){sendJson(res,403,{error:'Invalid table entry token'});return}sendJson(res,200,{table,authorizedAt:new Date().toISOString(),deviceId:input.deviceId||null});return}res.writeHead(405,{Allow:'GET, POST'});res.end();return}
     if(pathname.startsWith('/__qrk/table-sessions/')){await tableApi(req,res,pathname);return}
     if (req.method !== 'GET' && req.method !== 'HEAD') {res.writeHead(405, { Allow: 'GET, HEAD' }); res.end(); return;}
@@ -60,6 +66,7 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(200, { 'Content-Type': types[path.extname(file)] || 'application/octet-stream', 'Content-Length': bytes.length, 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' });
     res.end(req.method === 'HEAD' ? undefined : bytes);
   } catch (error) {
+    if(String(req.url||'').startsWith('/__qrk/')){sendJson(res,/not configured|not imported/i.test(error.message)?503:400,{error:error.message});return}
     res.writeHead(error instanceof URIError ? 400 : 404); res.end('Not found');
   }
 });

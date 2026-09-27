@@ -8,9 +8,10 @@ globalThis.localStorage={
 
 const {readMenuState}=await import('../dist/data/qrk-menu-store.js');
 const {DEVELOPMENT_CLIENTS}=await import('../dist/data/qrk-service-presets.js');
-assert.equal(DEVELOPMENT_CLIENTS.length,10,'development fallback must expose exactly ten clients');
+assert.equal(DEVELOPMENT_CLIENTS.length,11,'development fallback must expose ten fixture clients plus R&L');
 
-const expected=Object.fromEntries(DEVELOPMENT_CLIENTS.map(client=>[client.slug,[...new Set(client.menu.map(([category])=>category))]]));
+const expected=Object.fromEntries(DEVELOPMENT_CLIENTS.filter(client=>client.slug!=='rnl').map(client=>[client.slug,[...new Set(client.menu.map(([category])=>category))]]));
+assert.deepEqual(DEVELOPMENT_CLIENTS.find(client=>client.slug==='rnl').menu,[],'R&L catalog must be operator-imported instead of browser-seeded');
 
 for(const [slug,categories] of Object.entries(expected)){
   const state=readMenuState(slug);
