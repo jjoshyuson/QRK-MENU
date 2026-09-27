@@ -28,6 +28,12 @@ assert.match(customerCss, /\.menu-tools \.categories\s*\{[^}]*display:\s*flex[^}
 assert.match(customerCss, /\.menu-tools \.categories\s*\{[^}]*padding-right:\s*max\(18px, calc\(50% - 4\.25rem\)\)/s);
 assert.match(customerCss, /\.menu-tools \.categories a\s*\{[^}]*flex:\s*0 0 clamp\(4\.75rem, 22%, 6\.25rem\)[^}]*scroll-snap-align:\s*center/s);
 assert.match(customerCss, /\.restaurant-profile\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*24px[^}]*color:\s*#fff/s);
+assert.match(customerHtml, /id="restaurant-banner"[^>]*hidden/);
+assert.doesNotMatch(customerHtml, /id="restaurant-banner"[^>]*src=/);
+assert.match(customerCss, /\.restaurant-banner\[hidden\]\s*\{[^}]*display:\s*none/s);
+assert.doesNotMatch(customerCss, /\.restaurant\.no-banner/);
+assert.match(customerJs, /defaultBanner='\/assets\/businesses\/kusina-manila-banner\.webp',bannerUrl=customerBrand\.coverPhotoUrl\|\|defaultBanner/);
+assert.doesNotMatch(customerJs, /['"]no-banner['"]/);
 assert.match(customerHtml, /class="menu-curve" aria-hidden="true"/);
 assert.match(customerCss, /\.restaurant \+ \.notice \+ \.menu\s*\{[^}]*margin-top:\s*0[^}]*border-radius:\s*0/s);
 assert.match(customerCss, /\.menu-curve\s*\{[^}]*position:\s*absolute[^}]*top:\s*-22px[^}]*height:\s*22px[^}]*border-radius:\s*22px 22px 0 0[^}]*background:\s*var\(--surface, #fff\)/s);
