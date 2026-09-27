@@ -1,0 +1,24 @@
+import {mkdir,readFile,rename,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+import {randomBytes,randomUUID,scrypt as scryptCallback,timingSafeEqual} from 'node:crypto';
+import {promisify} from 'node:util';
+
+const scrypt=promisify(scryptCallback),PASSWORD_SETS=['ABCDEFGHJKLMNPQRSTUVWXYZ','abcdefghijkmnopqrstuvwxyz','23456789','!@#$%'];
+const pick=chars=>chars[randomBytes(2).readUInt16BE(0)%chars.length];
+const temporaryPassword=()=>{let value=PASSWORD_SETS.map(pick).join(''),all=PASSWORD_SETS.join('');while(value.length<16)value+=pick(all);return[...value].map(character=>({character,order:randomBytes(4).readUInt32BE(0)})).sort((a,b)=>a.order-b.order).map(item=>item.character).join('')};
+const normalizeUsername=value=>String(value||'').trim().toLowerCase();
+const publicAccount=account=>({displayName:String(account.displayName||''),username:normalizeUsername(account.username),email:String(account.email||''),role:String(account.role||'admin'),permissions:account.permissions&&typeof account.permissions==='object'?account.permissions:{},businessId:String(account.businessId||''),businessName:String(account.businessName||''),businessSlug:String(account.businessSlug||''),serviceMode:String(account.serviceMode||''),active:account.active!==false,mustChangePassword:account.mustChangePassword!==false});
+
+export function createPreviewAuthStore({directory}){
+  const file=path.join(directory,'preview-auth.json'),sessions=new Map();
+  async function readState(){try{const value=JSON.parse(await readFile(file,'utf8'));return value&&typeof value==='object'?value:{users:{}}}catch{return{users:{}}}}
+  async function saveState(state){await mkdir(directory,{recursive:true});const next=`${file}.${process.pid}.${randomUUID()}.tmp`;await writeFile(next,JSON.stringify(state,null,2),'utf8');await rename(next,file)}
+  async function passwordRecord(password){const salt=randomBytes(16),hash=await scrypt(String(password),salt,64);return{salt:salt.toString('base64'),passwordHash:hash.toString('base64')}}
+  async function verify(password,user){const expected=Buffer.from(user.passwordHash||'','base64'),actual=await scrypt(String(password),Buffer.from(user.salt||'','base64'),64);return expected.length===actual.length&&timingSafeEqual(expected,actual)}
+  async function provision(account,{password,onlyIfMissing=false}={}){const username=normalizeUsername(account?.username);if(!/^[a-z0-9][a-z0-9._-]{2,63}$/.test(username))throw new Error('A valid username is required.');const state=await readState();if(state.users[username]){if(onlyIfMissing)return{created:false,username};throw new Error('That username is already in use.')}const generated=password||temporaryPassword(),credentials=await passwordRecord(generated);state.users[username]={...publicAccount({...account,username,mustChangePassword:true}),...credentials,updatedAt:new Date().toISOString()};await saveState(state);return{created:true,username,temporaryPassword:generated}}
+  async function reset(username,account){const normalized=normalizeUsername(username),state=await readState(),user=state.users[normalized];if(!user)throw new Error('Account not found.');const generated=temporaryPassword(),credentials=await passwordRecord(generated),context=account?publicAccount({...user,...account,username:normalized,mustChangePassword:true}):publicAccount({...user,mustChangePassword:true});state.users[normalized]={...user,...context,...credentials,mustChangePassword:true,updatedAt:new Date().toISOString()};await saveState(state);for(const[token,value]of sessions)if(value.username===normalized)sessions.delete(token);return{username:normalized,temporaryPassword:generated}}
+  async function signIn(identifier,password){const normalized=normalizeUsername(identifier),state=await readState(),user=Object.values(state.users).find(item=>item.username===normalized||String(item.email||'').toLowerCase()===normalized);if(!user||user.active===false||!await verify(password,user))return null;const token=randomBytes(32).toString('base64url'),account=publicAccount(user);sessions.set(token,{username:user.username,account,createdAt:Date.now()});return{token,account}}
+  async function changePassword(token,password){const session=sessions.get(String(token||''));if(!session)throw new Error('Session expired. Sign in again.');if(String(password||'').length<10)throw new Error('Use at least 10 characters.');const state=await readState(),user=state.users[session.username];if(!user)throw new Error('Account not found.');state.users[session.username]={...user,...await passwordRecord(password),mustChangePassword:false,updatedAt:new Date().toISOString()};await saveState(state);session.account=publicAccount(state.users[session.username]);return session.account}
+  async function has(username){const state=await readState();return Boolean(state.users[normalizeUsername(username)])}
+  return{provision,reset,signIn,changePassword,has};
+}

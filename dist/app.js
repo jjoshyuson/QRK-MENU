@@ -12,6 +12,7 @@ import { rememberWorkspaceSection, resolveWorkspaceSection, workspaceDeepLink } 
 
 const runtimeConfig=resolveQrkConfig();
 const authService=new QrkAuthService(runtimeConfig);
+if(runtimeConfig.environment==='local'&&new URLSearchParams(location.search).has('client-login')){authService.saveSession(null);history.replaceState(history.state,'',location.pathname)}
 let accessContext=authService.enabled?await authService.restore():null;
 if(accessContext){globalThis.QRK_ACCESS_TOKEN=authService.accessToken();runtimeConfig.businessId=accessContext.businessId;runtimeConfig.destinationSlug=accessContext.businessSlug}
 const dataService=createQrkDataService({...runtimeConfig,...(authService.enabled&&(!accessContext||accessContext.isPreview)?{supabaseUrl:'',supabasePublishableKey:''}:{})});

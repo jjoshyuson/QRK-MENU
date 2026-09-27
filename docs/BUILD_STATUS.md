@@ -1,5 +1,12 @@
 # Build status
 
+## Local Client Admin credential bridge
+
+- QRK Admin client profiles remain browser-local, but local-development Client Admin credentials now use the trusted preview server's gitignored `.qrk-runtime/preview-auth.json` store so login works across ports in the same checkout.
+- Passwords are stored as salted scrypt hashes. Initial and reset temporary passwords are returned only for the immediate Admin handoff, require replacement at next login, and are never written to source or logs.
+- Active Admin client cards expose distinct `Preview as admin`, `Open client login`, and `Reset temporary password` actions. Opening client login clears the local preview session and renders the real credential form; it never uses the workspace bypass.
+- Hosted provisioning remains unchanged and incomplete; this bridge is strictly a same-machine development facility.
+
 ## September 27, 2026 — Mobile Safari parallax seam repair
 
 - Moved the configured browsing wallpaper onto an isolated, explicitly opaque `#menu-sections` plane above the CSS-sticky hero. This prevents mobile Safari from promoting the hero above the menu container background while still painting section text and cards, which produced the banner-shaped broken window behind the first heading.

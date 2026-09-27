@@ -4,6 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import {createRnlIntegration} from './rnl-integration.mjs';
+import {createPreviewAuthStore} from './preview-auth.mjs';
 
 const args = process.argv.slice(2);
 function arg(name, fallback) {
@@ -19,6 +20,7 @@ if (!host || !Number.isInteger(port) || port < 0 || port > 65535) {
 const root = fileURLToPath(new URL('../dist/', import.meta.url));
 const projectRoot=fileURLToPath(new URL('../',import.meta.url));
 const rnlIntegration=createRnlIntegration({runtimeDir:path.join(projectRoot,'.qrk-runtime'),baseUrl:process.env.QRK_RNL_SUPABASE_URL,apiKey:process.env.QRK_RNL_API_KEY,publishableKey:process.env.QRK_RNL_PUBLISHABLE_KEY});
+const previewAuth=createPreviewAuthStore({directory:path.join(projectRoot,'.qrk-runtime')});
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.avif': 'image/avif', '.svg': 'image/svg+xml', '.json': 'application/json; charset=utf-8', '.webmanifest': 'application/manifest+json; charset=utf-8' };
 const tableSessions = new Map();
 const tableEntrySecret=process.env.QRK_TABLE_ENTRY_SECRET||'local-preview-table-entry-secret';
@@ -27,6 +29,19 @@ const makeEntryToken=(slug,table)=>{const value=`${slug}:${table}`;return`${Buff
 const resolveEntryToken=(slug,token)=>{try{const [encoded,signature]=String(token||'').split('.'),value=Buffer.from(encoded,'base64url').toString(),expected=signEntry(value),[tokenSlug,table]=value.split(':');if(tokenSlug!==slug||!/^[1-9]\d{0,2}$/.test(table)||signature.length!==expected.length||!timingSafeEqual(Buffer.from(signature),Buffer.from(expected)))return null;return table}catch{return null}};
 const sendJson=(res,status,value)=>{const bytes=Buffer.from(JSON.stringify(value));res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Content-Length':bytes.length,'Cache-Control':'no-store'});res.end(bytes)};
 const readJson=req=>new Promise((resolve,reject)=>{let body='';req.on('data',chunk=>{body+=chunk;if(body.length>100000)reject(new Error('Request too large'))});req.on('end',()=>{try{resolve(body?JSON.parse(body):{})}catch(error){reject(error)}});req.on('error',reject)});
+const loopback=req=>['127.0.0.1','::1','::ffff:127.0.0.1'].includes(req.socket.remoteAddress);
+async function previewAuthApi(req,res,pathname){
+  if(!loopback(req)){sendJson(res,403,{error:'Local development access only'});return}
+  if(pathname==='/__qrk/preview-auth/status'&&req.method==='GET'){sendJson(res,200,{available:true});return}
+  if(req.method!=='POST'){res.writeHead(405,{Allow:'POST'});res.end();return}
+  const input=await readJson(req);
+  if(pathname==='/__qrk/preview-auth/provision'){sendJson(res,201,await previewAuth.provision(input.account));return}
+  if(pathname==='/__qrk/preview-auth/migrate'){const result=await previewAuth.provision(input.account,{password:input.password,onlyIfMissing:true});sendJson(res,200,result);return}
+  if(pathname==='/__qrk/preview-auth/reset'){sendJson(res,200,await previewAuth.reset(input.username,input.account));return}
+  if(pathname==='/__qrk/preview-auth/sign-in'){const result=await previewAuth.signIn(input.identifier,input.password);if(!result){sendJson(res,401,{error:'Sign-in failed. Check your username or email and password.'});return}sendJson(res,200,result);return}
+  if(pathname==='/__qrk/preview-auth/change-password'){sendJson(res,200,{account:await previewAuth.changePassword(input.token,input.password)});return}
+  sendJson(res,404,{error:'Unknown preview-auth action'});
+}
 async function tableApi(req,res,pathname){
   const parts=pathname.split('/').filter(Boolean),slug=decodeURIComponent(parts[2]||''),action=String(parts[3]||'').replace(/\/$/,'').toLowerCase();let sessions=tableSessions.get(slug)||[];const readAt=Date.now();sessions.forEach(session=>{if(session.status==='pending'&&session.expiresAt&&Date.parse(session.expiresAt)<=readAt){session.status='expired';session.updatedAt=new Date(readAt).toISOString();session.events.push({type:'session_expired',at:session.updatedAt})}if(['active','bill_requested','inactivity_warning'].includes(session.status)){const idle=readAt-Date.parse(session.lastActivityAt||session.updatedAt||session.createdAt),warning=(Number(session.inactivityMinutes)||120)*60000,grace=(Number(session.inactivityGraceMinutes)||15)*60000;if(idle>=warning&&session.status!=='inactivity_warning'){session.status='inactivity_warning';session.warningAt=new Date(readAt).toISOString();session.events.push({type:'inactivity_warning',at:session.warningAt})}if(idle>=warning+grace)session.graceElapsed=true}(session.joinRequests||[]).forEach(request=>{if(request.status==='pending'&&request.expiresAt&&Date.parse(request.expiresAt)<=readAt){request.status='expired';request.resolvedAt=new Date(readAt).toISOString()}})});tableSessions.set(slug,sessions);
   if(req.method==='GET'){sendJson(res,200,sessions);return}
@@ -49,6 +64,8 @@ async function tableApi(req,res,pathname){
 const server = http.createServer(async (req, res) => {
   try {
     const pathname = decodeURIComponent(new URL(req.url, 'http://local.invalid').pathname);
+    if(pathname==='/data/qrk-config.local.js'&&(req.method==='GET'||req.method==='HEAD')){const bytes=Buffer.from("globalThis.QRK_CONFIG=Object.freeze({environment:'local',authEnabled:true});\n");res.writeHead(200,{'Content-Type':'text/javascript; charset=utf-8','Content-Length':bytes.length,'Cache-Control':'no-store'});res.end(req.method==='HEAD'?undefined:bytes);return}
+    if(pathname.startsWith('/__qrk/preview-auth/')){await previewAuthApi(req,res,pathname);return}
     if(pathname==='/__qrk/integrations/rnl/catalog'&&req.method==='GET'){sendJson(res,200,await rnlIntegration.catalog());return}
     if(pathname.startsWith('/__qrk/integrations/rnl/assets/')&&(req.method==='GET'||req.method==='HEAD')){const fileName=pathname.slice('/__qrk/integrations/rnl/assets/'.length),asset=await rnlIntegration.asset(fileName);res.writeHead(200,{'Content-Type':asset.contentType,'Content-Length':asset.bytes.length,'Cache-Control':'public, max-age=31536000, immutable','X-Content-Type-Options':'nosniff'});res.end(req.method==='HEAD'?undefined:asset.bytes);return}
     if(pathname==='/__qrk/integrations/rnl/orders'&&req.method==='POST'){sendJson(res,201,await rnlIntegration.createOrder(await readJson(req)));return}
