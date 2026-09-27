@@ -1,5 +1,11 @@
 # Build status
 
+## September 27, 2026 — Unified public-menu hero shell
+
+- Removed the legacy no-banner layout branch so every business now uses the approved Kusina hero geometry: overlaid identity, curved menu transition, and the same search/category placement.
+- Removed the hardcoded eager image from the shared HTML shell. Businesses use their configured cover, or the existing shared demo artwork when no cover is available, without changing the shell geometry.
+- Corrected hidden-banner rendering and made text-only logo initials visible, preventing an empty white avatar while keeping initial page paint controlled by the shared shell.
+
 ## Local Client Admin credential bridge
 
 - QRK Admin client profiles remain browser-local, but local-development Client Admin credentials now use the trusted preview server's gitignored `.qrk-runtime/preview-auth.json` store so login works across ports in the same checkout.
