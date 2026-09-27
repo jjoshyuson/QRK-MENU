@@ -15,11 +15,12 @@ const quickBefore=structuredClone(combined.experiences.quick);
 combined.experiences.table.settings.timeLimitMinutes=120;
 assert.deepEqual(combined.experiences.quick,quickBefore,'editing Table must not mutate Quick');
 
-const [menu,data,migration,reconciliation,admin,rnl]=await Promise.all([
+const [menu,data,migration,reconciliation,destinationReconciliation,admin,rnl]=await Promise.all([
   readFile(new URL('../dist/menu/menu.js',import.meta.url),'utf8'),
   readFile(new URL('../dist/data/qrk-data-service.js',import.meta.url),'utf8'),
   readFile(new URL('../supabase/migrations/202609270008_dual_service_experiences.sql',import.meta.url),'utf8'),
   readFile(new URL('../supabase/migrations/202609270009_rnl_service_experience_reconciliation.sql',import.meta.url),'utf8'),
+  readFile(new URL('../supabase/migrations/202609270010_rnl_destination_service_reconciliation.sql',import.meta.url),'utf8'),
   readFile(new URL('../dist/admin/admin.js',import.meta.url),'utf8'),
   readFile(new URL('../supabase/functions/rnl-orders/index.ts',import.meta.url),'utf8')
 ]);
@@ -29,6 +30,8 @@ assert.match(rnl,/p_experience:input\.experience/);
 for(const marker of ['service experience is not enabled','table experience requires table fulfillment','fulfillment is not enabled for quick experience','service_experience=p_experience'])assert.ok(migration.includes(marker),`Missing server validation marker ${marker}`);
 assert.match(reconciliation,/20000000-0000-4000-8000-000000000001/);
 assert.match(reconciliation,/on conflict\(business_id\) do update/);
+assert.match(destinationReconciliation,/from public\.public_destinations destination/);
+assert.match(destinationReconciliation,/destination\.slug='rnl'/);
 assert.match(admin,/serviceBuilder\.experiences\[mode\]/);
 assert.doesNotMatch(admin,/serviceBuilder\.settings\[/);
 console.log('Independent Quick/Table experience contract passed.');
