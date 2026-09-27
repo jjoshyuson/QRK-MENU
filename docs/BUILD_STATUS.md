@@ -1163,3 +1163,11 @@ Validation: `npm run check` passed. Browser testing at a narrow 354px phone-size
 - Validation: `npm run check` passes, including the tenant-owned business cosmetics contract.
 - Refined the editor into one live miniature public-menu preview with the cover above an overlapping profile logo and a contextual menu surface. Controls now use the plain names Logo, Cover photo, Menu background, and Menu color instead of separate, ambiguous image preview blocks.
 - Business image preparation now enforces hard optimized-upload budgets: 100 KB for logos and 200 KB for cover/background images. WebP quality is reduced first, dimensions are stepped down only when necessary, and an asset is rejected with guidance if it cannot meet the cap without crossing the clarity floor.
+
+## September 27, 2026 — Order status retry-storm correction
+
+- Corrected the stale-order guard in `transition_order_status`: it now returns the non-retryable application SQLSTATE `P0001` instead of PostgreSQL serialization-failure code `40001`.
+- The previous code caused Supabase to retry one rejected stale transition hundreds of thousands of times, saturating the hosted development database CPU.
+- Applied migration `202609270001_order_status_conflict_code.sql` to `qrk-menu-development`; the repository and linked migration histories match.
+- Supabase logs show the `40001` flood ending at migration time. Six final `P0001` responses from the already-running request were followed by normal traffic with no continuing transition-error stream.
+- Validation: backend static checks and the full `npm run check` suite pass. Local database reset, pgTAP, and lint could not run because Docker Desktop was stopped; hosted migration dry-run and application succeeded.

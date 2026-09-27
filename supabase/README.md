@@ -8,7 +8,7 @@ Migration `202609140001_order_sync_and_recovery.sql` adds registered browser ins
 
 The customer stores a random device UUID and secret. Only the secret digest reaches durable storage. This identifies a browser installation and prevents accidental namespace overlap; it is not a hardware identifier.
 
-This folder is the canonical, version-controlled database source of truth. The disposable hosted development project `qrk-menu-development` is synchronized through all ten repository migrations and the generated ten-client development catalog. Five of those clients have one Client Admin and one Client Staff Auth identity, active tenant memberships, and forced first-login password changes; the other five are catalog/service-profile fixtures without hosted login accounts. Temporary credentials live only in a gitignored local file. Physical two-device verification, Storage checks, and recovery drills remain incomplete; production is separate and was not touched.
+This folder is the canonical, version-controlled database source of truth. The disposable hosted development project `qrk-menu-development` is synchronized through all repository migrations and the generated ten-client development catalog. Five of those clients have one Client Admin and one Client Staff Auth identity, active tenant memberships, and forced first-login password changes; the other five are catalog/service-profile fixtures without hosted login accounts. Temporary credentials live only in a gitignored local file. Physical two-device verification, Storage checks, and recovery drills remain incomplete; production is separate and was not touched.
 
 ## Structure
 
