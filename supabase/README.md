@@ -23,6 +23,7 @@ This folder is the canonical, version-controlled database source of truth. The d
 | `supabase/migrations/202609120001_local_auth_and_permissions.sql` | Global usernames, tenant access context and granular staff permission enforcement |
 | `supabase/migrations/202609120002_service_mode_context.sql` | Quick/Table service mode in the tenant access context |
 | `supabase/migrations/202609140002_hosted_table_sessions.sql` | Device-authenticated Table requests, joins, staff acceptance, cleanup, and reconciliation |
+| `supabase/migrations/202609280001_create_device_order_rpc_unification.sql` | One unambiguous public order-creation RPC backed by a private core implementation |
 | `supabase/tests/002_auth_and_permissions.sql` | Username and staff-permission coverage |
 
 The application schema uses UUIDs, PHP integer minor units, tenant foreign keys, immutable order snapshots, and append-only status events. Supabase-specific behavior is deliberately isolated in the second migration so a VPS move can retain the first migration and replace Auth claims, RPC exposure, Realtime, and Storage integration.

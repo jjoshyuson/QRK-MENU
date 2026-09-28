@@ -1,5 +1,11 @@
 # Build status
 
+## September 28, 2026 — Public checkout RPC ambiguity repair
+
+- Removed the overloaded public `create_device_order` contract that caused live checkout to fail with PostgreSQL `42725` before an order could be written.
+- Preserved the original device, catalog, pricing, option, idempotency, table-session, and open-tab validation behind a private core function; the service-experience-aware function is now the only public RPC signature.
+- Added a static regression contract that rejects the ambiguous recursive public call and verifies public/private execution boundaries.
+
 ## September 27, 2026 — Unified public-menu hero shell
 
 - Removed the legacy no-banner layout branch so every business now uses the approved Kusina hero geometry: overlaid identity, curved menu transition, and the same search/category placement.
