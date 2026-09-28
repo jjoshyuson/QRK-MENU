@@ -127,7 +127,7 @@
           <fieldset class="fulfillment review-fulfillment hidden"><legend class="sr-only">Pickup or serve at table</legend><label><input type="radio" name="fulfillment" value="pickup"><span><b>Pickup</b><small>Collect at the counter</small></span></label><label><input type="radio" name="fulfillment" value="table"><span><b>Serve at table</b><small>Choose your table</small></span></label></fieldset>
           <input id="table-number" type="hidden">
           <details class="checkout-details" id="checkout-details"><summary><span>Add name or order notes</span><small>Optional</small></summary><div class="checkout-details-fields"><label class="field-label" for="customer-label">Name for the order</label><input id="customer-label" type="text" maxlength="40" autocomplete="name" placeholder="Example: Mia"><label class="remember-name"><input id="save-customer-name" type="checkbox" checked><span>Save name on this device</span></label><label class="field-label" for="order-notes">Order notes</label><textarea id="order-notes" rows="2" maxlength="180" placeholder="Anything the staff should know?"></textarea></div></details>
-          <p class="form-error hidden" id="checkout-error" role="alert"></p>
+          <p class="form-error hidden" id="checkout-error" role="alert" tabindex="-1"></p>
         </section>
       </div>
       <div class="sheet-action cart-total hidden" id="cart-action"><div><span>Subtotal</span><strong id="checkout-subtotal">₱0</strong></div><button class="primary-button" id="submit-order" value="default">Proceed with order</button></div>
@@ -138,6 +138,7 @@
     <div class="sheet-card focused-sheet-card">
       <header class="sheet-header"><button class="icon-button" id="fulfillment-back" type="button" aria-label="Back to review order">←</button><div><p class="eyebrow">ORDER METHOD</p><h2 id="fulfillment-title">How would you like it?</h2></div><span aria-hidden="true"></span></header>
       <div class="sheet-content">
+        <div class="fulfillment-choice-list hidden" id="consumption-choice-list"><button type="button" data-consumption-choice="dine_in"><span><b>Dine in</b><small>Eat your order here</small></span><span aria-hidden="true">›</span></button><button type="button" data-consumption-choice="takeaway"><span><b>Takeaway</b><small>Take your order with you</small></span><span aria-hidden="true">›</span></button></div>
         <div class="fulfillment-choice-list" id="fulfillment-choice-list"><button type="button" data-fulfillment-choice="pickup"><span><b>Pickup</b><small>Collect at the counter</small></span><span aria-hidden="true">›</span></button><button type="button" data-fulfillment-choice="table"><span><b>Serve at table</b><small>Choose your table</small></span><span aria-hidden="true">›</span></button></div>
         <div class="review-table-field hidden" id="review-table-field"><span class="sr-only" id="table-label">Choose your table</span><div class="table-number-panel" id="review-table-panel"><div class="table-number-grid" id="review-table-grid" role="radiogroup" aria-labelledby="table-label"></div><p id="selected-review-table" aria-live="polite">Select a table number</p></div></div>
       </div>

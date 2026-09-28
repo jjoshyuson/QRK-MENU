@@ -5,17 +5,19 @@ import { QrkTableSessionService } from '../data/qrk-table-session-service.js?v=3
 import { menuOptionGroupsForItem, readMenuState, subscribeMenuState } from '../data/qrk-menu-store.js';
 import { deviceScopedKey } from '../data/qrk-device-service.js';
 import { selectServiceExperience } from '../data/qrk-service-presets.js';
+import { resolveQuickOrderState, validQuickFulfillmentModes } from '../data/qrk-quick-order.js';
 
 addEventListener('pointerdown',event=>{if(event.pointerType==='touch'||event.pointerType==='pen')document.body.dataset.inputModality='touch'},{passive:true});
 addEventListener('keydown',event=>{if(event.key==='Tab')delete document.body.dataset.inputModality});
 
 const businessSlug=new URLSearchParams(location.search).get('business')||'kusina-manila';
+function parseStoredJson(value,fallback){try{return value?JSON.parse(value):fallback}catch{return fallback}}
 const dataService=createQrkDataService({destinationSlug:businessSlug});
 const businessExperience=getBusinessExperience(businessSlug);
 if(dataService.mode!=='demo'){try{const hostedProfile=await dataService.getServiceProfile();if(hostedProfile)businessExperience.serviceProfile=hostedProfile}catch{}}
 const entryParams=new URLSearchParams(location.search),availableServices=businessExperience.serviceProfile.serviceModes||['quick'],serviceChoiceKey=deviceScopedKey(businessSlug,'service-experience');
 let requestedService=entryParams.get('service');
-if(entryParams.has('table')||entryParams.has('token'))requestedService='table';
+if(entryParams.has('token'))requestedService='table';
 if(!availableServices.includes(requestedService))requestedService=availableServices.includes(sessionStorage.getItem(serviceChoiceKey))?sessionStorage.getItem(serviceChoiceKey):null;
 if(!requestedService&&availableServices.length>1)requestedService=await new Promise(resolve=>{const dialog=document.createElement('dialog');dialog.className='sheet-dialog service-experience-dialog';dialog.innerHTML=`<form method="dialog" class="sheet-card"><div class="sheet-header"><div><p class="eyebrow">CHOOSE AN EXPERIENCE</p><h2>How are you ordering?</h2></div></div><div class="focused-choice-list"><button type="button" data-service-choice="quick"><b>Quick order</b><small>Pickup or simple counter service</small></button><button type="button" data-service-choice="table"><b>Table service</b><small>Open or join a table session</small></button></div></form>`;document.body.append(dialog);dialog.addEventListener('cancel',event=>event.preventDefault());dialog.addEventListener('click',event=>{const button=event.target.closest('[data-service-choice]');if(button){dialog.close();dialog.remove();resolve(button.dataset.serviceChoice)}});dialog.showModal()});
 requestedService=requestedService||availableServices[0];sessionStorage.setItem(serviceChoiceKey,requestedService);
@@ -33,11 +35,14 @@ const TAB_ORDER_KEY=deviceScopedKey(businessSlug,`open-tab-orders:${dataService.
 const TAB_SESSION_KEY=deviceScopedKey(businessSlug,`open-tab-session:${dataService.mode}`);
 const HISTORY_KEY=deviceScopedKey(businessSlug,`order-history:${dataService.mode}`);
 const CUSTOMER_NAME_KEY=deviceScopedKey(businessSlug,'customer-name');
+const CHECKOUT_METHOD_KEY=deviceScopedKey(businessSlug,`checkout-method:${dataService.mode}`);
 const HISTORY_LIMIT=25,HISTORY_RETENTION_MS=30*24*60*60*1000;
 const openTabEnabled=Boolean(serviceProfile.layers.openOrderTab);
 const paymentFirst=serviceProfile.settings.paymentTiming==='upfront'&&serviceProfile.settings.packageMode==='none';
-const fulfillmentModes=serviceProfile.settings.fulfillmentModes||['table'];
-const reviewChoiceRequired=businessExperience.serviceMode==='quick'&&['table','pickup'].every(mode=>fulfillmentModes.includes(mode));
+const quickCheckout=businessExperience.serviceMode==='quick'?resolveQuickOrderState(serviceProfile.settings,parseStoredJson(localStorage.getItem(CHECKOUT_METHOD_KEY),{}),entryParams.get('table')):null;
+const consumptionModes=quickCheckout?.consumptionModes||[];
+let selectedConsumption=businessExperience.serviceMode==='table'?'dine_in':quickCheckout.consumption;
+let selectedFulfillment=businessExperience.serviceMode==='table'?'table':quickCheckout.fulfillment;
 const money=new Intl.NumberFormat('en-PH',{style:'currency',currency:'PHP',maximumFractionDigits:0});
 let menu=[
   {id:'adobo',category:'Mains',name:'Chicken adobo',description:'Soy-vinegar braised chicken with steamed rice.',price:18000,photo:'/photos/adobo.jpg',available:true,options:[{name:'Serving',required:true,choices:[['Regular',0],['Large',6500]]},{name:'Add-ons',choices:[['Fried egg',2500],['Extra rice',3000]],multiple:true}]},
@@ -71,8 +76,9 @@ function syncModalScrollLock(){
 }
 function openModal(dialog){if(!dialog.open)dialog.showModal();syncModalScrollLock()}
 document.querySelectorAll('dialog').forEach(dialog=>dialog.addEventListener('close',()=>requestAnimationFrame(syncModalScrollLock)));
-let selectedReviewTable='';
-function setReviewTableNumber(value){selectedReviewTable=String(value||'');$('#table-number').value=selectedReviewTable}
+let selectedReviewTable=businessExperience.serviceMode==='quick'?quickCheckout.table:'';
+function persistCheckoutMethod(){if(businessExperience.serviceMode==='quick')localStorage.setItem(CHECKOUT_METHOD_KEY,JSON.stringify({consumption:selectedConsumption,fulfillment:selectedFulfillment,table:selectedReviewTable}))}
+function setReviewTableNumber(value){selectedReviewTable=String(value||'');$('#table-number').value=selectedReviewTable;persistCheckoutMethod()}
 function applyPublicMenuBackground(brand){
   const menuSurface=$('.menu'),settings=brand?.publicMenuBackground||{},candidate=String(settings.image||''),image=/^(?:\/|https:\/\/|data:image\/(?:png|jpeg|webp);base64,)/i.test(candidate)?candidate:'',opacity=Number(settings.surfaceOpacity),surfaceOpacity=Math.round((Number.isFinite(opacity)?Math.max(.4,Math.min(.95,opacity)):.72)*100);
   menuSurface.classList.toggle('has-menu-background',Boolean(image));
@@ -197,17 +203,44 @@ function closeSheet(dialog,after){
   if(!dialog?.open){after?.();return}if(matchMedia('(prefers-reduced-motion: reduce)').matches){dialog.close();if(dialog.id==='item-dialog')resetItemSheetDrag();dialog.classList.remove('is-visible','is-closing');after?.();return}const card=dialog.querySelector('.sheet-card'),startTransform=card?getComputedStyle(card).transform:'none';dialog.classList.remove('is-visible');dialog.classList.add('is-closing');let finished=false,motion;const finish=()=>{if(finished)return;finished=true;dialog.close();motion?.cancel();if(dialog.id==='item-dialog')resetItemSheetDrag();dialog.classList.remove('is-visible','is-closing');after?.()};if(['item-dialog','cart-dialog'].includes(dialog.id)){card?.getAnimations().forEach(animation=>animation.cancel());motion=card?.animate([{transform:startTransform==='none'?'translate3d(0,0,0)':startTransform},{transform:'translate3d(0,100dvh,0)'}],{duration:dialog.id==='cart-dialog'?107:120,easing:'cubic-bezier(.4,0,.8,.2)',fill:'both'});if(motion)motion.onfinish=finish;else finish();setTimeout(finish,160);return}card?.addEventListener('animationend',finish,{once:true});setTimeout(finish,170)
 }
 function showCartDialog(){const dialog=$('#cart-dialog');if(dialog.open)return;dialog.classList.remove('is-visible','is-closing');openModal(dialog);const card=dialog.querySelector('.sheet-card');card?.getAnimations().forEach(motion=>motion.cancel());card?.animate([{transform:'translate3d(0,100dvh,0)'},{transform:'translate3d(0,0,0)'}],{duration:540,easing:'cubic-bezier(.2,.8,.2,1)'});dialog.classList.add('is-visible')}
-function openCart(){renderCart();$('#checkout-details').open=false;if(reviewChoiceRequired){document.querySelectorAll('input[name="fulfillment"]').forEach(input=>input.checked=false);setReviewTableNumber('')}renderReviewTableChoices(selectedReviewTable,businessExperience.serviceMode==='table');updateCheckoutActionVisibility();$('#checkout-error').classList.add('hidden');$('#cart-title').textContent='Review order';$('#cart-dialog .sheet-header .eyebrow').textContent='YOUR ORDER';if(openTabEnabled)$('#submit-order').textContent=tabOrders.length?'Send another order':'Send order';showCartDialog()}
+function openCart(){renderCart();$('#checkout-details').open=false;renderReviewTableChoices(selectedReviewTable,businessExperience.serviceMode==='table');updateCheckoutActionVisibility();$('#checkout-error').classList.add('hidden');$('#cart-title').textContent='Review order';$('#cart-dialog .sheet-header .eyebrow').textContent='YOUR ORDER';if(openTabEnabled)$('#submit-order').textContent=tabOrders.length?'Send another order':'Send order';showCartDialog()}
 function openTab(){renderTabSummary();openModal($('#open-tab-dialog'))}
+function setConsumptionChoice(choice){
+  if(!consumptionModes.includes(choice))return false;
+  selectedConsumption=choice;
+  const valid=validQuickFulfillmentModes(serviceProfile.settings,choice);
+  if(!valid.includes(selectedFulfillment)){selectedFulfillment='';setReviewTableNumber('')}
+  if(!selectedFulfillment&&valid.length===1)selectedFulfillment=valid[0];
+  if(selectedFulfillment!=='table')setReviewTableNumber('');
+  persistCheckoutMethod();return true;
+}
 function setFulfillmentChoice(choice){
-  const selected=$(`input[name="fulfillment"][value="${choice}"]`);if(!selected)return;
-  selected.checked=true;document.querySelectorAll('.fulfillment label').forEach(label=>{const enabled=fulfillmentModes.includes(label.querySelector('input').value)||businessExperience.serviceMode==='table';label.classList.toggle('hidden',!enabled)});
+  const valid=businessExperience.serviceMode==='table'?['table']:validQuickFulfillmentModes(serviceProfile.settings,selectedConsumption);if(!valid.includes(choice))return false;
+  selectedFulfillment=choice;const selected=$(`input[name="fulfillment"][value="${choice}"]`);if(selected)selected.checked=true;
+  if(choice!=='table')setReviewTableNumber('');persistCheckoutMethod();
+  document.querySelectorAll('.fulfillment label').forEach(label=>label.classList.toggle('hidden',!valid.includes(label.querySelector('input').value)));
   updateCheckoutActionVisibility();
+  return true;
 }
 function updateCheckoutActionVisibility(){$('#cart-action').classList.toggle('hidden',!cart.length)}
-function showFulfillmentChoices(){const dialog=$('#fulfillment-dialog'),show=()=>{$('#fulfillment-choice-list').classList.remove('hidden');$('#review-table-field').classList.add('hidden');$('#fulfillment-back').setAttribute('aria-label','Back to review order');$('#fulfillment-title').textContent='How would you like it?';dialog.querySelectorAll('[data-fulfillment-choice]').forEach(button=>button.classList.toggle('hidden',!fulfillmentModes.includes(button.dataset.fulfillmentChoice)));if(!dialog.open)openModal(dialog);requestAnimationFrame(()=>dialog.querySelector('[data-fulfillment-choice]:not(.hidden)')?.focus())};if($('#cart-dialog').open)closeSheet($('#cart-dialog'),show);else show()}
-function showFulfillmentTables(){$('#fulfillment-choice-list').classList.add('hidden');$('#review-table-field').classList.remove('hidden');$('#fulfillment-back').setAttribute('aria-label','Back to fulfillment choices');$('#fulfillment-title').textContent='Choose your table';renderReviewTableChoices('',false);requestAnimationFrame(()=>$('#review-table-grid button')?.focus())}
+let orderMethodStep='';
+function openOrderMethodSheet(show){const dialog=$('#fulfillment-dialog'),open=()=>{show();if(!dialog.open)openModal(dialog)};if($('#cart-dialog').open)closeSheet($('#cart-dialog'),open);else open()}
+function showConsumptionChoices(){orderMethodStep='consumption';openOrderMethodSheet(()=>{$('#consumption-choice-list').classList.remove('hidden');$('#fulfillment-choice-list').classList.add('hidden');$('#review-table-field').classList.add('hidden');$('#fulfillment-back').setAttribute('aria-label','Back to review order');$('#fulfillment-title').textContent='Where will you eat?';$('#consumption-choice-list').querySelectorAll('[data-consumption-choice]').forEach(button=>button.classList.toggle('hidden',!consumptionModes.includes(button.dataset.consumptionChoice)));requestAnimationFrame(()=>$('#consumption-choice-list [data-consumption-choice]:not(.hidden)')?.focus())})}
+function showFulfillmentChoices(){orderMethodStep='fulfillment';const valid=validQuickFulfillmentModes(serviceProfile.settings,selectedConsumption);openOrderMethodSheet(()=>{$('#consumption-choice-list').classList.add('hidden');$('#fulfillment-choice-list').classList.remove('hidden');$('#review-table-field').classList.add('hidden');$('#fulfillment-back').setAttribute('aria-label',consumptionModes.length>1?'Back to consumption choice':'Back to review order');$('#fulfillment-title').textContent='How will you receive it?';$('#fulfillment-dialog').querySelectorAll('[data-fulfillment-choice]').forEach(button=>button.classList.toggle('hidden',!valid.includes(button.dataset.fulfillmentChoice)));requestAnimationFrame(()=>$('#fulfillment-choice-list [data-fulfillment-choice]:not(.hidden)')?.focus())})}
+function showFulfillmentTables(){orderMethodStep='table';$('#consumption-choice-list').classList.add('hidden');$('#fulfillment-choice-list').classList.add('hidden');$('#review-table-field').classList.remove('hidden');$('#fulfillment-back').setAttribute('aria-label','Back to order method');$('#fulfillment-title').textContent='Choose your table';renderReviewTableChoices(selectedReviewTable,false);requestAnimationFrame(()=>$('#review-table-grid button')?.focus())}
 function closeTableSelection(){closeSheet($('#fulfillment-dialog'),()=>{showCartDialog();requestAnimationFrame(()=>$('#submit-order').focus())})}
+function showCheckoutConfigurationError(message){const error=$('#checkout-error');error.textContent=message;error.classList.remove('hidden');if($('#fulfillment-dialog').open)$('#fulfillment-dialog').close();showCartDialog();requestAnimationFrame(()=>error.focus())}
+function continueOrderMethodFlow(){
+  if(businessExperience.serviceMode==='table')return paymentFirst?openPaymentStep():createOrder();
+  if(!consumptionModes.length)return showCheckoutConfigurationError('Ordering is unavailable because no Consumption option is configured.');
+  if(!selectedConsumption){if(consumptionModes.length>1)return showConsumptionChoices();setConsumptionChoice(consumptionModes[0])}
+  const valid=validQuickFulfillmentModes(serviceProfile.settings,selectedConsumption);
+  if(!valid.length)return showCheckoutConfigurationError('Ordering is unavailable because this Consumption choice has no valid Fulfillment option.');
+  if(!valid.includes(selectedFulfillment)){selectedFulfillment='';setReviewTableNumber('')}
+  if(!selectedFulfillment){if(valid.length>1)return showFulfillmentChoices();setFulfillmentChoice(valid[0])}
+  if(selectedFulfillment==='table'&&!/^\d{1,3}$/.test(selectedReviewTable))return showFulfillmentTables();
+  paymentFirst?openPaymentStep():createOrder();
+}
 function showStoreNotice(){const notice=$('#store-notice');notice.innerHTML=`<h2>Ordering is paused</h2><p>You can still browse the menu, but ${escapeText(customerBrand.businessName)} is not accepting demo orders right now.</p>`;notice.classList.remove('hidden');renderCart()}
 function addSelectedItem(){
   const options=itemOptionDraft.flat(),unitPriceMinor=selectedItem.price+options.reduce((sum,option)=>sum+option.priceMinor,0);
@@ -219,18 +252,18 @@ function makeId(){if(globalThis.crypto?.randomUUID)return crypto.randomUUID();co
 function isUuid(value){return/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value||'')}
 function makeToken(){const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',bytes=new Uint8Array(6);crypto.getRandomValues(bytes);return[...bytes].map(byte=>chars[byte%chars.length]).join('')}
 async function validateCheckout(){
-  const fulfillment=$('input[name="fulfillment"]:checked')?.value,table=selectedReviewTable.trim(),error=$('#checkout-error');let session=null;
-  error.classList.add('hidden');if(!cart.length)return null;if(!fulfillment){error.textContent='Choose pickup or serve at table.';error.classList.remove('hidden');$('.review-fulfillment input')?.focus();return null}if(!storeOpen()){error.textContent='Ordering is paused. Your cart is saved so you can try again later.';error.classList.remove('hidden');return null}if(fulfillment==='table'&&!/^\d{1,3}$/.test(table)){error.textContent='Choose your table number.';error.classList.remove('hidden');$('input[name="fulfillment"][value="table"]')?.focus();return null}
+  const consumption=businessExperience.serviceMode==='table'?'dine_in':selectedConsumption,fulfillment=businessExperience.serviceMode==='table'?'table':selectedFulfillment,table=selectedReviewTable.trim(),error=$('#checkout-error');let session=null;
+  error.classList.add('hidden');if(!cart.length)return null;if(businessExperience.serviceMode==='quick'&&!consumptionModes.includes(consumption)){showCheckoutConfigurationError('Choose where you will consume this order.');return null}if(businessExperience.serviceMode==='quick'&&!validQuickFulfillmentModes(serviceProfile.settings,consumption).includes(fulfillment)){showCheckoutConfigurationError('Choose a valid way to receive this order.');return null}if(!storeOpen()){error.textContent='Ordering is paused. Your cart is saved so you can try again later.';error.classList.remove('hidden');return null}if(fulfillment==='table'&&!/^\d{1,3}$/.test(table)){showCheckoutConfigurationError('Choose your table number.');return null}
   if(tableSessionService){await tableSessionService.refresh();session=tableSessionService.current();if(!session||!['active','bill_requested','inactivity_warning'].includes(session.status)){error.textContent=`This device is still waiting for Table ${table||session?.table||''} access. Your cart is saved.`;error.classList.remove('hidden');return null}}
-  return{fulfillment,table,error,session};
+  return{consumption,fulfillment,table,error,session};
 }
 async function openPaymentStep(){const checkout=await validateCheckout();if(!checkout)return;if($('#cart-dialog').open)$('#cart-dialog').close();if($('#fulfillment-dialog').open)$('#fulfillment-dialog').close();openModal($('#payment-dialog'));requestAnimationFrame(()=>$('#pay-at-counter').focus())}
-function closePaymentStep(){if($('#payment-dialog').open)$('#payment-dialog').close();if(reviewChoiceRequired)showFulfillmentChoices();else showCartDialog()}
+function closePaymentStep(){if($('#payment-dialog').open)$('#payment-dialog').close();if(businessExperience.serviceMode==='quick'){const valid=validQuickFulfillmentModes(serviceProfile.settings,selectedConsumption);if(valid.length>1)return showFulfillmentChoices();if(consumptionModes.length>1)return showConsumptionChoices()}showCartDialog()}
 async function createOrder(paymentMethod=null){
-  const checkout=await validateCheckout();if(!checkout)return;const{fulfillment,table,error,session}=checkout;
+  const checkout=await validateCheckout();if(!checkout)return;const{consumption,fulfillment,table,error,session}=checkout;
   const customerName=$('#customer-label').value.trim();rememberCustomerName(customerName,$('#save-customer-name').checked);
   const now=new Date().toISOString();let idempotencyKey=localStorage.getItem(PENDING_KEY);if(!isUuid(idempotencyKey)){idempotencyKey=makeId();localStorage.setItem(PENDING_KEY,idempotencyKey)}
-  const input={idempotencyKey,createdAt:now,updatedAt:now,experience:businessExperience.serviceMode,fulfillmentType:fulfillment,tableNumber:fulfillment==='table'?table:null,tableSessionId:session?.id||null,customerLabel:customerName||undefined,paymentMethod:paymentMethod||undefined,paymentStatus:paymentMethod==='counter'?'due_at_counter':undefined,items:cart.map(line=>({...line})),subtotalMinor:cartTotals().subtotal,notes:$('#order-notes').value.trim()};
+  const input={idempotencyKey,createdAt:now,updatedAt:now,experience:businessExperience.serviceMode,consumptionType:consumption,fulfillmentType:fulfillment,tableNumber:fulfillment==='table'?table:null,tableSessionId:session?.id||null,customerLabel:customerName||undefined,paymentMethod:paymentMethod||undefined,paymentStatus:paymentMethod==='counter'?'due_at_counter':undefined,items:cart.map(line=>({...line})),subtotalMinor:cartTotals().subtotal,notes:$('#order-notes').value.trim()};
   try{const result=await dataService.createOrder(input),order={...input,...result,createdAt:result.createdAt||now,updatedAt:result.updatedAt||now,status:result.status||'received',events:result.events||[{status:'received',at:now,label:'Order received'}]};dataService.rememberActiveOrder?.(order);if(!openTabEnabled)rememberHistory(order);if(openTabEnabled){const ids=safeParse(localStorage.getItem(TAB_ORDER_KEY),[]),session=tableSessionService?.current();localStorage.setItem(TAB_ORDER_KEY,JSON.stringify([...new Set([...ids,String(order.id)])]));localStorage.setItem(TAB_SESSION_KEY,JSON.stringify({sessionId:session?.id||null,updatedAt:now}))}localStorage.removeItem(PENDING_KEY);localStorage.removeItem(CART_KEY);cart=[];await refreshTabOrders();renderCart();if($('#payment-dialog').open)$('#payment-dialog').close();if($('#cart-dialog').open)$('#cart-dialog').close();showConfirmation(order)}catch(cause){error.textContent=cause.message||'We could not submit this order. Your cart is safe—try again.';error.classList.remove('hidden');if($('#payment-dialog').open)$('#payment-dialog').close();showCartDialog()}
 }
 function showConfirmation(order){const dialog=$('#confirmation-dialog');$('#confirmation-title').textContent=openTabEnabled?'ADDED TO':'ORDER NUMBER';$('#confirmation-number').textContent=openTabEnabled?`Table ${order.tableNumber}`:order.orderNumber;if(!dialog.open)openModal(dialog);requestAnimationFrame(()=>dialog.focus())}
@@ -251,10 +284,11 @@ $('#cart-items').addEventListener('pointermove',event=>{if(!cartSwipe)return;con
 const finishCartSwipe=commit=>{if(!cartSwipe)return;const {main,row,dx}=cartSwipe,index=Number(row.dataset.index),shouldRemove=commit&&-dx>=row.clientWidth*.45;cartSwipe=null;row.classList.remove('is-swiping');if(shouldRemove){row.classList.add('is-swiping-away');main.style.setProperty('--swipe-offset',`${-row.clientWidth}px`);setTimeout(()=>{cart.splice(index,1);persistCart();renderCart()},190)}else{if(dx>0){row.classList.add('is-rebounding');setTimeout(()=>row.classList.remove('is-rebounding'),240)}main.style.removeProperty('--swipe-offset');row.style.removeProperty('--swipe-progress')}};
 $('#cart-items').addEventListener('pointerup',()=>finishCartSwipe(true));$('#cart-items').addEventListener('pointercancel',()=>finishCartSwipe(false));
 $('#cart-recommendation-list').addEventListener('click',event=>{const button=event.target.closest('button[data-recommendation-id]');if(!button)return;const item=menu.find(entry=>String(entry.id)===button.dataset.recommendationId);if(item)openItem(item,-1,button)});
-$('#fulfillment-back').addEventListener('click',()=>$('#review-table-field').classList.contains('hidden')?closeTableSelection():showFulfillmentChoices());$('#fulfillment-dialog').addEventListener('cancel',event=>{event.preventDefault();closeTableSelection()});
+$('#fulfillment-back').addEventListener('click',()=>{if(orderMethodStep==='consumption')return closeTableSelection();if(orderMethodStep==='fulfillment')return consumptionModes.length>1?showConsumptionChoices():closeTableSelection();const valid=validQuickFulfillmentModes(serviceProfile.settings,selectedConsumption);if(valid.length>1)return showFulfillmentChoices();if(consumptionModes.length>1)return showConsumptionChoices();closeTableSelection()});$('#fulfillment-dialog').addEventListener('cancel',event=>{event.preventDefault();closeTableSelection()});
+$('#consumption-choice-list').addEventListener('click',event=>{const button=event.target.closest('[data-consumption-choice]');if(!button)return;setConsumptionChoice(button.dataset.consumptionChoice);continueOrderMethodFlow()});
 $('#fulfillment-choice-list').addEventListener('click',event=>{const button=event.target.closest('[data-fulfillment-choice]');if(!button)return;const choice=button.dataset.fulfillmentChoice;setFulfillmentChoice(choice);if(choice==='table')return showFulfillmentTables();paymentFirst?openPaymentStep():createOrder()});
 $('#review-table-grid').addEventListener('click',event=>{const button=event.target.closest('[data-review-table]');if(!button)return;setReviewTableNumber(button.dataset.reviewTable);setFulfillmentChoice('table');paymentFirst?openPaymentStep():createOrder()});
-$('#submit-order').addEventListener('click',event=>{event.preventDefault();if(reviewChoiceRequired)return showFulfillmentChoices();paymentFirst?openPaymentStep():createOrder()});$('#close-payment').addEventListener('click',closePaymentStep);$('#payment-dialog').addEventListener('cancel',event=>{event.preventDefault();closePaymentStep()});$('#pay-at-counter').addEventListener('click',()=>createOrder('counter'));$('#confirmation-dialog').addEventListener('click',event=>{if(event.target===event.currentTarget)event.currentTarget.close()});
+$('#submit-order').addEventListener('click',event=>{event.preventDefault();continueOrderMethodFlow()});$('#close-payment').addEventListener('click',closePaymentStep);$('#payment-dialog').addEventListener('cancel',event=>{event.preventDefault();closePaymentStep()});$('#pay-at-counter').addEventListener('click',()=>createOrder('counter'));$('#confirmation-dialog').addEventListener('click',event=>{if(event.target===event.currentTarget)event.currentTarget.close()});
 $('#table-choice-grid').addEventListener('click',event=>{const button=event.target.closest('[data-table-choice]');if(button)chooseTable(button.dataset.tableChoice)});$('#table-choice-back').addEventListener('click',()=>{$('#table-entry-form').classList.add('hidden');$('#table-choice-view').classList.remove('hidden');renderTableChoices()});
 $('#table-entry-form').addEventListener('submit',async event=>{event.preventDefault();const form=event.currentTarget,error=$('#table-entry-error'),table=form.elements.table.value.trim(),name=form.elements.name.value.trim();error.classList.add('hidden');rememberCustomerName(name,form.elements.saveName.checked);presetCustomerName(name);const occupied=Boolean(tableSessionService.find(table));try{const session=await tableSessionService.open({table,name,guestCount:form.elements.guestCount.value,packageId:serviceProfile.settings.bundleSelection==='required'?form.elements.package.value:null});if(session.status==='active'&&!occupied)openTableMenu(session);else showTableWaiting(session,occupied)}catch(cause){error.textContent=cause.message;error.classList.remove('hidden')}});
 $('#preview-accept-table').addEventListener('click',async()=>{if(!pendingTableSession)return;const isHost=pendingTableSession.participants.some(person=>person.deviceId===tableSessionService.deviceId&&person.role==='host');if(!isHost)return;const session=await tableSessionService.accept(pendingTableSession.id);if(session)openTableMenu(session)});
