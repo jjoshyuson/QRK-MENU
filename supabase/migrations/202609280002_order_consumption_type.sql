@@ -1,5 +1,6 @@
 -- Consumption (where the order is eaten) is independent from fulfillment
--- (how it is handed over). Existing orders remain valid with a null value.
+-- (how it is handed over). Existing orders remain valid with a null value, and
+-- the preceding 12-argument RPC remains available during the browser rollout.
 alter table public.orders add column consumption_type text
   check (consumption_type in ('dine_in','takeaway'));
 
@@ -29,7 +30,10 @@ begin
     if p_consumption='takeaway' and p_fulfillment<>'pickup' then raise exception 'takeaway requires pickup fulfillment' using errcode='22023'; end if;
   end if;
 
-  result:=public.create_device_order(p_destination_slug,p_request_id,p_fulfillment,p_table_number,p_customer_label,p_order_notes,p_line_items,p_device_id,p_device_secret,p_table_session_id,p_open_tab_id);
+  result:=private.create_device_order_core(
+    p_destination_slug,p_request_id,p_fulfillment,p_table_number,p_customer_label,
+    p_order_notes,p_line_items,p_device_id,p_device_secret,p_table_session_id,p_open_tab_id
+  );
   update public.orders set service_experience=p_experience,consumption_type=p_consumption
     where id=(result->>'id')::uuid;
   return result || jsonb_build_object('experience',p_experience,'consumptionType',p_consumption);

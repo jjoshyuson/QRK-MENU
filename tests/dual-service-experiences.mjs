@@ -33,7 +33,7 @@ const [menu,data,migration,consumptionMigration,reconciliation,destinationReconc
   readFile(new URL('../dist/menu/menu.js',import.meta.url),'utf8'),
   readFile(new URL('../dist/data/qrk-data-service.js',import.meta.url),'utf8'),
   readFile(new URL('../supabase/migrations/202609270008_dual_service_experiences.sql',import.meta.url),'utf8'),
-  readFile(new URL('../supabase/migrations/202609280001_order_consumption_type.sql',import.meta.url),'utf8'),
+  readFile(new URL('../supabase/migrations/202609280002_order_consumption_type.sql',import.meta.url),'utf8'),
   readFile(new URL('../supabase/migrations/202609270009_rnl_service_experience_reconciliation.sql',import.meta.url),'utf8'),
   readFile(new URL('../supabase/migrations/202609270010_rnl_destination_service_reconciliation.sql',import.meta.url),'utf8'),
   readFile(new URL('../dist/admin/admin.js',import.meta.url),'utf8'),
@@ -52,6 +52,7 @@ assert.match(rnl,/p_experience:input\.experience/);
 assert.match(rnl,/p_consumption:input\.consumptionType/);
 for(const marker of ['service experience is not enabled','table experience requires table fulfillment','fulfillment is not enabled for quick experience','service_experience=p_experience'])assert.ok(migration.includes(marker),`Missing server validation marker ${marker}`);
 for(const marker of ['consumption_type','consumption is not enabled for quick experience','takeaway requires pickup fulfillment','table experience requires dine-in consumption'])assert.ok(consumptionMigration.includes(marker),`Missing Consumption validation marker ${marker}`);
+assert.match(consumptionMigration,/private\.create_device_order_core/,'Consumption wrapper must use the unified private order core');
 assert.match(reconciliation,/20000000-0000-4000-8000-000000000001/);
 assert.match(reconciliation,/on conflict\(business_id\) do update/);
 assert.match(destinationReconciliation,/from public\.public_destinations destination/);
