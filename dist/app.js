@@ -42,6 +42,8 @@ function itemThumbnail(i){return i.photo?`<img class="item-stamp" src="${esc(i.p
 function announce(text){$('#toast').textContent=text;$('#toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('#toast').classList.remove('show'),2800)}
 function changed(message){try{saveMenuState(businessContext.businessSlug,{menuName,categories,items,optionGroups});$('#change-status').textContent='Customer menu updated'}catch{$('#change-status').textContent='Preview updated only';message+='; browser storage is full'}render();announce(message)}
 function render(){
+ const visibleItems=items.filter(item=>!item.hidden);
+ $('#menu-health-count').textContent=`${visibleItems.filter(item=>item.available).length} / ${visibleItems.length}`;
  $('#menu-name-display').textContent=menuName;$('#phone-menu-name').textContent=menuName;$('#total-count').textContent=items.length;$('#item-count').textContent=items.length;
  document.querySelector('[data-dashboard-nav="menu"] .nav-count').textContent=items.length;
  $('#category-tabs').innerHTML=['All items',...categories].map(c=>`<button class="category-tab ${active===c?'active':''}" data-category="${esc(c)}" aria-pressed="${active===c}">${esc(c)}<span>${c==='All items'?items.length:items.filter(i=>i.category===c).length}</span></button>`).join('');

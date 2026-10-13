@@ -18,14 +18,14 @@
   --co-danger: var(--danger, #d92d3d);
   --co-radius: 12px;
   --co-control-radius: 999px;
-  --co-shadow: 0 18px 50px rgb(22 42 50 / .09);
+  --co-shadow: var(--component-shadow-card);
   --co-sidebar-width: 224px;
 }
 
 body {
   background: var(--co-canvas);
   color: var(--co-ink);
-  font-family: var(--font-ui, Inter, system-ui, sans-serif);
+  font-family: var(--font-interface);
   text-rendering: optimizeLegibility;
 }
 
@@ -131,7 +131,7 @@ body:not(:has(.login-screen:not([hidden]))) .app {
   height: 62px;
   padding: 0 28px;
   border-bottom: 1px solid var(--co-line);
-  background: rgb(255 255 255 / .94);
+  background: var(--co-surface);
   box-shadow: none;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -154,11 +154,11 @@ body:not(:has(.login-screen:not([hidden]))) .app {
 .page-heading h1 {
   margin: 0;
   color: var(--co-ink);
-  font-family: var(--font-ui, Inter, system-ui, sans-serif);
-  font-size: clamp(28px, 2.5vw, 39px);
-  font-weight: 760;
+  font-family: var(--font-interface);
+  font-size: var(--text-heading);
+  font-weight: var(--weight-bold);
   letter-spacing: -.045em;
-  line-height: 1.05;
+  line-height: 1.2;
   text-wrap: balance;
 }
 .page-heading .subtitle {
@@ -182,7 +182,7 @@ button.button:active { transform: translateY(1px); }
 button.button.primary {
   background: var(--co-accent);
   color: var(--brand-foreground, #fff);
-  box-shadow: 0 8px 18px rgb(15 143 136 / .18);
+  box-shadow: none;
 }
 .button.primary:hover,
 button.button.primary:hover { background: var(--co-accent-strong); }
@@ -211,34 +211,31 @@ button.button.outline {
 .metric-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0;
-  overflow: hidden;
-  margin-bottom: 16px;
-  border: 1px solid var(--co-line);
-  border-radius: var(--co-radius);
-  background: var(--co-surface);
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  border: 0;
+  background: transparent;
 }
 .metric-card {
   min-height: 106px;
-  padding: 18px 20px;
-  border: 0;
-  border-right: 1px solid var(--co-line);
-  border-radius: 0;
-  background: transparent;
+  padding: var(--component-card-padding);
+  border: var(--component-border);
+  border-radius: var(--component-radius-lg);
+  background: var(--co-surface);
   box-shadow: none;
 }
-.metric-card:last-child { border-right: 0; }
+
 .metric-icon { display: none; }
-.metric-card small { color: var(--co-muted); font-size: 12px; }
+.metric-card small { color: var(--co-muted); font-size: var(--text-xs); }
 .metric-card strong {
   margin-top: 7px;
   color: var(--co-ink);
-  font-size: 27px;
-  font-weight: 760;
+  font-size: 28px;
+  font-weight: var(--weight-bold);
   font-variant-numeric: tabular-nums;
   letter-spacing: -.035em;
 }
-.metric-card p { margin-top: 5px; color: var(--co-muted); font-size: 11px; }
+.metric-card p { margin-top: 5px; color: var(--co-muted); font-size: var(--text-xs); }
 
 .dashboard-grid {
   grid-template-columns: minmax(0, 2.25fr) minmax(260px, .75fr);
@@ -253,7 +250,7 @@ button.button.outline {
   box-shadow: none;
 }
 .card-heading { padding: 17px 18px 13px; border-bottom: 1px solid var(--co-line); }
-.card-heading h2 { font-family: inherit; font-size: 18px; letter-spacing: -.02em; }
+.card-heading h2 { font-family: inherit; font-size: var(--text-title); letter-spacing: -.02em; }
 .card-heading p { color: var(--co-muted); }
 .order-preview-list button { min-height: 68px; padding: 11px 18px; border-color: var(--co-line); }
 .order-preview-list button:hover { background: var(--co-surface-soft); }
@@ -412,7 +409,7 @@ button.button.outline {
   box-shadow: none;
 }
 .service-order-card:last-child { border-bottom: 0; }
-.service-order-card.selected { background: #f1fbfa; box-shadow: inset 3px 0 var(--co-accent); }
+.service-order-card.selected { background: var(--co-accent-soft); box-shadow: inset 3px 0 var(--co-accent); }
 .service-order-action { border-radius: var(--co-control-radius); background: var(--co-accent); color: var(--brand-foreground, #fff); }
 .history-order-card { background: transparent; border-color: var(--co-line); }
 .history-order-card:hover { background: var(--co-surface-soft); }
@@ -487,8 +484,7 @@ select { font-family: inherit; }
   .sidebar .logo { margin-bottom: 14px; }
   .sidebar .business { margin-bottom: 14px; }
   .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .metric-card:nth-child(2) { border-right: 0; }
-  .metric-card:nth-child(-n+2) { border-bottom: 1px solid var(--co-line); }
+
   .dashboard-grid { grid-template-columns: 1fr; }
   .workbench { display: block; }
   .preview-panel { display: none; }
@@ -504,7 +500,7 @@ select { font-family: inherit; }
   .heading-actions { margin-top: 14px; }
   .status-strip { min-height: 64px; }
   .status-strip .button { min-width: 44px; }
-  .metric-card { min-height: 96px; padding: 15px; }
+  .metric-card { min-height: 104px; padding: var(--component-card-padding); }
   .metric-card strong { font-size: 24px; }
   .card-heading { padding-inline: 14px; }
   .order-preview-list button { min-height: 64px; padding-inline: 14px; }
@@ -529,8 +525,8 @@ select { font-family: inherit; }
 }
 
 @media (max-width: 430px) {
-  .page-heading h1 { font-size: 27px; }
-  .metric-card { padding: 14px 12px; }
+  .page-heading h1 { font-size: 28px; }
+  .metric-card { padding: var(--space-3); }
   .metric-card p { line-height: 1.35; }
   .editor-toolbar-actions .button.outline { width: 44px; padding-inline: 0; font-size: 0; }
   .item-info p { max-width: 18ch; }

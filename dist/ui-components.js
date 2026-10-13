@@ -10,7 +10,7 @@
     ['.topbar', 'Workspace top bar'], ['.mobile-owner-bar,.mobile-studio-toolbar', 'Mobile toolbar'],
     ['.status-strip', 'Status strip'], ['.service-note,.demo-banner', 'Notice banner'],
     ['.credential-card', 'Credential card'], ['.toast,.platform-toast', 'Toast'],
-    ['.metric-card', 'Metric card'], ['.dashboard-card', 'Dashboard card'],
+    ['.metric-card,.platform-metrics article', 'Metric card'], ['.dashboard-card', 'Dashboard card'],
     ['.quick-actions', 'Quick actions'], ['.activity-log', 'Activity log'],
     ['.item-row', 'Menu item row'], ['.mobile-dish', 'Owner dish card'],
     ['.mobile-table-row', 'Availability row'], ['.category-bar,.categories', 'Category navigation'],
@@ -21,7 +21,7 @@
     ['.table-join-request', 'Table join request'], ['.settings-group,.qrk-settings-list', 'Settings list'],
     ['.settings-row', 'Settings row'], ['.theme-preset', 'Theme preset'],
     ['.qrk-sheet', 'Material sheet'], ['.qrk-sheet-field-list', 'Material field list'], ['.qrk-choice-popover', 'Choice popover'],
-    ['.restaurant', 'Restaurant identity'], ['.dish', 'Customer dish card'],
+    ['.restaurant', 'Restaurant identity'], ['.dish,.customer-dish-card', 'Customer dish card'],
     ['.active-order', 'Active order notice'], ['.desktop-order-card', 'Desktop order summary'],
     ['.cart-bar', 'Floating cart'], ['.open-tab-control', 'Open tab control'],
     ['.option-group', 'Option group'], ['.cart-item', 'Cart item'],
@@ -39,6 +39,7 @@
     if (element.classList.contains('primary-button') && !found.includes('primary')) found.push('primary');
     if (element.classList.contains('secondary-button') && !found.includes('outline')) found.push('outline');
     if ((element.classList.contains('text-button') || element.classList.contains('text-action')) && !found.includes('text')) found.push('text');
+    if (element.matches('.metric-card,.dashboard-card,.platform-card,.platform-metrics article,.customer-dish-card') && !found.includes('outlined')) found.push('outlined');
     if (element.matches(':disabled') && !found.includes('disabled')) found.push('disabled');
     return found.join(' ') || 'default';
   };

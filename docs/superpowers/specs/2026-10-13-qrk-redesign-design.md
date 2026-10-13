@@ -30,7 +30,7 @@ Assumptions: retain QRK branding and the HTML/CSS/vanilla JavaScript stack; use 
 
 ### Shared foundation
 
-Use a consistent spacing scale, semantic light/dark colors, Inter interface text, Source Serif 4 for customer brand/menu headings, and the existing outline icons. Use restrained fills and dividers; cards represent meaningful actions or states. Reserve accent colors for actions and status. Keep 44px interactive targets, visible keyboard focus and readable contrast. Maintain the shared component registry and `/components/` specimens whenever reusable controls change.
+Use a consistent spacing scale, semantic light/dark colors, Manrope for both interface and customer menu typography, and the existing outline icons. Use restrained fills and dividers; cards represent meaningful actions or states. Reserve accent colors for actions and status. Keep 44px interactive targets, visible keyboard focus and readable contrast. Maintain the shared component registry and `/components/` specimens whenever reusable controls change.
 
 ### Owner and staff workspace
 

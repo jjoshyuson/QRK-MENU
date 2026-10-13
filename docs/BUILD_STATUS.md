@@ -1,5 +1,21 @@
 # Build status
 
+## October 13, 2026 — Local typography, card foundation and security fixes
+
+| Area | Implemented / evidence |
+| --- | --- |
+| Typography | Retained Manrope; added shared size, weight and spacing tokens; replaced stale Inter fallbacks in owner/Admin headings and numerals. Marketing body text also uses Manrope. |
+| Cards | Operational metrics use quiet 1px borders, 12px corners and shared padding. Removed repeated dish-card gloss, blur and shadows; kept customer tiles rim-free and Settings grouped. Updated registry and component specimens. |
+| Dashboard | Menu health derives from visible items and availability; the 50-item fixture renders `50 / 50`. |
+| Request security | Shared normalized routing and Host/Origin/Fetch-Metadata checks protect development endpoints, including encoded paths. JSON is bounded at 100,000 bytes and requires an object; oversized bodies return 413. |
+| RNL integration | Order status requires the corresponding stored tracking token before an upstream call. Quantities must be integers 1–20; totals must be nonnegative safe integers; fulfillment/table inputs are validated. |
+| Regression evidence | `npm run check`, mocked RNL integration and preview-auth tests pass. Security regressions were observed failing before fixes. Independent review found an encoded-path bypass and two CSS cascade gaps; all were fixed and verified. |
+| Browser evidence | Owner/customer/Admin layouts checked at 390, 768 and 1280px without page overflow; light/dark surfaces inspected. Item options plus quantity produced the expected PHP 410 total; nested cancel restored cart/focus, and keyboard removal emptied the cart. Search has a visible 2px keyboard focus ring. Marketing pages checked at phone/desktop widths. |
+| Security audit limits | Lockfile audit reports zero advisories. Tracked-file scan found no matching Supabase secret-key patterns. Supabase security advisor returned no lints for `qrk-menu-development`, which is inactive; live authorization, real payments/POS and physical devices were not verified. |
+| Delivery | Local candidate on `codex/qrk-full-redesign`; preview port 4187. No push, deployment, hosted migration, account reset or credential change. This is the typography/card foundation for the broader redesign. |
+
+Local preview shortcuts and table-session operations remain development fixtures, not production authorization. Same-origin protection does not authenticate arbitrary non-browser API clients.
+
 ## September 28, 2026 — Public checkout RPC ambiguity repair
 
 - Removed the overloaded public `create_device_order` contract that caused live checkout to fail with PostgreSQL `42725` before an order could be written.

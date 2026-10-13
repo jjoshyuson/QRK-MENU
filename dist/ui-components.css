@@ -10,6 +10,21 @@
 :root{
   --font-interface:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
   --font-menu-display:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --text-xs:12px;
+  --text-sm:13px;
+  --text-body:14px;
+  --text-title:20px;
+  --text-heading:clamp(24px,2.5vw,32px);
+  --weight-regular:400;
+  --weight-medium:500;
+  --weight-semibold:600;
+  --weight-bold:700;
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-5:20px;
+  --space-6:24px;
   --component-control-height:44px;
   --component-customer-control-height:50px;
   --component-radius-xs:6px;
@@ -20,7 +35,7 @@
   --component-radius-pill:999px;
   --component-border:1px solid var(--line);
   --component-border-strong:1px solid var(--gray-300);
-  --component-shadow-card:0 5px 20px #11182708;
+  --component-shadow-card:none;
   --component-shadow-dialog:0 20px 70px #11182724;
   --component-focus:3px solid var(--brand-ring);
   --component-focus-offset:2px;
@@ -31,7 +46,7 @@
   --component-primary-fg:var(--brand-foreground);
   --component-danger-bg:var(--danger-soft);
   --component-danger-fg:var(--danger);
-  --component-card-padding:16px;
+  --component-card-padding:var(--space-4);
   --component-dialog-padding:20px;
   --component-row-gap:12px;
   --component-button-radius:var(--component-radius-pill);
@@ -47,9 +62,9 @@
   --component-menu-search-height:2.1rem;
   --component-menu-category-height:1.925rem;
   --component-menu-floating-order-height:2.6rem;
-  --component-menu-card-bg:color-mix(in srgb,var(--surface) 84%,transparent);
-  --component-menu-card-border:color-mix(in srgb,var(--surface) 72%,var(--line) 28%);
-  --component-menu-card-shadow:inset 0 1px 0 color-mix(in srgb,var(--surface) 88%,transparent),0 10px 30px color-mix(in srgb,var(--ink) 13%,transparent);
+  --component-menu-card-bg:var(--surface);
+  --component-menu-card-border:var(--line);
+  --component-menu-card-shadow:none;
   --component-focused-sheet-width:620px;
   --component-focused-sheet-max-height:90dvh;
   --component-sheet-bg:rgba(44,44,46,.94);
@@ -82,9 +97,14 @@
   border-radius:var(--component-radius-pill);
 }
 
-/* Typography foundation: one interface face, with serif reserved for customer-facing
-   restaurant and menu hierarchy. Route styles may control size and line-height only. */
+/* Typography foundation: Manrope throughout; scale and weight establish hierarchy. */
 html,body,button,input,select,textarea{font-family:var(--font-interface)!important}
+body{font-size:var(--text-body);line-height:1.5;font-synthesis:none}
+button,input,select,textarea{font-size:inherit}
+h1,h2,h3,h4,p{overflow-wrap:break-word}
+.metric-card strong,.metric-card b,.dish strong,.item-price,.order-total,.platform-metrics strong{font-variant-numeric:tabular-nums}
+.page-heading h1,.platform-heading h1{font-size:var(--text-heading);font-weight:var(--weight-bold);line-height:1.2;letter-spacing:-.035em}
+.card-heading h2,.platform-card-heading h2{font-size:var(--text-title);font-weight:var(--weight-semibold);line-height:1.3}
 .restaurant-wordmark,.restaurant h1,.menu-heading h2,.section-heading h3,
 .item-title-row h2,.menu-title h2,.mobile-studio-title h1,.mobile-dish h3,
 .type-stack .menu-display-sample{font-family:var(--font-menu-display)!important;font-weight:700!important}
@@ -159,27 +179,21 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--brand-500)}
   border-radius:var(--component-radius-lg);
 }
 
+.platform-metrics article{padding:var(--component-card-padding);border:var(--component-border);border-radius:var(--component-radius-lg);background:var(--component-card-bg);box-shadow:var(--component-shadow-card)}
+.platform-metrics strong{font-size:28px;font-weight:var(--weight-bold);letter-spacing:-.035em}
+
 /* Customer dish cards use a restrained standard material. Public-menu tiles
-   omit the rim so their image and rounded text footer read as one surface. */
+   keep edge-to-edge images with a clean, solid text footer. */
 .dish,.customer-dish-card{
   position:relative;
   background:var(--component-menu-card-bg);
   box-shadow:var(--component-menu-card-shadow);
-  backdrop-filter:saturate(1.08) blur(16px);
-  -webkit-backdrop-filter:saturate(1.08) blur(16px);
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
 }
 .dish{border:0}
 .customer-dish-card{border:1px solid var(--component-menu-card-border)}
-.customer-dish-card::before{
-  content:"";
-  position:absolute;
-  z-index:1;
-  inset:0 12% auto;
-  height:1px;
-  border-radius:inherit;
-  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--surface) 94%,transparent),transparent);
-  pointer-events:none;
-}
+.customer-dish-card::before{display:none}
 .dish>*,.customer-dish-card>*{position:relative;z-index:2}
 
 /* Focused bottom sheets handle one public-menu decision at a time. Native
