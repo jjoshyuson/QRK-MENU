@@ -2,7 +2,7 @@ import http from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createHmac, timingSafeEqual } from 'node:crypto';
+import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 import {createRnlIntegration} from './rnl-integration.mjs';
 import {createPreviewAuthStore} from './preview-auth.mjs';
 import {validateRequest,readJson} from './request-security.mjs';
@@ -24,7 +24,8 @@ const rnlIntegration=createRnlIntegration({runtimeDir:path.join(projectRoot,'.qr
 const previewAuth=createPreviewAuthStore({directory:path.join(projectRoot,'.qrk-runtime')});
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.avif': 'image/avif', '.svg': 'image/svg+xml', '.json': 'application/json; charset=utf-8', '.webmanifest': 'application/manifest+json; charset=utf-8' };
 const tableSessions = new Map();
-const tableEntrySecret=process.env.QRK_TABLE_ENTRY_SECRET||'local-preview-table-entry-secret';
+// A LAN-reachable server must not sign with the published fallback secret.
+const tableEntrySecret=process.env.QRK_TABLE_ENTRY_SECRET||(['127.0.0.1','localhost','::1'].includes(host)?'local-preview-table-entry-secret':randomBytes(32).toString('base64url'));
 const signEntry=value=>createHmac('sha256',tableEntrySecret).update(value).digest('base64url');
 const makeEntryToken=(slug,table)=>{const value=`${slug}:${table}`;return`${Buffer.from(value).toString('base64url')}.${signEntry(value)}`};
 const resolveEntryToken=(slug,token)=>{try{const [encoded,signature]=String(token||'').split('.'),value=Buffer.from(encoded,'base64url').toString(),expected=signEntry(value),[tokenSlug,table]=value.split(':');if(tokenSlug!==slug||!/^[1-9]\d{0,2}$/.test(table)||signature.length!==expected.length||!timingSafeEqual(Buffer.from(signature),Buffer.from(expected)))return null;return table}catch{return null}};
@@ -73,7 +74,7 @@ const server = http.createServer(async (req, res) => {
     if(pathname.startsWith('/__qrk/integrations/rnl/assets/')&&(req.method==='GET'||req.method==='HEAD')){const fileName=pathname.slice('/__qrk/integrations/rnl/assets/'.length),asset=await rnlIntegration.asset(fileName);res.writeHead(200,{'Content-Type':asset.contentType,'Content-Length':asset.bytes.length,'Cache-Control':'public, max-age=31536000, immutable','X-Content-Type-Options':'nosniff'});res.end(req.method==='HEAD'?undefined:asset.bytes);return}
     if(pathname==='/__qrk/integrations/rnl/orders'&&req.method==='POST'){sendJson(res,201,await rnlIntegration.createOrder(await readJson(req)));return}
     if(pathname.startsWith('/__qrk/integrations/rnl/orders/')&&req.method==='GET'){const id=pathname.split('/').pop();sendJson(res,200,await rnlIntegration.status(id,String(req.headers.authorization||'').replace(/^Bearer\s+/i,'')));return}
-    if(pathname.startsWith('/__qrk/table-entry/')){const parts=pathname.split('/').filter(Boolean),slug=parts[2]||'',value=parts[3]||'';if(req.method==='GET'&&/^\d{1,3}$/.test(value)){sendJson(res,200,{table:value,token:makeEntryToken(slug,value)});return}if(req.method==='POST'&&value==='resolve'){const input=await readJson(req),table=resolveEntryToken(slug,input.token);if(!table){sendJson(res,403,{error:'Invalid table entry token'});return}sendJson(res,200,{table,authorizedAt:new Date().toISOString(),deviceId:input.deviceId||null});return}res.writeHead(405,{Allow:'GET, POST'});res.end();return}
+    if(pathname.startsWith('/__qrk/table-entry/')){const parts=pathname.split('/').filter(Boolean),slug=parts[2]||'',value=parts[3]||'';if(req.method==='GET'&&/^\d{1,3}$/.test(value)){if(!loopback(req)){sendJson(res,403,{error:'Local operator access only'});return}sendJson(res,200,{table:value,token:makeEntryToken(slug,value)});return}if(req.method==='POST'&&value==='resolve'){const input=await readJson(req),table=resolveEntryToken(slug,input.token);if(!table){sendJson(res,403,{error:'Invalid table entry token'});return}sendJson(res,200,{table,authorizedAt:new Date().toISOString(),deviceId:input.deviceId||null});return}res.writeHead(405,{Allow:'GET, POST'});res.end();return}
     if(pathname.startsWith('/__qrk/table-sessions/')){await tableApi(req,res,pathname);return}
     if (req.method !== 'GET' && req.method !== 'HEAD') {res.writeHead(405, { Allow: 'GET, HEAD' }); res.end(); return;}
     const requestPath = pathname === '/' ? '/index.html' : pathname.endsWith('/') ? pathname + 'index.html' : pathname;

@@ -31,6 +31,12 @@ try{
   assert.equal((await request('/__qrk/table-entry/test/resolve',json,JSON.stringify({token:'x'.repeat(100001)}))).status,413);
   assert.equal((await request('/__qrk/table-entry/test/resolve',{...json,'Transfer-Encoding':'chunked'},JSON.stringify({token:'x'.repeat(100001)}))).status,413,'chunked bodies must receive an error response rather than a socket reset');
   assert.equal((await request('/__qrk/integrations/rnl/orders/unknown')).status,403);
+  const minted=await request('/__qrk/table-entry/test/7');
+  assert.equal(minted.status,200,'loopback operators can mint table entry tokens');
+  const resolved=await request('/__qrk/table-entry/test/resolve',json,JSON.stringify({token:JSON.parse(minted.text).token}));
+  assert.equal(JSON.parse(resolved.text).table,'7');
+  const server=await (await import('node:fs/promises')).readFile(new URL('../scripts/serve.mjs',import.meta.url),'utf8');
+  assert.match(server,/\.test\(value\)\)\{if\(!loopback\(req\)\)/,'table entry minting must stay loopback-only for LAN previews');
   const response=await request('/');
   assert.equal(response.headers['x-frame-options'],'DENY');
   assert.equal(response.headers['referrer-policy'],'no-referrer');
