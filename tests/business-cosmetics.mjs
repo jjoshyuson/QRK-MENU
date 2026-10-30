@@ -43,4 +43,16 @@ assert.match(migration,/create function public\.get_public_business_cosmetics/);
 assert.match(migration,/private\.has_business_role/);
 assert.match(migration,/grant execute .* to anon,authenticated/);
 
+// Owner background editor: style, pattern swatches and strength drive one preview through backgroundLayers.
+assert.match(app,/import \{[^}]*backgroundLayers[^}]*\} from '\.\/menu\/menu-appearance\.js/);
+assert.match(app,/<fieldset class="menu-bg-style"[^>]*><legend>Style<\/legend>/);
+for(const [value,label] of [['photo','Photo'],['pattern','Pattern'],['pattern-moving','Moving pattern'],['glow','Glow'],['plain','Plain']])assert.match(app,new RegExp(`name="menu-bg-style" value="${value}"[^>]*><span>${label}</span>`),`style option ${label}`);
+for(const name of ['filipino','cafe','ramen','pizza','dessert'])assert.match(app,new RegExp(`data-menu-pattern="${name}" aria-pressed="false"`),`pattern swatch ${name}`);
+assert.match(app,/<label[^>]*for="menu-bg-strength"[^>]*><span>Strength/);
+assert.match(app,/id="menu-bg-strength" type="range" min="0" max="100" step="5"/);
+assert.match(app,/backgroundLayers\(/);
+assert.match(app,/background:\{style:[^}]*pattern:[^}]*strength:/,'hosted save carries background {style,pattern,strength}');
+assert.match(app,/menuBackground:\{backgroundStyle:/,'demo save keeps raw menuBackground keys');
+assert.match(styles,/\.menu-bg-swatch\{[^}]*min-height:44px/);
+
 console.log('Tenant-owned hosted business cosmetics contract passed.');
