@@ -28,21 +28,7 @@ assert.match(componentCss, /@media\(prefers-reduced-transparency:reduce\)\s*\{[^
 assert.match(customerCss, /\.menu-tools \.categories\s*\{[^}]*display:\s*flex[^}]*flex-wrap:\s*nowrap[^}]*overflow-x:\s*auto[^}]*scroll-snap-type:\s*inline proximity/s);
 assert.match(customerCss, /\.menu-tools \.categories\s*\{[^}]*padding-right:\s*max\(18px, calc\(50% - 4\.25rem\)\)/s);
 assert.match(customerCss, /\.menu-tools \.categories a\s*\{[^}]*flex:\s*0 0 clamp\(4\.75rem, 22%, 6\.25rem\)[^}]*scroll-snap-align:\s*center/s);
-assert.match(customerCss, /\.restaurant-profile\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*24px[^}]*color:\s*#fff/s);
-assert.match(customerHtml, /id="restaurant-banner"[^>]*hidden/);
-assert.doesNotMatch(customerHtml, /id="restaurant-banner"[^>]*src=/);
-assert.match(customerCss, /\.restaurant-banner\[hidden\]\s*\{[^}]*display:\s*none/s);
-assert.doesNotMatch(customerCss, /\.restaurant\.no-banner/);
-assert.match(customerJs, /defaultBanner='\/assets\/businesses\/kusina-manila-banner\.webp',bannerUrl=customerBrand\.coverPhotoUrl\|\|defaultBanner/);
-assert.doesNotMatch(customerJs, /['"]no-banner['"]/);
-assert.match(customerHtml, /class="menu-curve" aria-hidden="true"/);
-assert.match(customerCss, /\.restaurant \+ \.notice \+ \.menu\s*\{[^}]*margin-top:\s*0[^}]*border-radius:\s*0/s);
-assert.match(customerCss, /\.menu-curve\s*\{[^}]*position:\s*absolute[^}]*top:\s*-22px[^}]*height:\s*22px[^}]*border-radius:\s*22px 22px 0 0[^}]*background:\s*var\(--surface, #fff\)/s);
-assert.match(customerCss, /\.menu-tools\s*\{[^}]*border-radius:\s*0[^}]*border:\s*0[^}]*background:\s*var\(--surface, #fff\)[^}]*backdrop-filter:\s*none[^}]*box-shadow:\s*none/s);
-assert.match(customerCss, /\.menu-tools \.search-wrap #menu-search\s*\{[^}]*background:\s*var\(--surface-soft, #f4f5f7\)/s);
-assert.match(customerCss, /\.menu-tools \.search-wrap #menu-search\s*\{[^}]*border:\s*0/s);
 assert.match(customerCss, /#menu-search:focus-visible\s*\{[^}]*outline:\s*2px solid var\(--brand-500\)/s);
-assert.match(componentCss, /--component-menu-search-height:2\.1rem/);
 assert.match(componentCss, /--component-menu-category-height:1\.925rem/);
 assert.match(componentCss, /--component-menu-floating-order-height:2\.6rem/);
 assert.match(customerCss, /#menu-search\s*\{[^}]*height:\s*var\(--component-menu-search-height\)[^}]*min-height:\s*0/s);
@@ -62,3 +48,8 @@ assert.match(customerJs, /centerIfClipped=link=>\{[^}]*getBoundingClientRect\(\)
 assert.match(customerJs, /prefers-reduced-motion: reduce/);
 
 console.log('Menu description and compact customer card contract passed.');
+
+assert.match(customerHtml, /data-hero-cover[^>]*hidden/);
+assert.match(customerCss, /\.hero-band\s*\{[^}]*padding:\s*22px 16px 82px[^}]*border-radius:\s*0 0 30px 30px/s);
+assert.match(customerCss, /\.menu-tools\s*\{[^}]*margin-top:\s*-62px/s);
+assert.match(customerCss, /\.menu-tools \.search-wrap #menu-search\s*\{[^}]*height:\s*var\(--component-menu-search-height\)[^}]*border-radius:\s*16px/s);

@@ -16,17 +16,18 @@
   <link rel="stylesheet" href="/theme.css?v=1">
   <link rel="stylesheet" href="/pwa.css?v=1">
   <link rel="stylesheet" href="/ui-components.css?v=19">
-  <link rel="stylesheet" href="/menu/menu.css?v=17">
+  <link rel="stylesheet" href="/menu/menu.css?v=20">
   <link rel="stylesheet" href="/menu/menu-sheets.css?v=1">
   <link rel="stylesheet" href="/menu/menu-table.css?v=1">
   <script src="/global-theme.js"></script>
   <script src="/pwa.js" defer></script>
   <script src="/ui-components.js?v=10" defer></script>
   <script src="/data/qrk-config.local.js"></script>
-  <script type="module" src="/menu/menu.js?v=43"></script>
+  <script type="module" src="/menu/menu.js?v=44"></script>
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
+  <div class="mini-header" aria-hidden="true"><span class="hero-logo" data-hero-logo></span><b data-hero-name></b><span class="table-pill" data-hero-table hidden></span></div>
   <dialog id="table-session-dialog" class="table-entry" aria-labelledby="table-entry-title">
     <section class="table-entry-card" id="table-entry-form-view">
       <div id="table-choice-view"><p class="eyebrow">QRK TABLE</p><h1 id="table-entry-title">Choose your table</h1><p id="table-entry-intro">Select the table where you are seated.</p><div class="table-choice-grid" id="table-choice-grid" role="list"></div><p class="table-choice-help"><span></span> Available <span></span> Open — request to join</p></div>
@@ -48,17 +49,19 @@
   <div class="customer-layout">
   <main id="menu-content">
     <section class="restaurant" aria-labelledby="restaurant-name">
-      <div class="restaurant-visual">
-        <img class="restaurant-banner" id="restaurant-banner" alt="" width="1440" height="480" hidden>
-        <div class="restaurant-profile">
-          <div class="restaurant-mark" aria-hidden="true">K.</div>
-          <div class="restaurant-copy"><h1 id="restaurant-name">Kusina Nanay Mila's</h1><p>Filipino favorites, made with love.</p><span>PHP ₱ <i>•</i> Ermita, Manila</span></div>
+      <div class="hero-band" data-hero-band>
+        <img class="hero-cover" data-hero-cover alt="" width="1440" height="480" hidden>
+        <div class="hero-shade" aria-hidden="true"></div>
+        <div class="motif" aria-hidden="true"></div>
+        <div class="hero-row">
+          <span class="hero-logo" data-hero-logo aria-hidden="true"></span>
+          <div class="hero-copy"><h1 id="restaurant-name" data-hero-name></h1><p class="hero-status" data-hero-status-line><i aria-hidden="true"></i><b data-hero-status>Open</b><span data-hero-meta></span></p></div>
         </div>
+        <div class="hero-tagline"><p data-hero-tagline></p><span class="table-pill" data-hero-table hidden></span></div>
       </div>
     </section>
     <section class="notice hidden" id="store-notice" aria-live="polite"></section>
     <section class="menu" aria-label="Menu">
-      <div class="menu-curve" aria-hidden="true"></div>
       <div class="menu-tools">
         <div class="search-wrap"><label class="sr-only" for="menu-search">Search the menu</label><input id="menu-search" type="search" placeholder="Search dishes and drinks" autocomplete="off"><span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7"></circle><path d="m16.2 16.2 4.3 4.3"></path></svg></span></div>
         <nav class="categories" id="categories" aria-label="Menu categories"></nav>
@@ -88,7 +91,7 @@
   </div>
 
   <div class="customer-history-control">
-    <button class="order-history-control" id="order-history-control" type="button" aria-controls="history-dialog" aria-haspopup="dialog"><span>Order history</span><b id="order-history-count">0</b></button>
+    <button class="order-history-control" id="order-history-control" type="button" aria-controls="history-dialog" aria-haspopup="dialog"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg><span class="sr-only">Order history</span><b id="order-history-count" hidden></b></button>
   </div>
   <div class="customer-session-controls">
     <button class="open-tab-control hidden" id="open-tab-control" type="button" aria-controls="cart-dialog" aria-haspopup="dialog">

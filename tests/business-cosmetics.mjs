@@ -14,7 +14,7 @@ assert.match(app,/Business cosmetics/);
 // Hosted logo URLs are tenant-written text; they must never be parsed as HTML.
 assert.doesNotMatch(menu,/innerHTML=[^;]*logoDataUrl/,'customer logo must not be built with innerHTML');
 assert.doesNotMatch(app,/src="\$\{currentBrand\.logoDataUrl\}"/,'staff logo must be escaped');
-const safeImageUrl=eval(menu.match(/const safeImageUrl=(value=>\{[^\n]*\});\n/)[1]);
+const {safeImageUrl}=await import('../dist/menu/menu-appearance.js');
 assert.equal(safeImageUrl('x" onerror="alert(1)'),'');
 assert.equal(safeImageUrl('javascript:alert(1)'),'');
 assert.equal(safeImageUrl('https://cdn.example/logo.webp'),'https://cdn.example/logo.webp');
