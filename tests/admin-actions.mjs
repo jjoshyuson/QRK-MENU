@@ -40,3 +40,4 @@ assert.ok(sheet(both).includes('Activate this client'));
 assert.ok(group(sheet(salo)).includes('First login pending'));
 assert.ok(!group(sheet(quick)).includes('First login pending')&&!group(sheet(quick)).includes('Password set'));
 assert.ok(group(manageSheetBody(quick,{statuses:new Map([['kusina-admin',{mustChangePassword:false}]])})).includes('Password set'));
+assert.ok(adminRow(both,statuses).includes('>Paused business</span>')&&!clientCard(both,{statuses}).includes('Paused business'),'Client Admins row names a paused business; cards keep "Paused"');
