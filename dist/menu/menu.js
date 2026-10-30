@@ -1,10 +1,10 @@
 import { createQrkDataService } from '../data/qrk-data-service.js';
-import { applyBusinessBrand, getBusinessBrand } from '../data/qrk-brand-service.js';
+import { applyBusinessBrand, getBusinessBrand, normalizeMenuBackground } from '../data/qrk-brand-service.js';
 import { getBusinessExperience } from '../data/qrk-businesses.js';
 import { QrkTableSessionService } from '../data/qrk-table-session-service.js?v=3';
 import { menuOptionGroupsForItem, readMenuState, subscribeMenuState } from '../data/qrk-menu-store.js';
 import { deviceScopedKey } from '../data/qrk-device-service.js';
-import { accentFor, applyHeader, bindScrollChrome, formatPriceParts, headerModel, popElement, safeImageUrl, sectionIndexLabel, showToast, staggerRise } from './menu-appearance.js';
+import { accentFor, applyHeader, applyMenuBackground, bindImageFallbacks, bindScrollChrome, businessInitials, formatPriceParts, headerModel, popElement, safeImageUrl, sectionIndexLabel, showToast, staggerRise } from './menu-appearance.js';
 import { selectServiceExperience } from '../data/qrk-service-presets.js';
 import { resolveQuickOrderState, validQuickFulfillmentModes } from '../data/qrk-quick-order.js';
 
@@ -26,8 +26,9 @@ businessExperience.serviceMode=requestedService;
 const serviceProfile=selectServiceExperience(businessExperience.serviceProfile,requestedService);businessExperience.serviceProfile=serviceProfile;
 const tableSessionService=businessExperience.serviceMode==='table'?new QrkTableSessionService({businessSlug,profile:serviceProfile}):null;
 let customerBrand=getBusinessBrand({businessId:`preview:${businessSlug}`,businessSlug,businessName:businessExperience.businessName});
+let hostedBackground=null;
 if(dataService.mode!=='demo'){
-  try{const cosmetics=await dataService.getBusinessCosmetics();if(cosmetics)customerBrand={...customerBrand,primary:cosmetics.accentColor||customerBrand.primary,logoDataUrl:cosmetics.logoUrl||'',coverPhotoUrl:cosmetics.coverUrl||'',publicMenuBackground:{image:cosmetics.backgroundUrl||'',surfaceOpacity:Number(cosmetics.backgroundOpacity)||.72}}}catch{}
+  try{const cosmetics=await dataService.getBusinessCosmetics();if(cosmetics){hostedBackground={backgroundStyle:cosmetics.backgroundStyle,backgroundPattern:cosmetics.backgroundPattern,backgroundStrength:cosmetics.backgroundStrength,backgroundUrl:cosmetics.backgroundUrl,backgroundOpacity:cosmetics.backgroundOpacity};customerBrand={...customerBrand,primary:cosmetics.accentColor||customerBrand.primary,logoDataUrl:cosmetics.logoUrl||'',coverPhotoUrl:cosmetics.coverUrl||''}}}catch{}
 }
 applyBusinessBrand({...customerBrand,colorMode:'custom'});document.querySelector('meta[name="theme-color"]')?.setAttribute('content',getComputedStyle(document.documentElement).getPropertyValue('--nav').trim()||'#0b0c0e');
 const CART_KEY=deviceScopedKey(businessSlug,`cart:${dataService.mode}`);
@@ -81,13 +82,13 @@ var headerReady=false;
 let selectedReviewTable=businessExperience.serviceMode==='quick'?quickCheckout.table:'';
 function persistCheckoutMethod(){if(businessExperience.serviceMode==='quick')localStorage.setItem(CHECKOUT_METHOD_KEY,JSON.stringify({consumption:selectedConsumption,fulfillment:selectedFulfillment,table:selectedReviewTable}))}
 function setReviewTableNumber(value){selectedReviewTable=String(value||'');$('#table-number').value=selectedReviewTable;persistCheckoutMethod();if(headerReady)refreshHeader()}
-function applyPublicMenuBackground(brand){
-  const menuSurface=$('.menu'),settings=brand?.publicMenuBackground||{},image=safeImageUrl(settings.image),opacity=Number(settings.surfaceOpacity),surfaceOpacity=Math.round((Number.isFinite(opacity)?Math.max(.4,Math.min(.95,opacity)):.72)*100);
-  menuSurface.classList.toggle('has-menu-background',Boolean(image));
-  if(image){menuSurface.style.setProperty('--menu-background-image',`url("${image}")`);menuSurface.style.setProperty('--menu-background-surface-opacity',`${surfaceOpacity}%`)}else{menuSurface.style.removeProperty('--menu-background-image');menuSurface.style.removeProperty('--menu-background-surface-opacity')}
+function applyThemedBackground(brand){
+  const legacy=brand?.publicMenuBackground||{};
+  applyMenuBackground(document.documentElement,normalizeMenuBackground(hostedBackground||{...brand?.menuBackground,backgroundUrl:legacy.image,backgroundOpacity:legacy.surfaceOpacity}));
 }
-applyPublicMenuBackground(customerBrand);
-addEventListener('storage',event=>{if(event.key==='qrk_demo_branding_v1')applyPublicMenuBackground(getBusinessBrand({businessId:`preview:${businessSlug}`,businessSlug,businessName:businessExperience.businessName}))});
+bindImageFallbacks(document,()=>businessInitials(customerBrand.businessName));
+applyThemedBackground(customerBrand);
+addEventListener('storage',event=>{if(event.key==='qrk_demo_branding_v1')applyThemedBackground(getBusinessBrand({businessId:`preview:${businessSlug}`,businessSlug,businessName:businessExperience.businessName}))});
 if(tableSessionService?.previewMode){$('#table-waiting-view .demo-note').textContent='Tabs on this browser share preview table availability and join requests. Other devices are not connected.'}
 let pendingTableSession=null;
 let waitingTimer=null;
@@ -310,7 +311,7 @@ function cartLineHtml(line,index){
   const item=menu.find(entry=>entry.id===line.itemId);
   const photoUrl=safeImageUrl(item?.photoCard||item?.photo);
   const initials=line.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase();
-  const photo=photoUrl?`<img class="cart-item-photo" src="${escapeText(photoUrl)}" alt="" width="52" height="52" decoding="async">`:`<span class="cart-item-photo cart-item-initials" aria-hidden="true">${escapeText(initials)}</span>`;
+  const photo=photoUrl?`<img class="cart-item-photo" src="${escapeText(photoUrl)}" alt="" width="52" height="52" decoding="async" data-initials="${escapeText(initials)}">`:`<span class="cart-item-photo cart-item-initials motif-tile" aria-hidden="true">${escapeText(initials)}</span>`;
   const options=line.selectedOptions.map(option=>escapeText(option.name)).join(' · ')||'Standard';
   const name=escapeText(line.name);
   return`<article class="cart-item" data-index="${index}"><div class="cart-item-delete-cue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13M10 11v5m4-5v5"/></svg></div><div class="cart-item-main"><button class="cart-item-edit" type="button" data-action="edit" data-index="${index}" aria-label="Edit ${name}">${photo}</button><div class="cart-item-head"><div><h3>${name}</h3><p>${options}</p>${line.notes?`<p>Note: ${escapeText(line.notes)}</p>`:''}</div><strong class="cart-price">${priceHtml(line.lineTotalMinor)}</strong></div><div class="cart-item-controls"><div class="stepper"><button type="button" data-action="minus" data-index="${index}" aria-label="Decrease ${name} quantity">−</button><output>${line.quantity}</output><button type="button" data-action="plus" data-index="${index}" aria-label="Increase ${name} quantity">+</button></div><button class="cart-link" type="button" data-action="edit" data-index="${index}" aria-label="Edit ${name} options">Edit</button><button class="cart-item-remove" type="button" data-action="remove" data-index="${index}" aria-label="Remove ${name}">Remove</button></div></div></article>`;

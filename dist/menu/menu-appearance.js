@@ -97,3 +97,66 @@ export function staggerRise(container, { step = 50, max = 520, selector = '.dish
   });
   flip(container, 'rise-a', 'rise-b');
 }
+
+// Themed background. Strength 0-100 maps to pattern opacity .04-.18, photo veil .94-.39, glow .08-.30.
+const round = n => Math.round(n * 1000) / 1000;
+export function backgroundLayers(bg) {
+  const s = Math.max(0, Math.min(100, Number(bg?.strength) || 0)) / 100, style = bg?.style;
+  const isPattern = (style === 'pattern' || style === 'pattern-moving') && bg.pattern;
+  return {
+    photo: style === 'photo' && bg.imageUrl ? bg.imageUrl : null,
+    veilOpacity: style === 'photo' && bg.imageUrl ? round(0.94 - s * 0.55) : null,
+    glow: style === 'glow' ? round(0.08 + s * 0.22) : null,
+    pattern: isPattern ? bg.pattern : null,
+    patternOpacity: isPattern ? round(0.04 + s * 0.14) : null,
+    moving: style === 'pattern-moving' && Boolean(isPattern)
+  };
+}
+
+const MOTIFS = ['filipino', 'cafe', 'ramen', 'pizza', 'dessert'];
+
+// Page-level: one fixed layer behind the content. Tiles, the header band and image fallbacks reuse `.motif`/`.m-<pattern>` via --motif-url on root.
+export function applyMenuBackground(root, bg) {
+  const layers = backgroundLayers(bg), doc = root.ownerDocument || root;
+  root.classList.remove(...MOTIFS.map(name => `m-${name}`));
+  root.classList.add(`m-${layers.pattern || bg?.pattern || 'filipino'}`);
+  let layer = doc.querySelector('.menu-bg');
+  if (!layer) { layer = doc.createElement('div'); layer.className = 'menu-bg'; layer.setAttribute('aria-hidden', 'true'); doc.body.prepend(layer); }
+  const photo = layers.photo ? safeImageUrl(layers.photo) : '';
+  layer.classList.toggle('has-photo', Boolean(photo));
+  layer.classList.toggle('has-pattern', Boolean(layers.pattern));
+  layer.classList.toggle('is-moving', layers.moving);
+  layer.classList.toggle('has-glow', layers.glow !== null);
+  const set = (name, value) => value === null || value === '' ? layer.style.removeProperty(name) : layer.style.setProperty(name, value);
+  set('--bg-photo', photo ? `url(${JSON.stringify(photo)})` : null);
+  set('--bg-veil', layers.veilOpacity);
+  set('--bg-glow', layers.glow);
+  set('--bg-pattern-opacity', layers.patternOpacity);
+}
+
+// Failed images keep their box and show the pattern tile (or accent band / initials) instead.
+export function bindImageFallbacks(root, getInitials) {
+  const doc = root.ownerDocument || root;
+  root.addEventListener('error', event => {
+    const img = event.target;
+    if (img?.tagName !== 'IMG' || img.dataset.failed) return;
+    if (img.matches('[data-hero-cover]')) { img.hidden = true; img.removeAttribute('src'); img.closest('[data-hero-band]')?.classList.remove('has-cover'); return; }
+    const logo = img.closest('[data-hero-logo]');
+    if (logo) { logo.classList.remove('has-logo'); logo.textContent = getInitials(); return; }
+    if (img.classList.contains('cart-item-photo')) {
+      const tile = doc.createElement('span');
+      tile.className = 'cart-item-photo cart-item-initials motif-tile';
+      tile.setAttribute('aria-hidden', 'true');
+      tile.textContent = img.dataset.initials || '';
+      img.replaceWith(tile);
+      return;
+    }
+    img.dataset.failed = '1';
+    img.parentElement?.classList.add('motif-tile');
+  }, true);
+  // A reused <img> (item sheet) that loads again drops the fallback.
+  root.addEventListener('load', event => {
+    const img = event.target;
+    if (img?.tagName === 'IMG' && img.dataset.failed) { delete img.dataset.failed; img.parentElement?.classList.remove('motif-tile'); }
+  }, true);
+}

@@ -287,7 +287,7 @@ dialog #add-item {
 
 /* Item sheet */
 .item-sheet .item-hero > #item-photo { height: 236px; }
-.item-sheet .item-hero:has(#item-photo[hidden]) { height: 150px; min-height: 0; background: var(--accent-soft); }
+.item-sheet .item-hero:has(#item-photo[hidden]) { height: 150px; min-height: 0; }
 .item-sheet .item-overview h2 { font-size: 22px; letter-spacing: -.01em; }
 .item-sheet .item-overview > strong { color: var(--link); }
 .item-sheet .option-group { margin: 14px 0 0 !important; padding: 12px !important; border: 1px solid var(--line) !important; border-radius: 16px !important; background: var(--surface); }

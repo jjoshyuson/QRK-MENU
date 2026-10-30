@@ -22,8 +22,8 @@ assert.doesNotMatch(styles,/background-attachment:\s*scroll,\s*fixed/);
 assert.doesNotMatch(menu,/function updateMenuChrome\(/);
 assert.doesNotMatch(menu,/restaurant-parallax-y|menuChromeFrame|requestAnimationFrame\([^)]*updateMenuChrome/);
 assert.doesNotMatch(styles,/restaurant-parallax-y/);
-assert.match(styles,/#menu-sections\s*\{[^}]*position:\s*relative[^}]*z-index:\s*1[^}]*isolation:\s*isolate[^}]*background:\s*var\(--surface, #fff\)/s);
-assert.match(styles,/\.menu\.has-menu-background #menu-sections\s*\{[^}]*background-color:\s*var\(--surface, #fff\)[^}]*var\(--menu-background-image\)/s);
+assert.match(styles,/#menu-sections\s*\{[^}]*position:\s*relative[^}]*z-index:\s*1[^}]*isolation:\s*isolate\s*;?\s*\}/s);
+assert.match(styles,/\.menu-bg\s*\{[^}]*position:\s*fixed[^}]*z-index:\s*-1/s); // themed background sits behind the opaque cards
 assert.match(imageService,/MAX_EDGE=960/);
 assert.match(imageService,/TARGET_BYTES=160\*1024/);
 assert.match(imageService,/CARD_EDGE=480/);
