@@ -363,6 +363,10 @@ footer {
   --muted: #5B5F66;
   --accent-soft: color-mix(in srgb, var(--accent) 11%, white);
   --accent-text: color-mix(in srgb, var(--accent) 78%, black);
+  /* Overlay alphas: text rows (top to 90px above the edge) stay >= .55 so white text holds 4.5:1 on any photo. */
+  --hero-fade-top: .6;
+  --hero-fade-text: .56;
+  --hero-fade-end: .3;
   --accent-on-white: color-mix(in srgb, var(--accent) 78%, #000000);
   --frost: rgba(255, 255, 255, .82);
   --shadow-sm: 0 1px 2px rgba(20, 20, 20, .06), 0 1px 3px rgba(20, 20, 20, .05);
@@ -391,7 +395,7 @@ body:has(#menu-content) main { background: transparent; box-shadow: none; }
 .hero-band { position: relative; overflow: hidden; padding: 22px 16px 82px; border-radius: 0 0 30px 30px; background: var(--accent); color: #fff; isolation: isolate; }
 .hero-cover { position: absolute; inset: 0; z-index: -3; width: 100%; height: 100%; object-fit: cover; }
 .hero-cover[hidden] { display: none; }
-.hero-shade { position: absolute; inset: 0; z-index: -2; background: linear-gradient(180deg, rgba(0, 0, 0, .55), rgba(0, 0, 0, .35) 45%, rgba(0, 0, 0, .5)); }
+.hero-shade { position: absolute; inset: 0; z-index: -2; background: linear-gradient(180deg, rgba(0, 0, 0, var(--hero-fade-top)), rgba(0, 0, 0, var(--hero-fade-text)) calc(100% - 90px), rgba(0, 0, 0, var(--hero-fade-end))); }
 .hero-band:not(.has-cover) .hero-shade { display: none; }
 .motif { position: absolute; inset: 0; z-index: -1; }
 .hero-row { display: flex; align-items: center; gap: 12px; padding-right: 56px; }

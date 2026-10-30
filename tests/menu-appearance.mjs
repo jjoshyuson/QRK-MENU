@@ -49,3 +49,14 @@ scroller.scrollTop = 100; listeners.forEach(f => f()); assert.equal(flags.has('d
 scroller.scrollTop = 300; listeners.forEach(f => f()); unbind();
 assert.equal(listeners.length, 0); assert.equal(flags.has('data-scrolled'), false);
 console.log('menu appearance DOM tests passed');
+
+// Header fade: white text must hold 4.5:1 over a pure white photo pixel.
+const { readFile } = await import('node:fs/promises');
+const css = await readFile(new URL('../dist/menu/menu.css', import.meta.url), 'utf8');
+const stop = name => Number(css.match(new RegExp(`--${name}:\\s*([\\d.]+)`))[1]);
+const textAlpha = Math.min(stop('hero-fade-top'), stop('hero-fade-text'));
+assert.ok(textAlpha >= .55, `text-row overlay alpha ${textAlpha}`);
+assert.match(css, /\.hero-shade\s*\{[^}]*var\(--hero-fade-top\)[^}]*var\(--hero-fade-text\)[^}]*var\(--hero-fade-end\)/s);
+const grey = '#' + Math.round(255 * (1 - textAlpha)).toString(16).padStart(2, '0').repeat(3);
+assert.ok(contrast('#FFFFFF', grey) >= 4.5, `contrast ${contrast('#FFFFFF', grey)}`);
+console.log('menu appearance fade tests passed');
