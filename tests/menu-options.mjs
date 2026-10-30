@@ -14,3 +14,21 @@ assert.deepEqual(menuOptionGroupsForItem(state,{id:'42',category:'Drinks'}).map(
 assert.deepEqual(menuOptionGroupsForItem(state,{id:7,category:'Mains'}).map(group=>group.id),['business','mains','other']);
 assert.deepEqual(menuOptionGroupsForItem({},{}),[]);
 console.log('Menu option inheritance passed.');
+
+// Item sheet: required-group validation state, restyle and pop motion.
+import { readFile } from 'node:fs/promises';
+const [menuJs, sheetsCss, menuCss] = await Promise.all(['menu.js', 'menu-sheets.css', 'menu.css'].map(f => readFile(new URL(`../dist/menu/${f}`, import.meta.url), 'utf8')));
+assert.match(menuJs, /Choose one to continue\./);
+assert.match(menuJs, /dataset\.invalid=|setAttribute\('data-invalid'/);
+assert.doesNotMatch(menuJs, /setCustomValidity\('Choose an option\.'\)/);
+assert.match(menuJs, /'Update':'Add to order'/);
+assert.match(sheetsCss, /\.item-sheet \.option-group\[data-invalid\][^{]*\{[^}]*var\(--danger\)/);
+assert.match(sheetsCss, /\.item-sheet \.item-hero > #item-photo\s*\{[^}]*height:\s*236px/);
+assert.match(sheetsCss, /\.item-hero:has\(#item-photo\[hidden\]\)\s*\{[^}]*height:\s*150px/);
+assert.match(sheetsCss, /animation:\s*check-pop 220ms/);
+assert.match(sheetsCss, /\.item-sheet \{ --danger: #B42318/);
+assert.match(sheetsCss, /data-theme="dark"\] \.item-sheet \{ --danger: #F97066/);
+assert.match(menuCss, /\.sheet\[open\]>\.sheet-card\{[^}]*menu-sheet-in 320ms/);
+assert.match(sheetsCss, /dialog\.sheet\[open\]::backdrop \{ animation: sheet-backdrop-in 220ms/);
+assert.match(sheetsCss, /prefers-reduced-motion: reduce\) \{\s*dialog\.sheet\[open\]::backdrop \{ animation: none/);
+console.log('Item sheet validation checks passed.');

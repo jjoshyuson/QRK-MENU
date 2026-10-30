@@ -17,6 +17,10 @@ function defaultState(slug){
   return{menuName:'Main menu',categories:[...new Set(items.map(item=>item.category))],items,optionGroups:slug==='kusina-manila'?kusinaOptionGroups.map(group=>({...group,choices:group.choices.map(choice=>({...choice}))})):[]};
 }
 
+export const MENU_ITEM_TAGS=['spicy','sharing','slow_cooked','vegetarian'];
+const normalizeItem=item=>({...item,featured:item?.featured===true,tags:[...new Set(Array.isArray(item?.tags)?item.tags:[])].filter(tag=>MENU_ITEM_TAGS.includes(tag))});
+const normalizeItems=state=>({...state,items:state.items.map(normalizeItem)});
+
 function validState(value){return value&&typeof value.menuName==='string'&&Array.isArray(value.categories)&&Array.isArray(value.items)}
 
 export function menuOptionGroupsForItem(state,item){
@@ -25,12 +29,12 @@ export function menuOptionGroupsForItem(state,item){
 }
 
 export function readMenuState(slug){
-  try{const saved=JSON.parse(localStorage.getItem(key(slug))||'null');if(validState(saved)){const starter=slug==='kusina-manila'?kusinaOptionGroups:[];return{...saved,optionGroups:Array.isArray(saved.optionGroups)?saved.optionGroups:starter.map(group=>({...group,choices:group.choices.map(choice=>({...choice}))}))}}}catch{}
-  return defaultState(slug);
+  try{const saved=JSON.parse(localStorage.getItem(key(slug))||'null');if(validState(saved)){const starter=slug==='kusina-manila'?kusinaOptionGroups:[];return normalizeItems({...saved,optionGroups:Array.isArray(saved.optionGroups)?saved.optionGroups:starter.map(group=>({...group,choices:group.choices.map(choice=>({...choice}))}))})}}catch{}
+  return normalizeItems(defaultState(slug));
 }
 
 export function saveMenuState(slug,state){
-  localStorage.setItem(key(slug),JSON.stringify(state));
+  localStorage.setItem(key(slug),JSON.stringify(normalizeItems(state)));
   window.dispatchEvent(new CustomEvent(EVENT,{detail:{slug}}));
 }
 

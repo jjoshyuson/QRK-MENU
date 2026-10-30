@@ -88,7 +88,7 @@ class SupabaseDataService{
     return`${this.config.supabaseUrl}/storage/v1/object/public/business-cosmetics/${path}?v=${Date.now()}`;
   }
   async saveBusinessCosmetics(cosmetics){
-    const [profile]=await this.request(`/rest/v1/business_profiles?business_id=eq.${encodeURIComponent(this.config.businessId)}&select=settings`,{authenticated:true,method:'GET'}),logoUrl=await this.uploadBusinessCosmetic('logo',cosmetics.logoUrl),backgroundUrl=await this.uploadBusinessCosmetic('background',cosmetics.backgroundUrl),coverUrl=await this.uploadBusinessCosmetic('cover',cosmetics.coverUrl),menuCosmetics={logoUrl,backgroundUrl,coverUrl,backgroundOpacity:cosmetics.backgroundOpacity};
+    const [profile]=await this.request(`/rest/v1/business_profiles?business_id=eq.${encodeURIComponent(this.config.businessId)}&select=settings`,{authenticated:true,method:'GET'}),logoUrl=await this.uploadBusinessCosmetic('logo',cosmetics.logoUrl),backgroundUrl=await this.uploadBusinessCosmetic('background',cosmetics.backgroundUrl),coverUrl=await this.uploadBusinessCosmetic('cover',cosmetics.coverUrl),previous=profile?.settings?.menuCosmetics||{},menuCosmetics={...previous,logoUrl,backgroundUrl,coverUrl,backgroundOpacity:cosmetics.backgroundOpacity,background:cosmetics.background||previous.background};
     await this.request(`/rest/v1/business_profiles?business_id=eq.${encodeURIComponent(this.config.businessId)}`,{authenticated:true,method:'PATCH',body:{accent_color:cosmetics.accentColor,settings:{...(profile?.settings||{}),menuCosmetics}}});
     return{...cosmetics,logoUrl,backgroundUrl,coverUrl};
   }

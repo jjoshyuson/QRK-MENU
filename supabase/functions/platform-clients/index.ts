@@ -2,7 +2,10 @@ import {createClient} from 'npm:@supabase/supabase-js@2';
 
 const cors={'access-control-allow-origin':'*','access-control-allow-headers':'authorization,apikey,content-type','access-control-allow-methods':'POST,OPTIONS'};
 const json=(status:number,value:unknown)=>new Response(JSON.stringify(value),{status,headers:{...cors,'content-type':'application/json'}});
-const password=()=>{const sets=['ABCDEFGHJKLMNPQRSTUVWXYZ','abcdefghijkmnopqrstuvwxyz','23456789','!@#$%'];const bytes=crypto.getRandomValues(new Uint32Array(20));return [...sets.map((set,i)=>set[bytes[i]%set.length]),...Array.from({length:10},(_,i)=>sets.join('')[bytes[i+4]%sets.join('').length])].sort(()=>Math.random()-.5).join('')};
+const random=(limit:number)=>crypto.getRandomValues(new Uint32Array(1))[0]%limit;
+const password=()=>{const sets=['ABCDEFGHJKLMNPQRSTUVWXYZ','abcdefghijkmnopqrstuvwxyz','23456789','!@#$%'],all=sets.join(''),chars=[...sets.map(set=>set[random(set.length)]),...Array.from({length:10},()=>all[random(all.length)])];for(let i=chars.length-1;i>0;i--){const j=random(i+1);[chars[i],chars[j]]=[chars[j],chars[i]]}return chars.join('')};
+// Matches the user_profiles.username check so bad input fails before an Auth identity exists.
+const validUsername=(value:string)=>/^[a-z0-9][a-z0-9._-]{2,39}$/.test(value);
 const segment=(value:unknown)=>String(value||'').toLowerCase().replace(/[^a-z0-9_-]+/g,'');
 
 Deno.serve(async req=>{
@@ -28,11 +31,13 @@ Deno.serve(async req=>{
     if(action==='reset'){
       const {data:client,error}=await admin.from('platform_clients').select('initial_admin_user_id').eq('business_id',businessId).single();if(error)throw error;
       const temporaryPassword=password(),{error:updateError}=await admin.auth.admin.updateUserById(client.initial_admin_user_id,{password:temporaryPassword,user_metadata:{must_change_password:true}});if(updateError)throw updateError;
+      const {error:issueError}=await admin.rpc('issue_temporary_password',{p_user_id:client.initial_admin_user_id});if(issueError)throw issueError;
       const {data:profile}=await admin.from('user_profiles').select('username').eq('user_id',client.initial_admin_user_id).single();
       return json(200,{username:profile?.username,temporaryPassword});
     }
-    const record=input.client||{},slug=String(record.slug||'').toLowerCase().replace(/[^a-z0-9-]+/g,''),prefix=segment(record.prefix),username=String(record.admin?.username||'').toLowerCase();
+    const record=input.client||{},slug=String(record.slug||'').toLowerCase().replace(/[^a-z0-9-]+/g,''),prefix=segment(record.prefix),username=String(record.admin?.username||'').trim().toLowerCase();
     if(!record.businessName||!slug||!prefix||!username||!record.admin?.email||!record.admin?.name)return json(400,{error:'Complete client and administrator details'});
+    if(!validUsername(username))return json(400,{error:'Usernames are 3-40 characters: lowercase letters, numbers, dots, dashes or underscores, starting with a letter or number.'});
     if(action==='update'){
       const {error:b}=await admin.from('businesses').update({name:record.businessName,public_slug:slug,updated_at:new Date().toISOString()}).eq('id',businessId);if(b)throw b;
       const {error:p}=await admin.from('business_profiles').update({address:record.serviceProfile?.locationName||'',settings:record.serviceProfile?.settings||{}}).eq('business_id',businessId);if(p)throw p;
@@ -52,6 +57,7 @@ Deno.serve(async req=>{
       admin.from('business_service_configs').upsert({business_id:id,foundation:serviceMode,gates:record.serviceProfile||{}},{onConflict:'business_id'}),
       admin.from('user_profiles').insert({user_id:uid,username,display_name:record.admin.name}),
       admin.from('business_members').insert({business_id:id,user_id:uid,role:'admin',can_manage_orders:true,can_manage_menu:true,can_manage_staff:true,can_view_orders:true,can_accept_orders:true,can_prepare_orders:true,can_mark_ready:true,can_complete_orders:true,can_cancel_orders:true,can_change_availability:true,can_edit_menu:true,can_view_order_history:true,can_view_sales:true}),
+      admin.rpc('issue_temporary_password',{p_user_id:uid}),
       admin.from('platform_clients').insert({business_id:id,username_prefix:prefix,location_name:record.serviceProfile?.locationName||'',initial_admin_user_id:uid,initial_admin_email:record.admin.email,service_profile:record.serviceProfile||{},provider:record.provider||'qrk',provider_config:record.providerConfig||{},created_by:user.id})
     ];
     for(const operation of operations){const {error}=await operation;if(error){if(createdBusiness)await admin.from('businesses').delete().eq('id',id);await admin.auth.admin.deleteUser(uid);throw error}}

@@ -46,4 +46,19 @@ assert.match(presets, /id:'kusina-manila'.*preset:'quick'.*settings:\{paymentTim
 assert.match(presets, /quick:.*fulfillmentModes:\['table','pickup'\]/);
 assert.match(businesses, /'kusina-manila':.*serviceMode:'quick'.*preset:'quick'.*settings:\{paymentTiming:'upfront'\}/);
 
+// Task 6: restyled cart, fulfillment and payment sheets.
+const sheetsCss = await readFile(new URL('../dist/menu/menu-sheets.css', import.meta.url), 'utf8');
+assert.match(menu, /class="cart-item-photo"[^>]*width="52" height="52"/);
+assert.match(menu, /safeImageUrl\(item\?\.photoCard\|\|item\?\.photo\)/);
+assert.match(menu, /Note: \$\{escapeText\(line\.notes\)\}/);
+assert.match(menu, /line\.selectedOptions\.map\(option=>escapeText\(option\.name\)\)/);
+assert.match(menu, /class="cart-item-remove"[^>]*data-action="remove"[^>]*>Remove</);
+assert.match(menu, /priceHtml\(line\.lineTotalMinor\)/);
+assert.match(html, /id="submit-label">Place order<\/span><strong id="checkout-subtotal"/);
+assert.match(html, /class="cart-total-row"[^>]*><span>Total<\/span><strong id="cart-total-amount"/);
+assert.match(sheetsCss, /\.cart-total-row\s*\{[^}]*border-top:\s*1px dashed/);
+assert.match(sheetsCss, /\.cart-price\s*\{[^}]*tabular-nums/);
+assert.match(sheetsCss, /\.payment-card:disabled|\.payment-card\.disabled-choice/);
+assert.match(sheetsCss, /data-theme="dark"\] \.item-sheet \.focused-choice-list label:has\(input:checked\)\s*\{[^}]*color:\s*var\(--ink\)/);
+
 console.log('Payment-first preview contract passed.');

@@ -5,7 +5,7 @@ const [html,menu,staff,cartStyles]=await Promise.all([
   readFile(new URL('../dist/menu/index.html',import.meta.url),'utf8'),
   readFile(new URL('../dist/menu/menu.js',import.meta.url),'utf8'),
   readFile(new URL('../dist/app.js',import.meta.url),'utf8'),
-  readFile(new URL('../dist/menu/cart-dock.css',import.meta.url),'utf8')
+  readFile(new URL('../dist/menu/menu-sheets.css',import.meta.url),'utf8')
 ]);
 
 assert.match(html,/id="entry-save-name"[^>]*type="checkbox" checked/);
@@ -28,9 +28,9 @@ assert.doesNotMatch(html,/id="choose-fulfillment"/);
 assert.match(html,/id="checkout-details"/);
 assert.match(html,/id="fulfillment-dialog"/);
 assert.doesNotMatch(html,/id="checkout-data-note"/);
-assert.match(cartStyles,/#cart-dialog \.cart-item-main \{[^}]*grid-template-columns: 56px minmax\(0, 1fr\);/);
+assert.match(cartStyles,/#cart-dialog \.cart-item-main \{[^}]*grid-template-columns: 52px minmax\(0, 1fr\);/);
 assert.match(cartStyles,/#cart-dialog \.cart-item-delete-cue \{[^}]*background: #ef4444;/);
-assert.match(cartStyles,/#cart-dialog #submit-order \{ min-height: 56px;[^}]*border-radius: 999px;/);
+assert.match(cartStyles,/#cart-dialog #submit-order \{[^}]*min-height: 56px;[^}]*border-radius: 999px;/);
 assert.match(staff,/tableOrders=orders\.filter\(order=>order\.fulfillmentType==='table'/);
 assert.match(staff,/for\(const order of tableOrders\)\{await completeOrder\(order\)/);
 assert.match(staff,/await tableSessionService\.clean\(sessionId\)/);
@@ -38,4 +38,13 @@ assert.ok(staff.indexOf('for(const order of tableOrders){await completeOrder(ord
 assert.match(staff,/return`\$\{location\}\$\{order\.customerLabel/);
 assert.match(staff,/dateStyle:'medium',timeStyle:'short'/);
 
+assert.ok(html.indexOf('id="open-tab-control"')>html.indexOf('id="categories"'));
+assert.ok(html.indexOf('id="open-tab-control"')<html.indexOf('id="menu-sections"'));
+assert.match(html,/<\/nav>\s*<\/div>\s*<button class="open-tab-control hidden"/);
+assert.match(html,/<button class="mini-tab hidden" id="mini-tab" type="button" aria-controls="open-tab-dialog"/);
+assert.ok(html.indexOf('id="mini-tab"')<html.indexOf('id="open-tab-dialog"')&&html.indexOf('class="mini-header"')<html.indexOf('id="mini-tab"'));
+assert.match(menu,/mini\.classList\.toggle\('hidden',!totals\.count\)/);
+assert.match(menu,/mini\.setAttribute\('aria-label',`Open tab, /);
+assert.match(menu,/\$\('#mini-tab'\)\.addEventListener\('click',openTab\)/);
+assert.match(html,/class="status-step is-current" aria-current="step"/);
 console.log('Open Tab cart, remembered-name, and table-history contract passed.');

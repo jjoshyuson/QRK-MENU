@@ -1,5 +1,31 @@
 # Build status
 
+## October 30, 2026 — Customer menu redesign verification
+
+| Area | Implemented / evidence |
+| --- | --- |
+| Scope | Customer route `/menu/` (Quick `?business=kusina-manila`, Table `?business=salamat&table=12`) plus two owner features: Business profile > Business cosmetics themed-background editor, and Menu Studio Featured switch and dish tags. Local candidate on `codex/qrk-full-redesign`; no push, deployment or hosted change. |
+| Automated | `npm run check` passes. `tests/photo-races.mjs` fails (`FileReader` is undefined when it evaluates the owner `dist/app.js` slice). It is not part of `npm run check`. Earlier entries recorded it passing; `git bisect` shows it first failed at `059ce6a` "perf(menu): optimize images and scrolling" (Sept 14, before this plan; the owner photo handlers moved to `qrk-image-service.js`, so the test's `FileReader` stub no longer matches). It also fails at `fcbd58a`. Not caused by the menu redesign, sign-in, login or admin work. |
+| Browser (local preview) | 390 and 768px, light and dark, Quick and Table: add item with required options, edit from cart, remove, place order, payment sheet (cashless unavailable), confirmation with order number, history, Table entry and staff-acceptance wait, Open Tab, store closed, sold out (disabled), hidden (omitted), empty search, no-photo dish, Featured row and tags, keyboard Tab order, dialog keyboard containment (Tab cycles inside the dialog; focus passes through BODY like a native modal), Escape and backdrop close, focus restore, reduced motion. No console errors or horizontal overflow. Owner editors saved background style, pattern and strength and Featured/tags, and the menu rendered them. Screenshots: `review-assets/menu-redesign-{before,after}-*.png`. |
+| Not verified | Hosted Supabase project (nothing contacted). Physical devices and real screen readers. Numeric contrast ratios and the themed-background text-backing ratio were not measured (visual inspection only). `supabase/tests/004_menu_cosmetics_and_tags.sql` (pgTAP) has never run: no local Supabase stack was running (`supabase status` could not reach the `supabase_db_qrk-menu-local` container). |
+| Open follow-ups | Hosted migrations `202610300002` and `202610300003` are not applied. Menu Studio featured/tags are not persisted to hosted (browser-local store only). `tabStatus` labels received orders "Accepted" in history and tab pills (pre-existing). Accessibility polish: option error is not linked via `aria-describedby`; a Featured card's accessible name reads price first; the swatch auto-switch is not announced. The owner Business cosmetics preview still labels its pill "Popular" while the menu says "Featured". `tests/photo-races.mjs` needs updating to the `qrk-image-service.js` photo flow (stale since `059ce6a`). |
+
+## October 13, 2026 — Local typography, card foundation and security fixes
+
+| Area | Implemented / evidence |
+| --- | --- |
+| Typography | Retained Manrope; added shared size, weight and spacing tokens; replaced stale Inter fallbacks in owner/Admin headings and numerals. Marketing body text also uses Manrope. |
+| Cards | Operational metrics use quiet 1px borders, 12px corners and shared padding. Removed repeated dish-card gloss, blur and shadows; kept customer tiles rim-free and Settings grouped. Updated registry and component specimens. |
+| Dashboard | Menu health derives from visible items and availability; the 50-item fixture renders `50 / 50`. |
+| Request security | Shared normalized routing and Host/Origin/Fetch-Metadata checks protect development endpoints, including encoded paths. JSON is bounded at 100,000 bytes and requires an object; oversized bodies return 413. |
+| RNL integration | Order status requires the corresponding stored tracking token before an upstream call. Quantities must be integers 1–20; totals must be nonnegative safe integers; fulfillment/table inputs are validated. |
+| Regression evidence | `npm run check`, mocked RNL integration and preview-auth tests pass. Security regressions were observed failing before fixes. Independent review found an encoded-path bypass and two CSS cascade gaps; all were fixed and verified. |
+| Browser evidence | Owner/customer/Admin layouts checked at 390, 768 and 1280px without page overflow; light/dark surfaces inspected. Item options plus quantity produced the expected PHP 410 total; nested cancel restored cart/focus, and keyboard removal emptied the cart. Search has a visible 2px keyboard focus ring. Marketing pages checked at phone/desktop widths. |
+| Security audit limits | Lockfile audit reports zero advisories. Tracked-file scan found no matching Supabase secret-key patterns. Supabase security advisor returned no lints for `qrk-menu-development`, which is inactive; live authorization, real payments/POS and physical devices were not verified. |
+| Delivery | Local candidate on `codex/qrk-full-redesign`; preview port 4187. No push, deployment, hosted migration, account reset or credential change. This is the typography/card foundation for the broader redesign. |
+
+Local preview shortcuts and table-session operations remain development fixtures, not production authorization. Same-origin protection does not authenticate arbitrary non-browser API clients.
+
 ## September 28, 2026 — Public checkout RPC ambiguity repair
 
 - Removed the overloaded public `create_device_order` contract that caused live checkout to fail with PostgreSQL `42725` before an order could be written.

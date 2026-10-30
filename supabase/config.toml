@@ -35,6 +35,9 @@ site_url = "http://127.0.0.1:4173"
 additional_redirect_urls = ["http://localhost:4173"]
 jwt_expiry = 3600
 enable_refresh_token_rotation = true
+# Mirror these in the hosted project: Authentication > Policies.
+minimum_password_length = 10
+password_requirements = "lower_upper_letters_digits"
 
 [auth.email]
 enable_signup = true

@@ -1,6 +1,7 @@
-import {createHash,randomUUID} from 'node:crypto';
+import {createHash,randomUUID,timingSafeEqual} from 'node:crypto';
 import {mkdir,readFile,rename,stat,writeFile} from 'node:fs/promises';
 import path from 'node:path';
+import {RequestError} from './request-security.mjs';
 
 const money=value=>Math.round(Number(value||0)*100)/100;
 const fingerprint=value=>{const stable=value&&typeof value==='object'&&!Array.isArray(value)?Object.fromEntries(Object.entries(value).filter(([key])=>key!=='generatedAt')):value;return createHash('sha256').update(JSON.stringify(stable)).digest('hex')};
@@ -43,12 +44,22 @@ export function createRnlIntegration({runtimeDir,baseUrl,apiKey,publishableKey,f
   async function previewCatalog(){const next=normalizeRnlCatalog(await rpc('qrk_read_catalog',{p_api_key:apiKey})),current=await readJson(catalogFile,null);return{catalog:next,diff:diffRnlCatalog(current,next),assets:await planAssets(next)}}
   async function applyCatalog(expectedFingerprint){const preview=await previewCatalog(),actual=fingerprint(preview.catalog);if(expectedFingerprint&&expectedFingerprint!==actual)throw new Error('R&L catalog changed after preview; preview again before applying');const assets=await copyAssets(preview.catalog);await saveJson(catalogFile,preview.catalog);return{applied:true,fingerprint:actual,...preview.diff,assets,generatedAt:preview.catalog.generatedAt}}
   async function createOrder(input){
+    if(!input||!Array.isArray(input.items)||!input.items.length)throw new Error('At least one item is required');
+    if(input.items.some(line=>!line||!Number.isInteger(line.quantity)||line.quantity<1||line.quantity>20))throw new Error('Item quantity must be an integer from 1 to 20');
+    if(!Number.isSafeInteger(input.subtotalMinor)||input.subtotalMinor<0)throw new Error('Order total must be a nonnegative integer');
+    if(!['pickup','table'].includes(input.fulfillmentType))throw new Error('Invalid fulfillment type');
+    if(input.fulfillmentType==='table'&&!/^[1-9]\d{0,2}$/.test(String(input.tableNumber||'')))throw new Error('A valid table number is required');
     if(!input?.idempotencyKey||!Array.isArray(input.items)||!input.items.length)throw new Error('A valid idempotency key and at least one item are required');
     const comparable={...input};delete comparable.createdAt;delete comparable.updatedAt;
     const state=await readJson(ordersFile,{orders:{}}),prior=state.orders[input.idempotencyKey];if(prior){if(prior.inputHash!==fingerprint(comparable))throw new Error('This order key was already used with different order details');if(prior.qrkOrder)return{...prior.qrkOrder,idempotentReplay:true};const ack=await rpc('qrk_ingest_order',{p_api_key:apiKey,p_order:prior.payload}),now=new Date().toISOString(),qrkOrder={id:prior.qrkId,orderNumber:prior.payload.sourceOrderId,trackingToken:prior.trackingToken,verificationToken:'RNLQRK',status:'received',subtotalMinor:Math.round(prior.payload.totals.total*100),createdAt:prior.payload.createdAt,updatedAt:now,rnlOrderId:ack.rnlOrderId,rnlDeviceOrderId:ack.rnlDeviceOrderId,rnlWorkflowStatus:ack.workflowStatus,events:[{status:'received',at:now,label:'Sent to R&L POS'}]};prior.qrkOrder=qrkOrder;await saveJson(ordersFile,state);return{...qrkOrder,idempotentReplay:ack.idempotentReplay===true}}
     const menu=await catalog(),itemsById=new Map(menu.menu.categories.flatMap(category=>category.items.map(item=>[String(item.id),item]))),resolved=input.items.map(line=>{const item=itemsById.get(String(line.itemId));if(!item?.available)throw new Error(`${line.name||'An item'} is unavailable in the imported R&L catalog`);return{productId:item.externalId,quantity:Number(line.quantity),isHalfOrder:false,serviceMode:input.fulfillmentType==='pickup'?'TAKE OUT':'DINE IN',price:item.priceMinor/100}}),subtotal=money(resolved.reduce((sum,item)=>sum+item.price*item.quantity,0));if(Math.round(Number(input.subtotalMinor))!==Math.round(subtotal*100))throw new Error('Order total no longer matches the imported R&L catalog');
     const orderNumber=`RNL-${String(Object.keys(state.orders).length+1).padStart(4,'0')}`,createdAt=input.createdAt||new Date().toISOString(),payload={version:1,idempotencyKey:input.idempotencyKey,sourceOrderId:orderNumber,createdAt,customer:{name:input.customerLabel||'Guest',note:input.notes||''},fulfillment:{serviceMode:input.fulfillmentType==='pickup'?'TAKE OUT':'DINE IN',tableNumber:input.tableNumber||null},payment:{method:input.paymentMethod||'counter',status:'UNPAID'},totals:{subtotal,tax:0,total:subtotal},items:resolved.map(({price,...item})=>item)},qrkId=randomUUID(),trackingToken=randomUUID();state.orders[input.idempotencyKey]={inputHash:fingerprint(comparable),payload,qrkId,trackingToken};await saveJson(ordersFile,state);const ack=await rpc('qrk_ingest_order',{p_api_key:apiKey,p_order:payload}),now=new Date().toISOString(),qrkOrder={id:qrkId,orderNumber,trackingToken,verificationToken:'RNLQRK',status:'received',subtotalMinor:Math.round(subtotal*100),createdAt,updatedAt:now,rnlOrderId:ack.rnlOrderId,rnlDeviceOrderId:ack.rnlDeviceOrderId,rnlWorkflowStatus:ack.workflowStatus,events:[{status:'received',at:now,label:'Sent to R&L POS'}]};state.orders[input.idempotencyKey].qrkOrder=qrkOrder;await saveJson(ordersFile,state);return{...qrkOrder,idempotentReplay:ack.idempotentReplay===true}
   }
-  async function status(rnlOrderId){return rpc('qrk_read_order_status',{p_api_key:apiKey,p_rnl_order_id:rnlOrderId})}
+  async function status(rnlOrderId,trackingToken){
+    const state=await readJson(ordersFile,{orders:{}}),order=Object.values(state.orders).find(record=>record.qrkOrder?.rnlOrderId===rnlOrderId)?.qrkOrder;
+    const expected=Buffer.from(String(order?.trackingToken||'')),provided=Buffer.from(String(trackingToken||''));
+    if(!expected.length||expected.length!==provided.length||!timingSafeEqual(expected,provided))throw new RequestError(403,'A valid order tracking token is required');
+    return rpc('qrk_read_order_status',{p_api_key:apiKey,p_rnl_order_id:rnlOrderId});
+  }
   return{configured,catalog,previewCatalog,applyCatalog,createOrder,status,asset,fingerprint};
 }

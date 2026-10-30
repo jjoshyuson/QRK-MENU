@@ -4,7 +4,7 @@ import {normalizeServiceProfile} from '../dist/data/qrk-service-presets.js';
 
 const [html,js,css,sharedCss,menu]=await Promise.all([
   readFile(new URL('../dist/admin/index.html',import.meta.url),'utf8'),
-  readFile(new URL('../dist/admin/admin.js',import.meta.url),'utf8'),
+  Promise.all(['admin.js','admin-view.js'].map(file=>readFile(new URL('../dist/admin/'+file,import.meta.url),'utf8'))).then(parts=>parts.join('\n')),
   readFile(new URL('../dist/admin/admin.css',import.meta.url),'utf8'),
   readFile(new URL('../dist/ui-components.css',import.meta.url),'utf8'),
   readFile(new URL('../dist/menu/menu.js',import.meta.url),'utf8')

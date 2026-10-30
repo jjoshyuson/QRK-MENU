@@ -1,9 +1,10 @@
 import { createQrkDataService } from '../data/qrk-data-service.js';
-import { applyBusinessBrand, getBusinessBrand } from '../data/qrk-brand-service.js';
+import { applyBusinessBrand, getBusinessBrand, normalizeMenuBackground } from '../data/qrk-brand-service.js';
 import { getBusinessExperience } from '../data/qrk-businesses.js';
 import { QrkTableSessionService } from '../data/qrk-table-session-service.js?v=3';
 import { menuOptionGroupsForItem, readMenuState, subscribeMenuState } from '../data/qrk-menu-store.js';
 import { deviceScopedKey } from '../data/qrk-device-service.js';
+import { accentFor, applyHeader, applyMenuBackground, bindImageFallbacks, bindScrollChrome, businessInitials, featuredItems, formatPriceParts, headerModel, popElement, safeImageUrl, sectionIndexLabel, showToast, staggerRise, tagLabel } from './menu-appearance.js';
 import { selectServiceExperience } from '../data/qrk-service-presets.js';
 import { resolveQuickOrderState, validQuickFulfillmentModes } from '../data/qrk-quick-order.js';
 
@@ -25,8 +26,9 @@ businessExperience.serviceMode=requestedService;
 const serviceProfile=selectServiceExperience(businessExperience.serviceProfile,requestedService);businessExperience.serviceProfile=serviceProfile;
 const tableSessionService=businessExperience.serviceMode==='table'?new QrkTableSessionService({businessSlug,profile:serviceProfile}):null;
 let customerBrand=getBusinessBrand({businessId:`preview:${businessSlug}`,businessSlug,businessName:businessExperience.businessName});
+let hostedBackground=null;
 if(dataService.mode!=='demo'){
-  try{const cosmetics=await dataService.getBusinessCosmetics();if(cosmetics)customerBrand={...customerBrand,primary:cosmetics.accentColor||customerBrand.primary,logoDataUrl:cosmetics.logoUrl||'',coverPhotoUrl:cosmetics.coverUrl||'',publicMenuBackground:{image:cosmetics.backgroundUrl||'',surfaceOpacity:Number(cosmetics.backgroundOpacity)||.72}}}catch{}
+  try{const cosmetics=await dataService.getBusinessCosmetics();if(cosmetics){hostedBackground={backgroundStyle:cosmetics.backgroundStyle,backgroundPattern:cosmetics.backgroundPattern,backgroundStrength:cosmetics.backgroundStrength,backgroundUrl:cosmetics.backgroundUrl,backgroundOpacity:cosmetics.backgroundOpacity};customerBrand={...customerBrand,primary:cosmetics.accentColor||customerBrand.primary,logoDataUrl:cosmetics.logoUrl||'',coverPhotoUrl:cosmetics.coverUrl||''}}}catch{}
 }
 applyBusinessBrand({...customerBrand,colorMode:'custom'});document.querySelector('meta[name="theme-color"]')?.setAttribute('content',getComputedStyle(document.documentElement).getPropertyValue('--nav').trim()||'#0b0c0e');
 const CART_KEY=deviceScopedKey(businessSlug,`cart:${dataService.mode}`);
@@ -59,7 +61,7 @@ function applyStudioMenu(state){
 if(dataService.mode==='demo')applyStudioMenu(readMenuState(businessSlug));
 let dataLoadError='';
 if(dataService.mode!=='demo'){
-  try{const remote=await dataService.getPublicMenu();const photoByName=new Map((businessExperience.menu||[]).map(([,name,,,photo])=>[name,photo]));const remoteItems=remote?.menu?.categories?.flatMap(category=>(category.items||[]).map(item=>({id:item.id,category:category.name,name:item.name,description:item.description,price:item.priceMinor,photo:item.photo?.url||item.imagePath||photoByName.get(item.name)||'/photos/adobo.jpg',photoCard:item.photo?.cardUrl||item.photo?.thumbnailUrl||item.photo?.url||item.imagePath,available:item.available,options:(item.optionGroups||[]).map(group=>({name:group.name,required:group.required,multiple:group.maxSelections>1,choices:(group.options||[]).map(option=>[option.name,option.priceDeltaMinor,option.id])}))})))||[];if(remoteItems.length)menu=remoteItems}catch(error){dataLoadError=error.message||'The published menu could not be loaded.'}
+  try{const remote=await dataService.getPublicMenu();const photoByName=new Map((businessExperience.menu||[]).map(([,name,,,photo])=>[name,photo]));const remoteItems=remote?.menu?.categories?.flatMap(category=>(category.items||[]).map(item=>({id:item.id,category:category.name,name:item.name,description:item.description,price:item.priceMinor,photo:item.photo?.url||item.imagePath||photoByName.get(item.name)||'/photos/adobo.jpg',photoCard:item.photo?.cardUrl||item.photo?.thumbnailUrl||item.photo?.url||item.imagePath,available:item.available,featured:item.featured===true,tags:Array.isArray(item.tags)?item.tags:[],options:(item.optionGroups||[]).map(group=>({name:group.name,required:group.required,multiple:group.maxSelections>1,choices:(group.options||[]).map(option=>[option.name,option.priceDeltaMinor,option.id])}))})))||[];if(remoteItems.length)menu=remoteItems}catch(error){dataLoadError=error.message||'The published menu could not be loaded.'}
 }
 let categories=[...new Set(menu.map(item=>item.category))];
 const $=selector=>document.querySelector(selector);
@@ -76,16 +78,17 @@ function syncModalScrollLock(){
 }
 function openModal(dialog){if(!dialog.open)dialog.showModal();syncModalScrollLock()}
 document.querySelectorAll('dialog').forEach(dialog=>dialog.addEventListener('close',()=>requestAnimationFrame(syncModalScrollLock)));
+var headerReady=false;
 let selectedReviewTable=businessExperience.serviceMode==='quick'?quickCheckout.table:'';
 function persistCheckoutMethod(){if(businessExperience.serviceMode==='quick')localStorage.setItem(CHECKOUT_METHOD_KEY,JSON.stringify({consumption:selectedConsumption,fulfillment:selectedFulfillment,table:selectedReviewTable}))}
-function setReviewTableNumber(value){selectedReviewTable=String(value||'');$('#table-number').value=selectedReviewTable;persistCheckoutMethod()}
-function applyPublicMenuBackground(brand){
-  const menuSurface=$('.menu'),settings=brand?.publicMenuBackground||{},candidate=String(settings.image||''),image=/^(?:\/|https:\/\/|data:image\/(?:png|jpeg|webp);base64,)/i.test(candidate)?candidate:'',opacity=Number(settings.surfaceOpacity),surfaceOpacity=Math.round((Number.isFinite(opacity)?Math.max(.4,Math.min(.95,opacity)):.72)*100);
-  menuSurface.classList.toggle('has-menu-background',Boolean(image));
-  if(image){menuSurface.style.setProperty('--menu-background-image',`url("${image}")`);menuSurface.style.setProperty('--menu-background-surface-opacity',`${surfaceOpacity}%`)}else{menuSurface.style.removeProperty('--menu-background-image');menuSurface.style.removeProperty('--menu-background-surface-opacity')}
+function setReviewTableNumber(value){selectedReviewTable=String(value||'');$('#table-number').value=selectedReviewTable;persistCheckoutMethod();if(headerReady)refreshHeader()}
+function applyThemedBackground(brand){
+  const legacy=brand?.publicMenuBackground||{};
+  applyMenuBackground(document.documentElement,normalizeMenuBackground(hostedBackground||{...brand?.menuBackground,backgroundUrl:legacy.image,backgroundOpacity:legacy.surfaceOpacity}));
 }
-applyPublicMenuBackground(customerBrand);
-addEventListener('storage',event=>{if(event.key==='qrk_demo_branding_v1')applyPublicMenuBackground(getBusinessBrand({businessId:`preview:${businessSlug}`,businessSlug,businessName:businessExperience.businessName}))});
+bindImageFallbacks(document,()=>businessInitials(customerBrand.businessName));
+applyThemedBackground(customerBrand);
+addEventListener('storage',event=>{if(event.key==='qrk_demo_branding_v1')applyThemedBackground(getBusinessBrand({businessId:`preview:${businessSlug}`,businessSlug,businessName:businessExperience.businessName}))});
 if(tableSessionService?.previewMode){$('#table-waiting-view .demo-note').textContent='Tabs on this browser share preview table availability and join requests. Other devices are not connected.'}
 let pendingTableSession=null;
 let waitingTimer=null;
@@ -101,10 +104,7 @@ const configuredTableCount=customerBrand.tableCount||6;
 function renderTableChoices(){const grid=$('#table-choice-grid'),compact=configuredTableCount>10;grid.classList.toggle('compact-number-grid',compact);grid.innerHTML=Array.from({length:configuredTableCount},(_,index)=>{const table=String(index+1),occupied=Boolean(tableSessionService.find(table));return compact?`<button class="table-choice table-number-choice${occupied?' occupied':''}" type="button" data-table-choice="${table}" role="listitem" aria-label="Table ${table}, ${occupied?'open, request to join':'available'}">${table}</button>`:`<button class="table-choice${occupied?' occupied':''}" type="button" data-table-choice="${table}" role="listitem">Table ${table}<small>${occupied?'Open · request to join':'Available'}</small></button>`}).join('')}
 function renderReviewTableChoices(selected=selectedReviewTable,locked=false){const grid=$('#review-table-grid'),compact=configuredTableCount>10;grid.classList.toggle('compact-number-grid',compact);grid.innerHTML=Array.from({length:configuredTableCount},(_,index)=>{const table=String(index+1),active=table===String(selected);return`<button class="review-table-choice${active?' selected':''}" type="button" role="radio" aria-checked="${active}" data-review-table="${table}"${locked?' disabled':''}>${compact?table:`<span>Table</span>${table}`}</button>`}).join('');$('#selected-review-table').textContent=selected?`Table ${selected} selected${locked?' from this QR visit':''}`:'Select a table number';$('#review-table-panel').classList.toggle('locked',locked)}
 async function initializeTableEntry(){if(!tableSessionService)return;const settings=serviceProfile.settings,params=new URLSearchParams(location.search);let qrTable=params.get('table')||'';const entryToken=params.get('entry');if(entryToken){const authorized=await tableSessionService.authorizeEntry(entryToken);if(authorized?.table)qrTable=String(authorized.table);params.delete('entry');history.replaceState({},'',`${location.pathname}${params.size?`?${params}`:''}${location.hash}`)}await tableSessionService.refresh();const current=tableSessionService.current();if(current){if(['active','bill_requested','inactivity_warning'].includes(current.status))return openTableMenu(current);const isJoin=!current.participants.some(person=>person.deviceId===tableSessionService.deviceId);return showTableWaiting(current,isJoin)}const needsGuests=settings.guestCountRequired;$('#entry-guests-label').classList.toggle('hidden',!needsGuests);$('#entry-guests').classList.toggle('hidden',!needsGuests);const needsPackage=settings.bundleSelection==='required';$('#entry-package-label').classList.toggle('hidden',!needsPackage);$('#entry-package').classList.toggle('hidden',!needsPackage);$('#location-note').classList.toggle('hidden',settings.proximityPolicy==='off');const terms=[],paymentCopy={deposit:`A ₱${((settings.entryAmountMinor||0)/100).toLocaleString()} deposit is required before this table opens.`,minimum_spend:`The host commits to a ₱${((settings.minimumSpendMinor||0)/100).toLocaleString()} table minimum.`,full:'The selected package is paid in full before ordering.'}[settings.entryPayment];if(paymentCopy)terms.push(paymentCopy);if(settings.timeLimitMinutes)terms.push(`${settings.timeLimitMinutes} minutes of dining time.`);if(settings.entitlementMode==='quantity')terms.push(`${settings.quantityLimit} included selections per package.`);else if(settings.refillPolicy==='included')terms.push('Included items may be reordered under the selected package.');$('#location-note').insertAdjacentHTML('beforebegin',terms.length?`<section class="location-note"><strong>Session terms</strong><p>${terms.map(escapeText).join(' ')}</p></section>`:'');renderTableChoices();openModal($('#table-session-dialog'));if(settings.tableIdentification==='qr'&&/^\d{1,3}$/.test(qrTable)&&Number(qrTable)<=configuredTableCount){$('#table-choice-back').classList.add('hidden');chooseTable(qrTable)}}
-document.title=`${customerBrand.businessName} — Order`;$('#restaurant-name').textContent=customerBrand.businessName;const customerMark=$('.restaurant-mark'),defaultLogo=businessSlug==='kusina-manila'?'/assets/businesses/kusina-manila-logo.webp':'';customerMark.innerHTML=customerBrand.logoDataUrl?`<img src="${customerBrand.logoDataUrl}" alt="${customerBrand.businessName} logo" width="96" height="96">`:defaultLogo?`<img src="${defaultLogo}" alt="${customerBrand.businessName} logo" width="96" height="96">`:`${customerBrand.businessName.trim().charAt(0).toUpperCase()}.`;customerMark.classList.toggle('has-logo',Boolean(customerBrand.logoDataUrl||defaultLogo));
-const restaurantBanner=$('#restaurant-banner'),defaultBanner='/assets/businesses/kusina-manila-banner.webp',bannerUrl=customerBrand.coverPhotoUrl||defaultBanner;restaurantBanner.src=bannerUrl;restaurantBanner.hidden=false
-$('.restaurant p:not(.eyebrow)').textContent=businessExperience.description;
-$('.restaurant div>span').innerHTML=`PHP ₱ <i>•</i> ${businessExperience.location}`;
+document.title=`${customerBrand.businessName} — Order`;
 if(businessExperience.serviceMode==='table'){
   const table=new URLSearchParams(location.search).get('table')||'12';
   setReviewTableNumber(table);$('#table-number').readOnly=true;
@@ -124,36 +124,163 @@ addEventListener('scroll',positionCartBar,{passive:true});addEventListener('resi
 let orderingOpen=await dataService.getStoreOpen().catch(()=>false);
 const storeOpen=()=>new URLSearchParams(location.search).get('closed')!=='1'&&orderingOpen;
 const format=minor=>money.format(minor/100);
+headerReady=true;
+function currentTableNumber(){
+  const session=tableSessionService?.current();
+  if(session&&['active','bill_requested','inactivity_warning'].includes(session.status))return String(session.table);
+  return new URLSearchParams(location.search).get('table')||null;
+}
+function refreshHeader(){
+  const kusina=businessSlug==='kusina-manila';
+  const isTable=businessExperience.serviceMode==='table';
+  const brand={...customerBrand,tagline:businessExperience.description,logoDataUrl:customerBrand.logoDataUrl||(kusina?'/assets/businesses/kusina-manila-logo.webp':''),coverPhotoUrl:customerBrand.coverPhotoUrl||(kusina?'/assets/businesses/kusina-manila-banner.webp':'')};
+  applyHeader(document,headerModel(brand,{isTable,tableNumber:currentTableNumber(),orderCount:orderHistory.length,openForOrders:storeOpen(),prepLabel:'',area:businessExperience.location||''}));
+}
+document.documentElement.style.setProperty('--accent',accentFor(customerBrand));
+bindScrollChrome(window,{threshold:140});
 const escapeText=value=>String(value).replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const categoryId=value=>`category-${String(value).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}`;
 function persistCart(){try{localStorage.setItem(CART_KEY,JSON.stringify(cart));return true}catch{return false}}
 function cartTotals(){return{count:cart.reduce((sum,line)=>sum+line.quantity,0),subtotal:cart.reduce((sum,line)=>sum+line.lineTotalMinor,0)}}
 function tabTotals(){const placed=tabOrders.filter(order=>order.status!=='cancelled');return{count:placed.reduce((sum,order)=>sum+order.items.reduce((itemSum,item)=>itemSum+item.quantity,0),0)+cartTotals().count,total:placed.reduce((sum,order)=>sum+Number(order.subtotalMinor||0),0)+cartTotals().subtotal}}
-function tabStatus(order){return{received:['Accepted','accepted'],preparing:['Preparing','preparing'],ready:['Prepared','prepared'],completed:['Prepared','prepared'],cancelled:['Cancelled','cancelled']}[order.status]||['Updating','accepted']}
+function tabStatus(order){return{received:['Received','received'],preparing:['Preparing','preparing'],ready:['Prepared','prepared'],completed:['Prepared','prepared'],cancelled:['Cancelled','cancelled']}[order.status]||['Updating','accepted']}
 function saveHistory(){localStorage.setItem(HISTORY_KEY,JSON.stringify(orderHistory.slice(0,HISTORY_LIMIT)))}
 function rememberHistory(order){const snapshot=historySnapshot(order);orderHistory=[snapshot,...orderHistory.filter(item=>String(item.id)!==snapshot.id)].sort((a,b)=>Date.parse(b.createdAt)-Date.parse(a.createdAt)).slice(0,HISTORY_LIMIT);saveHistory();renderHistory()}
 function rememberPaidTab(session,orders){const placed=orders.filter(order=>order.status!=='cancelled');if(!placed.length)return;rememberHistory({id:`tab:${session.id}`,orderNumber:`Table ${session.table} tab`,createdAt:session.createdAt||placed[0].createdAt,updatedAt:session.updatedAt||new Date().toISOString(),status:'completed',subtotalMinor:placed.reduce((sum,order)=>sum+Number(order.subtotalMinor||0),0),items:placed.flatMap(order=>order.items||[])})}
-function renderHistory(){const list=$('#device-order-history'),empty=$('#history-empty');$('#order-history-count').textContent=orderHistory.length;empty.classList.toggle('hidden',orderHistory.length>0);list.innerHTML=orderHistory.map(order=>{const [label,state]=tabStatus(order),items=order.items.reduce((sum,item)=>sum+Number(item.quantity||0),0);return`<article class="history-order"><header><div><h3>${escapeText(order.orderNumber||'Saved order')}</h3><time datetime="${escapeText(order.createdAt)}">${new Intl.DateTimeFormat('en-PH',{dateStyle:'medium',timeStyle:'short'}).format(new Date(order.createdAt))}</time></div><span class="tab-status ${state}">${label}</span></header><p>${items} ${items===1?'item':'items'}</p><footer><span>${escapeText(order.items.map(item=>`${item.quantity}× ${item.name}`).join(' · '))}</span><strong>${format(order.subtotalMinor)}</strong></footer></article>`}).join('')}
+function renderHistory(){const list=$('#device-order-history'),empty=$('#history-empty');refreshHeader();empty.classList.toggle('hidden',orderHistory.length>0);list.innerHTML=orderHistory.map(order=>{const [label,state]=tabStatus(order),items=order.items.reduce((sum,item)=>sum+Number(item.quantity||0),0);return`<article class="history-order"><header><div><h3>${escapeText(order.orderNumber||'Saved order')}</h3><time datetime="${escapeText(order.createdAt)}">${new Intl.DateTimeFormat('en-PH',{dateStyle:'medium',timeStyle:'short'}).format(new Date(order.createdAt))}</time></div><span class="tab-status ${state}">${label}</span></header><p>${items} ${items===1?'item':'items'}</p><footer><span>${escapeText(order.items.map(item=>`${item.quantity}× ${item.name}`).join(' · '))}</span><strong>${format(order.subtotalMinor)}</strong></footer></article>`}).join('')}
 function clearActiveTab(){localStorage.removeItem(TAB_ORDER_KEY);localStorage.removeItem(TAB_SESSION_KEY);localStorage.removeItem(CART_KEY);cart=[];tabOrders=[];renderCart()}
-function renderTabSummary(){const summary=$('#tab-summary');if(!openTabEnabled)return;const totals=tabTotals(),placed=tabOrders.filter(order=>order.status!=='cancelled'),placedCount=placed.reduce((sum,order)=>sum+order.items.reduce((itemSum,item)=>itemSum+item.quantity,0),0),placedTotal=placed.reduce((sum,order)=>sum+Number(order.subtotalMinor||0),0),itemLabel=`${totals.count} ${totals.count===1?'item':'items'}`,control=$('#open-tab-control');$('#open-tab-count').textContent=totals.count;$('#open-tab-total').textContent=`${format(totals.total)} · ${itemLabel}`;control.setAttribute('aria-label',`Open tab, ${itemLabel}, running total ${format(totals.total)}`);control.classList.toggle('hidden',!totals.count);summary.innerHTML=`<div class="tab-summary-head"><div><p class="eyebrow">SUBMITTED TOTAL</p><strong>${format(placedTotal)}</strong></div><span>${placedCount} ${placedCount===1?'item':'items'}</span></div>${placed.length?`<div class="tab-rounds"><h3>Previous orders</h3>${placed.map((order,index)=>{const [label,state]=tabStatus(order);return`<article class="tab-round"><div class="tab-round-head"><b>Order ${index+1}</b><span class="tab-status ${state}">${label}</span></div><ul>${order.items.map(item=>`<li><span>${item.quantity}× ${escapeText(item.name)}</span><strong>${format(item.lineTotalMinor)}</strong></li>`).join('')}</ul><div class="tab-round-total"><span>Order total</span><strong>${format(order.subtotalMinor)}</strong></div></article>`}).join('')}</div>`:'<p class="tab-empty-copy">No orders have been sent yet.</p>'}`}
+function renderTabSummary(){const summary=$('#tab-summary');if(!openTabEnabled)return;const totals=tabTotals(),placed=tabOrders.filter(order=>order.status!=='cancelled'),placedCount=placed.reduce((sum,order)=>sum+order.items.reduce((itemSum,item)=>itemSum+item.quantity,0),0),placedTotal=placed.reduce((sum,order)=>sum+Number(order.subtotalMinor||0),0),itemLabel=`${totals.count} ${totals.count===1?'item':'items'}`,control=$('#open-tab-control');$('#open-tab-count').textContent=totals.count;$('#open-tab-total').textContent=`${format(totals.total)} · ${itemLabel}`;control.setAttribute('aria-label',`Open tab, ${itemLabel}, running total ${format(totals.total)}`);control.classList.toggle('hidden',!totals.count);const mini=$('#mini-tab'),price=formatPriceParts(totals.total);mini.textContent=`Tab · ${price.symbol}${price.amount}`;mini.setAttribute('aria-label',`Open tab, ${price.symbol}${price.amount}`);mini.classList.toggle('hidden',!totals.count);summary.innerHTML=`<div class="tab-summary-head"><div><p class="eyebrow">SUBMITTED TOTAL</p><strong>${format(placedTotal)}</strong></div><span>${placedCount} ${placedCount===1?'item':'items'}</span></div>${placed.length?`<div class="tab-rounds"><h3>Previous orders</h3>${placed.map((order,index)=>{const [label,state]=tabStatus(order);return`<article class="tab-round"><div class="tab-round-head"><b>Order ${index+1}</b><span class="tab-status ${state}">${label}</span></div><ul>${order.items.map(item=>`<li><span>${item.quantity}× ${escapeText(item.name)}</span><strong>${format(item.lineTotalMinor)}</strong></li>`).join('')}</ul><div class="tab-round-total"><span>Order total</span><strong>${format(order.subtotalMinor)}</strong></div></article>`}).join('')}</div>`:'<p class="tab-empty-copy">No orders have been sent yet.</p>'}`}
+function renderTags(host,tags){
+  (tags||[]).forEach(tag=>{
+    const label=tagLabel(tag);
+    if(!label)return;
+    const chip=document.createElement('span');
+    chip.className=`dish-tag tag-${tag}`;
+    chip.textContent=label;
+    host.append(chip);
+  });
+}
+function renderFeatured(query){
+  const row=$('#featured-row'),track=row.querySelector('.featured-track');
+  const items=query?[]:featuredItems(menu);
+  track.replaceChildren();
+  row.classList.toggle('hidden',!items.length);
+  items.forEach(item=>{
+    const card=document.createElement('button');
+    card.type='button';
+    card.className='fcard';
+    const media=document.createElement('span');
+    media.className='fcard-media';
+    const photo=safeImageUrl(item.photoCard||item.photo);
+    if(photo){
+      const img=document.createElement('img');
+      img.src=photo;
+      img.alt='';
+      img.loading='lazy';
+      img.decoding='async';
+      media.append(img);
+    }else media.classList.add('motif-tile');
+    const price=formatPriceParts(item.price);
+    const pill=document.createElement('span');
+    pill.className='fcard-price';
+    pill.textContent=`${price.symbol}${price.amount}`;
+    media.append(pill);
+    const name=document.createElement('span');
+    name.className='fcard-name';
+    name.textContent=item.name;
+    const plus=document.createElement('span');
+    plus.className='dish-plus';
+    plus.setAttribute('aria-hidden','true');
+    plus.textContent='+';
+    card.append(media,name,plus);
+    card.addEventListener('click',event=>openItem(item,-1,event.currentTarget));
+    track.append(card);
+  });
+  if(items.length)staggerRise(row,{selector:'.fcard'});
+}
 function renderMenu(filter=''){
   const query=filter.trim().toLowerCase();
-  const visible=menu.filter(item=>item.available&&!item.hidden&&`${item.name} ${item.description} ${item.category}`.toLowerCase().includes(query));
+  const visible=menu.filter(item=>!item.hidden&&`${item.name} ${item.description} ${item.category}`.toLowerCase().includes(query));
   $('#categories').innerHTML=query?'':categories.filter(category=>visible.some(item=>item.category===category)).map((category,index)=>`<a class="${index?'':'active'}" href="#${categoryId(category)}" ${index?'':'aria-current="true"'}>${escapeText(category)}</a>`).join('');
-  $('#menu-sections').innerHTML='';$('#menu-sections').setAttribute('aria-busy','false');
+  $('#menu-sections').classList.remove('rise-a','rise-b'); // only load and category change rise
+  $('#menu-sections').innerHTML='';
+  $('#menu-sections').setAttribute('aria-busy','false');
   let renderedPhotoIndex=0;
+  let sectionIndex=0;
   categories.forEach(category=>{
-    const items=visible.filter(item=>item.category===category);if(!items.length)return;
-    const section=document.createElement('section');section.className='menu-section';section.id=categoryId(category);section.setAttribute('aria-labelledby',`${section.id}-title`);
-    section.innerHTML=`<div class="section-heading"><h3 id="${section.id}-title">${escapeText(category)}</h3></div><div class="dish-grid"></div>`;
+    const items=visible.filter(item=>item.category===category);
+    if(!items.length)return;
+    const section=document.createElement('section');
+    section.className='menu-section';
+    section.id=categoryId(category);
+    section.setAttribute('aria-labelledby',`${section.id}-title`);
+    const heading=document.createElement('div');
+    heading.className='section-heading';
+    const index=document.createElement('span');
+    index.className='section-index';
+    index.textContent=sectionIndexLabel(sectionIndex++);
+    const title=document.createElement('h3');
+    title.id=`${section.id}-title`;
+    title.textContent=category;
+    const count=document.createElement('span');
+    count.className='section-count';
+    count.textContent=`${items.length} ${items.length===1?'item':'items'}`;
+    heading.append(index,title,count);
+    const grid=document.createElement('div');
+    grid.className='dish-grid';
+    section.append(heading,grid);
     items.forEach(item=>{
-      const card=$('#dish-template').content.firstElementChild.cloneNode(true);const cardButton=card.querySelector('.dish-hit');const img=card.querySelector('img');
-      if(item.photo){const isPriority=renderedPhotoIndex<2;img.src=item.photoCard||item.photo;img.alt=item.name;img.loading=isPriority?'eager':'lazy';img.decoding='async';img.fetchPriority=isPriority?'high':'low';const reveal=()=>img.classList.add('is-loaded');if(img.complete)reveal();else{img.addEventListener('load',reveal,{once:true});img.addEventListener('error',reveal,{once:true})}renderedPhotoIndex++}else{img.remove();const photo=card.querySelector('.photo');photo.classList.add('no-photo');photo.textContent=item.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase()}card.querySelector('h4').textContent=item.name;card.querySelector('strong').textContent=format(item.price);cardButton.setAttribute('aria-label',`Add ${item.name} to order`);
-      if(!item.available){card.classList.add('sold-out');card.querySelector('.sold-label').classList.remove('hidden');cardButton.disabled=true;cardButton.setAttribute('aria-label',`${item.name}, sold out`)}else cardButton.addEventListener('click',event=>openItem(item,-1,event.currentTarget));
-      section.querySelector('.dish-grid').append(card);
-    });$('#menu-sections').append(section);
+      const card=$('#dish-template').content.firstElementChild.cloneNode(true);
+      const cardButton=card.querySelector('.dish-hit');
+      const img=card.querySelector('img');
+      card.dataset.itemId=item.id;
+      if(item.photo){
+        const isPriority=renderedPhotoIndex<2;
+        img.src=item.photoCard||item.photo;
+        img.alt='';
+        img.loading=isPriority?'eager':'lazy';
+        img.decoding='async';
+        img.fetchPriority=isPriority?'high':'low';
+        const reveal=()=>img.classList.add('is-loaded');
+        if(img.complete)reveal();
+        else{
+          img.addEventListener('load',reveal,{once:true});
+          img.addEventListener('error',reveal,{once:true});
+        }
+        renderedPhotoIndex++;
+      }else{
+        card.querySelector('.photo').remove();
+        card.classList.add('no-photo');
+      }
+      card.querySelector('h4').textContent=item.name;
+      card.querySelector('.dish-desc').textContent=item.description||'';
+      renderTags(card.querySelector('.dish-tags'),item.tags);
+      const price=formatPriceParts(item.price);
+      card.querySelector('.price-symbol').textContent=price.symbol;
+      card.querySelector('.price-amount').textContent=price.amount;
+      if(!item.available){
+        card.classList.add('sold-out');
+        card.querySelector('.sold-label').classList.remove('hidden');
+        cardButton.disabled=true;
+      }else cardButton.addEventListener('click',event=>openItem(item,-1,event.currentTarget));
+      grid.append(card);
+    });
+    $('#menu-sections').append(section);
   });
-  $('#menu-empty').classList.toggle('hidden',visible.length>0);bindCategoryLinks();
+  $('#menu-empty').classList.toggle('hidden',visible.length>0);
+  renderFeatured(query);
+  bindCategoryLinks();
+  renderInOrderBadges();
+}
+function renderInOrderBadges(){
+  const counts=new Map();
+  cart.forEach(line=>counts.set(String(line.itemId),(counts.get(String(line.itemId))||0)+Number(line.quantity||0)));
+  document.querySelectorAll('#menu-sections .dish[data-item-id]').forEach(card=>{
+    const badge=card.querySelector('.in-order-label');
+    const count=counts.get(card.dataset.itemId)||0;
+    badge.textContent=`${count} in order`;
+    badge.classList.toggle('hidden',!count);
+  });
 }
 let categoryNavigationId='',categoryNavigationTimer=0,categoryNavigationIdleTimer=0,categoryNavigationScrollHandler=null,categoryTrackingScrollHandler=null,categoryTrackingFrame=0;
 function bindCategoryLinks(){
@@ -165,18 +292,60 @@ function bindCategoryLinks(){
   const activateAtLine=()=>{if(categoryNavigationId){activate(categoryNavigationId);return}const line=activationLine(),atLine=sections.find(section=>{const box=section.getBoundingClientRect();return box.top<=line&&box.bottom>line}),passed=[...sections].reverse().find(section=>section.getBoundingClientRect().top<=line);activate((atLine||passed||sections[0])?.id)};
   const finishNavigation=id=>{if(categoryNavigationId!==id)return;categoryNavigationId='';clearTimeout(categoryNavigationTimer);clearTimeout(categoryNavigationIdleTimer);activateAtLine()};
   if(categoryNavigationScrollHandler)removeEventListener('scroll',categoryNavigationScrollHandler);categoryNavigationScrollHandler=()=>{if(!categoryNavigationId)return;const id=categoryNavigationId;clearTimeout(categoryNavigationIdleTimer);categoryNavigationIdleTimer=setTimeout(()=>finishNavigation(id),140)};addEventListener('scroll',categoryNavigationScrollHandler,{passive:true});
-  links.forEach(link=>link.addEventListener('click',event=>{event.preventDefault();const id=link.hash.slice(1),section=document.querySelector(link.hash),reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches,targetY=section?scrollY+section.getBoundingClientRect().top-(toolbar?.offsetHeight||0)+1:scrollY;categoryNavigationId=id;clearTimeout(categoryNavigationTimer);clearTimeout(categoryNavigationIdleTimer);history.replaceState(null,'',link.hash);activate(id);scrollTo({top:targetY,behavior:reducedMotion?'auto':'smooth'});if(reducedMotion)requestAnimationFrame(()=>finishNavigation(id));else categoryNavigationTimer=setTimeout(()=>finishNavigation(id),3000)}));
+  links.forEach(link=>link.addEventListener('click',event=>{event.preventDefault();staggerRise($('#menu-sections'));const id=link.hash.slice(1),section=document.querySelector(link.hash),reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches,targetY=section?scrollY+section.getBoundingClientRect().top-(toolbar?.offsetHeight||0)+1:scrollY;categoryNavigationId=id;clearTimeout(categoryNavigationTimer);clearTimeout(categoryNavigationIdleTimer);history.replaceState(null,'',link.hash);activate(id);scrollTo({top:targetY,behavior:reducedMotion?'auto':'smooth'});if(reducedMotion)requestAnimationFrame(()=>finishNavigation(id));else categoryNavigationTimer=setTimeout(()=>finishNavigation(id),3000)}));
   if(categoryTrackingScrollHandler)removeEventListener('scroll',categoryTrackingScrollHandler);categoryTrackingScrollHandler=()=>{cancelAnimationFrame(categoryTrackingFrame);categoryTrackingFrame=requestAnimationFrame(activateAtLine)};addEventListener('scroll',categoryTrackingScrollHandler,{passive:true});activateAtLine();
 }
 function optionPrice(){return itemOptionDraft.flat().reduce((sum,option)=>sum+Number(option.priceMinor),0)}
 function updateItemTotal(){if(!selectedItem)return;$('#item-quantity').textContent=itemQuantity;$('#item-minus').disabled=itemQuantity<=1;$('#item-plus').disabled=itemQuantity>=20;$('#item-total').textContent=format((selectedItem.price+optionPrice())*itemQuantity)}
 function syncItemOptionDraft(){
-  itemOptionDraft=(selectedItem?.options||[]).map((group,index)=>[...document.querySelectorAll(`input[name="group-${index}"]:checked`)].map(input=>({id:input.dataset.id||undefined,group:group.name,name:input.value,priceMinor:Number(input.dataset.price)})));updateItemTotal()
+  itemOptionDraft=(selectedItem?.options||[]).map((group,index)=>[...document.querySelectorAll(`input[name="group-${index}"]:checked`)].map(input=>({id:input.dataset.id||undefined,group:group.name,name:input.value,priceMinor:Number(input.dataset.price)})));
+  itemOptionDraft.forEach((picked,index)=>{
+    if(picked.length)clearOptionInvalid(index);
+  });
+  updateItemTotal();
+}
+function clearOptionInvalid(index){
+  const group=$(`#item-options [data-group-index="${index}"]`);
+  if(!group)return;
+  delete group.dataset.invalid;
+  group.querySelector('.option-error').hidden=true;
+}
+// Marks every unmet required group; returns the first one's index, or -1.
+function markMissingOptions(){
+  let first=-1;
+  (selectedItem?.options||[]).forEach((group,index)=>{
+    if(!group.required||itemOptionDraft[index]?.length)return;
+    const box=$(`#item-options [data-group-index="${index}"]`);
+    box.dataset.invalid='true';
+    box.querySelector('.option-error').hidden=false;
+    if(first<0)first=index;
+  });
+  return first;
 }
 function renderItemOptions(){
-  const groups=selectedItem?.options||[];$('#item-action-label').textContent=editingIndex>=0?'Update item':'Add to order';$('#add-item').setAttribute('aria-label',editingIndex>=0?'Save item changes':'Add item to order');
-  $('#item-options').innerHTML=groups.map((group,index)=>{const selected=itemOptionDraft[index]||[],labelId=`option-group-${index}`;return`<section class="option-group" data-required="${group.required}"><div class="option-group-heading" id="${labelId}"><b>${escapeText(group.name)}</b><span>${group.required?'Required':'Optional'}</span></div><div class="focused-choice-list" role="group" aria-labelledby="${labelId}">${group.choices.map((choice,choiceIndex)=>{const id=`option-${index}-${choiceIndex}`,checked=selected.some(option=>option.name===choice[0]);return`<label for="${id}"><span><input id="${id}" type="${group.multiple?'checkbox':'radio'}" name="group-${index}" value="${escapeText(choice[0])}" data-id="${escapeText(choice[2]||'')}" data-price="${choice[1]}" ${checked?'checked':''}><i aria-hidden="true">✓</i><b>${escapeText(choice[0])}</b></span><small>${choice[1]?`+${format(choice[1])}`:'Included'}</small></label>`}).join('')}</div></section>`}).join('');
-  $('#item-options').onchange=syncItemOptionDraft;updateItemTotal()
+  const groups=selectedItem?.options||[];
+  $('#item-action-label').textContent=editingIndex>=0?'Update':'Add to order';
+  $('#add-item').setAttribute('aria-label',editingIndex>=0?'Save item changes':'Add item to order');
+  $('#item-options').innerHTML=groups.map((group,index)=>{
+    const selected=itemOptionDraft[index]||[];
+    const labelId=`option-group-${index}`;
+    const choices=group.choices.map((choice,choiceIndex)=>{
+      const id=`option-${index}-${choiceIndex}`;
+      const checked=selected.some(option=>option.name===choice[0]);
+      return`<label for="${id}"><span><input id="${id}" type="${group.multiple?'checkbox':'radio'}" name="group-${index}" value="${escapeText(choice[0])}" data-id="${escapeText(choice[2]||'')}" data-price="${choice[1]}" ${checked?'checked':''}><i aria-hidden="true">✓</i><b>${escapeText(choice[0])}</b></span><small>${choice[1]?`+${format(choice[1])}`:'Included'}</small></label>`;
+    }).join('');
+    return`<section class="option-group" data-required="${group.required}" data-group-index="${index}"><div class="option-group-heading" id="${labelId}"><b>${escapeText(group.name)}</b><span class="option-badge">${group.required?'Required':'Optional'}</span></div><div class="focused-choice-list" role="group" aria-labelledby="${labelId}">${choices}</div><p class="option-error" role="alert" hidden>Choose one to continue.</p></section>`;
+  }).join('');
+  $('#item-options').onchange=event=>{
+    const mark=event.target.nextElementSibling;
+    mark.classList.remove('pop-in');
+    if(event.target.checked){
+      void mark.offsetWidth; // restart the animation on re-pick
+      mark.classList.add('pop-in');
+    }
+    syncItemOptionDraft();
+  };
+  updateItemTotal();
 }
 function openItem(item,index=-1,invoker=document.activeElement){
   if(!storeOpen())return showStoreNotice();selectedItem=item;editingIndex=index;const existing=index>=0?cart[index]:null;itemQuantity=existing?.quantity||1;
@@ -184,12 +353,25 @@ function openItem(item,index=-1,invoker=document.activeElement){
   $('#item-name').textContent=item.name;$('#item-description').textContent=item.description;$('#item-price').textContent=format(item.price);$('#item-photo').hidden=!item.photo;if(item.photo){$('#item-photo').src=item.photo;$('#item-photo').alt=item.name}$('#item-notes').value=existing?.notes||'';
   renderItemOptions();openModal($('#item-dialog'));
 }
+function priceHtml(minor){
+  const price=formatPriceParts(minor);
+  return`<span class="price-symbol">${price.symbol}</span>${price.amount}`;
+}
+function cartLineHtml(line,index){
+  const item=menu.find(entry=>entry.id===line.itemId);
+  const photoUrl=safeImageUrl(item?.photoCard||item?.photo);
+  const initials=line.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase();
+  const photo=photoUrl?`<img class="cart-item-photo" src="${escapeText(photoUrl)}" alt="" width="52" height="52" decoding="async" data-initials="${escapeText(initials)}">`:`<span class="cart-item-photo cart-item-initials motif-tile" aria-hidden="true">${escapeText(initials)}</span>`;
+  const options=line.selectedOptions.map(option=>escapeText(option.name)).join(' · ')||'Standard';
+  const name=escapeText(line.name);
+  return`<article class="cart-item" data-index="${index}"><div class="cart-item-delete-cue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13M10 11v5m4-5v5"/></svg></div><div class="cart-item-main"><button class="cart-item-edit" type="button" data-action="edit" data-index="${index}" aria-label="Edit ${name}">${photo}</button><div class="cart-item-head"><div><h3>${name}</h3><p>${options}</p>${line.notes?`<p>Note: ${escapeText(line.notes)}</p>`:''}</div><strong class="cart-price">${priceHtml(line.lineTotalMinor)}</strong></div><div class="cart-item-controls"><div class="stepper"><button type="button" data-action="minus" data-index="${index}" aria-label="Decrease ${name} quantity">−</button><output>${line.quantity}</output><button type="button" data-action="plus" data-index="${index}" aria-label="Increase ${name} quantity">+</button></div><button class="cart-link" type="button" data-action="edit" data-index="${index}" aria-label="Edit ${name} options">Edit</button><button class="cart-item-remove" type="button" data-action="remove" data-index="${index}" aria-label="Remove ${name}">Remove</button></div></div></article>`;
+}
 function renderCart(){
-  const totals=cartTotals();$('#cart-count').textContent=totals.count;$('#cart-label').textContent=totals.count===1?'item':'items';$('#cart-subtotal').textContent=format(totals.subtotal);$('#checkout-subtotal').textContent=format(totals.subtotal);$('#cart-bar').classList.toggle('hidden',!totals.count);
+  const totals=cartTotals();$('#cart-count').textContent=totals.count;$('#cart-label').textContent=totals.count===1?'item':'items';$('#cart-subtotal').textContent=format(totals.subtotal);$('#checkout-subtotal').textContent=format(totals.subtotal);$('#cart-total-amount').innerHTML=priceHtml(totals.subtotal);$('#cart-bar').classList.toggle('hidden',!totals.count);
   $('#desktop-order-count').textContent=`${totals.count} ${totals.count===1?'item':'items'}`;$('#desktop-order-subtotal').textContent=format(totals.subtotal);$('#desktop-open-cart').disabled=!totals.count;$('#desktop-order-items').innerHTML=cart.length?cart.map(line=>`<div class="desktop-order-line"><span><b>${line.quantity}× ${escapeText(line.name)}</b><small>${escapeText(line.selectedOptions.map(option=>option.name).join(' · ')||'Standard')}</small></span><strong>${format(line.lineTotalMinor)}</strong></div>`).join(''):'<p class="desktop-order-empty">Choose a dish to start your order.</p>';
-  $('#cart-items').innerHTML=cart.map((line,index)=>{const item=menu.find(entry=>entry.id===line.itemId),photo=item?.photo?`<img class="cart-item-photo" src="${escapeText(item.photoCard||item.photo)}" alt="" width="56" height="56" decoding="async">`:`<span class="cart-item-photo cart-item-initials" aria-hidden="true">${escapeText(line.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase())}</span>`;return`<article class="cart-item" data-index="${index}"><div class="cart-item-delete-cue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13M10 11v5m4-5v5"/></svg></div><button class="cart-item-remove sr-only" type="button" data-action="remove" data-index="${index}">Remove ${escapeText(line.name)}</button><div class="cart-item-main"><button class="cart-item-edit" type="button" data-action="edit" data-index="${index}" aria-label="Edit ${escapeText(line.name)}">${photo}</button><div class="cart-item-head"><div><h3>${escapeText(line.name)}</h3><p>${escapeText(line.selectedOptions.map(option=>option.name).join(' · ')||'Standard')}</p>${line.notes?`<p>Note: ${escapeText(line.notes)}</p>`:''}</div><strong>${format(line.lineTotalMinor)}</strong></div><div class="cart-item-controls"><div class="stepper"><button type="button" data-action="minus" data-index="${index}" aria-label="Decrease ${escapeText(line.name)} quantity">−</button><output>${line.quantity}</output><button type="button" data-action="plus" data-index="${index}" aria-label="Increase ${escapeText(line.name)} quantity">+</button></div></div></div></article>`}).join('');
+  $('#cart-items').innerHTML=cart.map(cartLineHtml).join('');
   const cartIds=new Set(cart.map(line=>line.itemId)),recommendations=menu.filter(item=>item.available&&!item.hidden&&!cartIds.has(item.id)).slice(0,4);$('#cart-recommendations').classList.toggle('hidden',!cart.length||!recommendations.length);$('#cart-recommendation-list').innerHTML=recommendations.map(item=>`<article class="cart-recommendation"><div class="cart-recommendation-photo">${item.photo?`<img src="${escapeText(item.photoCard||item.photo)}" alt="" width="180" height="120" loading="lazy" decoding="async">`:`<span aria-hidden="true">${escapeText(item.name.slice(0,1))}</span>`}<button type="button" data-recommendation-id="${escapeText(item.id)}" aria-label="Add ${escapeText(item.name)} to order">+</button></div><h4>${escapeText(item.name)}</h4><p>${format(item.price)}</p></article>`).join('');
-  $('#cart-empty').classList.toggle('hidden',cart.length>0);$('#checkout-fields').classList.toggle('hidden',!cart.length);updateCheckoutActionVisibility();$('#submit-order').disabled=!storeOpen();if(openTabEnabled)renderTabSummary();positionCartBar();
+  $('#cart-empty').classList.toggle('hidden',cart.length>0);$('#checkout-fields').classList.toggle('hidden',!cart.length);updateCheckoutActionVisibility();$('#submit-order').disabled=!storeOpen();if(openTabEnabled)renderTabSummary();renderInOrderBadges();positionCartBar();
 }
 let itemSheetDrag=null;
 function resetItemSheetDrag(){const dialog=$('#item-dialog'),card=dialog.querySelector('.sheet-card');itemSheetDrag=null;dialog.classList.remove('is-dragging');card.style.removeProperty('transform');card.style.removeProperty('will-change')}
@@ -202,8 +384,8 @@ function finishItemSheetDrag(commit){
 function closeSheet(dialog,after){
   if(!dialog?.open){after?.();return}if(matchMedia('(prefers-reduced-motion: reduce)').matches){dialog.close();if(dialog.id==='item-dialog')resetItemSheetDrag();dialog.classList.remove('is-visible','is-closing');after?.();return}const card=dialog.querySelector('.sheet-card'),startTransform=card?getComputedStyle(card).transform:'none';dialog.classList.remove('is-visible');dialog.classList.add('is-closing');let finished=false,motion;const finish=()=>{if(finished)return;finished=true;dialog.close();motion?.cancel();if(dialog.id==='item-dialog')resetItemSheetDrag();dialog.classList.remove('is-visible','is-closing');after?.()};if(['item-dialog','cart-dialog'].includes(dialog.id)){card?.getAnimations().forEach(animation=>animation.cancel());motion=card?.animate([{transform:startTransform==='none'?'translate3d(0,0,0)':startTransform},{transform:'translate3d(0,100dvh,0)'}],{duration:dialog.id==='cart-dialog'?107:120,easing:'cubic-bezier(.4,0,.8,.2)',fill:'both'});if(motion)motion.onfinish=finish;else finish();setTimeout(finish,160);return}card?.addEventListener('animationend',finish,{once:true});setTimeout(finish,170)
 }
-function showCartDialog(){const dialog=$('#cart-dialog');if(dialog.open)return;dialog.classList.remove('is-visible','is-closing');openModal(dialog);const card=dialog.querySelector('.sheet-card');card?.getAnimations().forEach(motion=>motion.cancel());card?.animate([{transform:'translate3d(0,100dvh,0)'},{transform:'translate3d(0,0,0)'}],{duration:540,easing:'cubic-bezier(.2,.8,.2,1)'});dialog.classList.add('is-visible')}
-function openCart(){renderCart();$('#checkout-details').open=false;renderReviewTableChoices(selectedReviewTable,businessExperience.serviceMode==='table');updateCheckoutActionVisibility();$('#checkout-error').classList.add('hidden');$('#cart-title').textContent='Review order';$('#cart-dialog .sheet-header .eyebrow').textContent='YOUR ORDER';if(openTabEnabled)$('#submit-order').textContent=tabOrders.length?'Send another order':'Send order';showCartDialog()}
+function showCartDialog(){const dialog=$('#cart-dialog');if(dialog.open)return;dialog.classList.remove('is-visible','is-closing');openModal(dialog);const card=dialog.querySelector('.sheet-card');card?.getAnimations().forEach(motion=>motion.cancel());card?.animate([{transform:'translate3d(0,100dvh,0)'},{transform:'translate3d(0,0,0)'}],{duration:320,easing:'cubic-bezier(.2,.8,.2,1)'});dialog.classList.add('is-visible')}
+function openCart(){renderCart();$('#checkout-details').open=false;renderReviewTableChoices(selectedReviewTable,businessExperience.serviceMode==='table');updateCheckoutActionVisibility();$('#checkout-error').classList.add('hidden');$('#cart-title').textContent='Review order';$('#cart-dialog .sheet-header .eyebrow').textContent='YOUR ORDER';if(openTabEnabled)$('#submit-label').textContent=tabOrders.length?'Send another order':'Send order';showCartDialog()}
 function openTab(){renderTabSummary();openModal($('#open-tab-dialog'))}
 function setConsumptionChoice(choice){
   if(!consumptionModes.includes(choice))return false;
@@ -245,7 +427,7 @@ function showStoreNotice(){const notice=$('#store-notice');notice.innerHTML=`<h2
 function addSelectedItem(){
   const options=itemOptionDraft.flat(),unitPriceMinor=selectedItem.price+options.reduce((sum,option)=>sum+option.priceMinor,0);
   const line={itemId:selectedItem.id,name:selectedItem.name,quantity:itemQuantity,unitPriceMinor,selectedOptions:options,lineTotalMinor:unitPriceMinor*itemQuantity,notes:$('#item-notes').value.trim()};
-  if(editingIndex>=0)cart[editingIndex]=line;else cart.push(line);persistCart();renderCart();closeSheet($('#item-dialog'));
+  const updated=editingIndex>=0;if(updated)cart[editingIndex]=line;else cart.push(line);persistCart();renderCart();closeSheet($('#item-dialog'));showToast(`${updated?'Updated':'Added'} ${line.quantity}× ${line.name}`);popElement($('#cart-count'));
 }
 function updateLine(index,delta){const line=cart[index];if(!line)return;const quantity=Math.min(20,line.quantity+delta);if(quantity<=0)cart.splice(index,1);else{line.quantity=quantity;line.lineTotalMinor=line.unitPriceMinor*line.quantity}persistCart();renderCart()}
 function makeId(){if(globalThis.crypto?.randomUUID)return crypto.randomUUID();const bytes=new Uint8Array(16);crypto.getRandomValues(bytes);bytes[6]=bytes[6]&15|64;bytes[8]=bytes[8]&63|128;const hex=[...bytes].map(byte=>byte.toString(16).padStart(2,'0')).join('');return`${hex.slice(0,8)}-${hex.slice(8,12)}-${hex.slice(12,16)}-${hex.slice(16,20)}-${hex.slice(20)}`}
@@ -266,11 +448,27 @@ async function createOrder(paymentMethod=null){
   const input={idempotencyKey,createdAt:now,updatedAt:now,experience:businessExperience.serviceMode,consumptionType:consumption,fulfillmentType:fulfillment,tableNumber:fulfillment==='table'?table:null,tableSessionId:session?.id||null,customerLabel:customerName||undefined,paymentMethod:paymentMethod||undefined,paymentStatus:paymentMethod==='counter'?'due_at_counter':undefined,items:cart.map(line=>({...line})),subtotalMinor:cartTotals().subtotal,notes:$('#order-notes').value.trim()};
   try{const result=await dataService.createOrder(input),order={...input,...result,createdAt:result.createdAt||now,updatedAt:result.updatedAt||now,status:result.status||'received',events:result.events||[{status:'received',at:now,label:'Order received'}]};dataService.rememberActiveOrder?.(order);if(!openTabEnabled)rememberHistory(order);if(openTabEnabled){const ids=safeParse(localStorage.getItem(TAB_ORDER_KEY),[]),session=tableSessionService?.current();localStorage.setItem(TAB_ORDER_KEY,JSON.stringify([...new Set([...ids,String(order.id)])]));localStorage.setItem(TAB_SESSION_KEY,JSON.stringify({sessionId:session?.id||null,updatedAt:now}))}localStorage.removeItem(PENDING_KEY);localStorage.removeItem(CART_KEY);cart=[];await refreshTabOrders();renderCart();if($('#payment-dialog').open)$('#payment-dialog').close();if($('#cart-dialog').open)$('#cart-dialog').close();showConfirmation(order)}catch(cause){error.textContent=cause.message||'We could not submit this order. Your cart is safe—try again.';error.classList.remove('hidden');if($('#payment-dialog').open)$('#payment-dialog').close();showCartDialog()}
 }
-function showConfirmation(order){const dialog=$('#confirmation-dialog');$('#confirmation-title').textContent=openTabEnabled?'ADDED TO':'ORDER NUMBER';$('#confirmation-number').textContent=openTabEnabled?`Table ${order.tableNumber}`:order.orderNumber;if(!dialog.open)openModal(dialog);requestAnimationFrame(()=>dialog.focus())}
+function showConfirmation(order){
+  const dialog=$('#confirmation-dialog');
+  $('#confirmation-title').textContent=openTabEnabled?'ADDED TO':'ORDER NUMBER';
+  $('#confirmation-number').textContent=openTabEnabled?`Table ${order.tableNumber}`:order.orderNumber;
+  $('#confirmation-orders').textContent=openTabEnabled?'View Open Tab':'View my orders';
+  const list=$('#confirmation-items');
+  list.replaceChildren(...(order.items||[]).map(item=>{
+    const row=document.createElement('li'),name=document.createElement('span'),total=document.createElement('strong');
+    name.textContent=`${item.quantity}× ${item.name}`;
+    total.textContent=format(item.lineTotalMinor);
+    row.append(name,total);
+    return row;
+  }));
+  staggerRise($('#confirmation-dialog'),{step:110,selector:'.status-step'});
+  if(!dialog.open)openModal(dialog);
+  requestAnimationFrame(()=>dialog.focus());
+}
 async function refreshTabOrders(){try{const orders=await dataService.listOrders();orderHistory=orderHistory.map(saved=>historySnapshot(orders.find(order=>String(order.id)===String(saved.id))||saved));saveHistory();renderHistory();if(!openTabEnabled)return;const ids=safeParse(localStorage.getItem(TAB_ORDER_KEY),[]).map(String),tabState=safeParse(localStorage.getItem(TAB_SESSION_KEY),{});await tableSessionService?.refresh();const current=tableSessionService?.current(),session=tabState.sessionId?tableSessionService.sessions.find(item=>String(item.id)===String(tabState.sessionId)):current;tabOrders=orders.filter(order=>ids.includes(String(order.id)));if(ids.length&&['paid','settled'].includes(session?.status)){rememberPaidTab(session,tabOrders);clearActiveTab();return}if(ids.length&&(!session||['cleaned','cancelled','expired'].includes(session.status))){clearActiveTab();return}if(ids.length&&!tabState.sessionId&&current)localStorage.setItem(TAB_SESSION_KEY,JSON.stringify({sessionId:current.id,updatedAt:new Date().toISOString()}));renderTabSummary()}catch{renderHistory();renderTabSummary()}}
 $('#menu-search').addEventListener('input',event=>renderMenu(event.target.value));$('#clear-search').addEventListener('click',()=>{$('#menu-search').value='';renderMenu();$('#menu-search').focus()});
 $('#order-history-control').addEventListener('click',()=>{renderHistory();$('#history-clear-confirm').classList.add('hidden');$('#clear-history').classList.toggle('hidden',!orderHistory.length);openModal($('#history-dialog'))});$('#close-history').addEventListener('click',()=>closeSheet($('#history-dialog')));$('#clear-history').addEventListener('click',()=>{$('#clear-history').classList.add('hidden');$('#history-clear-confirm').classList.remove('hidden')});$('#cancel-clear-history').addEventListener('click',()=>{$('#history-clear-confirm').classList.add('hidden');$('#clear-history').classList.remove('hidden')});$('#confirm-clear-history').addEventListener('click',()=>{orderHistory=[];localStorage.removeItem(HISTORY_KEY);renderHistory();$('#history-clear-confirm').classList.add('hidden');$('#clear-history').classList.add('hidden')});
-$('#open-cart').addEventListener('click',openCart);$('#desktop-open-cart').addEventListener('click',openCart);$('#open-tab-control').addEventListener('click',openTab);$('#close-open-tab').addEventListener('click',()=>$('#open-tab-dialog').close());$('#item-minus').addEventListener('click',()=>{itemQuantity--;updateItemTotal()});$('#item-plus').addEventListener('click',()=>{itemQuantity++;updateItemTotal()});$('#add-item').addEventListener('click',event=>{event.preventDefault();syncItemOptionDraft();const missing=(selectedItem?.options||[]).findIndex((group,index)=>group.required&&!itemOptionDraft[index]?.length);if(missing>=0){const input=$(`input[name="group-${missing}"]`);input.setCustomValidity('Choose an option.');input.reportValidity();input.onchange=()=>input.setCustomValidity('');return}addSelectedItem()});
+$('#open-cart').addEventListener('click',openCart);$('#desktop-open-cart').addEventListener('click',openCart);$('#open-tab-control').addEventListener('click',openTab);$('#mini-tab').addEventListener('click',openTab);$('#close-open-tab').addEventListener('click',()=>$('#open-tab-dialog').close());$('#item-minus').addEventListener('click',()=>{itemQuantity--;updateItemTotal()});$('#item-plus').addEventListener('click',()=>{itemQuantity++;updateItemTotal()});$('#add-item').addEventListener('click',event=>{event.preventDefault();syncItemOptionDraft();const missing=markMissingOptions();if(missing>=0){const group=$(`#item-options [data-group-index="${missing}"]`);group.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});group.querySelector('input').focus({preventScroll:true});return}addSelectedItem()});
 $('#item-dialog').addEventListener('close',()=>{const invoker=itemDialogInvoker,fallback=editingIndex>=0&&$('#cart-dialog').open?$(`#cart-items [data-action="edit"][data-index="${editingIndex}"]`):null;itemDialogInvoker=null;const target=invoker?.isConnected?invoker:fallback;if(target)requestAnimationFrame(()=>target.focus())});
 $('#cancel-item').addEventListener('click',()=>closeSheet($('#item-dialog')));$('#item-dialog').addEventListener('cancel',event=>{event.preventDefault();closeSheet($('#item-dialog'))});$('#close-cart').addEventListener('click',()=>closeSheet($('#cart-dialog')));$('#cart-dialog').addEventListener('cancel',event=>{event.preventDefault();closeSheet($('#cart-dialog'))});$('#history-dialog').addEventListener('cancel',event=>{event.preventDefault();closeSheet($('#history-dialog'))});
 $('#item-dialog').addEventListener('click',event=>{if(event.target===event.currentTarget)closeSheet(event.currentTarget)});
@@ -288,16 +486,16 @@ $('#fulfillment-back').addEventListener('click',()=>{if(orderMethodStep==='consu
 $('#consumption-choice-list').addEventListener('click',event=>{const button=event.target.closest('[data-consumption-choice]');if(!button)return;setConsumptionChoice(button.dataset.consumptionChoice);continueOrderMethodFlow()});
 $('#fulfillment-choice-list').addEventListener('click',event=>{const button=event.target.closest('[data-fulfillment-choice]');if(!button)return;const choice=button.dataset.fulfillmentChoice;setFulfillmentChoice(choice);if(choice==='table')return showFulfillmentTables();paymentFirst?openPaymentStep():createOrder()});
 $('#review-table-grid').addEventListener('click',event=>{const button=event.target.closest('[data-review-table]');if(!button)return;setReviewTableNumber(button.dataset.reviewTable);setFulfillmentChoice('table');paymentFirst?openPaymentStep():createOrder()});
-$('#submit-order').addEventListener('click',event=>{event.preventDefault();continueOrderMethodFlow()});$('#close-payment').addEventListener('click',closePaymentStep);$('#payment-dialog').addEventListener('cancel',event=>{event.preventDefault();closePaymentStep()});$('#pay-at-counter').addEventListener('click',()=>createOrder('counter'));$('#confirmation-dialog').addEventListener('click',event=>{if(event.target===event.currentTarget)event.currentTarget.close()});
+$('#submit-order').addEventListener('click',event=>{event.preventDefault();continueOrderMethodFlow()});$('#close-payment').addEventListener('click',closePaymentStep);$('#payment-dialog').addEventListener('cancel',event=>{event.preventDefault();closePaymentStep()});$('#pay-at-counter').addEventListener('click',()=>createOrder('counter'));$('#confirmation-dialog').addEventListener('click',event=>{if(event.target===event.currentTarget)event.currentTarget.close()});$('#confirmation-done').addEventListener('click',()=>closeSheet($('#confirmation-dialog')));$('#confirmation-orders').addEventListener('click',()=>closeSheet($('#confirmation-dialog'),openTabEnabled?openTab:()=>$('#order-history-control').click()));
 $('#table-choice-grid').addEventListener('click',event=>{const button=event.target.closest('[data-table-choice]');if(button)chooseTable(button.dataset.tableChoice)});$('#table-choice-back').addEventListener('click',()=>{$('#table-entry-form').classList.add('hidden');$('#table-choice-view').classList.remove('hidden');renderTableChoices()});
 $('#table-entry-form').addEventListener('submit',async event=>{event.preventDefault();const form=event.currentTarget,error=$('#table-entry-error'),table=form.elements.table.value.trim(),name=form.elements.name.value.trim();error.classList.add('hidden');rememberCustomerName(name,form.elements.saveName.checked);presetCustomerName(name);const occupied=Boolean(tableSessionService.find(table));try{const session=await tableSessionService.open({table,name,guestCount:form.elements.guestCount.value,packageId:serviceProfile.settings.bundleSelection==='required'?form.elements.package.value:null});if(session.status==='active'&&!occupied)openTableMenu(session);else showTableWaiting(session,occupied)}catch(cause){error.textContent=cause.message;error.classList.remove('hidden')}});
 $('#preview-accept-table').addEventListener('click',async()=>{if(!pendingTableSession)return;const isHost=pendingTableSession.participants.some(person=>person.deviceId===tableSessionService.deviceId&&person.role==='host');if(!isHost)return;const session=await tableSessionService.accept(pendingTableSession.id);if(session)openTableMenu(session)});
 $('#cancel-table-request').addEventListener('click',async()=>{if(!pendingTableSession)return;const button=$('#cancel-table-request');button.disabled=true;try{await tableSessionService.cancel(pendingTableSession.id);resetTableEntry('Request cancelled. You can choose another table.')}catch(cause){resetTableEntry(cause.message||'This request can no longer be cancelled.')}finally{button.disabled=false}});
 $('#store-notice').addEventListener('click',async event=>{const button=event.target.closest('[data-approve-join]');if(!button)return;button.disabled=true;await tableSessionService.approveJoin(button.dataset.sessionId,button.dataset.approveJoin);const session=tableSessionService.current();if(session)openTableMenu(session)});
 $('#browse-pending-table').addEventListener('click',()=>{if(!pendingTableSession)return;$('#table-session-dialog').close();setReviewTableNumber(pendingTableSession.table);const notice=$('#store-notice');notice.innerHTML=`<h2>Table ${escapeText(pendingTableSession.table)} is waiting for staff</h2><p>Build your order while you wait. The submit button will unlock after staff accepts the table.</p>`;notice.classList.remove('hidden')});
-dataService.subscribe({onStoreChanged:async()=>{orderingOpen=await dataService.getStoreOpen().catch(()=>false);if(!storeOpen())showStoreNotice();else $('#store-notice').classList.add('hidden')}});
+dataService.subscribe({onStoreChanged:async()=>{orderingOpen=await dataService.getStoreOpen().catch(()=>false);refreshHeader();if(!storeOpen())showStoreNotice();else $('#store-notice').classList.add('hidden')}});
 tableSessionService?.subscribe(()=>{const session=tableSessionService.current();refreshTabOrders();if(session&&['active','bill_requested','inactivity_warning'].includes(session.status))openTableMenu(session);else if(pendingTableSession&&!session)resetTableEntry('The request ended. Choose a table to try again.');else if(!session)$('#store-notice').classList.add('hidden')});
-if(dataService.mode==='demo')subscribeMenuState(businessSlug,state=>{applyStudioMenu(state);categories=state.categories.filter(category=>menu.some(item=>item.category===category&&item.available&&!item.hidden));renderMenu($('#menu-search').value)});
-renderMenu();renderHistory();renderCart();initializeTableEntry();if(dataLoadError){const notice=$('#store-notice');notice.innerHTML=`<h2>Menu connection unavailable</h2><p>${escapeText(dataLoadError)}</p><button class="secondary-button" type="button" data-retry-menu>Try again</button>`;notice.classList.remove('hidden')}else if(!storeOpen())showStoreNotice();
+if(dataService.mode==='demo')subscribeMenuState(businessSlug,state=>{applyStudioMenu(state);categories=state.categories.filter(category=>menu.some(item=>item.category===category&&!item.hidden));renderMenu($('#menu-search').value)});
+renderMenu();staggerRise($('#menu-sections'));renderHistory();renderCart();initializeTableEntry();if(dataLoadError){const notice=$('#store-notice');notice.innerHTML=`<h2>Menu connection unavailable</h2><p>${escapeText(dataLoadError)}</p><button class="secondary-button" type="button" data-retry-menu>Try again</button>`;notice.classList.remove('hidden')}else if(!storeOpen())showStoreNotice();
 $('#store-notice').addEventListener('click',event=>{if(event.target.closest('[data-retry-menu]'))location.reload()});
 refreshTabOrders();addEventListener('qrk:demo-orders-changed',refreshTabOrders);addEventListener('storage',event=>{if(openTabEnabled&&event.key?.includes('qrk_demo_orders_v2'))refreshTabOrders()});setInterval(refreshTabOrders,dataService.mode==='demo'?4000:15000);

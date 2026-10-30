@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 const [app, customerHtml, customerCss, customerJs, componentCss] = await Promise.all([
   readFile(new URL('../dist/app.js', import.meta.url), 'utf8'),
   readFile(new URL('../dist/menu/index.html', import.meta.url), 'utf8'),
-  readFile(new URL('../dist/menu/cart-dock.css', import.meta.url), 'utf8'),
+  Promise.all(['menu','menu-sheets'].map(n => readFile(new URL(`../dist/menu/${n}.css`, import.meta.url), 'utf8'))).then(c => c.join('\n')),
   readFile(new URL('../dist/menu/menu.js', import.meta.url), 'utf8'),
   readFile(new URL('../dist/ui-components.css', import.meta.url), 'utf8')
 ]);
@@ -18,8 +18,9 @@ assert.doesNotMatch(customerHtml, /class="dish-description"/);
 assert.doesNotMatch(customerHtml, /dish-cta/);
 assert.match(customerCss, /\.menu-section \.dish\s*\{[^}]*padding:\s*0[^}]*overflow:\s*hidden[^}]*border:\s*0/s);
 assert.doesNotMatch(customerCss, /\.dish-cta/);
-assert.match(componentCss, /--component-menu-card-bg:color-mix\(in srgb,var\(--surface\) 84%,transparent\)/);
-assert.match(componentCss, /\.dish,\.customer-dish-card\s*\{[^}]*backdrop-filter:saturate\(1\.08\) blur\(16px\)/s);
+assert.match(componentCss, /--component-menu-card-bg:var\(--surface\)/);
+assert.match(componentCss, /\.dish,\.customer-dish-card\s*\{[^}]*backdrop-filter:none/s);
+assert.match(componentCss, /--component-menu-card-shadow:none/);
 assert.match(componentCss, /\.dish\{border:0\}/);
 assert.match(componentCss, /\.customer-dish-card\{border:1px solid var\(--component-menu-card-border\)\}/);
 assert.match(customerCss, /\.menu-section \.dish\s*\{[^}]*backdrop-filter:\s*none/s);
@@ -27,21 +28,7 @@ assert.match(componentCss, /@media\(prefers-reduced-transparency:reduce\)\s*\{[^
 assert.match(customerCss, /\.menu-tools \.categories\s*\{[^}]*display:\s*flex[^}]*flex-wrap:\s*nowrap[^}]*overflow-x:\s*auto[^}]*scroll-snap-type:\s*inline proximity/s);
 assert.match(customerCss, /\.menu-tools \.categories\s*\{[^}]*padding-right:\s*max\(18px, calc\(50% - 4\.25rem\)\)/s);
 assert.match(customerCss, /\.menu-tools \.categories a\s*\{[^}]*flex:\s*0 0 clamp\(4\.75rem, 22%, 6\.25rem\)[^}]*scroll-snap-align:\s*center/s);
-assert.match(customerCss, /\.restaurant-profile\s*\{[^}]*position:\s*absolute[^}]*bottom:\s*24px[^}]*color:\s*#fff/s);
-assert.match(customerHtml, /id="restaurant-banner"[^>]*hidden/);
-assert.doesNotMatch(customerHtml, /id="restaurant-banner"[^>]*src=/);
-assert.match(customerCss, /\.restaurant-banner\[hidden\]\s*\{[^}]*display:\s*none/s);
-assert.doesNotMatch(customerCss, /\.restaurant\.no-banner/);
-assert.match(customerJs, /defaultBanner='\/assets\/businesses\/kusina-manila-banner\.webp',bannerUrl=customerBrand\.coverPhotoUrl\|\|defaultBanner/);
-assert.doesNotMatch(customerJs, /['"]no-banner['"]/);
-assert.match(customerHtml, /class="menu-curve" aria-hidden="true"/);
-assert.match(customerCss, /\.restaurant \+ \.notice \+ \.menu\s*\{[^}]*margin-top:\s*0[^}]*border-radius:\s*0/s);
-assert.match(customerCss, /\.menu-curve\s*\{[^}]*position:\s*absolute[^}]*top:\s*-22px[^}]*height:\s*22px[^}]*border-radius:\s*22px 22px 0 0[^}]*background:\s*var\(--surface, #fff\)/s);
-assert.match(customerCss, /\.menu-tools\s*\{[^}]*border-radius:\s*0[^}]*border:\s*0[^}]*background:\s*var\(--surface, #fff\)[^}]*backdrop-filter:\s*none[^}]*box-shadow:\s*none/s);
-assert.match(customerCss, /\.menu-tools \.search-wrap #menu-search\s*\{[^}]*background:\s*var\(--surface-soft, #f4f5f7\)/s);
-assert.match(customerCss, /\.menu-tools \.search-wrap #menu-search\s*\{[^}]*border:\s*0/s);
-assert.match(customerCss, /#menu-search:focus-visible\s*\{[^}]*outline:\s*0[^}]*box-shadow:\s*0 5px 18px/s);
-assert.match(componentCss, /--component-menu-search-height:2\.1rem/);
+assert.match(customerCss, /#menu-search:focus-visible\s*\{[^}]*outline:\s*2px solid var\(--brand-500\)/s);
 assert.match(componentCss, /--component-menu-category-height:1\.925rem/);
 assert.match(componentCss, /--component-menu-floating-order-height:2\.6rem/);
 assert.match(customerCss, /#menu-search\s*\{[^}]*height:\s*var\(--component-menu-search-height\)[^}]*min-height:\s*0/s);
@@ -55,9 +42,15 @@ assert.match(customerCss, /#cart-dialog\.is-visible::backdrop\s*\{[^}]*backgroun
 assert.match(customerHtml, /<svg viewBox="0 0 24 24" fill="none">/);
 assert.doesNotMatch(customerJs, /card\.querySelector\('p'\)\.textContent=item\.description/);
 assert.match(customerJs, /\$\('#item-description'\)\.textContent=item\.description/);
-assert.match(customerJs, /cardButton\.setAttribute\('aria-label',`Add \$\{item\.name\} to order`\)/);
+// The row's visible text (name, description, price, badges) is its accessible name.
+assert.doesNotMatch(customerJs, /cardButton\.setAttribute\('aria-label'/);
 assert.doesNotMatch(customerJs, /dish-cta/);
 assert.match(customerJs, /centerIfClipped=link=>\{[^}]*getBoundingClientRect\(\)[^}]*track\.scrollTo\(\{left:link\.offsetLeft-\(track\.clientWidth-link\.offsetWidth\)\/2/s);
 assert.match(customerJs, /prefers-reduced-motion: reduce/);
 
 console.log('Menu description and compact customer card contract passed.');
+
+assert.match(customerHtml, /data-hero-cover[^>]*hidden/);
+assert.match(customerCss, /\.hero-band\s*\{[^}]*padding:\s*22px 16px var\(--hero-pad-bottom\)[^}]*border-radius:\s*0 0 30px 30px/s);
+assert.match(customerCss, /\.menu-tools\s*\{[^}]*margin-top:\s*-62px/s);
+assert.match(customerCss, /\.menu-tools \.search-wrap #menu-search\s*\{[^}]*height:\s*var\(--component-menu-search-height\)[^}]*border-radius:\s*16px/s);

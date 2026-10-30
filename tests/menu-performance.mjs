@@ -5,7 +5,7 @@ const [menu,app,imageService,styles,dataService,markup]=await Promise.all([
  readFile(new URL('../dist/menu/menu.js',import.meta.url),'utf8'),
  readFile(new URL('../dist/app.js',import.meta.url),'utf8'),
  readFile(new URL('../dist/data/qrk-image-service.js',import.meta.url),'utf8'),
- readFile(new URL('../dist/menu/cart-dock.css',import.meta.url),'utf8'),
+ Promise.all(['menu','menu-sheets'].map(n => readFile(new URL(`../dist/menu/${n}.css`, import.meta.url), 'utf8'))).then(c => c.join('\n')),
  readFile(new URL('../dist/data/qrk-data-service.js',import.meta.url),'utf8'),
  readFile(new URL('../dist/menu/index.html',import.meta.url),'utf8')
 ]);
@@ -21,11 +21,9 @@ assert.doesNotMatch(menu,/header-parallax/);
 assert.doesNotMatch(styles,/background-attachment:\s*scroll,\s*fixed/);
 assert.doesNotMatch(menu,/function updateMenuChrome\(/);
 assert.doesNotMatch(menu,/restaurant-parallax-y|menuChromeFrame|requestAnimationFrame\([^)]*updateMenuChrome/);
-assert.match(styles,/\.restaurant\s*\{[^}]*position:\s*sticky[^}]*top:\s*0[^}]*overflow:\s*hidden/s);
-assert.match(styles,/\.restaurant-visual\s*\{[^}]*transform:\s*none/s);
 assert.doesNotMatch(styles,/restaurant-parallax-y/);
-assert.match(styles,/#menu-sections\s*\{[^}]*position:\s*relative[^}]*z-index:\s*1[^}]*isolation:\s*isolate[^}]*background:\s*var\(--surface, #fff\)/s);
-assert.match(styles,/\.menu\.has-menu-background #menu-sections\s*\{[^}]*background-color:\s*var\(--surface, #fff\)[^}]*var\(--menu-background-image\)/s);
+assert.match(styles,/#menu-sections\s*\{[^}]*position:\s*relative[^}]*z-index:\s*1[^}]*isolation:\s*isolate\s*;?\s*\}/s);
+assert.match(styles,/\.menu-bg\s*\{[^}]*position:\s*fixed[^}]*z-index:\s*-1/s); // themed background sits behind the opaque cards
 assert.match(imageService,/MAX_EDGE=960/);
 assert.match(imageService,/TARGET_BYTES=160\*1024/);
 assert.match(imageService,/CARD_EDGE=480/);
