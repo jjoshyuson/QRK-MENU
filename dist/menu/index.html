@@ -16,14 +16,14 @@
   <link rel="stylesheet" href="/theme.css?v=1">
   <link rel="stylesheet" href="/pwa.css?v=1">
   <link rel="stylesheet" href="/ui-components.css?v=19">
-  <link rel="stylesheet" href="/menu/menu.css?v=28">
+  <link rel="stylesheet" href="/menu/menu.css?v=30">
   <link rel="stylesheet" href="/menu/menu-sheets.css?v=8">
   <link rel="stylesheet" href="/menu/menu-table.css?v=3">
   <script src="/global-theme.js"></script>
   <script src="/pwa.js" defer></script>
   <script src="/ui-components.js?v=10" defer></script>
   <script src="/data/qrk-config.local.js"></script>
-  <script type="module" src="/menu/menu.js?v=48"></script>
+  <script type="module" src="/menu/menu.js?v=49"></script>
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
@@ -69,6 +69,7 @@
     <button class="open-tab-control hidden" id="open-tab-control" type="button" aria-controls="open-tab-dialog" aria-haspopup="dialog">
       <span class="open-tab-count" id="open-tab-count">0</span><span><b>Open Tab</b><small id="open-tab-total">₱0 · 0 items</small></span><span class="open-tab-go" aria-hidden="true">›</span>
     </button>
+      <section class="featured hidden" id="featured-row" aria-labelledby="featured-title"><div class="section-heading"><h3 id="featured-title">Featured</h3></div><div class="featured-track"></div></section>
       <div id="menu-sections" aria-busy="true" aria-live="polite">
         <section class="menu-section menu-loading" aria-label="Loading menu">
           <div class="loading-heading" aria-hidden="true"></div>
@@ -180,6 +181,6 @@
       <footer class="history-actions"><button class="text-button" id="clear-history" type="button">Clear order history</button><div class="history-clear-confirm hidden" id="history-clear-confirm"><span>Clear saved history from this device?</span><button class="secondary-button" id="cancel-clear-history" type="button">Cancel</button><button class="primary-button" id="confirm-clear-history" type="button">Clear</button></div></footer>
     </div>
   </dialog>
-  <template id="dish-template"><article class="dish"><button class="dish-hit" type="button"><div class="dish-copy"><h4></h4><p class="dish-desc"></p><span class="dish-badges"><span class="badge sold-label hidden">Sold out</span><span class="badge in-order-label hidden"></span></span><strong class="dish-price"><span class="price-symbol"></span><span class="price-amount"></span></strong></div><div class="dish-media"><div class="photo"><img alt="" width="640" height="480"></div><span class="dish-plus" aria-hidden="true">+</span></div></button></article></template>
+  <template id="dish-template"><article class="dish"><button class="dish-hit" type="button"><div class="dish-copy"><h4></h4><p class="dish-desc"></p><span class="dish-tags"></span><span class="dish-badges"><span class="badge sold-label hidden">Sold out</span><span class="badge in-order-label hidden"></span></span><strong class="dish-price"><span class="price-symbol"></span><span class="price-amount"></span></strong></div><div class="dish-media"><div class="photo"><img alt="" width="640" height="480"></div><span class="dish-plus" aria-hidden="true">+</span></div></button></article></template>
 </body>
 </html>

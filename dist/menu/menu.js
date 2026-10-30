@@ -4,7 +4,7 @@ import { getBusinessExperience } from '../data/qrk-businesses.js';
 import { QrkTableSessionService } from '../data/qrk-table-session-service.js?v=3';
 import { menuOptionGroupsForItem, readMenuState, subscribeMenuState } from '../data/qrk-menu-store.js';
 import { deviceScopedKey } from '../data/qrk-device-service.js';
-import { accentFor, applyHeader, applyMenuBackground, bindImageFallbacks, bindScrollChrome, businessInitials, formatPriceParts, headerModel, popElement, safeImageUrl, sectionIndexLabel, showToast, staggerRise } from './menu-appearance.js';
+import { accentFor, applyHeader, applyMenuBackground, bindImageFallbacks, bindScrollChrome, businessInitials, featuredItems, formatPriceParts, headerModel, popElement, safeImageUrl, sectionIndexLabel, showToast, staggerRise, tagLabel } from './menu-appearance.js';
 import { selectServiceExperience } from '../data/qrk-service-presets.js';
 import { resolveQuickOrderState, validQuickFulfillmentModes } from '../data/qrk-quick-order.js';
 
@@ -61,7 +61,7 @@ function applyStudioMenu(state){
 if(dataService.mode==='demo')applyStudioMenu(readMenuState(businessSlug));
 let dataLoadError='';
 if(dataService.mode!=='demo'){
-  try{const remote=await dataService.getPublicMenu();const photoByName=new Map((businessExperience.menu||[]).map(([,name,,,photo])=>[name,photo]));const remoteItems=remote?.menu?.categories?.flatMap(category=>(category.items||[]).map(item=>({id:item.id,category:category.name,name:item.name,description:item.description,price:item.priceMinor,photo:item.photo?.url||item.imagePath||photoByName.get(item.name)||'/photos/adobo.jpg',photoCard:item.photo?.cardUrl||item.photo?.thumbnailUrl||item.photo?.url||item.imagePath,available:item.available,options:(item.optionGroups||[]).map(group=>({name:group.name,required:group.required,multiple:group.maxSelections>1,choices:(group.options||[]).map(option=>[option.name,option.priceDeltaMinor,option.id])}))})))||[];if(remoteItems.length)menu=remoteItems}catch(error){dataLoadError=error.message||'The published menu could not be loaded.'}
+  try{const remote=await dataService.getPublicMenu();const photoByName=new Map((businessExperience.menu||[]).map(([,name,,,photo])=>[name,photo]));const remoteItems=remote?.menu?.categories?.flatMap(category=>(category.items||[]).map(item=>({id:item.id,category:category.name,name:item.name,description:item.description,price:item.priceMinor,photo:item.photo?.url||item.imagePath||photoByName.get(item.name)||'/photos/adobo.jpg',photoCard:item.photo?.cardUrl||item.photo?.thumbnailUrl||item.photo?.url||item.imagePath,available:item.available,featured:item.featured===true,tags:Array.isArray(item.tags)?item.tags:[],options:(item.optionGroups||[]).map(group=>({name:group.name,required:group.required,multiple:group.maxSelections>1,choices:(group.options||[]).map(option=>[option.name,option.priceDeltaMinor,option.id])}))})))||[];if(remoteItems.length)menu=remoteItems}catch(error){dataLoadError=error.message||'The published menu could not be loaded.'}
 }
 let categories=[...new Set(menu.map(item=>item.category))];
 const $=selector=>document.querySelector(selector);
@@ -150,6 +150,54 @@ function rememberPaidTab(session,orders){const placed=orders.filter(order=>order
 function renderHistory(){const list=$('#device-order-history'),empty=$('#history-empty');refreshHeader();empty.classList.toggle('hidden',orderHistory.length>0);list.innerHTML=orderHistory.map(order=>{const [label,state]=tabStatus(order),items=order.items.reduce((sum,item)=>sum+Number(item.quantity||0),0);return`<article class="history-order"><header><div><h3>${escapeText(order.orderNumber||'Saved order')}</h3><time datetime="${escapeText(order.createdAt)}">${new Intl.DateTimeFormat('en-PH',{dateStyle:'medium',timeStyle:'short'}).format(new Date(order.createdAt))}</time></div><span class="tab-status ${state}">${label}</span></header><p>${items} ${items===1?'item':'items'}</p><footer><span>${escapeText(order.items.map(item=>`${item.quantity}× ${item.name}`).join(' · '))}</span><strong>${format(order.subtotalMinor)}</strong></footer></article>`}).join('')}
 function clearActiveTab(){localStorage.removeItem(TAB_ORDER_KEY);localStorage.removeItem(TAB_SESSION_KEY);localStorage.removeItem(CART_KEY);cart=[];tabOrders=[];renderCart()}
 function renderTabSummary(){const summary=$('#tab-summary');if(!openTabEnabled)return;const totals=tabTotals(),placed=tabOrders.filter(order=>order.status!=='cancelled'),placedCount=placed.reduce((sum,order)=>sum+order.items.reduce((itemSum,item)=>itemSum+item.quantity,0),0),placedTotal=placed.reduce((sum,order)=>sum+Number(order.subtotalMinor||0),0),itemLabel=`${totals.count} ${totals.count===1?'item':'items'}`,control=$('#open-tab-control');$('#open-tab-count').textContent=totals.count;$('#open-tab-total').textContent=`${format(totals.total)} · ${itemLabel}`;control.setAttribute('aria-label',`Open tab, ${itemLabel}, running total ${format(totals.total)}`);control.classList.toggle('hidden',!totals.count);const mini=$('#mini-tab'),price=formatPriceParts(totals.total);mini.textContent=`Tab · ${price.symbol}${price.amount}`;mini.setAttribute('aria-label',`Open tab, ${price.symbol}${price.amount}`);mini.classList.toggle('hidden',!totals.count);summary.innerHTML=`<div class="tab-summary-head"><div><p class="eyebrow">SUBMITTED TOTAL</p><strong>${format(placedTotal)}</strong></div><span>${placedCount} ${placedCount===1?'item':'items'}</span></div>${placed.length?`<div class="tab-rounds"><h3>Previous orders</h3>${placed.map((order,index)=>{const [label,state]=tabStatus(order);return`<article class="tab-round"><div class="tab-round-head"><b>Order ${index+1}</b><span class="tab-status ${state}">${label}</span></div><ul>${order.items.map(item=>`<li><span>${item.quantity}× ${escapeText(item.name)}</span><strong>${format(item.lineTotalMinor)}</strong></li>`).join('')}</ul><div class="tab-round-total"><span>Order total</span><strong>${format(order.subtotalMinor)}</strong></div></article>`}).join('')}</div>`:'<p class="tab-empty-copy">No orders have been sent yet.</p>'}`}
+function renderTags(host,tags){
+  (tags||[]).forEach(tag=>{
+    const label=tagLabel(tag);
+    if(!label)return;
+    const chip=document.createElement('span');
+    chip.className=`dish-tag tag-${tag}`;
+    chip.textContent=label;
+    host.append(chip);
+  });
+}
+function renderFeatured(query){
+  const row=$('#featured-row'),track=row.querySelector('.featured-track');
+  const items=query?[]:featuredItems(menu);
+  track.replaceChildren();
+  row.classList.toggle('hidden',!items.length);
+  items.forEach(item=>{
+    const card=document.createElement('button');
+    card.type='button';
+    card.className='fcard';
+    const media=document.createElement('span');
+    media.className='fcard-media';
+    const photo=safeImageUrl(item.photoCard||item.photo);
+    if(photo){
+      const img=document.createElement('img');
+      img.src=photo;
+      img.alt='';
+      img.loading='lazy';
+      img.decoding='async';
+      media.append(img);
+    }else media.classList.add('motif-tile');
+    const price=formatPriceParts(item.price);
+    const pill=document.createElement('span');
+    pill.className='fcard-price';
+    pill.textContent=`${price.symbol}${price.amount}`;
+    media.append(pill);
+    const name=document.createElement('span');
+    name.className='fcard-name';
+    name.textContent=item.name;
+    const plus=document.createElement('span');
+    plus.className='dish-plus';
+    plus.setAttribute('aria-hidden','true');
+    plus.textContent='+';
+    card.append(media,name,plus);
+    card.addEventListener('click',event=>openItem(item,-1,event.currentTarget));
+    track.append(card);
+  });
+  if(items.length)staggerRise(row,{selector:'.fcard'});
+}
 function renderMenu(filter=''){
   const query=filter.trim().toLowerCase();
   const visible=menu.filter(item=>!item.hidden&&`${item.name} ${item.description} ${item.category}`.toLowerCase().includes(query));
@@ -206,6 +254,7 @@ function renderMenu(filter=''){
       }
       card.querySelector('h4').textContent=item.name;
       card.querySelector('.dish-desc').textContent=item.description||'';
+      renderTags(card.querySelector('.dish-tags'),item.tags);
       const price=formatPriceParts(item.price);
       card.querySelector('.price-symbol').textContent=price.symbol;
       card.querySelector('.price-amount').textContent=price.amount;
@@ -219,6 +268,7 @@ function renderMenu(filter=''){
     $('#menu-sections').append(section);
   });
   $('#menu-empty').classList.toggle('hidden',visible.length>0);
+  renderFeatured(query);
   bindCategoryLinks();
   renderInOrderBadges();
 }

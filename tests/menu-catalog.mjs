@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { formatPriceParts, sectionIndexLabel } from '../dist/menu/menu-appearance.js';
+import { featuredItems, formatPriceParts, sectionIndexLabel, tagLabel } from '../dist/menu/menu-appearance.js';
 
 assert.deepEqual(formatPriceParts(18000), { symbol: '₱', amount: '180' });
 assert.equal(formatPriceParts(123456).amount, '1,234.56');
@@ -33,4 +33,13 @@ assert.match(css, /\.menu-section \.dish-grid\s*\{[^}]*border-radius:\s*20px[^}]
 assert.match(css, /\.dish\.sold-out \.dish-copy > :not\(\.dish-badges\)[^{]*\{[^}]*opacity:\s*\.5/);
 assert.match(css, /\.dish > \.dish-hit\s*\{[^}]*min-height:\s*44px/s);
 assert.match(css, /\.dish \.photo\s*\{[^}]*width:\s*92px[^}]*border-radius:\s*16px/s);
+const it = (id, o = {}) => ({ id, featured: true, available: true, hidden: false, ...o });
+assert.deepEqual(featuredItems([it(1), it(2, { available: false }), it(3, { hidden: true }), it(4, { featured: false }), it(5), it(6), it(7), it(8)]).map(i => i.id), [1, 5, 6]);
+assert.deepEqual(featuredItems([it(1, { featured: false })]), []);
+assert.deepEqual(['spicy', 'sharing', 'slow_cooked', 'vegetarian', 'x'].map(tagLabel), ['Spicy', 'Good for sharing', 'Slow-cooked', 'Vegetarian', '']);
+assert.match(html, /id="featured-row"/);
+assert.match(menu, /Featured/);
+assert.doesNotMatch(menu + html, /No\. ?[123]|Bestseller/i);
+assert.match(css, /--spicy:\s*#C2410C/i);
+assert.match(css, /--spicy:\s*#FB923C/i);
 console.log('Menu catalog contract passed.');

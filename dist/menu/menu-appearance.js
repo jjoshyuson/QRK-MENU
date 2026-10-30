@@ -59,6 +59,10 @@ export function bindScrollChrome(scroller, { threshold = 140 } = {}) {
   return () => { scroller.removeEventListener('scroll', update); document.body.removeAttribute('data-scrolled'); };
 }
 
+export const featuredItems = items => items.filter(i => i.featured && i.available && !i.hidden).slice(0, 3);
+const TAG_LABELS = { spicy: 'Spicy', sharing: 'Good for sharing', slow_cooked: 'Slow-cooked', vegetarian: 'Vegetarian' };
+export const tagLabel = tag => TAG_LABELS[tag] || '';
+
 export const sectionIndexLabel = index => String(index + 1).padStart(2, '0');
 
 // Prices are minor units (centavos); whole pesos drop the decimals.
