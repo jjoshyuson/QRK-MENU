@@ -35,4 +35,8 @@ for (const p of MENU_PATTERNS) {
   const svg = await readFile(new URL(`../dist/assets/motifs/${p}.svg`, import.meta.url), 'utf8');
   assert.doesNotMatch(svg, /<script|<style|href|foreignObject/i, `${p}.svg`);
 }
+const css = await readFile(new URL('../dist/menu/menu.css', import.meta.url), 'utf8');
+const backing = css.match(/([^{}]*\.section-heading[^{}]*)\{[^}]*color-mix\(in srgb, var\(--surface\) (\d+)%, transparent\)/);
+assert.ok(backing && Number(backing[2]) >= 90, 'text on the themed background needs a >=90% surface backing');
+for (const sel of ['.section-heading', 'footer.menu-footer', '.empty-state']) assert.ok(backing[1].includes(sel), `${sel} backed`);
 console.log('menu-background: ok');

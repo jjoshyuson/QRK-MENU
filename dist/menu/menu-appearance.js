@@ -119,6 +119,7 @@ const MOTIFS = ['filipino', 'cafe', 'ramen', 'pizza', 'dessert'];
 export function applyMenuBackground(root, bg) {
   const layers = backgroundLayers(bg), doc = root.ownerDocument || root;
   root.classList.remove(...MOTIFS.map(name => `m-${name}`));
+  // Tiles and the header band always need a motif, so glow/plain fall back to filipino.
   root.classList.add(`m-${layers.pattern || bg?.pattern || 'filipino'}`);
   let layer = doc.querySelector('.menu-bg');
   if (!layer) { layer = doc.createElement('div'); layer.className = 'menu-bg'; layer.setAttribute('aria-hidden', 'true'); doc.body.prepend(layer); }
