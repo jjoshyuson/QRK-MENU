@@ -426,7 +426,7 @@ body[data-scrolled] .mini-header { transform: none; visibility: visible; transit
 .menu-section .dish + .dish::before { content: ""; position: absolute; top: 0; left: 16px; right: 16px; height: 1px; background: var(--line); }
 .dish > .dish-hit { display: flex; width: 100%; min-height: 44px; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 16px; text-align: left; color: var(--ink); background: transparent; border: 0; }
 .dish > .dish-hit:disabled { cursor: not-allowed; }
-.dish.sold-out { opacity: .5; }
+.dish.sold-out .dish-copy > :not(.dish-badges), .dish.sold-out .dish-media { opacity: .5; } /* badge stays full strength */
 .dish-copy { display: flex; min-width: 0; flex: 1; flex-direction: column; align-items: flex-start; gap: 4px; padding: 0; background: transparent; }
 .dish h4 { margin: 0; color: var(--ink); font-size: 15px; font-weight: 800; line-height: 1.3; }
 .dish-desc { display: -webkit-box; margin: 0; overflow: hidden; color: var(--muted); font-size: 13px; line-height: 1.4; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }

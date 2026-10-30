@@ -207,12 +207,10 @@ function renderMenu(filter=''){
       const price=formatPriceParts(item.price);
       card.querySelector('.price-symbol').textContent=price.symbol;
       card.querySelector('.price-amount').textContent=price.amount;
-      cardButton.setAttribute('aria-label',`Add ${item.name} to order`);
       if(!item.available){
         card.classList.add('sold-out');
         card.querySelector('.sold-label').classList.remove('hidden');
         cardButton.disabled=true;
-        cardButton.setAttribute('aria-label',`${item.name}, sold out`);
       }else cardButton.addEventListener('click',event=>openItem(item,-1,event.currentTarget));
       grid.append(card);
     });
@@ -374,7 +372,7 @@ $('#store-notice').addEventListener('click',async event=>{const button=event.tar
 $('#browse-pending-table').addEventListener('click',()=>{if(!pendingTableSession)return;$('#table-session-dialog').close();setReviewTableNumber(pendingTableSession.table);const notice=$('#store-notice');notice.innerHTML=`<h2>Table ${escapeText(pendingTableSession.table)} is waiting for staff</h2><p>Build your order while you wait. The submit button will unlock after staff accepts the table.</p>`;notice.classList.remove('hidden')});
 dataService.subscribe({onStoreChanged:async()=>{orderingOpen=await dataService.getStoreOpen().catch(()=>false);refreshHeader();if(!storeOpen())showStoreNotice();else $('#store-notice').classList.add('hidden')}});
 tableSessionService?.subscribe(()=>{const session=tableSessionService.current();refreshTabOrders();if(session&&['active','bill_requested','inactivity_warning'].includes(session.status))openTableMenu(session);else if(pendingTableSession&&!session)resetTableEntry('The request ended. Choose a table to try again.');else if(!session)$('#store-notice').classList.add('hidden')});
-if(dataService.mode==='demo')subscribeMenuState(businessSlug,state=>{applyStudioMenu(state);categories=state.categories.filter(category=>menu.some(item=>item.category===category&&item.available&&!item.hidden));renderMenu($('#menu-search').value)});
+if(dataService.mode==='demo')subscribeMenuState(businessSlug,state=>{applyStudioMenu(state);categories=state.categories.filter(category=>menu.some(item=>item.category===category&&!item.hidden));renderMenu($('#menu-search').value)});
 renderMenu();renderHistory();renderCart();initializeTableEntry();if(dataLoadError){const notice=$('#store-notice');notice.innerHTML=`<h2>Menu connection unavailable</h2><p>${escapeText(dataLoadError)}</p><button class="secondary-button" type="button" data-retry-menu>Try again</button>`;notice.classList.remove('hidden')}else if(!storeOpen())showStoreNotice();
 $('#store-notice').addEventListener('click',event=>{if(event.target.closest('[data-retry-menu]'))location.reload()});
 refreshTabOrders();addEventListener('qrk:demo-orders-changed',refreshTabOrders);addEventListener('storage',event=>{if(openTabEnabled&&event.key?.includes('qrk_demo_orders_v2'))refreshTabOrders()});setInterval(refreshTabOrders,dataService.mode==='demo'?4000:15000);

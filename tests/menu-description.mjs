@@ -42,7 +42,8 @@ assert.match(customerCss, /#cart-dialog\.is-visible::backdrop\s*\{[^}]*backgroun
 assert.match(customerHtml, /<svg viewBox="0 0 24 24" fill="none">/);
 assert.doesNotMatch(customerJs, /card\.querySelector\('p'\)\.textContent=item\.description/);
 assert.match(customerJs, /\$\('#item-description'\)\.textContent=item\.description/);
-assert.match(customerJs, /cardButton\.setAttribute\('aria-label',`Add \$\{item\.name\} to order`\)/);
+// The row's visible text (name, description, price, badges) is its accessible name.
+assert.doesNotMatch(customerJs, /cardButton\.setAttribute\('aria-label'/);
 assert.doesNotMatch(customerJs, /dish-cta/);
 assert.match(customerJs, /centerIfClipped=link=>\{[^}]*getBoundingClientRect\(\)[^}]*track\.scrollTo\(\{left:link\.offsetLeft-\(track\.clientWidth-link\.offsetWidth\)\/2/s);
 assert.match(customerJs, /prefers-reduced-motion: reduce/);
