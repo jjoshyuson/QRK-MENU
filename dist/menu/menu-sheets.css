@@ -30,10 +30,8 @@
 
 .payment-card {
   position: relative;
-  min-height: 148px;
   padding: 20px;
   border: 1px solid var(--line);
-  border-radius: 16px;
   background: var(--surface);
   color: var(--ink);
   text-align: center;
@@ -78,12 +76,10 @@
   background: var(--surface-muted, #f1f3f5);
   color: var(--muted);
   cursor: not-allowed;
-  opacity: .62;
 }
 
 @media (max-width: 560px) {
   .payment-cards { grid-template-columns: 1fr; }
-  .payment-card { min-height: 124px; }
 }
 
 
@@ -128,13 +124,6 @@
   letter-spacing: 0.4px;
 }
 
-
-/* Shared component rules from ui-components.css, restated so they keep winning over the rules above now that ui-components.css loads first. */
-.button, .primary-button, .secondary-button, .text-button, .icon-button, .payment-card, .table-choice { min-height: var(--component-control-height); border-radius: var(--component-radius-sm); }
-.primary-button, .secondary-button { min-height: var(--component-customer-control-height); }
-.button, .primary-button, .secondary-button, .text-button { display: inline-flex; align-items: center; justify-content: center; gap: var(--component-button-gap); border-radius: var(--component-button-radius); padding-inline: var(--component-button-padding-inline); font-weight: var(--component-button-font-weight); box-shadow: none; }
-.button:disabled, .primary-button:disabled, .secondary-button:disabled, .icon-button:disabled, .payment-card:disabled, .table-choice:disabled { opacity: var(--component-disabled-opacity); }
-.history-order, .dish, .desktop-order-card, .notice, .option-group, .cart-item, .payment-card, .tab-round, .empty-state { border-radius: var(--component-radius-lg); }
 
 /* Sheets, history and cart dialog (was cart-dock.css) */
 
