@@ -38,4 +38,7 @@ assert.ok(staff.indexOf('for(const order of tableOrders){await completeOrder(ord
 assert.match(staff,/return`\$\{location\}\$\{order\.customerLabel/);
 assert.match(staff,/dateStyle:'medium',timeStyle:'short'/);
 
+assert.ok(html.indexOf('id="open-tab-control"')>html.indexOf('id="categories"'));
+assert.ok(html.indexOf('id="open-tab-control"')<html.indexOf('id="menu-sections"'));
+assert.match(html,/<\/nav>\s*<\/div>\s*<button class="open-tab-control hidden"/);
 console.log('Open Tab cart, remembered-name, and table-history contract passed.');

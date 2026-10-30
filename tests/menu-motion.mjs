@@ -35,12 +35,15 @@ staggerRise(box); assert.ok(box.set.has('rise-b') && !box.set.has('rise-a'));
 assert.match(css, /prefers-reduced-motion:\s*reduce\)\s*\{\s*\.menu-toast\.is-on\s*\{[^}]*opacity:\s*1/);
 assert.doesNotMatch(css, /#cart-count\s*\{[^}]*display/);
 const js = readFileSync(new URL('../dist/menu/menu.js', import.meta.url), 'utf8');
-assert.equal(js.match(/staggerRise\(/g).length, 2); // load + chip click
+assert.equal(js.match(/staggerRise\(/g).length, 3); // load + chip click + confirmation
 assert.ok(!/staggerRise\(risen\)/.test(js)); assert.equal(js.match(/staggerRise\(\$\('#menu-sections'\)\)/g).length, 2);
 assert.match(js, /classList\.remove\('rise-a','rise-b'\)/);
 const secs = [stubEl(), stubEl()], two = Array.from({ length: 6 }, (_, i) => Object.assign(stubEl(), { closest: () => secs[i < 3 ? 0 : 1] }));
 const box2 = stubEl(); box2.querySelectorAll = () => two; staggerRise(box2);
 assert.deepEqual(two.map(r => r.style.props['--rise-delay']), ['0ms', '50ms', '100ms', '0ms', '50ms', '100ms']);
+const steps = Array.from({ length: 3 }, stubEl), sbox = stubEl(); let asked; sbox.querySelectorAll = q => (asked = q, steps);
+staggerRise(sbox, { step: 110, selector: '.status-step' }); assert.equal(asked, '.status-step');
+assert.deepEqual(steps.map(r => r.style.props['--rise-delay']), ['0ms', '110ms', '220ms']);
 const seq = []; for (let i = 0; i < 3; i++) { staggerRise(box); seq.push(box.set.has('rise-a') ? 'a' : 'b'); }
 assert.deepEqual(seq, ['a', 'b', 'a']);
 console.log('menu motion tests passed');

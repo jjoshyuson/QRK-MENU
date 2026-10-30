@@ -12,7 +12,7 @@ const [html, js, staff, data, cartCss] = await Promise.all([
 assert.match(html, /id="order-history-control"[^>]*aria-controls="history-dialog"/);
 assert.match(html, /class="customer-history-control">\s*<button class="order-history-control"/);
 assert.match(cartCss, /\.customer-history-control\s*\{[^}]*position:\s*absolute/s);
-assert.match(cartCss, /\.customer-session-controls\s*\{[^}]*position:\s*fixed/s);
+assert.doesNotMatch(html, /customer-session-controls/);
 assert.match(html, /id="clear-history"/);
 assert.match(html, /id="history-clear-confirm"/);
 assert.match(js, /HISTORY_LIMIT=25,HISTORY_RETENTION_MS=30\*24\*60\*60\*1000/);
@@ -30,4 +30,12 @@ assert.match(staff, /tableSessionService\.markPaid/);
 assert.match(data, /list_device_orders/);
 assert.match(js, /tableSessionId:session\?\.id\|\|null/);
 
+assert.match(html, /<svg class="draw"[^>]*>[^]*?<path d=/);
+assert.match(html, /id="confirmation-dialog"[^]*id="confirmation-steps"[^]*id="confirmation-items"/);
+assert.match(js, /staggerRise\(\$\('#confirmation-dialog'\),\{step:110,selector:'\.status-step'\}\)/);
+assert.match(cartCss, /\.confirm-mark circle\s*\{[^}]*menu-pop[^}]*450ms/s);
+assert.match(cartCss, /\.draw path\s*\{[^}]*stroke-dashoffset/s);
+assert.match(cartCss, /\.rise-[ab] \.status-step/);
+assert.match(cartCss, /#history-dialog, #open-tab-dialog \{ --danger/);
+assert.match(html, /id="open-tab-title">Your tab</);
 console.log('Device order history and Open Tab cleanup contract passed.');
