@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(13);
+select plan(14);
 
 -- Cosmetics are read through the anonymous public RPC; settings are written as the table owner.
 create function pg_temp.set_background(p_background jsonb) returns void language sql as $$
@@ -11,9 +11,14 @@ $$;
 
 select pg_temp.set_background(null);
 set local role anon;
-select is(public.get_public_business_cosmetics('kusina-manila')->>'backgroundStyle','glow','missing background defaults to glow');
+select is(public.get_public_business_cosmetics('kusina-manila')->'backgroundStyle','null'::jsonb,'missing background leaves style null for the legacy photo rule');
 select is(public.get_public_business_cosmetics('kusina-manila')->'backgroundPattern','null'::jsonb,'missing background has no pattern');
-select is((public.get_public_business_cosmetics('kusina-manila')->>'backgroundStrength')::integer,50,'missing background defaults to strength 50');
+select is(public.get_public_business_cosmetics('kusina-manila')->'backgroundStrength','null'::jsonb,'missing background leaves strength null');
+reset role;
+
+select pg_temp.set_background('{"pattern":"cafe"}');
+set local role anon;
+select is(public.get_public_business_cosmetics('kusina-manila')->'backgroundStyle','null'::jsonb,'absent style stays null even when a pattern is stored');
 reset role;
 
 select pg_temp.set_background('{"style":"<script>","pattern":"../x","strength":"999"}');

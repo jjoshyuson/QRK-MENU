@@ -14,6 +14,8 @@ assert.equal(n({ backgroundStrength: -4 }).strength, 0);
 assert.equal(n({ backgroundStyle: 'photo' }).style, 'glow');
 assert.deepEqual(n({ backgroundStyle: 'photo', backgroundUrl: 'javascript:x' }).imageUrl, '');
 assert.deepEqual(n({ backgroundUrl: '/assets/bg.jpg', backgroundOpacity: 0.72 }), { style: 'photo', pattern: null, strength: 40, imageUrl: '/assets/bg.jpg' });
+// The hosted RPC sends JSON null (not absent) when nothing is stored.
+assert.deepEqual(n({ backgroundStyle: null, backgroundStrength: null, backgroundUrl: '/assets/bg.jpg', backgroundOpacity: 0.72 }), { style: 'photo', pattern: null, strength: 40, imageUrl: '/assets/bg.jpg' });
 
 import { readFile } from 'node:fs/promises';
 import { backgroundLayers } from '../dist/menu/menu-appearance.js';

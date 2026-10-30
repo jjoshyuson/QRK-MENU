@@ -1,3 +1,4 @@
+-- Absent style/strength stay JSON null so the client's legacy photo rule can fire.
 -- Menu background settings are tenant-written text: whitelist and clamp here, leave fallback rules to the client.
 create or replace function public.get_public_business_cosmetics(p_destination_slug text)
 returns jsonb language sql stable security definer set search_path='' as $$
@@ -7,12 +8,14 @@ returns jsonb language sql stable security definer set search_path='' as $$
     'backgroundUrl',coalesce(profile.settings #>> '{menuCosmetics,backgroundUrl}',''),
     'coverUrl',coalesce(profile.settings #>> '{menuCosmetics,coverUrl}',''),
     'backgroundOpacity',coalesce((profile.settings #>> '{menuCosmetics,backgroundOpacity}')::numeric,.72),
-    'backgroundStyle',case when profile.settings #>> '{menuCosmetics,background,style}' in ('photo','pattern','pattern-moving','glow','plain')
-      then profile.settings #>> '{menuCosmetics,background,style}' else 'glow' end,
+    'backgroundStyle',case when profile.settings #>> '{menuCosmetics,background,style}' is null then 'null'::jsonb
+      when profile.settings #>> '{menuCosmetics,background,style}' in ('photo','pattern','pattern-moving','glow','plain')
+      then to_jsonb(profile.settings #>> '{menuCosmetics,background,style}') else '"glow"'::jsonb end,
     'backgroundPattern',case when profile.settings #>> '{menuCosmetics,background,pattern}' in ('filipino','cafe','ramen','pizza','dessert')
       then to_jsonb(profile.settings #>> '{menuCosmetics,background,pattern}') else 'null'::jsonb end,
-    'backgroundStrength',case when profile.settings #>> '{menuCosmetics,background,strength}' ~ '^\s*-?\d+(\.\d+)?\s*$'
-      then round(greatest(0,least(100,(profile.settings #>> '{menuCosmetics,background,strength}')::numeric)))::integer else 50 end
+    'backgroundStrength',case when profile.settings #>> '{menuCosmetics,background,strength}' is null then 'null'::jsonb
+      when profile.settings #>> '{menuCosmetics,background,strength}' ~ '^\s*-?\d+(\.\d+)?\s*$'
+      then to_jsonb(round(greatest(0,least(100,(profile.settings #>> '{menuCosmetics,background,strength}')::numeric)))::integer) else to_jsonb(50) end
   )
   from public.public_destinations destination
   join public.business_profiles profile on profile.business_id=destination.business_id
