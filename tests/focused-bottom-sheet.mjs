@@ -30,7 +30,7 @@ assert.match(menu, /const finish=\(\)=>\{if\(finished\)return;finished=true;dial
 assert.match(menu, /function showCartDialog\(\)/);
 assert.match(menu, /card\?\.animate\(\[\{transform:'translate3d\(0,100dvh,0\)'\},\{transform:'translate3d\(0,0,0\)'\}\]/);
 assert.match(menu, /transform:startTransform==='none'\?'translate3d\(0,0,0\)':startTransform\},\{transform:'translate3d\(0,100dvh,0\)'\}/);
-assert.match(menu, /duration:540,easing:'cubic-bezier\(\.2,\.8,\.2,1\)'/);
+assert.match(menu, /duration:320,easing:'cubic-bezier\(\.2,\.8,\.2,1\)'/);
 assert.match(menu, /duration:dialog\.id==='cart-dialog'\?107:120,easing:'cubic-bezier\(\.4,0,\.8,\.2\)'/);
 assert.doesNotMatch(menu, /cart-dialog'\)\.showModal\(\)/);
 assert.doesNotMatch(menu, /data-action==='edit'[^}]*cart-dialog'\)\.close/s);

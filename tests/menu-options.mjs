@@ -26,6 +26,9 @@ assert.match(sheetsCss, /\.item-sheet \.option-group\[data-invalid\][^{]*\{[^}]*
 assert.match(sheetsCss, /\.item-sheet \.item-hero > #item-photo\s*\{[^}]*height:\s*236px/);
 assert.match(sheetsCss, /\.item-hero:has\(#item-photo\[hidden\]\)\s*\{[^}]*height:\s*150px/);
 assert.match(sheetsCss, /animation:\s*check-pop 220ms/);
-assert.match(menuCss, /--danger:\s*#B42318/);
-assert.match(menuCss, /--danger:\s*#F97066/);
+assert.match(sheetsCss, /\.item-sheet \{ --danger: #B42318/);
+assert.match(sheetsCss, /data-theme="dark"\] \.item-sheet \{ --danger: #F97066/);
+assert.match(menuCss, /\.sheet\[open\]>\.sheet-card\{[^}]*menu-sheet-in 320ms/);
+assert.match(sheetsCss, /dialog\.sheet\[open\]::backdrop \{ animation: sheet-backdrop-in 220ms/);
+assert.match(sheetsCss, /prefers-reduced-motion: reduce\) \{\s*dialog\.sheet\[open\]::backdrop \{ animation: none/);
 console.log('Item sheet validation checks passed.');

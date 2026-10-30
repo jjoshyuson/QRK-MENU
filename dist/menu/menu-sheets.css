@@ -261,6 +261,7 @@ dialog #add-item {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  dialog.sheet[open]::backdrop { animation: none; }
   #cart-dialog > .sheet-card { transform: none; }
   #cart-dialog::backdrop { background: rgba(248, 250, 252, .16); transition: none; }
 }
@@ -293,3 +294,9 @@ dialog #add-item {
 .item-sheet .stepper output { min-width: 36px; text-align: center; font-weight: 700; }
 .item-add-footer > #add-item { justify-content: center; gap: 6px; min-height: 52px; }
 .item-add-footer > #add-item strong::before { content: '· '; }
+
+/* Sheet open: card slides 320ms (menu.css), backdrop fades 220ms. Global theme sets --danger inline on :root, so scope the spec values here. */
+dialog.sheet[open]::backdrop { animation: sheet-backdrop-in 220ms ease-out both; }
+@keyframes sheet-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+.item-sheet { --danger: #B42318; }
+:root[data-theme="dark"] .item-sheet { --danger: #F97066; }
