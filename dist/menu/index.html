@@ -16,18 +16,18 @@
   <link rel="stylesheet" href="/theme.css?v=1">
   <link rel="stylesheet" href="/pwa.css?v=1">
   <link rel="stylesheet" href="/ui-components.css?v=19">
-  <link rel="stylesheet" href="/menu/menu.css?v=24">
-  <link rel="stylesheet" href="/menu/menu-sheets.css?v=6">
+  <link rel="stylesheet" href="/menu/menu.css?v=25">
+  <link rel="stylesheet" href="/menu/menu-sheets.css?v=7">
   <link rel="stylesheet" href="/menu/menu-table.css?v=3">
   <script src="/global-theme.js"></script>
   <script src="/pwa.js" defer></script>
   <script src="/ui-components.js?v=10" defer></script>
   <script src="/data/qrk-config.local.js"></script>
-  <script type="module" src="/menu/menu.js?v=46"></script>
+  <script type="module" src="/menu/menu.js?v=47"></script>
 </head>
 <body>
   <a class="skip-link" href="#menu-content">Skip to menu</a>
-  <div class="mini-header" aria-hidden="true"><span class="hero-logo" data-hero-logo></span><b data-hero-name></b><span class="table-pill" data-hero-table hidden></span></div>
+  <div class="mini-header"><span class="hero-logo" data-hero-logo></span><b data-hero-name></b><span class="table-pill" data-hero-table hidden></span><button class="mini-tab hidden" id="mini-tab" type="button" aria-controls="open-tab-dialog" aria-haspopup="dialog"></button></div>
   <dialog id="table-session-dialog" class="table-entry" aria-labelledby="table-entry-title">
     <section class="table-entry-card" id="table-entry-form-view">
       <div id="table-choice-view"><p class="eyebrow">QRK TABLE</p><h1 id="table-entry-title">Choose your table</h1><p id="table-entry-intro">Select the table where you are seated.</p><div class="table-choice-grid" id="table-choice-grid" role="list"></div><p class="table-choice-help"><span></span> Available <span></span> Open — request to join</p></div>
@@ -166,7 +166,7 @@
         <div class="confirm-mark" aria-hidden="true"><svg class="draw" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="28"></circle><path d="M20 33l8 8 17-18" pathLength="1"></path></svg></div>
         <p class="eyebrow">ORDER SENT</p>
         <div class="order-number"><h2 id="confirmation-title">ORDER NUMBER</h2><strong id="confirmation-number"></strong></div>
-        <ol class="status-steps" id="confirmation-steps" aria-label="Order progress"><li class="status-step is-current"><i aria-hidden="true"></i><span><b>Received</b><small>Waiting for staff to accept</small></span></li><li class="status-step"><i aria-hidden="true"></i><span><b>Accepted</b></span></li><li class="status-step"><i aria-hidden="true"></i><span><b>Preparing</b></span></li><li class="status-step"><i aria-hidden="true"></i><span><b>Ready</b></span></li></ol>
+        <ol class="status-steps" id="confirmation-steps" aria-label="Order progress"><li class="status-step is-current" aria-current="step"><i aria-hidden="true"></i><span><b>Received</b><small>Waiting for staff to accept</small></span></li><li class="status-step"><i aria-hidden="true"></i><span><b>Accepted</b></span></li><li class="status-step"><i aria-hidden="true"></i><span><b>Preparing</b></span></li><li class="status-step"><i aria-hidden="true"></i><span><b>Ready</b></span></li></ol>
         <ul class="confirm-items" id="confirmation-items"></ul>
         <div class="confirm-actions"><button class="primary-button" id="confirmation-done" type="button">Done</button><button class="secondary-button" id="confirmation-orders" type="button">View my orders</button></div>
       </div>
