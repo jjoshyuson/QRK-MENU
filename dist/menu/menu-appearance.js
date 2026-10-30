@@ -66,3 +66,29 @@ export function formatPriceParts(minor) {
   const pesos = Number(minor || 0) / 100;
   return { symbol: '₱', amount: pesos.toLocaleString('en-PH', { minimumFractionDigits: Number.isInteger(pesos) ? 0 : 2, maximumFractionDigits: 2 }) };
 }
+
+// Motion helpers. Alternating a/b classes restart a CSS animation without a reflow hack.
+let toastEl = null, toastTimer = 0;
+export function showToast(text, { duration = 1900 } = {}) {
+  if (!toastEl) {
+    toastEl = document.createElement('div');
+    toastEl.className = 'menu-toast';
+    toastEl.setAttribute('role', 'status');
+    document.body.append(toastEl);
+  }
+  toastEl.textContent = text;
+  clearTimeout(toastTimer);
+  toastEl.classList.remove('is-on');
+  void toastEl.offsetWidth; // restart the animation on repeat
+  toastEl.classList.add('is-on');
+  toastTimer = setTimeout(() => toastEl.classList.remove('is-on'), duration);
+}
+
+const flip = (el, a, b) => { const next = el.classList.contains(a) ? b : a; el.classList.remove(next === a ? b : a); el.classList.add(next); };
+
+export const popElement = el => flip(el, 'pop-a', 'pop-b');
+
+export function staggerRise(container, { step = 50, max = 520 } = {}) {
+  container.querySelectorAll('.dish').forEach((row, i) => row.style.setProperty('--rise-delay', `${Math.min(i * step, max)}ms`));
+  flip(container, 'rise-a', 'rise-b');
+}

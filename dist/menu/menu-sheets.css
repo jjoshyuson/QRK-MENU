@@ -264,3 +264,7 @@ dialog #add-item {
   #cart-dialog > .sheet-card { transform: none; }
   #cart-dialog::backdrop { background: rgba(248, 250, 252, .16); transition: none; }
 }
+
+.menu-toast { position: fixed; z-index: 30; top: calc(12px + env(safe-area-inset-top)); left: 50%; max-width: min(88vw, 420px); padding: 10px 16px; border-radius: 999px; background: var(--ink); color: var(--surface); font-weight: 600; font-size: .9rem; opacity: 0; pointer-events: none; transform: translate(-50%, -12px); }
+.menu-toast.is-on { animation: menu-toast 1900ms ease both; }
+@keyframes menu-toast { 0% { opacity: 0; transform: translate(-50%, -12px); } 12%, 85% { opacity: 1; transform: translate(-50%, 0); } 100% { opacity: 0; transform: translate(-50%, -12px); } }

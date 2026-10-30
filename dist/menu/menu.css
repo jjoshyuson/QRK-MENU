@@ -406,8 +406,8 @@ body:has(#menu-content) main { background: transparent; box-shadow: none; }
 .order-history-control b { position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; border: 2px solid var(--surface); background: var(--accent); color: #fff; font-size: 11px; }
 .order-history-control b[hidden] { display: none; }
 body[data-scrolled] .order-history-control { border-color: var(--line); background: var(--surface); color: var(--ink); }
-.mini-header { position: fixed; z-index: 7; top: 0; right: 0; left: 0; display: flex; align-items: center; gap: 10px; height: 56px; padding: 0 70px 0 16px; border-bottom: 1px solid var(--line); background: var(--frost); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); transform: translateY(-100%); visibility: hidden; transition: transform 200ms ease, visibility 0s 200ms; }
-body[data-scrolled] .mini-header { transform: none; visibility: visible; transition: transform 200ms ease; }
+.mini-header { position: fixed; z-index: 7; top: 0; right: 0; left: 0; display: flex; align-items: center; gap: 10px; height: 56px; padding: 0 70px 0 16px; border-bottom: 1px solid var(--line); background: var(--frost); -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4); transform: translateY(-100%); visibility: hidden; transition: transform 260ms ease, visibility 0s 260ms; }
+body[data-scrolled] .mini-header { transform: none; visibility: visible; transition: transform 260ms ease; }
 .mini-header .hero-logo { width: 32px; height: 32px; border-width: 1px; border-color: var(--line); font-size: 12px; }
 .mini-header b { min-width: 0; overflow: hidden; color: var(--ink); font-size: 15px; font-weight: 800; text-overflow: ellipsis; white-space: nowrap; }
 .mini-header .table-pill { flex: 0 0 auto; border: 1px solid var(--line); }
@@ -454,3 +454,20 @@ footer.menu-footer p { margin: 0; }
 footer.menu-footer a { color: var(--accent-text); }
 .footer-brand { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
 .footer-brand::before, .footer-brand::after { content: ""; height: 1px; flex: 1; background: var(--line); }
+
+/* Motion layer: rise, pop, press. */
+@keyframes menu-rise{from{opacity:0;transform:translateY(14px)}}
+@keyframes menu-rise-b{from{opacity:0;transform:translateY(14px)}}
+@keyframes menu-pop{50%{transform:scale(1.35)}}
+@keyframes menu-pop-b{50%{transform:scale(1.35)}}
+.rise-a .dish{animation:menu-rise 500ms cubic-bezier(.2,.8,.2,1) var(--rise-delay,0ms) backwards}
+.rise-b .dish{animation:menu-rise-b 500ms cubic-bezier(.2,.8,.2,1) var(--rise-delay,0ms) backwards}
+#cart-count{display:inline-block}
+.pop-a{animation:menu-pop 360ms ease-out}
+.pop-b{animation:menu-pop-b 360ms ease-out}
+.dish,.cart-bar button,.primary-button,.secondary-button,#add-item{transition:transform 140ms ease}
+.dish:active,.cart-bar button:active,.primary-button:active,.secondary-button:active,#add-item:active{transform:scale(.975)}
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .draw path{stroke-dashoffset:0}
+}
