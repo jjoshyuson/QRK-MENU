@@ -38,6 +38,9 @@ const js = readFileSync(new URL('../dist/menu/menu.js', import.meta.url), 'utf8'
 assert.equal(js.match(/staggerRise\(/g).length, 2); // load + chip click
 assert.ok(!/staggerRise\(risen\)/.test(js)); assert.equal(js.match(/staggerRise\(\$\('#menu-sections'\)\)/g).length, 2);
 assert.match(js, /classList\.remove\('rise-a','rise-b'\)/);
+const secs = [stubEl(), stubEl()], two = Array.from({ length: 6 }, (_, i) => Object.assign(stubEl(), { closest: () => secs[i < 3 ? 0 : 1] }));
+const box2 = stubEl(); box2.querySelectorAll = () => two; staggerRise(box2);
+assert.deepEqual(two.map(r => r.style.props['--rise-delay']), ['0ms', '50ms', '100ms', '0ms', '50ms', '100ms']);
 const seq = []; for (let i = 0; i < 3; i++) { staggerRise(box); seq.push(box.set.has('rise-a') ? 'a' : 'b'); }
 assert.deepEqual(seq, ['a', 'b', 'a']);
 console.log('menu motion tests passed');

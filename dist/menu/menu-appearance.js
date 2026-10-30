@@ -89,6 +89,11 @@ const flip = (el, a, b) => { const next = el.classList.contains(a) ? b : a; el.c
 export const popElement = el => flip(el, 'pop-a', 'pop-b');
 
 export function staggerRise(container, { step = 50, max = 520 } = {}) {
-  container.querySelectorAll('.dish').forEach((row, i) => row.style.setProperty('--rise-delay', `${Math.min(i * step, max)}ms`));
+  const seen = new Map(); // stagger restarts at 0 in each section
+  container.querySelectorAll('.dish').forEach(row => {
+    const key = row.closest?.('.menu-section') || container, i = seen.get(key) || 0;
+    seen.set(key, i + 1);
+    row.style.setProperty('--rise-delay', `${Math.min(i * step, max)}ms`);
+  });
   flip(container, 'rise-a', 'rise-b');
 }
