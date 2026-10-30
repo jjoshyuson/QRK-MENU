@@ -1,7 +1,6 @@
-import { themeValues } from '../data/qrk-brand-service.js';
+import { MENU_PATTERNS, safeImageUrl, themeValues } from '../data/qrk-brand-service.js';
 
-// Tenant-written URLs must never reach src/background unchecked.
-export const safeImageUrl = value => { const candidate = String(value || ''); return /^(?:\/|https:\/\/|data:image\/(?:png|jpeg|webp);base64,)/i.test(candidate) ? candidate : ''; };
+export { safeImageUrl };
 
 export function businessInitials(name) {
   const letters = String(name || '').split(/\s+/).filter(word => /^[\p{L}\p{N}]/u.test(word)).slice(0, 2).map(word => word[0].toUpperCase());
@@ -117,12 +116,10 @@ export function backgroundLayers(bg) {
   };
 }
 
-const MOTIFS = ['filipino', 'cafe', 'ramen', 'pizza', 'dessert'];
-
 // Page-level: one fixed layer behind the content. Tiles, the header band and image fallbacks reuse `.motif`/`.m-<pattern>` via --motif-url on root.
 export function applyMenuBackground(root, bg) {
   const layers = backgroundLayers(bg), doc = root.ownerDocument || root;
-  root.classList.remove(...MOTIFS.map(name => `m-${name}`));
+  root.classList.remove(...MENU_PATTERNS.map(name => `m-${name}`));
   // Tiles and the header band always need a motif, so glow/plain fall back to filipino.
   root.classList.add(`m-${layers.pattern || bg?.pattern || 'filipino'}`);
   let layer = doc.querySelector('.menu-bg');

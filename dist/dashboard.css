@@ -249,3 +249,4 @@ body[data-current-page="orders"] .topbar-history{margin-left:auto}
 .tag-fields legend{font-weight:600;font-size:14px;padding:0 0 6px}
 .tag-fields .check-label,.switch-label{min-height:44px}
 @media (prefers-reduced-motion:reduce){.switch-label input[role=switch]::after{transition:none}}
+.cosmetics-preview-surface.m-filipino{--motif-url:url(/assets/motifs/filipino.svg)}.cosmetics-preview-surface.m-cafe{--motif-url:url(/assets/motifs/cafe.svg)}.cosmetics-preview-surface.m-ramen{--motif-url:url(/assets/motifs/ramen.svg)}.cosmetics-preview-surface.m-pizza{--motif-url:url(/assets/motifs/pizza.svg)}.cosmetics-preview-surface.m-dessert{--motif-url:url(/assets/motifs/dessert.svg)}

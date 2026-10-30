@@ -400,10 +400,11 @@ function renderMenuBackgroundEditor(){
  if(layers.photo)image=`linear-gradient(rgba(255,255,255,${layers.veilOpacity}),rgba(255,255,255,${layers.veilOpacity})),url(${JSON.stringify(layers.photo)})`;
  else if(layers.glow!==null)image=`radial-gradient(circle at 50% 0,color-mix(in srgb,${currentBrand.primary} ${Math.round(layers.glow*100)}%,transparent),transparent 75%)`;
  surface.style.backgroundImage=image;
+ MENU_PATTERNS.forEach(name=>surface.classList.remove(`m-${name}`));
  surface.classList.toggle('has-pattern',Boolean(layers.pattern));
  surface.classList.toggle('is-moving',layers.moving);
  if(layers.pattern){
-  surface.style.setProperty('--motif-url',`url(/assets/motifs/${layers.pattern}.svg)`);
+  surface.classList.add(`m-${layers.pattern}`);
   surface.style.setProperty('--pattern-opacity',layers.patternOpacity);
  }
 }

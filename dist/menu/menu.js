@@ -143,7 +143,7 @@ const categoryId=value=>`category-${String(value).toLowerCase().replace(/[^a-z0-
 function persistCart(){try{localStorage.setItem(CART_KEY,JSON.stringify(cart));return true}catch{return false}}
 function cartTotals(){return{count:cart.reduce((sum,line)=>sum+line.quantity,0),subtotal:cart.reduce((sum,line)=>sum+line.lineTotalMinor,0)}}
 function tabTotals(){const placed=tabOrders.filter(order=>order.status!=='cancelled');return{count:placed.reduce((sum,order)=>sum+order.items.reduce((itemSum,item)=>itemSum+item.quantity,0),0)+cartTotals().count,total:placed.reduce((sum,order)=>sum+Number(order.subtotalMinor||0),0)+cartTotals().subtotal}}
-function tabStatus(order){return{received:['Accepted','accepted'],preparing:['Preparing','preparing'],ready:['Prepared','prepared'],completed:['Prepared','prepared'],cancelled:['Cancelled','cancelled']}[order.status]||['Updating','accepted']}
+function tabStatus(order){return{received:['Received','received'],preparing:['Preparing','preparing'],ready:['Prepared','prepared'],completed:['Prepared','prepared'],cancelled:['Cancelled','cancelled']}[order.status]||['Updating','accepted']}
 function saveHistory(){localStorage.setItem(HISTORY_KEY,JSON.stringify(orderHistory.slice(0,HISTORY_LIMIT)))}
 function rememberHistory(order){const snapshot=historySnapshot(order);orderHistory=[snapshot,...orderHistory.filter(item=>String(item.id)!==snapshot.id)].sort((a,b)=>Date.parse(b.createdAt)-Date.parse(a.createdAt)).slice(0,HISTORY_LIMIT);saveHistory();renderHistory()}
 function rememberPaidTab(session,orders){const placed=orders.filter(order=>order.status!=='cancelled');if(!placed.length)return;rememberHistory({id:`tab:${session.id}`,orderNumber:`Table ${session.table} tab`,createdAt:session.createdAt||placed[0].createdAt,updatedAt:session.updatedAt||new Date().toISOString(),status:'completed',subtotalMinor:placed.reduce((sum,order)=>sum+Number(order.subtotalMinor||0),0),items:placed.flatMap(order=>order.items||[])})}
@@ -237,7 +237,7 @@ function renderMenu(filter=''){
       if(item.photo){
         const isPriority=renderedPhotoIndex<2;
         img.src=item.photoCard||item.photo;
-        img.alt=item.name;
+        img.alt='';
         img.loading=isPriority?'eager':'lazy';
         img.decoding='async';
         img.fetchPriority=isPriority?'high':'low';

@@ -23,11 +23,11 @@ function readAll(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}'
 function normalizeLegacyMenuBackground(value,slug){const source=value&&typeof value==='object'?value:{},image=Object.prototype.hasOwnProperty.call(source,'image')?String(source.image||''):(slug==='kusina-manila'?KUSINA_MENU_BACKGROUND:DEFAULT_MENU_BACKGROUND.image),opacity=Number(source.surfaceOpacity);return{image,surfaceOpacity:Number.isFinite(opacity)?Math.max(.4,Math.min(.95,opacity)):DEFAULT_MENU_BACKGROUND.surfaceOpacity}}
 export const MENU_PATTERNS=['filipino','cafe','ramen','pizza','dessert'];
 export const MENU_BACKGROUND_STYLES=['photo','pattern','pattern-moving','glow','plain'];
-// Same rule as the menu's safeImageUrl; kept local so the brand service stays self-contained.
-const safeMenuImageUrl=value=>{const candidate=String(value||'');return/^(?:\/|https:\/\/|data:image\/(?:png|jpeg|webp);base64,)/i.test(candidate)?candidate:''};
+// Tenant-written URLs must never reach src/background unchecked.
+export const safeImageUrl=value=>{const candidate=String(value||'');return/^(?:\/|https:\/\/|data:image\/(?:png|jpeg|webp);base64,)/i.test(candidate)?candidate:''};
 const clampStrength=value=>Math.round(Math.max(0,Math.min(100,value))/5)*5;
 export function normalizeMenuBackground(raw={}){
-  const source=raw&&typeof raw==='object'?raw:{},imageUrl=safeMenuImageUrl(source.backgroundUrl),hasStyle=!(source.backgroundStyle==null||source.backgroundStyle===''),hasStrength=!(source.backgroundStrength==null||source.backgroundStrength===''),pattern=MENU_PATTERNS.includes(source.backgroundPattern)?source.backgroundPattern:null;
+  const source=raw&&typeof raw==='object'?raw:{},imageUrl=safeImageUrl(source.backgroundUrl),hasStyle=!(source.backgroundStyle==null||source.backgroundStyle===''),hasStrength=!(source.backgroundStrength==null||source.backgroundStrength===''),pattern=MENU_PATTERNS.includes(source.backgroundPattern)?source.backgroundPattern:null;
   let style=hasStyle?(MENU_BACKGROUND_STYLES.includes(source.backgroundStyle)?source.backgroundStyle:'glow'):(imageUrl?'photo':'glow');
   const legacyPhoto=!hasStyle&&style==='photo';
   if(style==='photo'&&!imageUrl)style='pattern';

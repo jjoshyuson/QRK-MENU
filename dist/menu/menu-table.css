@@ -74,6 +74,7 @@
 .tab-round li strong { color: var(--ink); font-weight: 650; }
 .tab-round-total { padding-top: 9px; border-top: 1px dashed var(--line); font-size: var(--text-sm); }
 .tab-status { padding: 5px 9px; border-radius: 999px; font-size: 11px; font-weight: 800; }
+.tab-status.received { background: var(--surface-2); color: var(--ink); }
 .tab-status.accepted { background: var(--accent-soft); color: var(--accent-text); }
 .tab-status.preparing { background: color-mix(in srgb, #E0A100 18%, var(--surface)); color: #795400; }
 .tab-status.prepared { background: color-mix(in srgb, #1E9E62 16%, var(--surface)); color: #176a45; }
