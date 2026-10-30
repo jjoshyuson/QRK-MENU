@@ -124,10 +124,11 @@
           <fieldset class="fulfillment review-fulfillment hidden"><legend class="sr-only">Pickup or serve at table</legend><label><input type="radio" name="fulfillment" value="pickup"><span><b>Pickup</b><small>Collect at the counter</small></span></label><label><input type="radio" name="fulfillment" value="table"><span><b>Serve at table</b><small>Choose your table</small></span></label></fieldset>
           <input id="table-number" type="hidden">
           <details class="checkout-details" id="checkout-details"><summary><span>Add name or order notes</span><small>Optional</small></summary><div class="checkout-details-fields"><label class="field-label" for="customer-label">Name for the order</label><input id="customer-label" type="text" maxlength="40" autocomplete="name" placeholder="Example: Mia"><label class="remember-name"><input id="save-customer-name" type="checkbox" checked><span>Save name on this device</span></label><label class="field-label" for="order-notes">Order notes</label><textarea id="order-notes" rows="2" maxlength="180" placeholder="Anything the staff should know?"></textarea></div></details>
+          <div class="cart-total-row" aria-live="polite"><span>Total</span><strong id="cart-total-amount" class="cart-price"></strong></div>
           <p class="form-error hidden" id="checkout-error" role="alert" tabindex="-1"></p>
         </section>
       </div>
-      <div class="sheet-action cart-total hidden" id="cart-action"><div><span>Subtotal</span><strong id="checkout-subtotal">₱0</strong></div><button class="primary-button" id="submit-order" value="default">Proceed with order</button></div>
+      <div class="sheet-action cart-total hidden" id="cart-action"><button class="primary-button" id="submit-order" value="default"><span id="submit-label">Place order</span><strong id="checkout-subtotal">₱0</strong></button></div>
     </form>
   </dialog>
 
