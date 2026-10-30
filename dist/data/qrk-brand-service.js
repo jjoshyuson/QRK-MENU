@@ -20,8 +20,25 @@ const safeNav=hex=>{let value=hex;while(contrast(value,'#ffffff')<7)value=mix(va
 const contextKey=context=>String(context?.businessSlug||context?.businessId||DEFAULTS.businessSlug);
 
 function readAll(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}')}catch{return{}}}
-function normalizeMenuBackground(value,slug){const source=value&&typeof value==='object'?value:{},image=Object.prototype.hasOwnProperty.call(source,'image')?String(source.image||''):(slug==='kusina-manila'?KUSINA_MENU_BACKGROUND:DEFAULT_MENU_BACKGROUND.image),opacity=Number(source.surfaceOpacity);return{image,surfaceOpacity:Number.isFinite(opacity)?Math.max(.4,Math.min(.95,opacity)):DEFAULT_MENU_BACKGROUND.surfaceOpacity}}
-export function getBusinessBrand(context={}){const saved=readAll()[contextKey(context)]||{},businessSlug=saved.businessSlug||context.businessSlug||DEFAULTS.businessSlug,tableCount=Number(saved.tableCount??(businessSlug==='salamat'?20:DEFAULTS.tableCount)),savedName=businessSlug==='kusina-manila'&&saved.businessName==='Kusina Manila'?DEFAULTS.businessName:saved.businessName;return{...DEFAULTS,...saved,businessName:savedName||context.businessName||DEFAULTS.businessName,businessSlug,tableCount:Number.isInteger(tableCount)?Math.max(1,Math.min(200,tableCount)):DEFAULTS.tableCount,publicMenuBackground:normalizeMenuBackground(saved.publicMenuBackground,businessSlug)}}
+function normalizeLegacyMenuBackground(value,slug){const source=value&&typeof value==='object'?value:{},image=Object.prototype.hasOwnProperty.call(source,'image')?String(source.image||''):(slug==='kusina-manila'?KUSINA_MENU_BACKGROUND:DEFAULT_MENU_BACKGROUND.image),opacity=Number(source.surfaceOpacity);return{image,surfaceOpacity:Number.isFinite(opacity)?Math.max(.4,Math.min(.95,opacity)):DEFAULT_MENU_BACKGROUND.surfaceOpacity}}
+export const MENU_PATTERNS=['filipino','cafe','ramen','pizza','dessert'];
+export const MENU_BACKGROUND_STYLES=['photo','pattern','pattern-moving','glow','plain'];
+// Same rule as the menu's safeImageUrl; kept local so the brand service stays self-contained.
+const safeMenuImageUrl=value=>{const candidate=String(value||'');return/^(?:\/|https:\/\/|data:image\/(?:png|jpeg|webp);base64,)/i.test(candidate)?candidate:''};
+const clampStrength=value=>Math.round(Math.max(0,Math.min(100,value))/5)*5;
+export function normalizeMenuBackground(raw={}){
+  const source=raw&&typeof raw==='object'?raw:{},imageUrl=safeMenuImageUrl(source.backgroundUrl),hasStyle=!(source.backgroundStyle==null||source.backgroundStyle===''),hasStrength=!(source.backgroundStrength==null||source.backgroundStrength===''),pattern=MENU_PATTERNS.includes(source.backgroundPattern)?source.backgroundPattern:null;
+  let style=hasStyle?(MENU_BACKGROUND_STYLES.includes(source.backgroundStyle)?source.backgroundStyle:'glow'):(imageUrl?'photo':'glow');
+  const legacyPhoto=!hasStyle&&style==='photo';
+  if(style==='photo'&&!imageUrl)style='pattern';
+  if((style==='pattern'||style==='pattern-moving')&&!pattern)style='glow';
+  const keepPattern=style==='pattern'||style==='pattern-moving';
+  let strength=50;
+  if(hasStrength){const number=Number(source.backgroundStrength);strength=Number.isFinite(number)?clampStrength(number):50}
+  else if(legacyPhoto&&imageUrl){const opacity=Number(source.backgroundOpacity);if(Number.isFinite(opacity))strength=clampStrength((.94-opacity)/.55*100)}
+  return{style,pattern:keepPattern?pattern:null,strength,imageUrl:style==='photo'?imageUrl:''};
+}
+export function getBusinessBrand(context={}){const saved=readAll()[contextKey(context)]||{},businessSlug=saved.businessSlug||context.businessSlug||DEFAULTS.businessSlug,tableCount=Number(saved.tableCount??(businessSlug==='salamat'?20:DEFAULTS.tableCount)),savedName=businessSlug==='kusina-manila'&&saved.businessName==='Kusina Manila'?DEFAULTS.businessName:saved.businessName;return{...DEFAULTS,...saved,businessName:savedName||context.businessName||DEFAULTS.businessName,businessSlug,tableCount:Number.isInteger(tableCount)?Math.max(1,Math.min(200,tableCount)):DEFAULTS.tableCount,publicMenuBackground:normalizeLegacyMenuBackground(saved.publicMenuBackground,businessSlug)}}
 export function saveBusinessBrand(context,brand){const all=readAll(),next={...getBusinessBrand(context),...brand,updatedAt:new Date().toISOString()};all[contextKey(context)]=next;localStorage.setItem(STORAGE_KEY,JSON.stringify(all));return next}
 export function themeValues(brand){const primary=HEX.test(brand.primary)?brand.primary:DEFAULTS.primary,nav=safeNav(HEX.test(brand.nav)?brand.nav:DEFAULTS.nav);return{primary,primaryStrong:readableAccent(primary),primarySoft:mix(primary,[255,255,255],.9),primaryRing:`rgba(${hexToRgb(primary).join(',')},.28)`,primaryForeground:readableOn(primary),nav}}
 export function applyBusinessBrand(brand,root=document.documentElement){
