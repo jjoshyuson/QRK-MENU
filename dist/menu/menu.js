@@ -4,7 +4,7 @@ import { getBusinessExperience } from '../data/qrk-businesses.js';
 import { QrkTableSessionService } from '../data/qrk-table-session-service.js?v=3';
 import { menuOptionGroupsForItem, readMenuState, subscribeMenuState } from '../data/qrk-menu-store.js';
 import { deviceScopedKey } from '../data/qrk-device-service.js';
-import { accentFor, applyHeader, bindScrollChrome, headerModel, safeImageUrl } from './menu-appearance.js';
+import { accentFor, applyHeader, bindScrollChrome, formatPriceParts, headerModel, safeImageUrl, sectionIndexLabel } from './menu-appearance.js';
 import { selectServiceExperience } from '../data/qrk-service-presets.js';
 import { resolveQuickOrderState, validQuickFulfillmentModes } from '../data/qrk-quick-order.js';
 
@@ -151,22 +151,86 @@ function clearActiveTab(){localStorage.removeItem(TAB_ORDER_KEY);localStorage.re
 function renderTabSummary(){const summary=$('#tab-summary');if(!openTabEnabled)return;const totals=tabTotals(),placed=tabOrders.filter(order=>order.status!=='cancelled'),placedCount=placed.reduce((sum,order)=>sum+order.items.reduce((itemSum,item)=>itemSum+item.quantity,0),0),placedTotal=placed.reduce((sum,order)=>sum+Number(order.subtotalMinor||0),0),itemLabel=`${totals.count} ${totals.count===1?'item':'items'}`,control=$('#open-tab-control');$('#open-tab-count').textContent=totals.count;$('#open-tab-total').textContent=`${format(totals.total)} · ${itemLabel}`;control.setAttribute('aria-label',`Open tab, ${itemLabel}, running total ${format(totals.total)}`);control.classList.toggle('hidden',!totals.count);summary.innerHTML=`<div class="tab-summary-head"><div><p class="eyebrow">SUBMITTED TOTAL</p><strong>${format(placedTotal)}</strong></div><span>${placedCount} ${placedCount===1?'item':'items'}</span></div>${placed.length?`<div class="tab-rounds"><h3>Previous orders</h3>${placed.map((order,index)=>{const [label,state]=tabStatus(order);return`<article class="tab-round"><div class="tab-round-head"><b>Order ${index+1}</b><span class="tab-status ${state}">${label}</span></div><ul>${order.items.map(item=>`<li><span>${item.quantity}× ${escapeText(item.name)}</span><strong>${format(item.lineTotalMinor)}</strong></li>`).join('')}</ul><div class="tab-round-total"><span>Order total</span><strong>${format(order.subtotalMinor)}</strong></div></article>`}).join('')}</div>`:'<p class="tab-empty-copy">No orders have been sent yet.</p>'}`}
 function renderMenu(filter=''){
   const query=filter.trim().toLowerCase();
-  const visible=menu.filter(item=>item.available&&!item.hidden&&`${item.name} ${item.description} ${item.category}`.toLowerCase().includes(query));
+  const visible=menu.filter(item=>!item.hidden&&`${item.name} ${item.description} ${item.category}`.toLowerCase().includes(query));
   $('#categories').innerHTML=query?'':categories.filter(category=>visible.some(item=>item.category===category)).map((category,index)=>`<a class="${index?'':'active'}" href="#${categoryId(category)}" ${index?'':'aria-current="true"'}>${escapeText(category)}</a>`).join('');
-  $('#menu-sections').innerHTML='';$('#menu-sections').setAttribute('aria-busy','false');
+  $('#menu-sections').innerHTML='';
+  $('#menu-sections').setAttribute('aria-busy','false');
   let renderedPhotoIndex=0;
+  let sectionIndex=0;
   categories.forEach(category=>{
-    const items=visible.filter(item=>item.category===category);if(!items.length)return;
-    const section=document.createElement('section');section.className='menu-section';section.id=categoryId(category);section.setAttribute('aria-labelledby',`${section.id}-title`);
-    section.innerHTML=`<div class="section-heading"><h3 id="${section.id}-title">${escapeText(category)}</h3></div><div class="dish-grid"></div>`;
+    const items=visible.filter(item=>item.category===category);
+    if(!items.length)return;
+    const section=document.createElement('section');
+    section.className='menu-section';
+    section.id=categoryId(category);
+    section.setAttribute('aria-labelledby',`${section.id}-title`);
+    const heading=document.createElement('div');
+    heading.className='section-heading';
+    const index=document.createElement('span');
+    index.className='section-index';
+    index.textContent=sectionIndexLabel(sectionIndex++);
+    const title=document.createElement('h3');
+    title.id=`${section.id}-title`;
+    title.textContent=category;
+    const count=document.createElement('span');
+    count.className='section-count';
+    count.textContent=`${items.length} ${items.length===1?'item':'items'}`;
+    heading.append(index,title,count);
+    const grid=document.createElement('div');
+    grid.className='dish-grid';
+    section.append(heading,grid);
     items.forEach(item=>{
-      const card=$('#dish-template').content.firstElementChild.cloneNode(true);const cardButton=card.querySelector('.dish-hit');const img=card.querySelector('img');
-      if(item.photo){const isPriority=renderedPhotoIndex<2;img.src=item.photoCard||item.photo;img.alt=item.name;img.loading=isPriority?'eager':'lazy';img.decoding='async';img.fetchPriority=isPriority?'high':'low';const reveal=()=>img.classList.add('is-loaded');if(img.complete)reveal();else{img.addEventListener('load',reveal,{once:true});img.addEventListener('error',reveal,{once:true})}renderedPhotoIndex++}else{img.remove();const photo=card.querySelector('.photo');photo.classList.add('no-photo');photo.textContent=item.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase()}card.querySelector('h4').textContent=item.name;card.querySelector('strong').textContent=format(item.price);cardButton.setAttribute('aria-label',`Add ${item.name} to order`);
-      if(!item.available){card.classList.add('sold-out');card.querySelector('.sold-label').classList.remove('hidden');cardButton.disabled=true;cardButton.setAttribute('aria-label',`${item.name}, sold out`)}else cardButton.addEventListener('click',event=>openItem(item,-1,event.currentTarget));
-      section.querySelector('.dish-grid').append(card);
-    });$('#menu-sections').append(section);
+      const card=$('#dish-template').content.firstElementChild.cloneNode(true);
+      const cardButton=card.querySelector('.dish-hit');
+      const img=card.querySelector('img');
+      card.dataset.itemId=item.id;
+      if(item.photo){
+        const isPriority=renderedPhotoIndex<2;
+        img.src=item.photoCard||item.photo;
+        img.alt=item.name;
+        img.loading=isPriority?'eager':'lazy';
+        img.decoding='async';
+        img.fetchPriority=isPriority?'high':'low';
+        const reveal=()=>img.classList.add('is-loaded');
+        if(img.complete)reveal();
+        else{
+          img.addEventListener('load',reveal,{once:true});
+          img.addEventListener('error',reveal,{once:true});
+        }
+        renderedPhotoIndex++;
+      }else{
+        card.querySelector('.photo').remove();
+        card.classList.add('no-photo');
+      }
+      card.querySelector('h4').textContent=item.name;
+      card.querySelector('.dish-desc').textContent=item.description||'';
+      const price=formatPriceParts(item.price);
+      card.querySelector('.price-symbol').textContent=price.symbol;
+      card.querySelector('.price-amount').textContent=price.amount;
+      cardButton.setAttribute('aria-label',`Add ${item.name} to order`);
+      if(!item.available){
+        card.classList.add('sold-out');
+        card.querySelector('.sold-label').classList.remove('hidden');
+        cardButton.disabled=true;
+        cardButton.setAttribute('aria-label',`${item.name}, sold out`);
+      }else cardButton.addEventListener('click',event=>openItem(item,-1,event.currentTarget));
+      grid.append(card);
+    });
+    $('#menu-sections').append(section);
   });
-  $('#menu-empty').classList.toggle('hidden',visible.length>0);bindCategoryLinks();
+  $('#menu-empty').classList.toggle('hidden',visible.length>0);
+  bindCategoryLinks();
+  renderInOrderBadges();
+}
+function renderInOrderBadges(){
+  const counts=new Map();
+  cart.forEach(line=>counts.set(String(line.itemId),(counts.get(String(line.itemId))||0)+Number(line.quantity||0)));
+  document.querySelectorAll('#menu-sections .dish[data-item-id]').forEach(card=>{
+    const badge=card.querySelector('.in-order-label');
+    const count=counts.get(card.dataset.itemId)||0;
+    badge.textContent=`${count} in order`;
+    badge.classList.toggle('hidden',!count);
+  });
 }
 let categoryNavigationId='',categoryNavigationTimer=0,categoryNavigationIdleTimer=0,categoryNavigationScrollHandler=null,categoryTrackingScrollHandler=null,categoryTrackingFrame=0;
 function bindCategoryLinks(){
@@ -202,7 +266,7 @@ function renderCart(){
   $('#desktop-order-count').textContent=`${totals.count} ${totals.count===1?'item':'items'}`;$('#desktop-order-subtotal').textContent=format(totals.subtotal);$('#desktop-open-cart').disabled=!totals.count;$('#desktop-order-items').innerHTML=cart.length?cart.map(line=>`<div class="desktop-order-line"><span><b>${line.quantity}× ${escapeText(line.name)}</b><small>${escapeText(line.selectedOptions.map(option=>option.name).join(' · ')||'Standard')}</small></span><strong>${format(line.lineTotalMinor)}</strong></div>`).join(''):'<p class="desktop-order-empty">Choose a dish to start your order.</p>';
   $('#cart-items').innerHTML=cart.map((line,index)=>{const item=menu.find(entry=>entry.id===line.itemId),photo=item?.photo?`<img class="cart-item-photo" src="${escapeText(item.photoCard||item.photo)}" alt="" width="56" height="56" decoding="async">`:`<span class="cart-item-photo cart-item-initials" aria-hidden="true">${escapeText(line.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase())}</span>`;return`<article class="cart-item" data-index="${index}"><div class="cart-item-delete-cue" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13M10 11v5m4-5v5"/></svg></div><button class="cart-item-remove sr-only" type="button" data-action="remove" data-index="${index}">Remove ${escapeText(line.name)}</button><div class="cart-item-main"><button class="cart-item-edit" type="button" data-action="edit" data-index="${index}" aria-label="Edit ${escapeText(line.name)}">${photo}</button><div class="cart-item-head"><div><h3>${escapeText(line.name)}</h3><p>${escapeText(line.selectedOptions.map(option=>option.name).join(' · ')||'Standard')}</p>${line.notes?`<p>Note: ${escapeText(line.notes)}</p>`:''}</div><strong>${format(line.lineTotalMinor)}</strong></div><div class="cart-item-controls"><div class="stepper"><button type="button" data-action="minus" data-index="${index}" aria-label="Decrease ${escapeText(line.name)} quantity">−</button><output>${line.quantity}</output><button type="button" data-action="plus" data-index="${index}" aria-label="Increase ${escapeText(line.name)} quantity">+</button></div></div></div></article>`}).join('');
   const cartIds=new Set(cart.map(line=>line.itemId)),recommendations=menu.filter(item=>item.available&&!item.hidden&&!cartIds.has(item.id)).slice(0,4);$('#cart-recommendations').classList.toggle('hidden',!cart.length||!recommendations.length);$('#cart-recommendation-list').innerHTML=recommendations.map(item=>`<article class="cart-recommendation"><div class="cart-recommendation-photo">${item.photo?`<img src="${escapeText(item.photoCard||item.photo)}" alt="" width="180" height="120" loading="lazy" decoding="async">`:`<span aria-hidden="true">${escapeText(item.name.slice(0,1))}</span>`}<button type="button" data-recommendation-id="${escapeText(item.id)}" aria-label="Add ${escapeText(item.name)} to order">+</button></div><h4>${escapeText(item.name)}</h4><p>${format(item.price)}</p></article>`).join('');
-  $('#cart-empty').classList.toggle('hidden',cart.length>0);$('#checkout-fields').classList.toggle('hidden',!cart.length);updateCheckoutActionVisibility();$('#submit-order').disabled=!storeOpen();if(openTabEnabled)renderTabSummary();positionCartBar();
+  $('#cart-empty').classList.toggle('hidden',cart.length>0);$('#checkout-fields').classList.toggle('hidden',!cart.length);updateCheckoutActionVisibility();$('#submit-order').disabled=!storeOpen();if(openTabEnabled)renderTabSummary();renderInOrderBadges();positionCartBar();
 }
 let itemSheetDrag=null;
 function resetItemSheetDrag(){const dialog=$('#item-dialog'),card=dialog.querySelector('.sheet-card');itemSheetDrag=null;dialog.classList.remove('is-dragging');card.style.removeProperty('transform');card.style.removeProperty('will-change')}

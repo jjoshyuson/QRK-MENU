@@ -58,3 +58,11 @@ export function bindScrollChrome(scroller, { threshold = 140 } = {}) {
   update();
   return () => { scroller.removeEventListener('scroll', update); document.body.removeAttribute('data-scrolled'); };
 }
+
+export const sectionIndexLabel = index => String(index + 1).padStart(2, '0');
+
+// Prices are minor units (centavos); whole pesos drop the decimals.
+export function formatPriceParts(minor) {
+  const pesos = Number(minor || 0) / 100;
+  return { symbol: '₱', amount: pesos.toLocaleString('en-PH', { minimumFractionDigits: Number.isInteger(pesos) ? 0 : 2, maximumFractionDigits: 2 }) };
+}

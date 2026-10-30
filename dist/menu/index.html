@@ -99,7 +99,7 @@
     </button>
   </div>
   <div class="cart-bar hidden" id="cart-bar"><button type="button" id="open-cart"><span><b id="cart-count">0</b> <span id="cart-label">items</span></span><strong>View order · <span id="cart-subtotal">₱0</span></strong></button></div>
-  <footer><span>Local development ordering</span><span class="powered-by">Powered by <img src="/assets/brand/qrk-wordmark.png" alt="QRK menu" width="98" height="19"></span><a href="/photo-credits.html">Sample photo credits</a></footer>
+  <footer class="menu-footer"><p class="footer-brand"><span>Ordering by QRK</span></p><p class="footer-note"><span>Local development ordering</span> · <a href="/photo-credits.html">Sample photo credits</a></p></footer>
 
   <dialog id="item-dialog" class="sheet focused-sheet item-sheet" aria-labelledby="item-name">
     <form method="dialog" class="sheet-card focused-sheet-card" id="item-form">
@@ -177,6 +177,6 @@
       <footer class="history-actions"><button class="text-button" id="clear-history" type="button">Clear order history</button><div class="history-clear-confirm hidden" id="history-clear-confirm"><span>Clear saved history from this device?</span><button class="secondary-button" id="cancel-clear-history" type="button">Cancel</button><button class="primary-button" id="confirm-clear-history" type="button">Clear</button></div></footer>
     </div>
   </dialog>
-  <template id="dish-template"><article class="dish"><button class="dish-hit" type="button"><div class="photo"><img alt="" width="640" height="480"><span class="sold-label hidden">Sold out</span></div><div class="dish-copy"><h4></h4><strong></strong></div></button></article></template>
+  <template id="dish-template"><article class="dish"><button class="dish-hit" type="button"><div class="dish-copy"><h4></h4><p class="dish-desc"></p><span class="dish-badges"><span class="badge sold-label hidden">Sold out</span><span class="badge in-order-label hidden"></span></span><strong class="dish-price"><span class="price-symbol"></span><span class="price-amount"></span></strong></div><div class="dish-media"><div class="photo"><img alt="" width="640" height="480"></div><span class="dish-plus" aria-hidden="true">+</span></div></button></article></template>
 </body>
 </html>
