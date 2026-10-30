@@ -33,3 +33,10 @@ assert.ok(hostedCard.includes('Client sign-in')&&!hostedCard.includes('Preview a
 
 const escaped='Kain &amp; &quot;Inom&quot; &lt;b&gt;';
 for(const html of [clientCard(evil,{statuses}),manageSheetBody(evil,{statuses}),adminRow(evil,statuses)]){assert.ok(html.includes(escaped));assert.ok(!html.includes('<b>'))}
+
+const sheet=client=>manageSheetBody(client,{statuses}),group=html=>html.split('<h3>Portal</h3>')[0];
+assert.ok(sheet(quick).includes('Pause this client')&&sheet(quick).includes('admin-manage-danger'));
+assert.ok(sheet(both).includes('Activate this client'));
+assert.ok(group(sheet(salo)).includes('First login pending'));
+assert.ok(!group(sheet(quick)).includes('First login pending')&&!group(sheet(quick)).includes('Password set'));
+assert.ok(group(manageSheetBody(quick,{statuses:new Map([['kusina-admin',{mustChangePassword:false}]])})).includes('Password set'));

@@ -1,6 +1,6 @@
 /* Admin tokens. Accent comes from the global theme (--brand-500 / --brand-foreground). */
-.platform-admin-body{--admin-page:#F3F2EF;--admin-surface:#FFFFFF;--admin-surface-2:#F0EFEC;--admin-ink:#14161A;--admin-muted:#5F636A;--admin-rail:#111316;--admin-rail-active:#262A30;--admin-strong:#14161A;--admin-on-strong:#FFFFFF;--admin-warn-bg:#FFF1DB;--admin-warn-fg:#7A4B00;--admin-ok-bg:#E7F6EC;--admin-ok-fg:#17663A;--admin-danger-bg:#FDECEA;--admin-danger-fg:#B3261E;--admin-radius-card:20px;--admin-radius-control:999px;--admin-shadow:0 1px 2px rgb(0 0 0 / .05),0 8px 24px rgb(20 22 26 / .04);--admin-accent:var(--brand-500,#1683FF);--admin-on-accent:var(--brand-foreground,#FFFFFF);--admin-line:color-mix(in srgb,var(--admin-ink) 10%,transparent);--admin-soft:var(--admin-surface-2);--admin-sidebar:var(--admin-rail);--admin-on-rail:#FFFFFF;--admin-rail-muted:#A2A7AC;--admin-rail-hover:rgb(255 255 255 / .06);--admin-tip-bg:#14161A;--admin-tip-fg:#FFFFFF;--admin-initial-bg:#FFFFFF;--admin-initial-fg:#14161A;--admin-shadow-raised:0 2px 6px rgb(0 0 0 / .12);--admin-shadow-overlay:0 12px 32px rgb(0 0 0 / .2);margin:0;min-height:100dvh;background:var(--admin-page);color:var(--admin-ink);font-family:var(--font-interface,"Manrope",system-ui,sans-serif)}
-[data-theme="dark"] .platform-admin-body{--admin-page:#0E1012;--admin-surface:#171A1D;--admin-surface-2:#1F2327;--admin-ink:#F1F1EF;--admin-muted:#A2A7AC;--admin-rail:#08090A;--admin-rail-active:#1F2327;--admin-strong:#F1F1EF;--admin-on-strong:#14161A;--admin-warn-bg:#3A2A0E;--admin-warn-fg:#FFD58A;--admin-ok-bg:#12301E;--admin-ok-fg:#8FE0AE;--admin-danger-bg:#3A1512;--admin-danger-fg:#FFB4AB;--admin-shadow:0 0 0 1px rgb(255 255 255 / .06);--admin-on-rail:#F1F1EF;--admin-rail-muted:#A2A7AC;--admin-rail-hover:rgb(255 255 255 / .06);--admin-tip-bg:#1F2327;--admin-tip-fg:#F1F1EF;--admin-initial-bg:#FFFFFF;--admin-initial-fg:#14161A;--admin-shadow-raised:0 2px 6px rgb(0 0 0 / .4);--admin-shadow-overlay:0 12px 32px rgb(0 0 0 / .5)}
+.platform-admin-body{--admin-page:#F3F2EF;--admin-surface:#FFFFFF;--admin-surface-2:#F0EFEC;--admin-ink:#14161A;--admin-muted:#5F636A;--admin-rail:#111316;--admin-rail-active:#262A30;--admin-strong:#14161A;--admin-on-strong:#FFFFFF;--admin-warn-bg:#FFF1DB;--admin-warn-fg:#7A4B00;--admin-ok-bg:#E7F6EC;--admin-ok-fg:#17663A;--admin-danger-bg:#FDECEA;--admin-danger-fg:#B3261E;--admin-radius-card:20px;--admin-radius-control:999px;--admin-scrim:rgb(20 22 26 / .45);--admin-shadow:0 1px 2px rgb(0 0 0 / .05),0 8px 24px rgb(20 22 26 / .04);--admin-accent:var(--brand-500,#1683FF);--admin-on-accent:var(--brand-foreground,#FFFFFF);--admin-line:color-mix(in srgb,var(--admin-ink) 10%,transparent);--admin-soft:var(--admin-surface-2);--admin-sidebar:var(--admin-rail);--admin-on-rail:#FFFFFF;--admin-rail-muted:#A2A7AC;--admin-rail-hover:rgb(255 255 255 / .06);--admin-tip-bg:#14161A;--admin-tip-fg:#FFFFFF;--admin-initial-bg:#FFFFFF;--admin-initial-fg:#14161A;--admin-shadow-raised:0 2px 6px rgb(0 0 0 / .12);--admin-shadow-overlay:0 12px 32px rgb(0 0 0 / .2);margin:0;min-height:100dvh;background:var(--admin-page);color:var(--admin-ink);font-family:var(--font-interface,"Manrope",system-ui,sans-serif)}
+[data-theme="dark"] .platform-admin-body{--admin-page:#0E1012;--admin-surface:#171A1D;--admin-surface-2:#1F2327;--admin-ink:#F1F1EF;--admin-muted:#A2A7AC;--admin-rail:#08090A;--admin-rail-active:#1F2327;--admin-strong:#F1F1EF;--admin-on-strong:#14161A;--admin-warn-bg:#3A2A0E;--admin-warn-fg:#FFD58A;--admin-ok-bg:#12301E;--admin-ok-fg:#8FE0AE;--admin-danger-bg:#3A1512;--admin-danger-fg:#FFB4AB;--admin-scrim:rgb(0 0 0 / .6);--admin-shadow:0 0 0 1px rgb(255 255 255 / .06);--admin-on-rail:#F1F1EF;--admin-rail-muted:#A2A7AC;--admin-rail-hover:rgb(255 255 255 / .06);--admin-tip-bg:#1F2327;--admin-tip-fg:#F1F1EF;--admin-initial-bg:#FFFFFF;--admin-initial-fg:#14161A;--admin-shadow-raised:0 2px 6px rgb(0 0 0 / .4);--admin-shadow-overlay:0 12px 32px rgb(0 0 0 / .5)}
 
 [hidden]{display:none!important}
 .platform-admin-body dialog{width:min(720px,calc(100% - 32px));max-height:calc(100dvh - 32px);overflow:auto;border:0;border-radius:14px;padding:0;background:white;box-shadow:0 24px 80px #0004}
@@ -348,7 +348,7 @@
 }
 
 /* Manage sheet */
-.admin-sheet-backdrop{position:fixed;inset:0;z-index:60;border:0;background:rgb(0 0 0 / .45);opacity:0}
+.admin-sheet-backdrop{position:fixed;inset:0;z-index:60;border:0;background:var(--admin-scrim);opacity:0}
 .admin-sheet-backdrop.open{opacity:1}
 .admin-manage-sheet{position:fixed;z-index:61;top:0;right:0;bottom:0;width:min(420px,100%);overflow-y:auto;background:var(--admin-surface);color:var(--admin-ink);box-shadow:var(--admin-shadow);transform:translateX(100%)}
 .admin-manage-sheet.open{transform:none}
@@ -357,14 +357,17 @@
 .admin-manage-band{position:absolute;inset:0 0 auto;height:54px}
 .admin-manage-head .admin-client-initial{top:32px;left:24px}
 .admin-manage-head strong{margin-top:22px;font-size:20px}
-.admin-manage-close{position:absolute;top:5px;right:8px;width:44px;height:44px;border:0;border-radius:50%;background:rgb(0 0 0 / .35);color:#fff;font-size:22px;cursor:pointer}
+.admin-manage-close{position:absolute;top:5px;right:8px;width:44px;height:44px;border:0;border-radius:50%;background:var(--admin-surface);color:var(--admin-ink);box-shadow:var(--admin-shadow);font-size:22px;cursor:pointer}
 .admin-manage{display:grid;gap:12px;padding:0 24px 28px}
 .admin-manage section{display:grid;justify-items:start;gap:8px;padding:16px;border-radius:16px;background:var(--admin-surface-2)}
 .admin-manage h3{margin:0;color:var(--admin-muted);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
 .admin-manage p{margin:0;overflow-wrap:anywhere}
 .admin-manage .button{display:inline-flex;min-height:44px;align-items:center}
-.admin-manage section:last-child{background:var(--admin-danger-bg)}
-.admin-manage section:last-child h3,.admin-manage section:last-child .button{color:var(--admin-danger-fg)}
+.admin-manage-danger{background:var(--admin-danger-bg)!important}
+.admin-manage-danger h3,.admin-manage-danger p{color:var(--admin-danger-fg)}
+.admin-manage .button.is-danger{background:var(--admin-danger-fg);color:var(--admin-danger-bg)}
+.admin-manage .button.is-accent{background:var(--brand-500);color:var(--brand-foreground,var(--color-black))}
+.admin-login-status{color:var(--admin-muted);font-size:13px}
 @media(max-width:720px){
 .admin-manage-sheet{top:auto;left:0;width:100%;max-height:88dvh;border-radius:24px 24px 0 0;transform:translateY(100%)}
 .admin-manage-sheet.open{transform:none}
