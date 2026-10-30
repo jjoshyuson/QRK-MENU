@@ -32,4 +32,12 @@ const rows = Array.from({ length: 20 }, stubEl); const box = stubEl(); box.query
 staggerRise(box); assert.equal(rows[0].style.props['--rise-delay'], '0ms'); assert.equal(rows[1].style.props['--rise-delay'], '50ms');
 assert.equal(rows[19].style.props['--rise-delay'], '520ms'); assert.ok(box.set.has('rise-a'));
 staggerRise(box); assert.ok(box.set.has('rise-b') && !box.set.has('rise-a'));
+assert.match(css, /prefers-reduced-motion:\s*reduce\)\s*\{\s*\.menu-toast\.is-on\s*\{[^}]*opacity:\s*1/);
+assert.doesNotMatch(css, /#cart-count\s*\{[^}]*display/);
+const js = readFileSync(new URL('../dist/menu/menu.js', import.meta.url), 'utf8');
+assert.equal(js.match(/staggerRise\(/g).length, 2); // load + chip click
+assert.ok(!/staggerRise\(risen\)/.test(js)); assert.equal(js.match(/staggerRise\(\$\('#menu-sections'\)\)/g).length, 2);
+assert.match(js, /classList\.remove\('rise-a','rise-b'\)/);
+const seq = []; for (let i = 0; i < 3; i++) { staggerRise(box); seq.push(box.set.has('rise-a') ? 'a' : 'b'); }
+assert.deepEqual(seq, ['a', 'b', 'a']);
 console.log('menu motion tests passed');

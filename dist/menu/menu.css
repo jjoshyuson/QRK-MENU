@@ -462,7 +462,6 @@ footer.menu-footer a { color: var(--accent-text); }
 @keyframes menu-pop-b{50%{transform:scale(1.35)}}
 .rise-a .dish{animation:menu-rise 500ms cubic-bezier(.2,.8,.2,1) var(--rise-delay,0ms) backwards}
 .rise-b .dish{animation:menu-rise-b 500ms cubic-bezier(.2,.8,.2,1) var(--rise-delay,0ms) backwards}
-#cart-count{display:inline-block}
 .pop-a{animation:menu-pop 360ms ease-out}
 .pop-b{animation:menu-pop-b 360ms ease-out}
 .dish,.cart-bar button,.primary-button,.secondary-button,#add-item{transition:transform 140ms ease}
