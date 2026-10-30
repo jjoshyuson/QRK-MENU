@@ -247,12 +247,54 @@ function bindCategoryLinks(){
 function optionPrice(){return itemOptionDraft.flat().reduce((sum,option)=>sum+Number(option.priceMinor),0)}
 function updateItemTotal(){if(!selectedItem)return;$('#item-quantity').textContent=itemQuantity;$('#item-minus').disabled=itemQuantity<=1;$('#item-plus').disabled=itemQuantity>=20;$('#item-total').textContent=format((selectedItem.price+optionPrice())*itemQuantity)}
 function syncItemOptionDraft(){
-  itemOptionDraft=(selectedItem?.options||[]).map((group,index)=>[...document.querySelectorAll(`input[name="group-${index}"]:checked`)].map(input=>({id:input.dataset.id||undefined,group:group.name,name:input.value,priceMinor:Number(input.dataset.price)})));updateItemTotal()
+  itemOptionDraft=(selectedItem?.options||[]).map((group,index)=>[...document.querySelectorAll(`input[name="group-${index}"]:checked`)].map(input=>({id:input.dataset.id||undefined,group:group.name,name:input.value,priceMinor:Number(input.dataset.price)})));
+  itemOptionDraft.forEach((picked,index)=>{
+    if(picked.length)clearOptionInvalid(index);
+  });
+  updateItemTotal();
+}
+function clearOptionInvalid(index){
+  const group=$(`#item-options [data-group-index="${index}"]`);
+  if(!group)return;
+  delete group.dataset.invalid;
+  group.querySelector('.option-error').hidden=true;
+}
+// Marks every unmet required group; returns the first one's index, or -1.
+function markMissingOptions(){
+  let first=-1;
+  (selectedItem?.options||[]).forEach((group,index)=>{
+    if(!group.required||itemOptionDraft[index]?.length)return;
+    const box=$(`#item-options [data-group-index="${index}"]`);
+    box.dataset.invalid='true';
+    box.querySelector('.option-error').hidden=false;
+    if(first<0)first=index;
+  });
+  return first;
 }
 function renderItemOptions(){
-  const groups=selectedItem?.options||[];$('#item-action-label').textContent=editingIndex>=0?'Update item':'Add to order';$('#add-item').setAttribute('aria-label',editingIndex>=0?'Save item changes':'Add item to order');
-  $('#item-options').innerHTML=groups.map((group,index)=>{const selected=itemOptionDraft[index]||[],labelId=`option-group-${index}`;return`<section class="option-group" data-required="${group.required}"><div class="option-group-heading" id="${labelId}"><b>${escapeText(group.name)}</b><span>${group.required?'Required':'Optional'}</span></div><div class="focused-choice-list" role="group" aria-labelledby="${labelId}">${group.choices.map((choice,choiceIndex)=>{const id=`option-${index}-${choiceIndex}`,checked=selected.some(option=>option.name===choice[0]);return`<label for="${id}"><span><input id="${id}" type="${group.multiple?'checkbox':'radio'}" name="group-${index}" value="${escapeText(choice[0])}" data-id="${escapeText(choice[2]||'')}" data-price="${choice[1]}" ${checked?'checked':''}><i aria-hidden="true">✓</i><b>${escapeText(choice[0])}</b></span><small>${choice[1]?`+${format(choice[1])}`:'Included'}</small></label>`}).join('')}</div></section>`}).join('');
-  $('#item-options').onchange=syncItemOptionDraft;updateItemTotal()
+  const groups=selectedItem?.options||[];
+  $('#item-action-label').textContent=editingIndex>=0?'Update':'Add to order';
+  $('#add-item').setAttribute('aria-label',editingIndex>=0?'Save item changes':'Add item to order');
+  $('#item-options').innerHTML=groups.map((group,index)=>{
+    const selected=itemOptionDraft[index]||[];
+    const labelId=`option-group-${index}`;
+    const choices=group.choices.map((choice,choiceIndex)=>{
+      const id=`option-${index}-${choiceIndex}`;
+      const checked=selected.some(option=>option.name===choice[0]);
+      return`<label for="${id}"><span><input id="${id}" type="${group.multiple?'checkbox':'radio'}" name="group-${index}" value="${escapeText(choice[0])}" data-id="${escapeText(choice[2]||'')}" data-price="${choice[1]}" ${checked?'checked':''}><i aria-hidden="true">✓</i><b>${escapeText(choice[0])}</b></span><small>${choice[1]?`+${format(choice[1])}`:'Included'}</small></label>`;
+    }).join('');
+    return`<section class="option-group" data-required="${group.required}" data-group-index="${index}"><div class="option-group-heading" id="${labelId}"><b>${escapeText(group.name)}</b><span class="option-badge">${group.required?'Required':'Optional'}</span></div><div class="focused-choice-list" role="group" aria-labelledby="${labelId}">${choices}</div><p class="option-error" role="alert" hidden>Choose one to continue.</p></section>`;
+  }).join('');
+  $('#item-options').onchange=event=>{
+    const mark=event.target.nextElementSibling;
+    mark.classList.remove('pop-in');
+    if(event.target.checked){
+      void mark.offsetWidth; // restart the animation on re-pick
+      mark.classList.add('pop-in');
+    }
+    syncItemOptionDraft();
+  };
+  updateItemTotal();
 }
 function openItem(item,index=-1,invoker=document.activeElement){
   if(!storeOpen())return showStoreNotice();selectedItem=item;editingIndex=index;const existing=index>=0?cart[index]:null;itemQuantity=existing?.quantity||1;
@@ -346,7 +388,7 @@ function showConfirmation(order){const dialog=$('#confirmation-dialog');$('#conf
 async function refreshTabOrders(){try{const orders=await dataService.listOrders();orderHistory=orderHistory.map(saved=>historySnapshot(orders.find(order=>String(order.id)===String(saved.id))||saved));saveHistory();renderHistory();if(!openTabEnabled)return;const ids=safeParse(localStorage.getItem(TAB_ORDER_KEY),[]).map(String),tabState=safeParse(localStorage.getItem(TAB_SESSION_KEY),{});await tableSessionService?.refresh();const current=tableSessionService?.current(),session=tabState.sessionId?tableSessionService.sessions.find(item=>String(item.id)===String(tabState.sessionId)):current;tabOrders=orders.filter(order=>ids.includes(String(order.id)));if(ids.length&&['paid','settled'].includes(session?.status)){rememberPaidTab(session,tabOrders);clearActiveTab();return}if(ids.length&&(!session||['cleaned','cancelled','expired'].includes(session.status))){clearActiveTab();return}if(ids.length&&!tabState.sessionId&&current)localStorage.setItem(TAB_SESSION_KEY,JSON.stringify({sessionId:current.id,updatedAt:new Date().toISOString()}));renderTabSummary()}catch{renderHistory();renderTabSummary()}}
 $('#menu-search').addEventListener('input',event=>renderMenu(event.target.value));$('#clear-search').addEventListener('click',()=>{$('#menu-search').value='';renderMenu();$('#menu-search').focus()});
 $('#order-history-control').addEventListener('click',()=>{renderHistory();$('#history-clear-confirm').classList.add('hidden');$('#clear-history').classList.toggle('hidden',!orderHistory.length);openModal($('#history-dialog'))});$('#close-history').addEventListener('click',()=>closeSheet($('#history-dialog')));$('#clear-history').addEventListener('click',()=>{$('#clear-history').classList.add('hidden');$('#history-clear-confirm').classList.remove('hidden')});$('#cancel-clear-history').addEventListener('click',()=>{$('#history-clear-confirm').classList.add('hidden');$('#clear-history').classList.remove('hidden')});$('#confirm-clear-history').addEventListener('click',()=>{orderHistory=[];localStorage.removeItem(HISTORY_KEY);renderHistory();$('#history-clear-confirm').classList.add('hidden');$('#clear-history').classList.add('hidden')});
-$('#open-cart').addEventListener('click',openCart);$('#desktop-open-cart').addEventListener('click',openCart);$('#open-tab-control').addEventListener('click',openTab);$('#close-open-tab').addEventListener('click',()=>$('#open-tab-dialog').close());$('#item-minus').addEventListener('click',()=>{itemQuantity--;updateItemTotal()});$('#item-plus').addEventListener('click',()=>{itemQuantity++;updateItemTotal()});$('#add-item').addEventListener('click',event=>{event.preventDefault();syncItemOptionDraft();const missing=(selectedItem?.options||[]).findIndex((group,index)=>group.required&&!itemOptionDraft[index]?.length);if(missing>=0){const input=$(`input[name="group-${missing}"]`);input.setCustomValidity('Choose an option.');input.reportValidity();input.onchange=()=>input.setCustomValidity('');return}addSelectedItem()});
+$('#open-cart').addEventListener('click',openCart);$('#desktop-open-cart').addEventListener('click',openCart);$('#open-tab-control').addEventListener('click',openTab);$('#close-open-tab').addEventListener('click',()=>$('#open-tab-dialog').close());$('#item-minus').addEventListener('click',()=>{itemQuantity--;updateItemTotal()});$('#item-plus').addEventListener('click',()=>{itemQuantity++;updateItemTotal()});$('#add-item').addEventListener('click',event=>{event.preventDefault();syncItemOptionDraft();const missing=markMissingOptions();if(missing>=0){const group=$(`#item-options [data-group-index="${missing}"]`);group.scrollIntoView({block:'center',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});group.querySelector('input').focus({preventScroll:true});return}addSelectedItem()});
 $('#item-dialog').addEventListener('close',()=>{const invoker=itemDialogInvoker,fallback=editingIndex>=0&&$('#cart-dialog').open?$(`#cart-items [data-action="edit"][data-index="${editingIndex}"]`):null;itemDialogInvoker=null;const target=invoker?.isConnected?invoker:fallback;if(target)requestAnimationFrame(()=>target.focus())});
 $('#cancel-item').addEventListener('click',()=>closeSheet($('#item-dialog')));$('#item-dialog').addEventListener('cancel',event=>{event.preventDefault();closeSheet($('#item-dialog'))});$('#close-cart').addEventListener('click',()=>closeSheet($('#cart-dialog')));$('#cart-dialog').addEventListener('cancel',event=>{event.preventDefault();closeSheet($('#cart-dialog'))});$('#history-dialog').addEventListener('cancel',event=>{event.preventDefault();closeSheet($('#history-dialog'))});
 $('#item-dialog').addEventListener('click',event=>{if(event.target===event.currentTarget)closeSheet(event.currentTarget)});

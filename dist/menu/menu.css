@@ -355,6 +355,7 @@ footer {
   --hero-fade-text: .56;
   --hero-fade-end: .3;
   --accent-on-white: color-mix(in srgb, var(--accent) 78%, #000000);
+  --danger: #B42318;
   --frost: rgba(255, 255, 255, .82);
   --shadow-sm: 0 1px 2px rgba(20, 20, 20, .06), 0 1px 3px rgba(20, 20, 20, .05);
   --shadow-md: 0 2px 4px rgba(20, 20, 20, .05), 0 8px 20px rgba(20, 20, 20, .09);
@@ -368,6 +369,7 @@ footer {
   --muted: #A2A7AC;
   --accent-soft: color-mix(in srgb, var(--accent) 24%, var(--surface));
   --accent-text: color-mix(in srgb, var(--accent) 50%, white);
+  --danger: #F97066;
   --frost: rgba(23, 26, 28, .82);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
   --shadow-md: 0 2px 4px rgba(0, 0, 0, .35), 0 8px 20px rgba(0, 0, 0, .45);
