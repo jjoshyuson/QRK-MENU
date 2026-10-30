@@ -77,9 +77,10 @@ function syncModalScrollLock(){
 }
 function openModal(dialog){if(!dialog.open)dialog.showModal();syncModalScrollLock()}
 document.querySelectorAll('dialog').forEach(dialog=>dialog.addEventListener('close',()=>requestAnimationFrame(syncModalScrollLock)));
+var headerReady=false;
 let selectedReviewTable=businessExperience.serviceMode==='quick'?quickCheckout.table:'';
 function persistCheckoutMethod(){if(businessExperience.serviceMode==='quick')localStorage.setItem(CHECKOUT_METHOD_KEY,JSON.stringify({consumption:selectedConsumption,fulfillment:selectedFulfillment,table:selectedReviewTable}))}
-function setReviewTableNumber(value){selectedReviewTable=String(value||'');$('#table-number').value=selectedReviewTable;persistCheckoutMethod()}
+function setReviewTableNumber(value){selectedReviewTable=String(value||'');$('#table-number').value=selectedReviewTable;persistCheckoutMethod();if(headerReady)refreshHeader()}
 function applyPublicMenuBackground(brand){
   const menuSurface=$('.menu'),settings=brand?.publicMenuBackground||{},image=safeImageUrl(settings.image),opacity=Number(settings.surfaceOpacity),surfaceOpacity=Math.round((Number.isFinite(opacity)?Math.max(.4,Math.min(.95,opacity)):.72)*100);
   menuSurface.classList.toggle('has-menu-background',Boolean(image));
@@ -122,11 +123,17 @@ addEventListener('scroll',positionCartBar,{passive:true});addEventListener('resi
 let orderingOpen=await dataService.getStoreOpen().catch(()=>false);
 const storeOpen=()=>new URLSearchParams(location.search).get('closed')!=='1'&&orderingOpen;
 const format=minor=>money.format(minor/100);
+headerReady=true;
+function currentTableNumber(){
+  const session=tableSessionService?.current();
+  if(session&&['active','bill_requested','inactivity_warning'].includes(session.status))return String(session.table);
+  return new URLSearchParams(location.search).get('table')||null;
+}
 function refreshHeader(){
   const kusina=businessSlug==='kusina-manila';
   const isTable=businessExperience.serviceMode==='table';
   const brand={...customerBrand,tagline:businessExperience.description,logoDataUrl:customerBrand.logoDataUrl||(kusina?'/assets/businesses/kusina-manila-logo.webp':''),coverPhotoUrl:customerBrand.coverPhotoUrl||(kusina?'/assets/businesses/kusina-manila-banner.webp':'')};
-  applyHeader(document,headerModel(brand,{isTable,tableNumber:new URLSearchParams(location.search).get('table')||'12',orderCount:orderHistory.length,openForOrders:storeOpen(),prepLabel:'',area:businessExperience.location||''}));
+  applyHeader(document,headerModel(brand,{isTable,tableNumber:currentTableNumber(),orderCount:orderHistory.length,openForOrders:storeOpen(),prepLabel:'',area:businessExperience.location||''}));
 }
 document.documentElement.style.setProperty('--accent',accentFor(customerBrand));
 bindScrollChrome(window,{threshold:140});
