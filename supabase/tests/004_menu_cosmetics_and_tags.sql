@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(9);
+select plan(13);
 
 -- Cosmetics are read through the anonymous public RPC; settings are written as the table owner.
 create function pg_temp.set_background(p_background jsonb) returns void language sql as $$
@@ -28,6 +28,26 @@ set local role anon;
 select is(public.get_public_business_cosmetics('kusina-manila')->>'backgroundStyle','pattern','valid style is returned unchanged');
 select is(public.get_public_business_cosmetics('kusina-manila')->>'backgroundPattern','ramen','valid pattern is returned unchanged');
 select is((public.get_public_business_cosmetics('kusina-manila')->>'backgroundStrength')::integer,35,'valid strength is returned unchanged');
+reset role;
+
+select pg_temp.set_background('{"style":"plain","strength":"99999999999"}');
+set local role anon;
+select is((public.get_public_business_cosmetics('kusina-manila')->>'backgroundStrength')::integer,100,'huge strength string clamps to 100 without overflow');
+reset role;
+
+select pg_temp.set_background('{"style":"plain","strength":1e10}');
+set local role anon;
+select is((public.get_public_business_cosmetics('kusina-manila')->>'backgroundStrength')::integer,100,'huge strength number clamps to 100 without overflow');
+reset role;
+
+select pg_temp.set_background('{"style":"plain","strength":"abc"}');
+set local role anon;
+select is((public.get_public_business_cosmetics('kusina-manila')->>'backgroundStrength')::integer,50,'non-numeric strength falls back to 50');
+reset role;
+
+select pg_temp.set_background('{"style":"plain","strength":-5}');
+set local role anon;
+select is((public.get_public_business_cosmetics('kusina-manila')->>'backgroundStrength')::integer,0,'negative strength clamps to 0');
 reset role;
 
 select * from finish();

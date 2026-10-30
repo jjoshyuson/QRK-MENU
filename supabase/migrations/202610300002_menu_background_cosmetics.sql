@@ -12,7 +12,7 @@ returns jsonb language sql stable security definer set search_path='' as $$
     'backgroundPattern',case when profile.settings #>> '{menuCosmetics,background,pattern}' in ('filipino','cafe','ramen','pizza','dessert')
       then to_jsonb(profile.settings #>> '{menuCosmetics,background,pattern}') else 'null'::jsonb end,
     'backgroundStrength',case when profile.settings #>> '{menuCosmetics,background,strength}' ~ '^\s*-?\d+(\.\d+)?\s*$'
-      then greatest(0,least(100,round((profile.settings #>> '{menuCosmetics,background,strength}')::numeric)::integer)) else 50 end
+      then round(greatest(0,least(100,(profile.settings #>> '{menuCosmetics,background,strength}')::numeric)))::integer else 50 end
   )
   from public.public_destinations destination
   join public.business_profiles profile on profile.business_id=destination.business_id
