@@ -27,7 +27,7 @@
     ['.option-group', 'Option group'], ['.cart-item', 'Cart item'],
     ['.fulfillment', 'Fulfillment choice group'], ['.payment-card', 'Payment choice'],
     ['.confirmation-content', 'Order confirmation'], ['.tab-round', 'Open tab round'],
-    ['.platform-client-row', 'Client portal row'], ['.platform-account-row', 'Client Admin row'],
+    ['.admin-client-card', 'Client card'], ['.admin-account-row', 'Client Admin row'],
     ['.preset-card', 'Service preset'], ['.journey-preview', 'Journey preview'],
     ['dialog', 'Dialog'], ['.form-error,.error-message', 'Form error'],
     ['.empty,.empty-state,.cart-empty,.desktop-order-empty,.order-empty,.stage-empty', 'Empty state'],
