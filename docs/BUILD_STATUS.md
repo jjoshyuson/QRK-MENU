@@ -1,5 +1,15 @@
 # Build status
 
+## October 30, 2026 — Customer menu redesign verification
+
+| Area | Implemented / evidence |
+| --- | --- |
+| Scope | Customer route `/menu/` (Quick `?business=kusina-manila`, Table `?business=salamat&table=12`) plus two owner features: Business profile > Business cosmetics themed-background editor, and Menu Studio Featured switch and dish tags. Local candidate on `codex/qrk-full-redesign`; no push, deployment or hosted change. |
+| Automated | `npm run check` passes. `tests/photo-races.mjs` fails (`FileReader` is undefined when it evaluates the owner `dist/app.js` slice); it is not part of `npm run check` and fails the same way at the pre-redesign commit `fcbd58a`. |
+| Browser (local preview) | 390 and 768px, light and dark, Quick and Table: add item with required options, edit from cart, remove, place order, payment sheet (cashless unavailable), confirmation with order number, history, Table entry and staff-acceptance wait, Open Tab, store closed, sold out (disabled), hidden (omitted), empty search, no-photo dish, Featured row and tags, keyboard Tab order, dialog focus trap, Escape and backdrop close, focus restore, reduced motion. No console errors or horizontal overflow. Owner editors saved background style, pattern and strength and Featured/tags, and the menu rendered them. Screenshots: `review-assets/menu-redesign-{before,after}-*.png`. |
+| Not verified | Hosted Supabase project (nothing contacted). Physical devices and real screen readers. `supabase/tests/004_menu_cosmetics_and_tags.sql` (pgTAP) has never run: no local Supabase stack was running (`supabase status` could not reach the `supabase_db_qrk-menu-local` container). |
+| Open follow-ups | Hosted migrations `202610300002` and `202610300003` are not applied. Menu Studio featured/tags are not persisted to hosted (browser-local store only). `tabStatus` labels received orders "Accepted" in history and tab pills (pre-existing). Accessibility polish: option error is not linked via `aria-describedby`; a Featured card's accessible name reads price first; the swatch auto-switch is not announced. |
+
 ## October 13, 2026 — Local typography, card foundation and security fixes
 
 | Area | Implemented / evidence |

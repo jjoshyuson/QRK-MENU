@@ -28,7 +28,8 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 | `dist/menu/` | Standalone customer-only development menu route, including its small route-specific theme layer and CSS/JavaScript payload |
 | `dist/landing/` | Lightweight public choice, QRK Quick and QRK Table landing pages sharing the global QRK theme |
 | `dist/components/` | Unlinked, static development inventory of reusable owner, admin, staff and customer UI components and states |
-| `dist/menu/payment-first.css` | Small checkout override for the simulated Payment First choices and keyboard focus treatment |
+| `dist/menu/menu.css`, `menu-sheets.css`, `menu-table.css` | Customer menu tokens, header, cards and themed background; item, cart, fulfillment, payment, confirmation and history sheets; Table entry and Open Tab styles |
+| `dist/menu/menu-appearance.js` | Customer menu header model and `normalizeMenuBackground` (style, pattern and strength whitelist) |
 | `dist/data/` | Shared demo/Supabase data-service adapter and safe public configuration scaffold |
 | `dist/data/qrk-auth-service.js` | Lightweight local Supabase Auth session and tenant-context client |
 | `dist/data/qrk-brand-service.js` | Browser-local per-business logo/color preview with contrast-safe theme derivation |
@@ -69,7 +70,7 @@ To preview on your phone, use `npm run start:lan`, connect both devices to the s
 - Customer and staff order state survives refresh only through same-origin `localStorage` in one browser profile. Different physical devices do not synchronize.
 - Business Profile shows a distinct scannable test QR for each of the five development clients. Each QR opens that client's customer-menu slug; permanent production destinations and first-party QR generation remain future work.
 - A provider-ready Supabase/PostgreSQL foundation now exists under `supabase/`, and both public routes use a shared adapter that automatically stays in demo mode while backend configuration is absent.
-- Menu Studio changes persist in this browser and immediately drive the matching `/menu/` Customer Menu; unavailable and hidden items are omitted there. This is browser-preview synchronization, not durable cross-device publishing.
+- Menu Studio changes persist in this browser and immediately drive the matching `/menu/` Customer Menu; sold-out items show disabled there and hidden items are omitted. Featured and dish tags (like the rest of Menu Studio) are saved in this browser only. This is browser-preview synchronization, not durable cross-device publishing.
 - The repository includes tenant RLS, server-validated order RPCs, local Auth/permission migrations, development logins, private Broadcast and photo-storage policies. The hosted project is not linked, migrated or verified; hosted login, staff activation, operational persistence, real QR generation, durable UI publishing, payments and notifications remain incomplete. The service worker provides a basic cached shell, not a verified offline ordering workflow.
 
 The running app is still a UI-only same-browser ordering demonstration, not a production ordering service. Provider-ready SQL is not evidence of an operational backend. The sample business and food prices are illustrative. The prototype still loads its fonts from Google Fonts; all food photos are bundled locally.
