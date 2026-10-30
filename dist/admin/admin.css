@@ -346,3 +346,30 @@
 .admin-account-row{grid-template-columns:36px minmax(0,1fr)}.admin-account-row>:nth-child(n+3){grid-column:2}
 .platform-toast{bottom:calc(84px + env(safe-area-inset-bottom))}
 }
+
+/* Manage sheet */
+.admin-sheet-backdrop{position:fixed;inset:0;z-index:60;border:0;background:rgb(0 0 0 / .45);opacity:0}
+.admin-sheet-backdrop.open{opacity:1}
+.admin-manage-sheet{position:fixed;z-index:61;top:0;right:0;bottom:0;width:min(420px,100%);overflow-y:auto;background:var(--admin-surface);color:var(--admin-ink);box-shadow:var(--admin-shadow);transform:translateX(100%)}
+.admin-manage-sheet.open{transform:none}
+.admin-manage-sheet[hidden],.admin-sheet-backdrop[hidden]{display:none}
+.admin-manage-head{position:relative;display:grid;gap:6px;justify-items:start;padding:70px 24px 16px}
+.admin-manage-band{position:absolute;inset:0 0 auto;height:54px}
+.admin-manage-head .admin-client-initial{top:32px;left:24px}
+.admin-manage-head strong{margin-top:22px;font-size:20px}
+.admin-manage-close{position:absolute;top:5px;right:8px;width:44px;height:44px;border:0;border-radius:50%;background:rgb(0 0 0 / .35);color:#fff;font-size:22px;cursor:pointer}
+.admin-manage{display:grid;gap:12px;padding:0 24px 28px}
+.admin-manage section{display:grid;justify-items:start;gap:8px;padding:16px;border-radius:16px;background:var(--admin-surface-2)}
+.admin-manage h3{margin:0;color:var(--admin-muted);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.admin-manage p{margin:0;overflow-wrap:anywhere}
+.admin-manage .button{display:inline-flex;min-height:44px;align-items:center}
+.admin-manage section:last-child{background:var(--admin-danger-bg)}
+.admin-manage section:last-child h3,.admin-manage section:last-child .button{color:var(--admin-danger-fg)}
+@media(max-width:720px){
+.admin-manage-sheet{top:auto;left:0;width:100%;max-height:88dvh;border-radius:24px 24px 0 0;transform:translateY(100%)}
+.admin-manage-sheet.open{transform:none}
+}
+@media(prefers-reduced-motion:no-preference){
+.admin-manage-sheet{transition:transform 260ms cubic-bezier(.2,.8,.2,1)}
+.admin-sheet-backdrop{transition:opacity 200ms ease}
+}
