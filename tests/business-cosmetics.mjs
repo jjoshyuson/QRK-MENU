@@ -37,6 +37,8 @@ assert.match(brand,/logo:100\*1024,cover:200\*1024,background:200\*1024/);
 assert.match(brand,/encodeUnderBudget\(canvas,BUSINESS_IMAGE_BUDGETS\.logo,160\)/);
 assert.match(brand,/encodeUnderBudget\(canvas,BUSINESS_IMAGE_BUDGETS\.background,480\)/);
 assert.match(brand,/blob\.size<=maxBytes/);
+const saveSource=data.slice(data.indexOf('async saveBusinessCosmetics(cosmetics){\n'));
+assert.match(saveSource.slice(0,saveSource.indexOf('async registerDevice')),/menuCosmetics=\{[^}]*background:/,'background is written inside menuCosmetics');
 assert.match(migration,/create function public\.get_public_business_cosmetics/);
 assert.match(migration,/private\.has_business_role/);
 assert.match(migration,/grant execute .* to anon,authenticated/);

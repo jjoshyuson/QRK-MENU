@@ -9,6 +9,7 @@ const sql=(await Promise.all(migrations.map(name=>readFile(resolve(migrationDir,
 const tests=await readFile(resolve(root,'supabase','tests','001_security_and_orders.sql'),'utf8');
 const authTests=await readFile(resolve(root,'supabase','tests','002_auth_and_permissions.sql'),'utf8');
 const syncTests=await readFile(resolve(root,'supabase','tests','003_order_sync_and_recovery.sql'),'utf8');
+const cosmeticsTests=await readFile(resolve(root,'supabase','tests','004_menu_cosmetics_and_tags.sql'),'utf8');
 const seed=await readFile(resolve(root,'supabase','seed.sql'),'utf8');
 const requiredTables=['businesses','business_members','business_profiles','menus','menu_revisions','categories','menu_items','item_option_groups','item_options','orders','order_items','order_item_options','order_status_events','public_destinations','photo_assets','customer_devices','data_clear_batches','table_sessions','table_session_participants','table_join_requests','open_tabs'];
 const requiredFunctions=['get_public_menu','create_public_order','create_device_order','register_customer_device','get_public_order_status','transition_order_status','set_business_ordering_open','clear_order_activity','restore_order_activity'];
@@ -20,6 +21,8 @@ for(const marker of ['tenant B cannot read tenant A','idempotency created exactl
 for(const marker of ['salamat-admin','salamat-staff','{"serviceMode":"quick"}','{"serviceMode":"table"}'])if(!seed.includes(marker))throw new Error(`Missing two-tenant seed marker: ${marker}`);
 for(const marker of ['Salamat admin resolves to the second tenant','Salamat resolves to QRK Table mode'])if(!authTests.includes(marker))throw new Error(`Missing Auth test: ${marker}`);
 for(const marker of ['wrong device secret cannot create an order','cleared orders disappear from staff reads','tenant B cannot clear tenant A'])if(!syncTests.includes(marker))throw new Error(`Missing sync/recovery test: ${marker}`);
+
+for(const marker of ['cosmetics whitelist rejects unknown style'])if(!cosmeticsTests.includes(marker))throw new Error(`Missing cosmetics test: ${marker}`);
 
 const files=['.env.example','dist/data/qrk-config.js','dist/data/qrk-config.example.js',...migrations.map(name=>`supabase/migrations/${name}`),'supabase/seed.sql'];
 const secretPatterns=[/sb_secret_[A-Za-z0-9_-]{10,}/,/service_role\s*[:=]\s*['"][A-Za-z0-9._-]{20,}/i,/eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}/];
