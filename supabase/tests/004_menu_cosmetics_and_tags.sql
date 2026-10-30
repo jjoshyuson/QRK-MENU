@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(14);
+select plan(20);
 
 -- Cosmetics are read through the anonymous public RPC; settings are written as the table owner.
 create function pg_temp.set_background(p_background jsonb) returns void language sql as $$
@@ -53,6 +53,16 @@ reset role;
 select pg_temp.set_background('{"style":"plain","strength":-5}');
 set local role anon;
 select is((public.get_public_business_cosmetics('kusina-manila')->>'backgroundStrength')::integer,0,'negative strength clamps to 0');
+reset role;
+
+-- Featured flag and tags on menu items.
+select throws_ok($$update public.menu_items set tags='{spicy,unknown}' where id='10000000-0000-4000-8000-000000000501'$$,'23514',null,'menu item tags reject unknown values');
+select lives_ok($$update public.menu_items set featured=true,tags='{spicy,sharing}' where id='10000000-0000-4000-8000-000000000501'$$,'known tags and featured flag are accepted');
+select is((select featured from public.menu_items where id='10000000-0000-4000-8000-000000000502'),false,'featured defaults to false');
+select is((select tags from public.menu_items where id='10000000-0000-4000-8000-000000000502'),'{}'::text[],'tags default to empty');
+set local role anon;
+select is((select i->'featured' from jsonb_path_query(public.get_public_menu('kusina-manila'),'$.menu.categories[*].items[*]') i where i->>'name'='Chicken adobo'),'true'::jsonb,'public menu returns featured');
+select is((select i->'tags' from jsonb_path_query(public.get_public_menu('kusina-manila'),'$.menu.categories[*].items[*]') i where i->>'name'='Chicken adobo'),'["spicy","sharing"]'::jsonb,'public menu returns tags');
 reset role;
 
 select * from finish();

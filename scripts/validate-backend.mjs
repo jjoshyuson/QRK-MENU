@@ -22,7 +22,8 @@ for(const marker of ['salamat-admin','salamat-staff','{"serviceMode":"quick"}','
 for(const marker of ['Salamat admin resolves to the second tenant','Salamat resolves to QRK Table mode'])if(!authTests.includes(marker))throw new Error(`Missing Auth test: ${marker}`);
 for(const marker of ['wrong device secret cannot create an order','cleared orders disappear from staff reads','tenant B cannot clear tenant A'])if(!syncTests.includes(marker))throw new Error(`Missing sync/recovery test: ${marker}`);
 
-for(const marker of ['cosmetics whitelist rejects unknown style'])if(!cosmeticsTests.includes(marker))throw new Error(`Missing cosmetics test: ${marker}`);
+for(const marker of ['cosmetics whitelist rejects unknown style','menu item tags reject unknown values'])if(!cosmeticsTests.includes(marker))throw new Error(`Missing cosmetics test: ${marker}`);
+for(const marker of ['menu_items_tags_known',"'tags', item.tags"])if(!sql.includes(marker))throw new Error(`Missing featured/tags marker ${marker}`);
 
 const files=['.env.example','dist/data/qrk-config.js','dist/data/qrk-config.example.js',...migrations.map(name=>`supabase/migrations/${name}`),'supabase/seed.sql'];
 const secretPatterns=[/sb_secret_[A-Za-z0-9_-]{10,}/,/service_role\s*[:=]\s*['"][A-Za-z0-9._-]{20,}/i,/eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}/];
