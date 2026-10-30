@@ -5,7 +5,7 @@ const [html, menu, css, customerCss, menuCss, style, handoff] = await Promise.al
   readFile(new URL('../dist/menu/index.html', import.meta.url), 'utf8'),
   readFile(new URL('../dist/menu/menu.js', import.meta.url), 'utf8'),
   readFile(new URL('../dist/ui-components.css', import.meta.url), 'utf8'),
-  readFile(new URL('../dist/menu/cart-dock.css', import.meta.url), 'utf8'),
+  readFile(new URL('../dist/menu/menu-sheets.css', import.meta.url), 'utf8'),
   readFile(new URL('../dist/menu/menu.css', import.meta.url), 'utf8'),
   readFile(new URL('../AGENT/STYLE.md', import.meta.url), 'utf8'),
   readFile(new URL('../docs/TECHNICAL_HANDOFF.md', import.meta.url), 'utf8'),
@@ -59,7 +59,7 @@ assert.match(menu, /pointercancel'.*finishItemSheetDrag\(false\)/s);
 assert.match(menuCss, /body\.menu-scroll-locked\{[^}]*position:fixed[^}]*overflow:hidden[^}]*overscroll-behavior:none/);
 assert.match(menuCss, /\.item-sheet \.item-hero\{[^}]*touch-action:none[^}]*cursor:grab/);
 assert.match(customerCss, /dialog #add-item\s*\{[^}]*background:\s*var\(--brand-500\) !important[^}]*color:\s*var\(--brand-foreground\) !important/s);
-assert.match(html, /ui-components\.css\?v=19[\s\S]*cart-dock\.css\?v=42/);
+assert.match(html, /ui-components\.css\?v=19[\s\S]*menu-sheets\.css/);
 assert.match(customerCss, /dialog\.focused-sheet::backdrop,[\s\S]*dialog\.quick-service-dialog::backdrop,[\s\S]*dialog\.table-entry::backdrop\s*\{[^}]*background:\s*rgba\(248, 250, 252, \.16\)[^}]*backdrop-filter:\s*blur\(6px\) saturate\(\.92\)/s);
 assert.match(customerCss, /dialog\.is-closing::backdrop\s*\{[^}]*backdrop-filter:\s*blur\(0\) saturate\(1\)/s);
 assert.match(customerCss, /#cart-dialog \.sheet-card\s*\{[^}]*height:\s*min\(90dvh,[^}]*max-height:\s*min\(90dvh,/s);

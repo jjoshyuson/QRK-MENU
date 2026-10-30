@@ -5,7 +5,7 @@ const [menu,app,imageService,styles,dataService,markup]=await Promise.all([
  readFile(new URL('../dist/menu/menu.js',import.meta.url),'utf8'),
  readFile(new URL('../dist/app.js',import.meta.url),'utf8'),
  readFile(new URL('../dist/data/qrk-image-service.js',import.meta.url),'utf8'),
- readFile(new URL('../dist/menu/cart-dock.css',import.meta.url),'utf8'),
+ Promise.all(['menu','menu-sheets'].map(n => readFile(new URL(`../dist/menu/${n}.css`, import.meta.url), 'utf8'))).then(c => c.join('\n')),
  readFile(new URL('../dist/data/qrk-data-service.js',import.meta.url),'utf8'),
  readFile(new URL('../dist/menu/index.html',import.meta.url),'utf8')
 ]);

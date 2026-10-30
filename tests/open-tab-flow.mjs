@@ -5,7 +5,7 @@ const [html,menu,staff,cartStyles]=await Promise.all([
   readFile(new URL('../dist/menu/index.html',import.meta.url),'utf8'),
   readFile(new URL('../dist/menu/menu.js',import.meta.url),'utf8'),
   readFile(new URL('../dist/app.js',import.meta.url),'utf8'),
-  readFile(new URL('../dist/menu/cart-dock.css',import.meta.url),'utf8')
+  readFile(new URL('../dist/menu/menu-sheets.css',import.meta.url),'utf8')
 ]);
 
 assert.match(html,/id="entry-save-name"[^>]*type="checkbox" checked/);

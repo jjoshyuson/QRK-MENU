@@ -6,7 +6,7 @@ const [html, js, staff, data, cartCss] = await Promise.all([
   readFile(new URL('../dist/menu/menu.js', import.meta.url), 'utf8'),
   readFile(new URL('../dist/app.js', import.meta.url), 'utf8'),
   readFile(new URL('../dist/data/qrk-data-service.js', import.meta.url), 'utf8'),
-  readFile(new URL('../dist/menu/cart-dock.css', import.meta.url), 'utf8')
+  readFile(new URL('../dist/menu/menu-sheets.css', import.meta.url), 'utf8')
 ]);
 
 assert.match(html, /id="order-history-control"[^>]*aria-controls="history-dialog"/);
