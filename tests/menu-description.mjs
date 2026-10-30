@@ -50,6 +50,6 @@ assert.match(customerJs, /prefers-reduced-motion: reduce/);
 console.log('Menu description and compact customer card contract passed.');
 
 assert.match(customerHtml, /data-hero-cover[^>]*hidden/);
-assert.match(customerCss, /\.hero-band\s*\{[^}]*padding:\s*22px 16px 82px[^}]*border-radius:\s*0 0 30px 30px/s);
+assert.match(customerCss, /\.hero-band\s*\{[^}]*padding:\s*22px 16px var\(--hero-pad-bottom\)[^}]*border-radius:\s*0 0 30px 30px/s);
 assert.match(customerCss, /\.menu-tools\s*\{[^}]*margin-top:\s*-62px/s);
 assert.match(customerCss, /\.menu-tools \.search-wrap #menu-search\s*\{[^}]*height:\s*var\(--component-menu-search-height\)[^}]*border-radius:\s*16px/s);

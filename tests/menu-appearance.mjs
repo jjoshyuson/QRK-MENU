@@ -60,3 +60,8 @@ assert.match(css, /\.hero-shade\s*\{[^}]*var\(--hero-fade-top\)[^}]*var\(--hero-
 const grey = '#' + Math.round(255 * (1 - textAlpha)).toString(16).padStart(2, '0').repeat(3);
 assert.ok(contrast('#FFFFFF', grey) >= 4.5, `contrast ${contrast('#FFFFFF', grey)}`);
 console.log('menu appearance fade tests passed');
+
+assert.equal(css.match(/--hero-pad-bottom:\s*(\d+)px/)[1], '82');
+assert.match(css, /\.hero-band\s*\{[^}]*padding:\s*22px 16px var\(--hero-pad-bottom\)/s);
+assert.match(css, /var\(--hero-fade-text\)\)\s*calc\(100% - var\(--hero-pad-bottom\)\)/);
+console.log('menu appearance padding/fade link passed');
