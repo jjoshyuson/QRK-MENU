@@ -17,8 +17,12 @@ try{
   const signedIn=await store.signIn('rnl.rnl',reset.temporaryPassword);
   assert.equal(signedIn.account.mustChangePassword,true);
   assert.equal(signedIn.account.serviceMode,'table','reset must refresh the bridged client context');
+  const entry=(await store.accountStatuses()).find(item=>item.username==='rnl.rnl');
+  assert.deepEqual(entry,{username:'rnl.rnl',mustChangePassword:true,active:true});
+  for(const item of await store.accountStatuses())assert.deepEqual(Object.keys(item).sort(),['active','mustChangePassword','username']);
   const changed=await store.changePassword(signedIn.token,'NewLongPassword!42');
   assert.equal(changed.mustChangePassword,false);
+  assert.equal((await store.accountStatuses()).find(item=>item.username==='rnl.rnl').mustChangePassword,false);
   const persisted=await readFile(path.join(directory,'preview-auth.json'),'utf8');
   assert.doesNotMatch(persisted,new RegExp(rnl.temporaryPassword.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));
   assert.doesNotMatch(persisted,new RegExp(reset.temporaryPassword.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')));

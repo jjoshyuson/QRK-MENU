@@ -34,6 +34,7 @@ const loopback=req=>['127.0.0.1','::1','::ffff:127.0.0.1'].includes(req.socket.r
 async function previewAuthApi(req,res,pathname){
   if(!loopback(req)){sendJson(res,403,{error:'Local development access only'});return}
   if(pathname==='/__qrk/preview-auth/status'&&req.method==='GET'){sendJson(res,200,{available:true});return}
+  if(pathname==='/__qrk/preview-auth/accounts'&&req.method==='GET'){sendJson(res,200,{accounts:await previewAuth.accountStatuses()});return}
   if(req.method!=='POST'){res.writeHead(405,{Allow:'POST'});res.end();return}
   const input=await readJson(req);
   if(pathname==='/__qrk/preview-auth/provision'){sendJson(res,201,await previewAuth.provision(input.account));return}
