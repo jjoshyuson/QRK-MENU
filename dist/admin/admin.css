@@ -135,7 +135,7 @@
 .admin-logo-tile{display:grid;flex:none;width:40px;height:40px;place-items:center;border-radius:12px;background:var(--admin-accent);color:var(--admin-on-accent);font-size:17px;font-weight:800}
 
 .platform-admin-body .login-screen{display:grid;min-height:100dvh;place-items:center;padding:24px 16px;background:var(--admin-page)}
-.platform-admin-body .login-card{display:grid;gap:12px;width:min(420px,100%);border:0;border-radius:24px;padding:32px;background:var(--admin-surface);box-shadow:var(--admin-shadow);color:var(--admin-ink)}
+.platform-admin-body .login-card{display:grid;min-height:0;align-content:start;gap:12px;width:min(420px,100%);border:0;border-radius:24px;padding:32px;background:var(--admin-surface);box-shadow:var(--admin-shadow);color:var(--admin-ink)}
 .login-card h1{margin:8px 0 0;color:var(--admin-ink);font-size:28px;font-weight:800;letter-spacing:-.02em}
 .login-card>p:not(.staged-note){margin:0;color:var(--admin-muted);font-size:14px;line-height:1.5}
 .platform-continue{width:100%;margin-top:8px}
@@ -159,6 +159,7 @@
 .admin-page-header>div{display:grid;min-width:0;gap:4px}
 .admin-kicker{color:var(--admin-muted);font-size:13px;font-weight:600}
 .admin-page-header h1{margin:0;color:var(--admin-ink);font-size:32px;font-weight:800;letter-spacing:-.025em;line-height:1.1}
+.admin-env-pill.is-neutral{background:var(--admin-surface-2);color:var(--admin-muted);cursor:default}
 .admin-env-pill{display:inline-flex;height:26px;align-items:center;border-radius:var(--admin-radius-control);padding:0 11px;background:var(--admin-warn-bg);color:var(--admin-warn-fg);font-size:12px;font-weight:700;white-space:nowrap;cursor:help}
 .admin-add-client{margin-left:auto}
 
@@ -264,12 +265,15 @@
 .admin-manage h3{margin:0;color:var(--admin-muted);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
 .admin-manage p{margin:0;overflow-wrap:anywhere}
 .admin-manage .button{display:inline-flex;min-height:44px;align-items:center}
+.admin-manage .button.outline{background:var(--admin-surface);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--admin-ink) 14%,transparent)}
+.admin-manage code{overflow-wrap:anywhere}
 .admin-manage-danger{background:var(--admin-danger-bg)!important}
 .admin-manage-danger h3,.admin-manage-danger p{color:var(--admin-danger-fg)}
 .admin-manage .button.is-danger{background:var(--admin-danger-fg);color:var(--admin-danger-bg)}
 .admin-manage .button.is-accent{background:var(--brand-500);color:var(--brand-foreground,var(--color-black))}
 .admin-login-status{color:var(--admin-muted);font-size:13px}
 @media(max-width:720px){
+.admin-manage section{justify-items:stretch}.admin-manage .button{justify-content:center;width:100%}
 .admin-manage-sheet{top:auto;left:0;width:100%;max-height:88dvh;border-radius:24px 24px 0 0;transform:translateY(100%)}
 .admin-manage-sheet.open{transform:none}
 }

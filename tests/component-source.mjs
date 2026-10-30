@@ -34,7 +34,7 @@ for (const family of ['.button', '.metric-card', '.item-row', '.staff-row', '.ta
   assert.ok(css.includes(family), `missing shared component rule: ${family}`);
 }
 const adminCss = await readFile(new URL('../dist/admin/admin.css', import.meta.url), 'utf8');
-assert.ok(adminCss.includes('.admin-client-card'), 'missing admin component rule: .admin-client-card');
+for (const rule of ['.admin-client-card', '.admin-account-row']) assert.ok(adminCss.includes(rule), `missing admin component rule: ${rule}`);
 assert.match(css,/\.qrk-choice-trigger\{[^}]*border:0/);
 assert.match(css,/\.qrk-choice-popover\{[^}]*border:0/);
 assert.match(css,/\.qrk-sheet-field-row input[^}]*background:transparent!important/);

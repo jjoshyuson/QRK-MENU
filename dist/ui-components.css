@@ -166,7 +166,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--brand-500)}
 .metric-card,.dashboard-card,.status-strip,.service-note,.demo-banner,.credential-card,
 .item-row,.staff-row,.order-queue-card,.history-order,.history-order-card,.table-card,
 .settings-group,.dish,.desktop-order-card,.active-order,.notice,.option-group,.cart-item,
-.payment-card,.tab-round,.platform-client-row,.platform-account-row,.preset-card,
+.payment-card,.tab-round,.admin-client-card,.admin-account-row,.preset-card,
 .verification-card,.empty-state,.dialog-sample,dialog>.dialog-card{
   border-color:var(--line);
   background:var(--component-card-bg);
@@ -174,7 +174,7 @@ input[type="checkbox"],input[type="radio"]{accent-color:var(--brand-500)}
 .metric-card,.dashboard-card,.status-strip,.service-note,.demo-banner,.credential-card,
 .item-row,.staff-row,.order-queue-card,.history-order,.history-order-card,.table-card,
 .settings-group,.dish,.desktop-order-card,.active-order,.notice,.option-group,.cart-item,
-.payment-card,.tab-round,.platform-client-row,.platform-account-row,.preset-card,
+.payment-card,.tab-round,.admin-client-card,.admin-account-row,.preset-card,
 .verification-card,.empty-state{
   border-radius:var(--component-radius-lg);
 }
